@@ -44,6 +44,7 @@ class TrainConfig:
     cascading_gate_k: float = 5.0
     input_norm: str = "none"
     qwen_input_prefix: str = ""
+    init_logit: float = 15.0  # bias on Z logits so A≈1 at init (dense connectivity)
 
     # Data
     dataset: str = "allenai/dolma"
@@ -185,6 +186,7 @@ class Trainer:
             rank=config.predictor_rank,
             cascading_gate_k=config.cascading_gate_k,
             qwen_input_prefix=config.qwen_input_prefix,
+            init_logit=config.init_logit,
             device=self.device,
         )
 
