@@ -168,6 +168,7 @@ def cascading_gate(
     A: torch.Tensor,
     k: float = 5.0,
     hard: bool = False,
+    heads_per_layer: int = 16,
 ) -> torch.Tensor:
     """Apply cascading activation gate: kill outgoing edges from disconnected nodes.
 
@@ -176,6 +177,9 @@ def cascading_gate(
     2. Compute gates: g_j = σ(k * inc_j) (soft) or (inc_j > 0) (hard)
     3. Apply: A[j, :] *= g_j
 
+    Layer 0 nodes are exempted: they have inc=0 structurally (no prior layers)
+    but receive the embedding as input, so they are NOT disconnected.
+
     Uses ORIGINAL A values for incoming sums (before any gates applied).
     See CLAUDE.md §2.3 cascading gate section.
 
@@ -183,6 +187,7 @@ def cascading_gate(
         A: [batch, 256, 256] — gate matrix
         k: steepness of sigmoid gate (default: 5.0)
         hard: if True, use binary gates (for eval_hard mode)
+        heads_per_layer: number of heads per layer (default: 16)
 
     Returns:
         A_gated: [batch, 256, 256] — A with cascading gate applied
@@ -194,6 +199,11 @@ def cascading_gate(
         g = (inc > 0).float()  # [batch, 256]
     else:
         g = torch.sigmoid(k * inc)  # [batch, 256]
+
+    # Exempt layer 0: always g=1 (they receive embedding, not disconnected)
+    # Use non-in-place op to preserve autograd graph
+    exempt = torch.arange(g.shape[1], device=g.device) < heads_per_layer
+    g = torch.where(exempt.unsqueeze(0), torch.ones_like(g), g)
 
     # Gate outgoing edges: A[j, :] *= g[j]
     # g: [B, 256] → [B, 256, 1] to broadcast with A: [B, 256, 256]
