@@ -1,0 +1,50 @@
+# Sanity check config — verify baseline NLL reproduction and basic training
+# Run: python scripts/train.py --config configs/sanity_check.yaml
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Predictor
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"  # use "none" to verify baseline reproduction
+
+# Data
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 2  # gradient accumulation: effective batch=4, micro=2
+qwen_input_prefix: ""
+
+# Eval
+eval_skip: 10000  # reduced for sanity check (1M too slow for streaming)
+eval_size: 50     # small eval set for sanity check
+
+# Training
+total_steps: 1000
+lr: 3e-4
+weight_decay: 0.01
+optimizer: "adamw"
+
+# Schedules
+tau_init: 5.0
+tau_final: 0.2
+tau_schedule: "cosine"
+lambda_max: 0.0  # no sparsity for sanity check
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "sanity-check"
+log_every: 10
+eval_every: 100
+
+# Checkpointing
+save_every: 500
+save_dir: "checkpoints/"
+
+# Hardware
+num_gpus: 1

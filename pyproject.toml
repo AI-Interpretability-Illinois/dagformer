@@ -1,0 +1,21 @@
+[project]
+name = "dagformer"
+version = "0.1.0"
+description = "Context-conditioned DAG topology predictor for OLMo2-1B"
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.2",
+    "transformers>=4.40",
+    "datasets",
+    "wandb",
+    "pyyaml",
+    "einops",
+]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
