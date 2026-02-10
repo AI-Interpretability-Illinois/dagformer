@@ -1,0 +1,51 @@
+# S1 — Predictor identity init (constant tau=5, ~10M tokens)
+# Purpose: Verify init reproduces dense topology. NLL should match S0 (2.4569) within 1%.
+# Run: python scripts/train.py --config configs/s1_identity_init.yaml
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Predictor
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+
+# Data
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 2
+qwen_input_prefix: ""
+
+# Eval
+eval_skip: 10000
+eval_size: 50
+
+# Training — ~10M tokens = 2500 steps @ batch=4, seq=1024
+total_steps: 2500
+lr: 3e-4
+weight_decay: 0.01
+optimizer: "adamw"
+
+# Schedules — constant tau=5 (no annealing), no sparsity
+tau_init: 5.0
+tau_final: 5.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "s1-identity-init"
+log_every: 10
+eval_every: 100
+
+# Checkpointing
+save_every: 1000
+save_dir: "checkpoints/s1/"
+
+# Hardware
+num_gpus: 1

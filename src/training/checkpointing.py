@@ -6,7 +6,9 @@ Frozen models (OLMo, Qwen) are not checkpointed — they load from HuggingFace.
 
 from __future__ import annotations
 
+import glob
 import os
+import re
 from typing import Any, Optional
 
 import torch
@@ -53,6 +55,35 @@ def save_checkpoint(
     torch.save(state, path)
     print(f"Checkpoint saved: {path}")
     return path
+
+
+def find_latest_checkpoint(save_dir: str) -> Optional[str]:
+    """Find the latest checkpoint in save_dir by step number.
+
+    Returns:
+        Path to latest checkpoint, or None if no checkpoints found.
+    """
+    if not os.path.isdir(save_dir):
+        return None
+
+    pattern = os.path.join(save_dir, "checkpoint_step*.pt")
+    files = glob.glob(pattern)
+    if not files:
+        return None
+
+    # Extract step numbers and find max
+    step_re = re.compile(r"checkpoint_step(\d+)\.pt$")
+    best_step = -1
+    best_path = None
+    for f in files:
+        m = step_re.search(f)
+        if m:
+            step = int(m.group(1))
+            if step > best_step:
+                best_step = step
+                best_path = f
+
+    return best_path
 
 
 def load_checkpoint(
