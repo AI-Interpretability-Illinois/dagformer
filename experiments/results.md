@@ -84,13 +84,21 @@ Observations (attempt 1):
 - No checkpoint saved (save_every=2500, crashed at 1860)
 - Crashed due to Dolma streaming HTTP error, not code bug
 
-**Attempt 2** — Job 15798568 (fresh start, no checkpoint from attempt 1)
+**Attempt 2** — Job 15798568, crashed at step ~5190 (same Dolma HTTP error)
 
-| Metric | Value |
-|--------|-------|
-| eval/nll_soft | |
-| eval/nll_hard | |
-| topology/mean_A | |
+| Step | nll_soft | nll_hard | nll_baseline | mean_A |
+|------|----------|----------|--------------|--------|
+| 500 | 2.4578 | 2.4597 | 2.4569 | 0.992 |
+| 1000 | 2.4566 | 2.4591 | 2.4569 | 0.989 |
+| 2000 | 2.4531 | 2.4537 | 2.4569 | 0.991 |
+| 3000 | 2.4484 | 2.4491 | 2.4569 | 0.992 |
+| 3500 | **2.4475** | 2.4487 | 2.4569 | 0.993 |
+| 4000 | 2.4569 | 2.4569 | 2.4569 | 0.999 |
+| 5000 | 2.4550 | 2.4578 | 2.4569 | 0.980 |
+
+**S2 conclusion**: Predictor stuck near init (mean_A≈0.99). Sigmoid saturation confirmed —
+init_logit=15 + τ=2 gives ∂A/∂Z≈0.0003, insufficient gradient. Moving to A12-A14 (lower init_logit).
+Status: **DONE** (no need to re-run, hypothesis confirmed across 2 attempts, ~7K total steps)
 
 ---
 
@@ -164,6 +172,75 @@ Observations (attempt 1):
 | A10 | OFF | | | | |
 | P1 | k=5 fixed | | | | (reference) |
 | A11 | k=5 learnable | | | | |
+
+### A12–A14: Init logit ablation (sigmoid saturation fix)
+
+**Problem diagnosis (from S1 & S2):**
+
+S1 (τ=5) 和 S2 (τ=2) 的 predictor 都没有学到有意义的拓扑偏离（eval NLL ≈ baseline，mean_A ≈ 0.99）。
+初始假设：sigmoid 饱和导致梯度消失（init_logit=15, ∂A/∂Z ≈ 0.0003 at τ=2）。
+
+| ID | init_logit | Init A (τ=2) | ∂A/∂Z (τ=2) | Tokens | Purpose |
+|----|-----------|--------------|-------------|--------|---------|
+| A12 | 3.0 | σ(1.5) ≈ 0.82 | 0.074 | 50M | Moderate: A starts high but not saturated. |
+| A13 | 0.0 | σ(0) = 0.50 | 0.125 | 50M | Maximum gradient signal. |
+| A14 | 1.0 | σ(0.5) ≈ 0.62 | 0.118 | 50M | Compromise. |
+
+**A12** — Job 15803742 (**DONE**, 12500/12500 steps)
+
+| Step | nll_soft | nll_hard | nll_baseline | mean_A |
+|------|----------|----------|--------------|--------|
+| 500 | 2.4566 | 2.4566 | 2.4569 | 0.985 |
+| 1500 | 2.8781 | 2.8781 | 2.4569 | 0.884 |
+| 3000 | 2.6844 | 2.6844 | 2.4569 | 0.903 |
+| 5000 | 2.7062 | 2.7062 | 2.4569 | 0.897 |
+| 8500 | 2.7556 | 2.7556 | 2.4569 | 0.894 |
+| **12500** | **2.7563** | **2.7563** | **2.4569** | **0.894** |
+
+**A13** — Job 15803743 (**DONE**, 12500/12500 steps)
+
+| Step | nll_soft | nll_hard | nll_baseline | mean_A |
+|------|----------|----------|--------------|--------|
+| 500 | 2.9356 | 2.9362 | 2.4569 | 0.834 |
+| 1500 | 3.6700 | 3.6694 | 2.4569 | 0.722 |
+| 3000 | 3.4731 | 3.4731 | 2.4569 | 0.694 |
+| 5000 | 3.6150 | 3.6150 | 2.4569 | 0.678 |
+| 8500 | 3.5187 | 3.5187 | 2.4569 | 0.676 |
+| **12500** | **3.5100** | **3.5100** | **2.4569** | **0.677** |
+
+**A14** — Job 15803744 (**DONE**, 12500/12500 steps)
+
+| Step | nll_soft | nll_hard | nll_baseline | mean_A |
+|------|----------|----------|--------------|--------|
+| 500 | 2.4553 | 2.4553 | 2.4569 | 0.992 |
+| 1500 | 3.7050 | 3.7050 | 2.4569 | 0.734 |
+| 3000 | 3.8919 | 3.8925 | 2.4569 | 0.721 |
+| 5000 | 3.4019 | 3.4019 | 2.4569 | 0.726 |
+| 8500 | 3.2725 | 3.2725 | 2.4569 | 0.733 |
+| **12500** | **3.2550** | **3.2550** | **2.4569** | **0.734** |
+
+**A12–A14 综合结论：**
+
+| ID | init_logit | Final nll_soft | vs baseline | Final mean_A | 收敛 |
+|----|-----------|---------------|-------------|-------------|------|
+| S2 | 15.0 | 2.4569 | +0.00 | 0.99 | 卡在 init（sigmoid 饱和） |
+| A12 | 3.0 | 2.7563 | **+0.30** | 0.894 | 完全收敛（后 4K 步不动） |
+| A14 | 1.0 | 3.2550 | **+0.80** | 0.734 | 完全收敛 |
+| A13 | 0.0 | 3.5100 | **+1.05** | 0.677 | 完全收敛 |
+
+| 发现 | 详情 |
+|------|------|
+| 梯度饱和假设 | **部分正确**：降低 init_logit 后 gate 确实在动，梯度流通了 |
+| NLL 趋势 | **全部恶化**：init_logit 越低 → 偏离 dense 越远 → NLL 越差 |
+| Context 依赖性 | **无**：jaccard_var=NaN，predictor 对所有 context 输出相同的 static A |
+| 收敛行为 | 三个都在 ~8K 步后完全停滞，学到固定的 context-independent topology |
+| nll_soft vs nll_hard | 完全相同，τ=2 下 soft≈hard |
+
+**根本结论**：OLMo 的权重是在 dense topology 下预训练的。**Frozen 状态下，A=1 就是全局最优**。
+任何偏离 dense 的拓扑 = 删除模型期望的信息 = NLL 必然变差。这不是梯度问题、init 问题或数据量问题，
+而是 **loss landscape 本身不允许 frozen model 从 sparse topology 中获益**。
+
+Phase 1（frozen OLMo）的局限性已确认。需要 Phase 2（unfreeze OLMo）让模型适应新拓扑。
 
 ---
 

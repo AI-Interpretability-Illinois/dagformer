@@ -1,0 +1,53 @@
+# A13 — Init logit = 0.0 (maximum gradient, A starts at 0.5)
+# Purpose: σ(0)=0.5, maximum gradient signal. Init NLL will be bad
+#          but learning space is large. Tests if predictor can learn from scratch.
+# Run: python scripts/train.py --config configs/a13_init_logit_0.yaml
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Predictor
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: 0.0
+
+# Data
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 2
+qwen_input_prefix: ""
+
+# Eval
+eval_skip: 10000
+eval_size: 50
+
+# Training — ~50M tokens = 12500 steps
+total_steps: 12500
+lr: 3e-4
+weight_decay: 0.01
+optimizer: "adamw"
+
+# Schedules — constant tau=2 (same as S2), no sparsity
+tau_init: 2.0
+tau_final: 2.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "a13-init-logit-0"
+log_every: 10
+eval_every: 500
+
+# Checkpointing
+save_every: 2500
+save_dir: "checkpoints/a13/"
+
+# Hardware
+num_gpus: 1
