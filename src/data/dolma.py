@@ -1,6 +1,6 @@
-"""Streaming dataloader for Dolma v1.7 with sequence packing.
+"""Streaming dataloader with sequence packing.
 
-Produces packed sequences of fixed length for both OLMo and Qwen tokenizers.
+Supports Dolma v1.7 and Dolmino-Mix-1124 (multi-subset interleaving).
 See CLAUDE.md §3.1.1 for sequence packing specification.
 """
 
@@ -11,9 +11,21 @@ import time
 from typing import Iterator, Optional
 
 import torch
-from datasets import load_dataset
+from datasets import interleave_datasets, load_dataset
 from torch.utils.data import IterableDataset
 from transformers import AutoTokenizer
+
+# Dolmino 50B mix approximate proportions (from OLMo-core dolmino50.txt)
+# dclm:48%, flan:17%, tinygsm/math:21%, pes2o:6%, wiki:7%, stackexchange:2.5%
+# math subset has schema issues, merge its weight into dclm
+DOLMINO_MIX = {
+    "dclm": 0.685,          # 48% + 21% math (redistributed)
+    "flan": 0.17,
+    "pes2o": 0.06,
+    "wiki": 0.06,
+    "stackexchange": 0.025,
+}
+# Sum = 1.000
 
 MAX_RETRIES = 10
 RETRY_WAIT = 30  # seconds
@@ -54,25 +66,47 @@ class DolmaPackedDataset(IterableDataset):
         assert self.eos_id is not None, "OLMo tokenizer must have an EOS token"
 
     def _load_stream(self):
-        """Load Dolma streaming dataset with fallback."""
-        try:
-            dataset = load_dataset(
-                self.dataset_name,
-                name=self.dataset_version,
-                split="train",
-                streaming=True,
-                trust_remote_code=True,
-            )
-        except Exception:
-            dataset = load_dataset(
-                self.dataset_name,
-                split="train",
-                streaming=True,
-                trust_remote_code=True,
-            )
+        """Load streaming dataset. Supports Dolmino multi-subset interleaving.
 
-        if self.world_size > 1:
-            dataset = dataset.shard(num_shards=self.world_size, index=self.rank)
+        For dolmino_mix: interleaved datasets don't support HF .shard(), and
+        some subsets have too few parquet files for per-subset sharding.
+        DDP sharding is handled via manual modulo in __iter__ instead.
+        """
+        if self.dataset_version == "dolmino_mix":
+            # Interleave Dolmino subsets with approximate 50B mix proportions
+            # Only keep 'text' column — metadata schemas differ across subsets
+            subsets = []
+            probs = []
+            for name, weight in DOLMINO_MIX.items():
+                ds = load_dataset(
+                    self.dataset_name,
+                    name=name,
+                    split="train",
+                    streaming=True,
+                    trust_remote_code=True,
+                ).select_columns(["text"])
+                subsets.append(ds)
+                probs.append(weight)
+            dataset = interleave_datasets(subsets, probabilities=probs, stopping_strategy="all_exhausted")
+        else:
+            try:
+                dataset = load_dataset(
+                    self.dataset_name,
+                    name=self.dataset_version,
+                    split="train",
+                    streaming=True,
+                    trust_remote_code=True,
+                )
+            except Exception:
+                dataset = load_dataset(
+                    self.dataset_name,
+                    split="train",
+                    streaming=True,
+                    trust_remote_code=True,
+                )
+
+            if self.world_size > 1:
+                dataset = dataset.shard(num_shards=self.world_size, index=self.rank)
 
         return dataset
 
@@ -81,14 +115,25 @@ class DolmaPackedDataset(IterableDataset):
         buffer: list[int] = []
         sample_count = 0
         retries = 0
+        # For dolmino_mix, HF .shard() doesn't work on interleaved datasets,
+        # so we do manual document-level modulo sharding here instead.
+        manual_shard = (self.dataset_version == "dolmino_mix" and self.world_size > 1)
 
         while retries <= MAX_RETRIES:
             try:
                 dataset = self._load_stream()
+                doc_idx = 0
 
                 for doc in dataset:
                     if self.max_samples is not None and sample_count >= self.max_samples:
                         return
+
+                    # Manual DDP sharding: each rank takes every world_size-th doc
+                    if manual_shard:
+                        if doc_idx % self.world_size != self.rank:
+                            doc_idx += 1
+                            continue
+                        doc_idx += 1
 
                     text = doc.get("text", "")
                     if not text.strip():
@@ -179,49 +224,77 @@ def build_eval_dataloader(
 
     print(f"Building eval set (skip={eval_skip}, size={eval_size})...")
 
-    try:
-        dataset = load_dataset(
-            dataset_name,
-            name=dataset_version,
-            split="train",
-            streaming=True,
-            trust_remote_code=True,
-        )
-    except Exception:
-        dataset = load_dataset(
-            dataset_name,
-            split="train",
-            streaming=True,
-            trust_remote_code=True,
-        )
-
-    # Skip to held-out region
-    dataset = dataset.skip(eval_skip)
-
     eos_id = olmo_tokenizer.eos_token_id
-    buffer: list[int] = []
     eval_samples: list[dict] = []
 
-    for doc in dataset:
-        if len(eval_samples) >= eval_size:
-            break
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            if dataset_version == "dolmino_mix":
+                subsets = []
+                probs = []
+                for name, weight in DOLMINO_MIX.items():
+                    ds = load_dataset(
+                        dataset_name,
+                        name=name,
+                        split="train",
+                        streaming=True,
+                        trust_remote_code=True,
+                    ).select_columns(["text"])
+                    subsets.append(ds)
+                    probs.append(weight)
+                dataset = interleave_datasets(subsets, probabilities=probs, stopping_strategy="all_exhausted")
+            else:
+                try:
+                    dataset = load_dataset(
+                        dataset_name,
+                        name=dataset_version,
+                        split="train",
+                        streaming=True,
+                        trust_remote_code=True,
+                    )
+                except Exception:
+                    dataset = load_dataset(
+                        dataset_name,
+                        split="train",
+                        streaming=True,
+                        trust_remote_code=True,
+                    )
 
-        text = doc.get("text", "")
-        if not text.strip():
-            continue
+            # Skip to held-out region
+            dataset = dataset.skip(eval_skip)
 
-        tokens = olmo_tokenizer(text, add_special_tokens=False)["input_ids"]
-        buffer.extend(tokens)
-        buffer.append(eos_id)
+            buffer: list[int] = []
+            eval_samples = []
 
-        while len(buffer) >= seq_len + 1 and len(eval_samples) < eval_size:
-            chunk = buffer[:seq_len + 1]
-            buffer = buffer[seq_len + 1:]
-            eval_samples.append({
-                "olmo_ids": torch.tensor(chunk[:seq_len], dtype=torch.long),
-                "olmo_labels": torch.tensor(chunk[1:seq_len + 1], dtype=torch.long),
-                "raw_text": olmo_tokenizer.decode(chunk[:seq_len], skip_special_tokens=False),
-            })
+            for doc in dataset:
+                if len(eval_samples) >= eval_size:
+                    break
+
+                text = doc.get("text", "")
+                if not text.strip():
+                    continue
+
+                tokens = olmo_tokenizer(text, add_special_tokens=False)["input_ids"]
+                buffer.extend(tokens)
+                buffer.append(eos_id)
+
+                while len(buffer) >= seq_len + 1 and len(eval_samples) < eval_size:
+                    chunk = buffer[:seq_len + 1]
+                    buffer = buffer[seq_len + 1:]
+                    eval_samples.append({
+                        "olmo_ids": torch.tensor(chunk[:seq_len], dtype=torch.long),
+                        "olmo_labels": torch.tensor(chunk[1:seq_len + 1], dtype=torch.long),
+                        "raw_text": olmo_tokenizer.decode(chunk[:seq_len], skip_special_tokens=False),
+                    })
+
+            break  # success
+
+        except Exception as e:
+            if attempt >= MAX_RETRIES:
+                raise RuntimeError(f"Eval set build failed after {MAX_RETRIES} retries: {e}") from e
+            print(f"[EvalBuild] Stream error (retry {attempt + 1}/{MAX_RETRIES}): {e}")
+            print(f"[EvalBuild] Waiting {RETRY_WAIT}s before reconnecting...")
+            time.sleep(RETRY_WAIT)
 
     print(f"Built {len(eval_samples)} eval sequences")
 

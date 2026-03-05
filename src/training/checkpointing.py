@@ -1,7 +1,8 @@
 """Checkpoint save/load for predictor + optimizer + schedule state.
 
-Only saves trainable components (predictor MLP, optimizer, schedule state).
-Frozen models (OLMo, Qwen) are not checkpointed — they load from HuggingFace.
+Phase 1: Only saves predictor MLP, optimizer, schedule state.
+Phase 2: Also saves OLMo state_dict (weights being fine-tuned).
+Frozen Qwen is never checkpointed — loads from HuggingFace.
 """
 
 from __future__ import annotations
@@ -23,6 +24,7 @@ def save_checkpoint(
     optimizer: optim.Optimizer,
     scheduler: Any,
     best_eval_nll: float,
+    olmo: Optional[nn.Module] = None,
     extra: Optional[dict] = None,
 ) -> str:
     """Save training checkpoint.
@@ -34,6 +36,7 @@ def save_checkpoint(
         optimizer: AdamW optimizer
         scheduler: LR scheduler
         best_eval_nll: best eval NLL so far
+        olmo: OLMo model (Phase 2 only — saves fine-tuned weights)
         extra: any additional state to save
 
     Returns:
@@ -51,6 +54,15 @@ def save_checkpoint(
     }
     if extra:
         state.update(extra)
+
+    if olmo is not None:
+        # Save OLMo state_dict separately — it's too large (~2.4GB) for
+        # PyTorch's default zip serialization which crashes with
+        # "unexpected pos" error on large files.
+        olmo_path = path.replace(".pt", "_olmo.pt")
+        torch.save(olmo.state_dict(), olmo_path, _use_new_zipfile_serialization=False)
+        state["olmo_state_path"] = olmo_path
+        print(f"OLMo state saved: {olmo_path}")
 
     torch.save(state, path)
     print(f"Checkpoint saved: {path}")
@@ -91,6 +103,7 @@ def load_checkpoint(
     predictor: nn.Module,
     optimizer: Optional[optim.Optimizer] = None,
     scheduler: Optional[Any] = None,
+    olmo: Optional[nn.Module] = None,
     device: Optional[torch.device] = None,
 ) -> dict:
     """Load training checkpoint.
@@ -100,6 +113,7 @@ def load_checkpoint(
         predictor: structure predictor to load weights into
         optimizer: optimizer to restore state (optional — skip for eval)
         scheduler: LR scheduler to restore state (optional)
+        olmo: OLMo model to restore weights (Phase 2 only)
         device: device to map tensors to
 
     Returns:
@@ -110,6 +124,19 @@ def load_checkpoint(
 
     predictor.load_state_dict(state["predictor_state_dict"])
     print(f"Predictor state loaded from {path}")
+
+    if olmo is not None:
+        if "olmo_state_path" in state:
+            # New format: OLMo saved separately
+            olmo_path = state["olmo_state_path"]
+            olmo_state = torch.load(olmo_path, map_location=map_location)
+            olmo.load_state_dict(olmo_state)
+            del olmo_state
+            print(f"OLMo state loaded from {olmo_path}")
+        elif "olmo_state_dict" in state:
+            # Legacy format: OLMo in same file
+            olmo.load_state_dict(state["olmo_state_dict"])
+            print(f"OLMo state loaded from {path}")
 
     if optimizer is not None and "optimizer_state_dict" in state:
         optimizer.load_state_dict(state["optimizer_state_dict"])

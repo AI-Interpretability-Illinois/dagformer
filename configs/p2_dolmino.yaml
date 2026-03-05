@@ -1,0 +1,69 @@
+# P2-Dolmino — Phase 2 midtrain on Dolmino, starting from stage1-final
+# Goal: replicate official midtrain but with dynamic topology
+#
+# Key choices:
+#   - Start from pretrain-only checkpoint (before midtrain)
+#   - Train on Dolmino-Mix-1124 (same as official midtrain)
+#   - Linear LR decay (matches official)
+#   - Gradient clipping (matches official)
+#   - OLMo LR ~4e-5 scaled down for our small batch
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+olmo_revision: "stage1-step1907359-tokens4001B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Predictor
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: 15.0       # start dense (A≈1)
+
+# Data — Dolmino mix (matches official midtrain data)
+dataset: "allenai/dolmino-mix-1124"
+dataset_name: "dolmino_mix"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 1
+qwen_input_prefix: ""
+
+# Eval
+eval_skip: 10000
+eval_size: 50
+
+# Training — 12500 steps ≈ 51M tokens
+# Official midtrain: 23852 steps @ 2M tokens/step = 50B tokens
+# We: 12500 steps @ 4K tokens/step = 51M tokens (1000x less, exploratory)
+total_steps: 12500
+lr: 3e-4               # Phase 1 predictor LR (unused in Phase 2, but required field)
+weight_decay: 0.1       # match official (was 0.01 in our P2b)
+optimizer: "adamw"
+lr_schedule: "linear"   # match official midtrain (linear decay → 0)
+max_grad_norm: 1.0      # match official midtrain
+
+# Schedules
+tau_init: 5.0
+tau_final: 5.0          # constant tau for now
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "p2-dolmino"
+log_every: 10
+eval_every: 500
+
+# Checkpointing
+save_every: 2500
+save_dir: "checkpoints/p2_dolmino/"
+
+# Phase 2 — unfreeze OLMo
+phase: 2
+olmo_lr: 5e-6           # conservative (official ~4e-5, but our batch 500x smaller)
+predictor_lr: 1e-3      # from P2b (best so far)
+gradient_checkpointing: true
+
+# Hardware
+num_gpus: 1

@@ -1,7 +1,9 @@
-"""Training loop for DAGFormer Phase 1.
+"""Training loop for DAGFormer Phase 1 & 2.
 
-Pure PyTorch + DDP. Only the predictor MLP is trainable.
-See CLAUDE.md §3.1 for training specification.
+Pure PyTorch + DDP.
+Phase 1: Only the predictor MLP is trainable (OLMo frozen).
+Phase 2: OLMo unfrozen with differential learning rates.
+See CLAUDE.md §3.1 and §3.5 for training specification.
 """
 
 from __future__ import annotations
@@ -17,7 +19,7 @@ import torch
 import torch.distributed as dist
 import torch.nn as nn
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.optim.lr_scheduler import CosineAnnealingLR
+from torch.optim.lr_scheduler import CosineAnnealingLR, LambdaLR
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from src.data.dolma import build_eval_dataloader, build_train_dataloader
@@ -63,6 +65,8 @@ class TrainConfig:
     lr: float = 3e-4
     weight_decay: float = 0.01
     optimizer: str = "adamw"
+    lr_schedule: str = "cosine"          # "cosine" or "linear"
+    max_grad_norm: float = 0.0           # gradient clipping (0 = disabled)
 
     # Schedules
     tau_init: float = 5.0
@@ -81,6 +85,14 @@ class TrainConfig:
     save_every: int = 500
     save_dir: str = "checkpoints/"
     resume_from: str = ""
+
+    # Phase control
+    phase: int = 1                      # 1=frozen OLMo, 2=unfrozen OLMo
+    olmo_lr: float = 3e-5               # OLMo learning rate (Phase 2 only)
+    predictor_lr: float = 1e-4          # predictor LR (Phase 2 only)
+    gradient_checkpointing: bool = False  # reduce memory by recomputing activations
+    olmo_revision: str = ""               # HuggingFace revision/branch (e.g. "stage1-step1907359-tokens4001B")
+    olmo_init_checkpoint: str = ""       # load OLMo weights from a prior checkpoint (predictor/optimizer stay fresh)
 
     # Hardware
     num_gpus: int = 1
@@ -105,6 +117,8 @@ class TrainConfig:
                     data[f.name] = float(data[f.name])
                 elif expected_type == "int" or expected_type is int:
                     data[f.name] = int(data[f.name])
+                elif expected_type == "bool" or expected_type is bool:
+                    data[f.name] = bool(data[f.name])
 
         return cls(**data)
 
@@ -114,7 +128,11 @@ class TrainConfig:
 
 
 class Trainer:
-    """DAGFormer Phase 1 training loop."""
+    """DAGFormer Phase 1 & 2 training loop.
+
+    Phase 1: OLMo frozen, only predictor MLP trains.
+    Phase 2: OLMo unfrozen with differential LR (olmo_lr vs predictor_lr).
+    """
 
     def __init__(self, config: TrainConfig, local_rank: int = 0, world_size: int = 1):
         self.config = config
@@ -150,6 +168,7 @@ class Trainer:
                 self.predictor,
                 self.optimizer,
                 self.lr_scheduler,
+                olmo=self._olmo_raw if config.phase == 2 else None,
                 device=self.device,
             )
             self.global_step = state["step"] + 1  # resume from NEXT step
@@ -160,20 +179,51 @@ class Trainer:
     def _build_models(self) -> None:
         config = self.config
 
-        # Load frozen OLMo2-1B
+        # Load OLMo2-1B
         if self.is_main:
             print(f"Loading {config.olmo_model_id}...")
+        load_kwargs = dict(torch_dtype=torch.bfloat16)
+        if config.olmo_revision:
+            load_kwargs["revision"] = config.olmo_revision
+            if self.is_main:
+                print(f"  revision: {config.olmo_revision}")
         self.olmo = AutoModelForCausalLM.from_pretrained(
             config.olmo_model_id,
-            torch_dtype=torch.bfloat16,
+            **load_kwargs,
         ).to(self.device)
-        self.olmo.eval()
-        for p in self.olmo.parameters():
-            p.requires_grad_(False)
+        self.olmo.eval()  # keep eval mode (disable dropout) even in Phase 2
 
-        # Verify frozen
-        assert all(not p.requires_grad for p in self.olmo.parameters()), \
-            "OLMo parameters should be frozen"
+        # Optionally load OLMo weights from a prior checkpoint (predictor/optimizer stay fresh)
+        if config.olmo_init_checkpoint:
+            if self.is_main:
+                print(f"Loading OLMo weights from {config.olmo_init_checkpoint}...")
+            ckpt = torch.load(config.olmo_init_checkpoint, map_location=self.device)
+            assert "olmo_state_dict" in ckpt, \
+                f"Checkpoint {config.olmo_init_checkpoint} has no olmo_state_dict key"
+            self.olmo.load_state_dict(ckpt["olmo_state_dict"])
+            del ckpt  # free memory
+            if self.is_main:
+                print("OLMo weights loaded (predictor and optimizer will be fresh)")
+
+        if config.phase == 1:
+            # Phase 1: freeze OLMo
+            for p in self.olmo.parameters():
+                p.requires_grad_(False)
+            assert all(not p.requires_grad for p in self.olmo.parameters()), \
+                "OLMo parameters should be frozen in Phase 1"
+        else:
+            # Phase 2: unfreeze OLMo
+            for p in self.olmo.parameters():
+                p.requires_grad_(True)
+            if self.is_main:
+                olmo_params = sum(p.numel() for p in self.olmo.parameters())
+                print(f"Phase 2: OLMo unfrozen ({olmo_params:,} params)")
+
+        # Gradient checkpointing (reduces activation memory)
+        if config.gradient_checkpointing:
+            self.olmo.gradient_checkpointing_enable()
+            if self.is_main:
+                print("Gradient checkpointing enabled for OLMo")
 
         # OLMo tokenizer
         self.olmo_tokenizer = AutoTokenizer.from_pretrained(config.olmo_model_id)
@@ -197,37 +247,75 @@ class Trainer:
             device=self.device,
         )
 
-        # DDP wrapping — only the predictor MLP (trainable component)
+        # Store references before potential DDP wrapping
+        self._olmo_raw = self.olmo  # unwrapped model for state_dict/config access
+        self.vocab_size = self.olmo.config.vocab_size
+
+        # DDP wrapping
         if self.world_size > 1:
             self.predictor.mlp = DDP(
                 self.predictor.mlp,
                 device_ids=[self.local_rank],
             )
+            if config.phase == 2:
+                # Phase 2: also DDP-wrap OLMo
+                self.olmo = DDP(
+                    self.olmo,
+                    device_ids=[self.local_rank],
+                )
 
         if self.is_main:
             trainable = sum(p.numel() for p in self.predictor.get_trainable_parameters())
             norm_params = sum(p.numel() for p in self.olmo_wrapper.input_normalizer.parameters())
-            print(f"Trainable params: predictor={trainable:,}, norm={norm_params:,}")
+            olmo_trainable = sum(p.numel() for p in self.olmo.parameters() if p.requires_grad)
+            print(f"Trainable params: predictor={trainable:,}, norm={norm_params:,}, olmo={olmo_trainable:,}")
 
     def _build_optimizer(self) -> None:
         config = self.config
-
-        # Collect all trainable parameters
-        params = list(self.predictor.get_trainable_parameters())
-        params.extend(self.olmo_wrapper.input_normalizer.parameters())
-
         assert config.optimizer == "adamw", f"Only adamw supported, got {config.optimizer}"
-        self.optimizer = torch.optim.AdamW(
-            params,
-            lr=config.lr,
-            betas=(0.9, 0.999),
-            weight_decay=config.weight_decay,
-        )
-        self.lr_scheduler = CosineAnnealingLR(
-            self.optimizer,
-            T_max=config.total_steps,
-            eta_min=0.0,
-        )
+
+        if config.phase == 1:
+            # Phase 1: only predictor + norm params, single LR
+            params = list(self.predictor.get_trainable_parameters())
+            params.extend(self.olmo_wrapper.input_normalizer.parameters())
+            self.optimizer = torch.optim.AdamW(
+                params,
+                lr=config.lr,
+                betas=(0.9, 0.999),
+                weight_decay=config.weight_decay,
+            )
+        else:
+            # Phase 2: differential LR — OLMo at olmo_lr, predictor at predictor_lr
+            predictor_params = list(self.predictor.get_trainable_parameters())
+            predictor_params.extend(self.olmo_wrapper.input_normalizer.parameters())
+
+            olmo_params = [p for p in self._olmo_raw.parameters() if p.requires_grad]
+
+            param_groups = [
+                {"params": olmo_params, "lr": config.olmo_lr},
+                {"params": predictor_params, "lr": config.predictor_lr},
+            ]
+            self.optimizer = torch.optim.AdamW(
+                param_groups,
+                betas=(0.9, 0.999),
+                weight_decay=config.weight_decay,
+            )
+            if self.is_main:
+                print(f"Phase 2 optimizer: OLMo LR={config.olmo_lr}, predictor LR={config.predictor_lr}")
+
+        if config.lr_schedule == "linear":
+            # Linear decay to 0, no warmup (matches OLMo midtrain)
+            self.lr_scheduler = LambdaLR(
+                self.optimizer,
+                lr_lambda=lambda step: max(0.0, 1.0 - step / config.total_steps),
+            )
+        else:
+            # Cosine decay to 0 (default)
+            self.lr_scheduler = CosineAnnealingLR(
+                self.optimizer,
+                T_max=config.total_steps,
+                eta_min=0.0,
+            )
 
     def _build_data(self) -> None:
         config = self.config
@@ -279,6 +367,7 @@ class Trainer:
                 self.optimizer,
                 self.lr_scheduler,
                 self.best_eval_nll,
+                olmo=self._olmo_raw if self.config.phase == 2 else None,
             )
         raise SystemExit(0)
 
@@ -325,7 +414,7 @@ class Trainer:
 
                 # NLL loss (olmo_labels already shifted, no additional shift needed)
                 nll = F.cross_entropy(
-                    logits.contiguous().view(-1, self.olmo.config.vocab_size),
+                    logits.contiguous().view(-1, self.vocab_size),
                     olmo_labels.contiguous().view(-1),
                 )
 
@@ -338,6 +427,14 @@ class Trainer:
                 total_nll += nll.item() / self.accum_steps
                 total_sparsity += sparsity.item() / self.accum_steps
                 total_mean_A += A.mean().item() / self.accum_steps
+
+            # Gradient clipping
+            if config.max_grad_norm > 0:
+                clip_params = list(self.predictor.get_trainable_parameters())
+                clip_params.extend(self.olmo_wrapper.input_normalizer.parameters())
+                if config.phase == 2:
+                    clip_params.extend(p for p in self._olmo_raw.parameters() if p.requires_grad)
+                torch.nn.utils.clip_grad_norm_(clip_params, config.max_grad_norm)
 
             # Optimizer step
             self.optimizer.step()
@@ -364,6 +461,16 @@ class Trainer:
                     "schedule/lambda": lam,
                     "grad/predictor_norm": grad_norm,
                 }
+
+                # Phase 2: also log OLMo gradient norm
+                if config.phase == 2:
+                    olmo_grad_norm = 0.0
+                    for p in self._olmo_raw.parameters():
+                        if p.grad is not None:
+                            olmo_grad_norm += p.grad.data.norm(2).item() ** 2
+                    olmo_grad_norm = olmo_grad_norm ** 0.5
+                    metrics["grad/olmo_norm"] = olmo_grad_norm
+
                 log_metrics(metrics, self.global_step, self.wandb_run)
 
                 # Collapse alarm
@@ -389,6 +496,7 @@ class Trainer:
                     self.optimizer,
                     self.lr_scheduler,
                     self.best_eval_nll,
+                    olmo=self._olmo_raw if config.phase == 2 else None,
                 )
 
             self.global_step += 1
@@ -407,6 +515,7 @@ class Trainer:
                 self.optimizer,
                 self.lr_scheduler,
                 self.best_eval_nll,
+                olmo=self._olmo_raw if config.phase == 2 else None,
             )
 
         finish_wandb(self.wandb_run)
@@ -435,7 +544,7 @@ class Trainer:
             olmo_labels = batch["olmo_labels"].to(self.device)
             raw_texts = batch["raw_text"]
 
-            vocab_size = self.olmo.config.vocab_size
+            vocab_size = self.vocab_size
 
             # Eval soft
             A_soft = self.predictor(raw_texts, tau=tau, mode="eval_soft")

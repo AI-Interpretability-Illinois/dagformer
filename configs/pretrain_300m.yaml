@@ -1,0 +1,55 @@
+# Mini OLMo-2 300M baseline pretraining
+# Architecture: 12L × 16H, hidden=1024, head_dim=64, weight tying
+# ~304M unique params
+#
+# Token budget: ~5.2B tokens (10000 steps × 524K tokens/step)
+# Chinchilla optimal for 300M ≈ 6B tokens, so this is near-optimal.
+#
+# Hyperparams based on:
+#   - OLMo-1 1B: lr=4e-4, beta2=0.95, wd=0.1
+#   - Step Law (arXiv:2503.04715): lr ≈ 5e-4 for 300M @ 5B tokens
+#   - Linear decay to 0 (arXiv:2502.15938): outperforms cosine at compute-optimal
+
+# ── Model ──
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+# ── Data ──
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+# ── Training ──
+# Effective batch: 8 × 16 accum × 4 GPUs × 1024 = 524K tokens/step
+micro_batch_size: 8
+gradient_accumulation_steps: 16
+total_steps: 10000          # ≈5.2B tokens
+
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+# ── Eval ──
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+# ── Logging ──
+wandb_project: "dagformer"
+wandb_run_name: "pretrain-300m-baseline"
+log_every: 10
+
+# ── Checkpointing ──
+save_every: 2000
+save_dir: "checkpoints/pretrain_300m_baseline"

@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --job-name=d2-anneal
+#SBATCH --partition=gpuA40x4
+#SBATCH --account=bfqt-delta-gpu
+#SBATCH --nodes=1
+#SBATCH --gpus-per-node=4
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=200g
+#SBATCH --time=16:00:00
+#SBATCH --output=logs/d2_anneal_%j.out
+#SBATCH --error=logs/d2_anneal_%j.err
+#SBATCH --signal=B:USR1@120
+
+export HF_HOME=/projects/bfqt/users/yurenh2/hf_cache
+export TRANSFORMERS_CACHE=/projects/bfqt/users/yurenh2/hf_cache/transformers
+export HF_HUB_CACHE=/projects/bfqt/users/yurenh2/hf_cache/hub
+export HF_DATASETS_CACHE=/projects/bfqt/users/yurenh2/hf_cache/datasets
+export TOKENIZERS_PARALLELISM=false
+export PYTHONPATH=/projects/bfqt/users/yurenh2/ml-projects/DAGFormer:$PYTHONPATH
+export PATH=$HOME/.local/bin:$PATH
+
+cd /projects/bfqt/users/yurenh2/ml-projects/DAGFormer
+mkdir -p logs checkpoints/d2_anneal
+
+echo "=== D2: tau anneal 5→0.2 + sparsity lambda=0.01, 4x A40 ==="
+torchrun --nproc_per_node=4 --nnodes=1 --node_rank=0 \
+    --master_addr=localhost --master_port=29500 \
+    scripts/train.py --config configs/p2_anneal.yaml

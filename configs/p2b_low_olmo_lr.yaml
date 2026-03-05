@@ -1,0 +1,45 @@
+# P2b — Low OLMo LR (5e-6), moderate predictor LR (1e-3)
+# Purpose: Slow down OLMo, give predictor time to explore
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+phase: 2
+olmo_lr: 5e-6
+predictor_lr: 1e-3
+gradient_checkpointing: true
+
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: 15.0
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 1
+qwen_input_prefix: ""
+
+eval_skip: 10000
+eval_size: 50
+
+total_steps: 2500
+lr: 1e-3
+weight_decay: 0.01
+optimizer: "adamw"
+
+tau_init: 5.0
+tau_final: 5.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+wandb_project: "dagformer"
+wandb_run_name: "p2b-low-olmo-lr"
+log_every: 10
+eval_every: 500
+
+save_every: 2500
+save_dir: "checkpoints/p2b/"
+num_gpus: 1

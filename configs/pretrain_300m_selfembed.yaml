@@ -1,0 +1,62 @@
+# DAGFormer 300M pretraining — Self-embed predictor (input-dependent topology)
+# Same token budget as baseline: 10000 steps × 524K tokens/step ≈ 5.24B tokens
+# Tests context-dependent routing from model's own embeddings.
+
+# ── Model ──
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+# ── Predictor ──
+predictor_type: "self_embed"
+predictor_hidden_dim: 1024
+predictor_rank: 32
+predictor_lr: 3e-4
+cascading_gate_k: 5.0
+init_logit: 15.0             # A≈1 at init (dense start)
+input_norm: "none"
+
+# ── Schedules ──
+tau_init: 5.0
+tau_final: 0.2
+lambda_max: 0.01
+lambda_warmup_frac: 0.2
+
+# ── Data ──
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+# ── Training ──
+# Effective batch: 4 × 32 accum × 4 GPUs × 1024 = 524K tokens/step
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 10000
+
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+# ── Eval ──
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+# ── Logging ──
+wandb_project: "dagformer"
+wandb_run_name: "pretrain-300m-selfembed"
+log_every: 10
+
+# ── Checkpointing ──
+save_every: 2000
+save_dir: "checkpoints/pretrain_300m_selfembed"

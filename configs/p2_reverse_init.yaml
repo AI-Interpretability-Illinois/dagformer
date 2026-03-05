@@ -1,0 +1,50 @@
+# Exp D6: Reverse init — A starts at ~0, learn which connections to turn ON
+# init_logit=-15 → A≈0 at init, strong gradient for "opening" connections
+
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+olmo_revision: "stage1-step1907359-tokens4001B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: -15.0
+
+dataset: "allenai/dolmino-mix-1124"
+dataset_name: "dolmino_mix"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 1
+qwen_input_prefix: ""
+
+eval_skip: 10000
+eval_size: 50
+
+total_steps: 12500
+lr: 3e-4
+weight_decay: 0.1
+optimizer: "adamw"
+lr_schedule: "linear"
+max_grad_norm: 1.0
+
+tau_init: 5.0
+tau_final: 5.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+wandb_project: "dagformer"
+wandb_run_name: "d6-reverse-init"
+log_every: 10
+eval_every: 1000
+
+save_every: 12500
+save_dir: "checkpoints/d6_reverse_init/"
+
+phase: 2
+olmo_lr: 5e-6
+predictor_lr: 1e-3
+gradient_checkpointing: true
+
+num_gpus: 4

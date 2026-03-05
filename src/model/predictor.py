@@ -210,6 +210,376 @@ def cascading_gate(
     return A * g.unsqueeze(2)
 
 
+class StaticPredictor(nn.Module):
+    """Static structure predictor: learnable global topology (same A for all inputs).
+
+    No input dependency. Learnable low-rank parameters U, V produce a single
+    global Z = UV^T + logit_bias. Gumbel noise still differs per batch item
+    in training mode, but the underlying logits are shared.
+
+    Total params: 2 × num_nodes × rank + 1 (logit_bias) ≈ 12K for default settings.
+    """
+
+    def __init__(
+        self,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.rank = rank
+        self.cascading_gate_k = cascading_gate_k
+
+        # Learnable low-rank factors
+        self.U = nn.Parameter(torch.randn(num_nodes, rank) * 0.01)
+        self.V = nn.Parameter(torch.randn(num_nodes, rank) * 0.01)
+        self.logit_bias = nn.Parameter(torch.tensor(init_logit))
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        batch_size: int,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce adjacency matrix A (same logits for all batch items).
+
+        Args:
+            batch_size: number of items in batch (for expanding A)
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, num_nodes, num_nodes] — block-upper-triangular gate matrix
+        """
+        # Z = UV^T + logit_bias: [num_nodes, num_nodes]
+        Z = self.U @ self.V.t() + self.logit_bias
+
+        # Apply mask
+        mask = self.dag_mask  # [num_nodes, num_nodes]
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        # Expand to batch: [batch, num_nodes, num_nodes]
+        Z_masked = Z_masked.unsqueeze(0).expand(batch_size, -1, -1)
+
+        # Gumbel-Sigmoid (noise differs per batch item in train mode)
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+
+        # Cascading gate
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+
+        assert A.shape == (batch_size, self.num_nodes, self.num_nodes), \
+            f"A shape mismatch: expected ({batch_size}, {self.num_nodes}, {self.num_nodes}), got {A.shape}"
+
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """Return all parameters (all are trainable)."""
+        return list(self.parameters())
+
+
+class SelfEmbedPredictor(nn.Module):
+    """Self-embed structure predictor: input-dependent A from model's own embeddings.
+
+    Uses the base model's token embedding layer output (before any transformer
+    computation) to produce input-dependent A. No circular dependency: embeddings
+    are computed before A is used.
+
+    Pipeline: embedding [B, S, D] → mean pool → [B, D] → PredictorMLP → Z → mask → Gumbel → cascade → A
+    """
+
+    def __init__(
+        self,
+        embed_dim: int = 1024,
+        hidden_dim: int = 1024,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+
+        # Reuse PredictorMLP (same architecture as Qwen-based predictor)
+        self.mlp = PredictorMLP(
+            input_dim=embed_dim,
+            hidden_dim=hidden_dim,
+            rank=rank,
+            num_nodes=num_nodes,
+            init_logit=init_logit,
+        )
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        embeddings: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce input-dependent adjacency matrix A from token embeddings.
+
+        Args:
+            embeddings: [batch, seq_len, embed_dim] — base model's embedding output
+                        (should be .detach()'d by caller to break gradient back into embeddings)
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, num_nodes, num_nodes] — block-upper-triangular gate matrix
+        """
+        # Mean pool over sequence dimension: [B, S, D] → [B, D]
+        # Cast to float32 — embeddings may be bf16 from base model
+        pooled = embeddings.float().mean(dim=1)
+
+        # MLP → logits: [B, num_nodes, num_nodes]
+        Z = self.mlp(pooled)
+        assert Z.shape[1:] == (self.num_nodes, self.num_nodes), \
+            f"Z shape mismatch: expected (*, {self.num_nodes}, {self.num_nodes}), got {Z.shape}"
+
+        # Apply mask
+        mask = self.dag_mask
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        # Gumbel-Sigmoid
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+
+        # Cascading gate
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+
+        assert A.shape[1:] == (self.num_nodes, self.num_nodes), \
+            f"A shape mismatch: expected (*, {self.num_nodes}, {self.num_nodes}), got {A.shape}"
+
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """Return only the trainable MLP parameters."""
+        return list(self.mlp.parameters())
+
+
+class MiniEncoderPredictor(nn.Module):
+    """Independent encoder predictor: separate embedding table + small transformer.
+
+    Has its OWN embedding table (not shared with the base LLM) plus a lightweight
+    transformer encoder to build contextual representations before pooling.
+    The predictor learns its own text representation optimized for topology prediction.
+
+    Pipeline: olmo_ids → own embed_table → small transformer → mean pool → PredictorMLP → A
+    """
+
+    def __init__(
+        self,
+        vocab_size: int = 100352,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        hidden_dim: int = 1024,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+
+        # Independent embedding table
+        self.embed = nn.Embedding(vocab_size, encoder_dim)
+
+        # Small transformer encoder for contextual mixing
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=encoder_dim,
+            nhead=encoder_heads,
+            dim_feedforward=encoder_dim * 4,
+            dropout=0.0,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
+
+        # MLP → A
+        self.mlp = PredictorMLP(
+            input_dim=encoder_dim,
+            hidden_dim=hidden_dim,
+            rank=rank,
+            num_nodes=num_nodes,
+            init_logit=init_logit,
+        )
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce A from token IDs using independent encoder.
+
+        Args:
+            input_ids: [batch, seq_len] — OLMo token IDs (shared vocab)
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, num_nodes, num_nodes]
+        """
+        # Own embedding lookup
+        x = self.embed(input_ids)  # [B, S, encoder_dim]
+
+        # Causal mask for transformer (predictor sees full context, use None for bidirectional)
+        x = self.encoder(x)  # [B, S, encoder_dim]
+
+        # Mean pool → [B, encoder_dim]
+        pooled = x.mean(dim=1)
+
+        # MLP → logits
+        Z = self.mlp(pooled)
+        mask = self.dag_mask
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        # Gumbel-Sigmoid + cascading gate
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
+
+
+class ContextEmbedPredictor(nn.Module):
+    """Shared-embedding contextual predictor: reuses LLM's embed_tokens + small encoder.
+
+    Shares the base model's embedding table (no extra vocab params), then applies
+    a projection + lightweight transformer encoder to build contextual representations
+    before pooling. Only the projection + encoder + MLP are trainable.
+
+    Pipeline: LLM embeddings [B,S,D] → project → small transformer → mean pool → MLP → A
+    """
+
+    def __init__(
+        self,
+        embed_dim: int = 1024,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        hidden_dim: int = 1024,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+
+        # Project from LLM embed_dim to smaller encoder_dim
+        self.project = nn.Linear(embed_dim, encoder_dim)
+
+        # Small transformer encoder
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=encoder_dim,
+            nhead=encoder_heads,
+            dim_feedforward=encoder_dim * 4,
+            dropout=0.0,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
+
+        # MLP → A
+        self.mlp = PredictorMLP(
+            input_dim=encoder_dim,
+            hidden_dim=hidden_dim,
+            rank=rank,
+            num_nodes=num_nodes,
+            init_logit=init_logit,
+        )
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        embeddings: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce A from LLM embeddings + contextual encoder.
+
+        Args:
+            embeddings: [batch, seq_len, embed_dim] — base model's embedding output
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, num_nodes, num_nodes]
+        """
+        # Cast to float32 (embeddings may be bf16)
+        x = embeddings.float()
+
+        # Project down: [B, S, embed_dim] → [B, S, encoder_dim]
+        x = self.project(x)
+
+        # Contextual encoding
+        x = self.encoder(x)  # [B, S, encoder_dim]
+
+        # Mean pool → [B, encoder_dim]
+        pooled = x.mean(dim=1)
+
+        # MLP → logits
+        Z = self.mlp(pooled)
+        mask = self.dag_mask
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        # Gumbel-Sigmoid + cascading gate
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable (project + encoder + MLP)."""
+        return list(self.parameters())
+
+
 class StructurePredictor(nn.Module):
     """Full structure predictor: raw text → adjacency matrix A.
 

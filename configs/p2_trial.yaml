@@ -1,0 +1,59 @@
+# P2 Trial — Phase 2 conservative trial run (unfreeze OLMo)
+# Purpose: Verify mechanics (no OOM/NaN), gradients flow to OLMo and predictor,
+#          NLL does not diverge. Conservative: dense init (A≈1), constant high tau,
+#          no sparsity pressure. ~10M tokens.
+# Run: python scripts/train.py --config configs/p2_trial.yaml
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Phase
+phase: 2
+olmo_lr: 3e-5
+predictor_lr: 1e-4
+gradient_checkpointing: true
+
+# Predictor — dense init (A≈1), don't push away from baseline
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: 15.0
+
+# Data
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+batch_size: 4
+micro_batch_size: 1
+
+# Eval
+eval_skip: 10000
+eval_size: 50
+
+# Training — ~10M tokens
+total_steps: 2500
+lr: 1e-4
+weight_decay: 0.01
+optimizer: "adamw"
+
+# Schedules — constant high tau, no sparsity
+tau_init: 5.0
+tau_final: 5.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "p2-trial"
+log_every: 10
+eval_every: 500
+
+# Checkpointing
+save_every: 2500
+save_dir: "checkpoints/p2_trial/"
+
+# Hardware
+num_gpus: 1

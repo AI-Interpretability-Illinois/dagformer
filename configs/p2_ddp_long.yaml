@@ -1,0 +1,61 @@
+# P2-DDP-Long — 4× A40, long Phase 2 midtrain on Dolmino
+# Goal: extended training to see if context-dependent routing emerges
+# Auto-resumes from latest checkpoint in save_dir
+
+# Model
+olmo_model_id: "allenai/OLMo-2-0425-1B"
+olmo_revision: "stage1-step1907359-tokens4001B"
+qwen_model_id: "Qwen/Qwen3-Embedding-0.6B"
+
+# Predictor
+predictor_hidden_dim: 1024
+predictor_rank: 32
+cascading_gate_k: 5.0
+input_norm: "none"
+init_logit: 15.0
+
+# Data — Dolmino mix
+dataset: "allenai/dolmino-mix-1124"
+dataset_name: "dolmino_mix"
+seq_len: 1024
+batch_size: 4           # per-GPU batch (effective = 4 * 4 GPUs = 16)
+micro_batch_size: 1
+qwen_input_prefix: ""
+
+# Eval
+eval_skip: 10000
+eval_size: 50
+
+# Training — 50K steps × 16 eff_batch × 1024 tokens ≈ 819M tokens
+total_steps: 50000
+lr: 3e-4
+weight_decay: 0.1
+optimizer: "adamw"
+lr_schedule: "linear"
+max_grad_norm: 1.0
+
+# Schedules
+tau_init: 5.0
+tau_final: 5.0
+tau_schedule: "cosine"
+lambda_max: 0.0
+lambda_warmup_frac: 0.2
+
+# Logging
+wandb_project: "dagformer"
+wandb_run_name: "p2-ddp-long"
+log_every: 10
+eval_every: 2500
+
+# Checkpointing — frequent saves for safe resume
+save_every: 5000
+save_dir: "checkpoints/p2_ddp_long/"
+
+# Phase 2
+phase: 2
+olmo_lr: 5e-6
+predictor_lr: 1e-3
+gradient_checkpointing: true
+
+# Hardware
+num_gpus: 4
