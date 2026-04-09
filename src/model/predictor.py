@@ -180,34 +180,36 @@ def cascading_gate(
     Layer 0 nodes are exempted: they have inc=0 structurally (no prior layers)
     but receive the embedding as input, so they are NOT disconnected.
 
-    Uses ORIGINAL A values for incoming sums (before any gates applied).
-    See CLAUDE.md §2.3 cascading gate section.
+    Supports both per-window A [B, N, N] and per-token A [B, T, N, N].
 
     Args:
-        A: [batch, 256, 256] — gate matrix
+        A: [batch, N, N] or [batch, T, N, N] — gate matrix
         k: steepness of sigmoid gate (default: 5.0)
         hard: if True, use binary gates (for eval_hard mode)
         heads_per_layer: number of heads per layer (default: 16)
 
     Returns:
-        A_gated: [batch, 256, 256] — A with cascading gate applied
+        A_gated: same shape as A — with cascading gate applied
     """
-    # Incoming sum per node: [batch, 256]
-    inc = A.sum(dim=1)  # sum over source dimension (rows)
+    # Determine source dimension: dim=-2 is source (rows) for both 3D and 4D
+    # For [B, N, N]: sum over dim=1 (source) → [B, N]
+    # For [B, T, N, N]: sum over dim=2 (source) → [B, T, N]
+    inc = A.sum(dim=-2)  # [..., N] — incoming sum per target node
 
     if hard:
-        g = (inc > 0).float()  # [batch, 256]
+        g = (inc > 0).float()
     else:
-        g = torch.sigmoid(k * inc)  # [batch, 256]
+        g = torch.sigmoid(k * inc)
 
-    # Exempt layer 0: always g=1 (they receive embedding, not disconnected)
-    # Use non-in-place op to preserve autograd graph
-    exempt = torch.arange(g.shape[1], device=g.device) < heads_per_layer
-    g = torch.where(exempt.unsqueeze(0), torch.ones_like(g), g)
+    # Exempt layer 0: always g=1
+    N = g.shape[-1]
+    exempt = torch.arange(N, device=g.device) < heads_per_layer
+    # Reshape exempt for broadcasting: [N] → broadcastable with g's shape
+    g = torch.where(exempt, torch.ones_like(g), g)
 
-    # Gate outgoing edges: A[j, :] *= g[j]
-    # g: [B, 256] → [B, 256, 1] to broadcast with A: [B, 256, 256]
-    return A * g.unsqueeze(2)
+    # Gate outgoing edges: A[..., j, :] *= g[..., j]
+    # g: [..., N] → [..., N, 1] to broadcast with A: [..., N, N]
+    return A * g.unsqueeze(-1)
 
 
 class StaticPredictor(nn.Module):
@@ -477,6 +479,265 @@ class MiniEncoderPredictor(nn.Module):
         return list(self.parameters())
 
 
+class SeqToMatrixPredictor(nn.Module):
+    """Seq-to-matrix predictor: independent encoder with cross-attention node queries.
+
+    Instead of mean-pooling to a single vector, uses learned node queries
+    (one per attention head in the LLM) that cross-attend to the encoded
+    sequence. Each node extracts context-specific information, then pairwise
+    interactions via low-rank UV^T produce the adjacency matrix.
+
+    Pipeline:
+        olmo_ids [B, S]
+            → own Embedding + positional embedding → [B, S, d]
+            → Transformer Encoder (bidirectional) → [B, S, d]
+            → Cross-Attention: 192 learned node queries attend to encoded
+            → node_repr [B, 192, d]
+            → head_U(node_repr) → U [B, 192, r]
+              head_V(node_repr) → V [B, 192, r]
+            → Z = UV^T + logit_bias → mask → Gumbel → cascade → A
+    """
+
+    def __init__(
+        self,
+        vocab_size: int = 100352,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        cross_attn_heads: int = 4,
+        max_seq_len: int = 4096,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+        self.rank = rank
+
+        # Independent embedding table + positional encoding
+        self.embed = nn.Embedding(vocab_size, encoder_dim)
+        self.pos_embed = nn.Embedding(max_seq_len, encoder_dim)
+
+        # Transformer encoder (bidirectional)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=encoder_dim,
+            nhead=encoder_heads,
+            dim_feedforward=encoder_dim * 4,
+            dropout=0.0,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
+
+        # Learned node queries: each represents one attention head in the LLM
+        self.node_queries = nn.Parameter(torch.randn(num_nodes, encoder_dim) * 0.02)
+
+        # Cross-attention: node queries attend to encoded sequence
+        self.cross_attn = nn.MultiheadAttention(
+            embed_dim=encoder_dim,
+            num_heads=cross_attn_heads,
+            batch_first=True,
+            dropout=0.0,
+        )
+        self.cross_norm = nn.LayerNorm(encoder_dim)
+
+        # Low-rank output heads (shared across nodes, node-specificity from cross-attn)
+        self.head_U = nn.Linear(encoder_dim, rank)
+        self.head_V = nn.Linear(encoder_dim, rank)
+
+        # Small init so UV^T ≈ 0 at init → Z ≈ logit_bias → A ≈ 1
+        nn.init.normal_(self.head_U.weight, std=0.01)
+        nn.init.normal_(self.head_V.weight, std=0.01)
+        nn.init.zeros_(self.head_U.bias)
+        nn.init.zeros_(self.head_V.bias)
+
+        # Logit bias: positive init for dense start (A ≈ 1)
+        self.logit_bias = nn.Parameter(torch.tensor(init_logit))
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce A from token IDs using cross-attention node queries.
+
+        Args:
+            input_ids: [batch, seq_len] — OLMo token IDs
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, num_nodes, num_nodes]
+        """
+        B, S = input_ids.shape
+
+        # Token + positional embedding
+        positions = torch.arange(S, device=input_ids.device)
+        x = self.embed(input_ids) + self.pos_embed(positions)  # [B, S, d]
+
+        # Encode (bidirectional)
+        x = self.encoder(x)  # [B, S, d]
+
+        # Cross-attention: node queries attend to encoded sequence
+        queries = self.node_queries.unsqueeze(0).expand(B, -1, -1)  # [B, N, d]
+        node_repr, _ = self.cross_attn(queries, x, x)  # [B, N, d]
+        node_repr = self.cross_norm(node_repr + queries)  # residual + norm
+
+        # Low-rank factorization → logit matrix
+        U = self.head_U(node_repr)  # [B, N, r]
+        V = self.head_V(node_repr)  # [B, N, r]
+        Z = torch.bmm(U, V.transpose(-1, -2))  # [B, N, N]
+        Z = Z + self.logit_bias
+
+        assert Z.shape == (B, self.num_nodes, self.num_nodes), \
+            f"Z shape {Z.shape} != ({B}, {self.num_nodes}, {self.num_nodes})"
+
+        # Mask → Gumbel-Sigmoid → cascading gate
+        mask = self.dag_mask
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
+
+
+class PerTokenSeq2MatrixPredictor(nn.Module):
+    """Per-token global predictor: sees full sequence, outputs per-position A.
+
+    Unlike SeqToMatrixPredictor which pools to one A per window, this outputs
+    a separate 192×192 routing matrix for EACH token position. The predictor
+    has a global view of the input (bidirectional encoder) and makes coordinated
+    routing decisions across all positions.
+
+    Pipeline:
+        olmo_ids [B, T]
+            → own Embedding + positional embedding → [B, T, d]
+            → Transformer Encoder (bidirectional) → [B, T, d]
+            → per-position low-rank projection:
+                head_U(encoded) → U [B, T, N, r]
+                head_V(encoded) → V [B, T, N, r]
+            → Z = UV^T + logit_bias → [B, T, N, N]
+            → mask → Gumbel-Sigmoid → cascading gate → A [B, T, N, N]
+    """
+
+    def __init__(
+        self,
+        vocab_size: int = 100352,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        max_seq_len: int = 4096,
+        num_nodes: int = 192,
+        heads_per_layer: int = 16,
+        rank: int = 16,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+        self.rank = rank
+
+        # Independent embedding table + positional encoding
+        self.embed = nn.Embedding(vocab_size, encoder_dim)
+        self.pos_embed = nn.Embedding(max_seq_len, encoder_dim)
+
+        # Transformer encoder (bidirectional — sees full context)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=encoder_dim,
+            nhead=encoder_heads,
+            dim_feedforward=encoder_dim * 4,
+            dropout=0.0,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
+
+        # Per-position projection to low-rank UV^T
+        self.head_U = nn.Linear(encoder_dim, num_nodes * rank)
+        self.head_V = nn.Linear(encoder_dim, num_nodes * rank)
+
+        # Small init so UV^T ≈ 0 at init → Z ≈ logit_bias → A ≈ 1
+        nn.init.normal_(self.head_U.weight, std=0.01)
+        nn.init.normal_(self.head_V.weight, std=0.01)
+        nn.init.zeros_(self.head_U.bias)
+        nn.init.zeros_(self.head_V.bias)
+
+        # Logit bias: positive init for dense start (A ≈ 1)
+        self.logit_bias = nn.Parameter(torch.tensor(init_logit))
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Produce per-token A from token IDs.
+
+        Args:
+            input_ids: [batch, seq_len] — OLMo token IDs
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [batch, seq_len, num_nodes, num_nodes]
+        """
+        B, T = input_ids.shape
+
+        # Token + positional embedding
+        positions = torch.arange(T, device=input_ids.device)
+        x = self.embed(input_ids) + self.pos_embed(positions)  # [B, T, d]
+
+        # Encode (bidirectional — full context visibility)
+        x = self.encoder(x)  # [B, T, d]
+
+        # Per-position low-rank projection
+        U = self.head_U(x).view(B, T, self.num_nodes, self.rank)  # [B, T, N, r]
+        V = self.head_V(x).view(B, T, self.num_nodes, self.rank)  # [B, T, N, r]
+        Z = torch.einsum('btnr, btmr -> btnm', U, V)  # [B, T, N, N]
+        Z = Z + self.logit_bias
+
+        # Mask → Gumbel-Sigmoid → cascading gate (applied per token position)
+        mask = self.dag_mask  # [N, N]
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+        return A
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
+
+
 class ContextEmbedPredictor(nn.Module):
     """Shared-embedding contextual predictor: reuses LLM's embed_tokens + small encoder.
 
@@ -673,3 +934,140 @@ class StructurePredictor(nn.Module):
     def get_trainable_parameters(self) -> list[nn.Parameter]:
         """Return only the trainable MLP parameters (not Qwen)."""
         return list(self.mlp.parameters())
+
+
+class FourWayPredictor(nn.Module):
+    """4-way per-head per-token predictor: predicts Q/K/V/R routing weights.
+
+    Independent encoder sees full sequence, outputs per-position routing weights
+    for all layers and all 4 streams. Soft continuous values, identity init.
+
+    Sources: layer outputs (layer-level granularity)
+    Targets: per-head (Q/K/V) or shared (R)
+
+    For each layer l (1..num_layers-1):
+        Q/K/V: [B, T, H, l+1] — per head, per source layer
+        R:     [B, T, l+1]    — shared across heads
+
+    Identity init: bias = [0,...,0,1] (only most recent layer), W_out=0.
+    At init, equivalent to standard transformer.
+    """
+
+    def __init__(
+        self,
+        vocab_size: int = 100352,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        max_seq_len: int = 4096,
+        num_layers: int = 12,
+        num_heads: int = 16,
+        hidden_dim: int = 512,
+        causal: bool = True,
+        dropout: float = 0.0,
+    ):
+        super().__init__()
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+        self.causal = causal
+
+        # Independent embedding + positional encoding
+        self.embed = nn.Embedding(vocab_size, encoder_dim)
+        self.pos_embed = nn.Embedding(max_seq_len, encoder_dim)
+
+        # Transformer encoder (causal or bidirectional)
+        # dropout > 0 enables classical regularization on attention + FFN.
+        # In eval mode (.eval()) dropout is automatically disabled by nn.Module.
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=encoder_dim,
+            nhead=encoder_heads,
+            dim_feedforward=encoder_dim * 4,
+            dropout=dropout,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
+
+        # Shared trunk: encoder output → hidden
+        # Dropout after GELU regularizes the input to per-layer routing heads.
+        self.trunk = nn.Sequential(
+            nn.LayerNorm(encoder_dim),
+            nn.Linear(encoder_dim, hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+        )
+
+        # Per-layer output heads + static biases
+        # Each layer l (1..num_layers-1) needs:
+        #   Q/K/V: H * (l+1) each → 3 * H * (l+1) total
+        #   R: (l+1)
+        #   Total: 3 * H * (l+1) + (l+1) = (3*H + 1) * (l+1)
+        self.layer_heads = nn.ModuleList()
+        self.layer_biases = nn.ParameterList()
+
+        for l in range(1, num_layers):
+            n_src = l + 1
+            out_dim = (3 * num_heads + 1) * n_src
+            head = nn.Linear(hidden_dim, out_dim, bias=False)
+            # W=0 init: output starts at zero, only bias matters
+            nn.init.zeros_(head.weight)
+            self.layer_heads.append(head)
+
+            # Static bias: identity init [0, 0, ..., 0, 1] for each stream
+            # Q/K/V: H copies of [0,...,0,1], R: one [0,...,0,1]
+            bias = torch.zeros(out_dim)
+            # Set the last source weight to 1 for each stream
+            for stream in range(3 * num_heads + 1):
+                bias[stream * n_src + (n_src - 1)] = 1.0
+            self.layer_biases.append(nn.Parameter(bias))
+
+    def forward(self, input_ids: torch.Tensor) -> dict[str, list[torch.Tensor]]:
+        """Predict per-token 4-way routing weights for all layers.
+
+        Args:
+            input_ids: [B, T] — token IDs
+
+        Returns:
+            dict with 'q', 'k', 'v', 'r' keys, each a list of tensors
+            (one per layer l=1..num_layers-1):
+                'q'/'k'/'v': [B, T, H, l+1]
+                'r': [B, T, l+1]
+        """
+        B, T = input_ids.shape
+        H = self.num_heads
+
+        # Encode
+        positions = torch.arange(T, device=input_ids.device)
+        x = self.embed(input_ids) + self.pos_embed(positions)
+        if self.causal:
+            causal_mask = torch.triu(torch.ones(T, T, device=x.device), diagonal=1).bool()
+            x = self.encoder(x, mask=causal_mask)  # [B, T, encoder_dim]
+        else:
+            x = self.encoder(x)  # [B, T, encoder_dim] — bidirectional
+        x = self.trunk(x)    # [B, T, hidden_dim]
+
+        # Per-layer routing weights
+        result: dict[str, list[torch.Tensor]] = {'q': [], 'k': [], 'v': [], 'r': []}
+
+        for l in range(1, self.num_layers):
+            n_src = l + 1
+            raw = self.layer_heads[l - 1](x) + self.layer_biases[l - 1]  # [B, T, out_dim]
+
+            # Split into Q/K/V (per-head) and R (shared)
+            qkv_size = H * n_src
+            α_q = raw[:, :, :qkv_size].view(B, T, H, n_src)
+            α_k = raw[:, :, qkv_size:2*qkv_size].view(B, T, H, n_src)
+            α_v = raw[:, :, 2*qkv_size:3*qkv_size].view(B, T, H, n_src)
+            α_r = raw[:, :, 3*qkv_size:]  # [B, T, n_src]
+
+            result['q'].append(α_q)
+            result['k'].append(α_k)
+            result['v'].append(α_v)
+            result['r'].append(α_r)
+
+        return result
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())

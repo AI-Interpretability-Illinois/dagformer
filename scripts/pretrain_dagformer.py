@@ -37,9 +37,13 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
 
 from src.data.dolma import build_eval_dataloader, build_train_dataloader
-from src.model.olmo_graph import DAGFormerOLMo, create_all_ones_A
+from src.model.olmo_graph import (
+    DAGFormerOLMo, DynamicDenseHeadFormer, FourWayDAGFormer,
+    LayerDWAGateFormer, create_all_ones_A,
+)
 from src.model.predictor import (
-    ContextEmbedPredictor, MiniEncoderPredictor, SelfEmbedPredictor,
+    ContextEmbedPredictor, FourWayPredictor, MiniEncoderPredictor,
+    PerTokenSeq2MatrixPredictor, SeqToMatrixPredictor, SelfEmbedPredictor,
     StaticPredictor, StructurePredictor,
 )
 from src.utils.logging import finish_wandb, init_wandb, log_metrics
@@ -120,9 +124,11 @@ class DAGFormerPretrainConfig:
     init_logit: float = 15.0             # A≈1 at init (dense start)
     input_norm: str = "none"
     qwen_model_id: str = "Qwen/Qwen3-Embedding-0.6B"  # for qwen predictor
-    predictor_encoder_dim: int = 256      # encoder dim for mini_encoder / context_embed
+    predictor_encoder_dim: int = 256      # encoder dim for mini_encoder / context_embed / seq2matrix
     predictor_encoder_layers: int = 2     # transformer layers in predictor encoder
     predictor_encoder_heads: int = 4      # attention heads in predictor encoder
+    predictor_cross_attn_heads: int = 4   # cross-attention heads for seq2matrix
+    predictor_max_seq_len: int = 4096     # max seq len for seq2matrix positional embedding
 
     # Schedules
     tau_init: float = 5.0
@@ -162,6 +168,42 @@ class DAGFormerPretrainConfig:
     baseline_checkpoint: str = ""        # path to baseline checkpoint to init base model
     standard_steps_per_dag_step: int = 0 # 0 = always DAGFormer; N = N standard then 1 DAGFormer
     detach_predictor_input: bool = True  # False = let gradients flow from predictor into embedding
+    freeze_base_model: bool = False      # True = predictor-only mode (base model frozen at random init)
+    predictor_checkpoint: str = ""       # path to pretrained predictor checkpoint (loads predictor only)
+
+    # Internal routing (no external predictor)
+    routing_mode: str = ""               # "dynamic_head", "layer_dwa_gate", "fourway", "fourway_corrected"
+    routing_rank: int = 16               # low-rank factorization rank for per-head routing
+    routing_hidden: int = 256            # hidden dim for routing MLPs
+    dwa_hidden: int = 256                # hidden dim for DWA MLPs (layer_dwa_gate)
+    correction_hidden: int = 128         # hidden dim for local correction MLPs (fourway_corrected)
+    fourway_hidden: int = 512            # hidden dim for FourWayPredictor trunk
+    use_torch_compile: bool = False      # torch.compile the fourway forward for speed
+    use_triton_kernel: bool = False      # use fused Triton kernel for routing+proj
+    predictor_causal: bool = True        # causal mask in FourWayPredictor encoder
+    use_v_norm: bool = False             # add post-mix RMSNorm on V (symmetric with Q/K norm)
+    freeze_predictor: bool = False       # freeze FourWayPredictor at identity init (local-only experiment)
+    predictor_dropout: float = 0.0       # classical nn.Dropout inside FourWayPredictor encoder + trunk (regularizes input→α mapping)
+    label_smoothing: float = 0.0         # cross_entropy label smoothing on TRAIN loss only (eval NLL uses 0)
+    alpha_share_heads: bool = False      # DIAGNOSTIC: mean α over H dim then broadcast (reduces DoF 16x, for code-vs-arch test)
+    correction_pool: str = "none"        # "none"=per-token, "mean"=seq-avg (reduces per-token memorization)
+    freeze_predictor_embed: bool = False # freeze only predictor.embed + pos_embed (keep encoder/heads trainable)
+
+    # Routing regularization (fourway modes)
+    routing_l2_lambda: float = 0.0       # L2 decay on routing logits (deviation from init)
+    routing_l1_lambda: float = 0.0       # L1 on routing logits (delayed sparsity)
+    routing_l1_start_frac: float = 0.15  # fraction of training before L1 kicks in
+    routing_l1_warmup_frac: float = 0.50 # fraction of training when L1 reaches full strength
+    routing_clamp: float = 0.0           # clamp routing logits to [-clamp, clamp], 0=disabled
+    routing_noise_std: float = 0.0       # add Gaussian noise to routing logits
+    routing_noise_steps: int = 0         # stop noise after this many steps
+    routing_dropout: float = 0.0         # fraction of routing weights reset to identity each step
+    routing_entropy_lambda: float = 0.0  # entropy regularization on softmax'd routing weights
+    routing_top_k: int = 0               # top-k routing (0=disabled, 2=keep top 2 sources)
+    routing_temperature: float = 1.0     # divide routing weights by temperature before use
+    routing_delayed_start: int = 0       # don't use routing for first N steps (pure dense)
+    routing_normalize: str = "none"      # "none", "softmax", "sinkhorn", "row_col" — normalize routing weights
+    routing_sinkhorn_iters: int = 20     # Sinkhorn-Knopp iterations for sinkhorn normalize
 
     # Checkpointing
     save_every: int = 2000
@@ -193,6 +235,96 @@ class DAGFormerPretrainConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+# ─── Routing post-processing (shared between train and eval) ───────────────
+
+def apply_deterministic_routing_transforms(
+    rw: dict,
+    config: "DAGFormerPretrainConfig",
+    global_step: int,
+) -> dict:
+    """Apply deterministic routing post-processing that MUST be identical
+    between train and eval paths to avoid distribution shift.
+
+    Includes: share_heads, clamp, top_k, temperature, delayed_start, normalize.
+    Excludes (train-only, intentional regularization):
+        - routing_noise_std (Gaussian noise on logits)
+        - routing_dropout (stochastic reset to identity)
+    Excludes (not transforms, loss terms):
+        - routing_l2_lambda, routing_l1_lambda, routing_entropy_lambda
+    """
+    # Diagnostic: collapse per-head α to layer-level by averaging over H dim
+    # then broadcasting back. This cuts Q/K/V effective DoF by 16x (H=16).
+    # R stream has no H dim so is untouched. Used to distinguish "too many
+    # routing DoF" (code is fine, just too expressive) from "code bug".
+    if getattr(config, "alpha_share_heads", False):
+        for stream in ('q', 'k', 'v'):  # r has no head dim
+            for i, α in enumerate(rw[stream]):
+                # α shape: [B, T, H, L+1]
+                avg = α.mean(dim=-2, keepdim=True)  # [B, T, 1, L+1]
+                rw[stream][i] = avg.expand_as(α)     # [B, T, H, L+1]
+
+    if config.routing_clamp > 0:
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                rw[stream][i] = α.clamp(-config.routing_clamp, config.routing_clamp)
+
+    # Top-k routing: keep only top k sources, zero rest, renormalize
+    if config.routing_top_k > 0:
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                k = min(config.routing_top_k, α.shape[-1])
+                topk_vals, topk_idx = α.topk(k, dim=-1)
+                sparse = torch.zeros_like(α)
+                sparse.scatter_(-1, topk_idx, topk_vals)
+                orig_sum = α.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+                sparse_sum = sparse.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+                rw[stream][i] = sparse * (orig_sum / sparse_sum)
+
+    # Temperature scaling
+    if config.routing_temperature != 1.0:
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                rw[stream][i] = α / config.routing_temperature
+
+    # Delayed start: use identity routing for first N steps
+    if config.routing_delayed_start > 0 and global_step < config.routing_delayed_start:
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                identity = torch.zeros_like(α)
+                identity[..., -1] = 1.0
+                rw[stream][i] = identity
+
+    # Normalize routing weights
+    if config.routing_normalize == "softmax":
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                rw[stream][i] = F.softmax(α, dim=-1)
+    elif config.routing_normalize == "softmax_rv":
+        # Only normalize R and V streams (leave Q/K alone since they
+        # have built-in q_norm/k_norm downstream).
+        for stream in ('v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                rw[stream][i] = F.softmax(α, dim=-1)
+    elif config.routing_normalize == "sinkhorn":
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                # Sinkhorn-Knopp: alternating row/col normalization
+                a = α.exp()  # make positive
+                for _ in range(config.routing_sinkhorn_iters):
+                    a = a / a.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+                    a = a / a.sum(dim=-2, keepdim=True).clamp(min=1e-8)
+                rw[stream][i] = a
+    elif config.routing_normalize == "row_col":
+        # mHC-lite inspired: row softmax + column rescaling to mean=1
+        for stream in ('q', 'k', 'v', 'r'):
+            for i, α in enumerate(rw[stream]):
+                a = F.softmax(α, dim=-1)
+                col_mean = a.mean(dim=-2, keepdim=True).clamp(min=1e-8)
+                rw[stream][i] = a / col_mean  # rescale columns
+
+    return rw
 
 
 # ─── Model creation ─────────────────────────────────────────────────────────
@@ -281,6 +413,33 @@ def create_predictor(
             cascading_gate_k=config.cascading_gate_k,
             init_logit=config.init_logit,
         )
+    elif config.predictor_type == "seq2matrix":
+        predictor = SeqToMatrixPredictor(
+            vocab_size=config.vocab_size,
+            encoder_dim=config.predictor_encoder_dim,
+            encoder_layers=config.predictor_encoder_layers,
+            encoder_heads=config.predictor_encoder_heads,
+            cross_attn_heads=config.predictor_cross_attn_heads,
+            max_seq_len=config.predictor_max_seq_len,
+            num_nodes=num_nodes,
+            heads_per_layer=heads_per_layer,
+            rank=config.predictor_rank,
+            cascading_gate_k=config.cascading_gate_k,
+            init_logit=config.init_logit,
+        )
+    elif config.predictor_type == "per_token_seq2matrix":
+        predictor = PerTokenSeq2MatrixPredictor(
+            vocab_size=config.vocab_size,
+            encoder_dim=config.predictor_encoder_dim,
+            encoder_layers=config.predictor_encoder_layers,
+            encoder_heads=config.predictor_encoder_heads,
+            max_seq_len=config.predictor_max_seq_len,
+            num_nodes=num_nodes,
+            heads_per_layer=heads_per_layer,
+            rank=config.predictor_rank,
+            cascading_gate_k=config.cascading_gate_k,
+            init_logit=config.init_logit,
+        )
     elif config.predictor_type == "qwen":
         predictor = StructurePredictor(
             qwen_model_id=config.qwen_model_id,
@@ -294,7 +453,7 @@ def create_predictor(
     else:
         raise ValueError(f"Unknown predictor_type: {config.predictor_type}. "
                          f"Expected 'static', 'self_embed', 'mini_encoder', "
-                         f"'context_embed', or 'qwen'.")
+                         f"'context_embed', 'seq2matrix', or 'qwen'.")
 
     pred_params = sum(p.numel() for p in predictor.parameters())
     trainable_params = sum(p.numel() for p in predictor.get_trainable_parameters())
@@ -326,6 +485,12 @@ def predict_A(
         e = embedding.detach() if detach else embedding
         return predictor(e, tau, mode=mode)
     elif predictor_type == "mini_encoder":
+        assert input_ids is not None
+        return predictor(input_ids, tau, mode=mode)
+    elif predictor_type == "seq2matrix":
+        assert input_ids is not None
+        return predictor(input_ids, tau, mode=mode)
+    elif predictor_type == "per_token_seq2matrix":
         assert input_ids is not None
         return predictor(input_ids, tau, mode=mode)
     elif predictor_type == "qwen":
@@ -385,9 +550,10 @@ def save_checkpoint(
     save_dir: str,
     step: int,
     model: Olmo2ForCausalLM,
-    predictor: nn.Module,
+    predictor: Optional[nn.Module],
     optimizer: torch.optim.Optimizer,
     best_eval_nll: float,
+    routing_model: Optional[nn.Module] = None,
 ) -> str:
     os.makedirs(save_dir, exist_ok=True)
     path = os.path.join(save_dir, f"checkpoint_step{step}.pt")
@@ -396,13 +562,19 @@ def save_checkpoint(
     model_path = path.replace(".pt", "_model.pt")
     torch.save(model.state_dict(), model_path, _use_new_zipfile_serialization=False)
 
-    state = {
+    state: dict = {
         "step": step,
-        "predictor_state_dict": predictor.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "best_eval_nll": best_eval_nll,
         "model_state_path": model_path,
     }
+    if predictor is not None:
+        state["predictor_state_dict"] = predictor.state_dict()
+    if routing_model is not None:
+        # Save only routing params (not base model, which is saved separately)
+        routing_state = {k: v for k, v in routing_model.state_dict().items()
+                         if not k.startswith("olmo.")}
+        state["routing_state_dict"] = routing_state
     torch.save(state, path)
     print(f"Checkpoint saved: {path}")
     return path
@@ -444,6 +616,10 @@ def compute_topology_metrics(
     Returns:
         dict with topology metrics
     """
+    # Handle per-token A [B, T, N, N] by averaging over T first
+    if A.dim() == 4:
+        A = A.mean(dim=1)  # [B, T, N, N] → [B, N, N]
+
     num_nodes = A.shape[1]
     num_layers = num_nodes // heads_per_layer
 
@@ -582,45 +758,203 @@ def main() -> None:
     base_model = create_model(config)
     base_model = base_model.to(device, dtype=torch.bfloat16)
 
-    # Create predictor
-    predictor = create_predictor(config)
-    predictor = predictor.to(device)
+    # ─── Routing mode ───
+    use_routing_mode = config.routing_mode in ("dynamic_head", "layer_dwa_gate")
+    use_fourway = config.routing_mode in ("fourway", "fourway_corrected")
+    routing_model = None
+    fourway_model = None
+    fourway_predictor = None
+    predictor = None
+    dagformer = None
 
-    # Create DAGFormer wrapper (uses base_model's parameters, not a copy)
-    dagformer = DAGFormerOLMo(
-        model=base_model,
-        input_norm=config.input_norm,
-        num_layers=config.num_hidden_layers,
-        num_heads=config.num_attention_heads,
-    )
+    if use_fourway:
+        use_correction = (config.routing_mode == "fourway_corrected")
+        fourway_model = FourWayDAGFormer(
+            model=base_model,
+            num_layers=config.num_hidden_layers,
+            num_heads=config.num_attention_heads,
+            use_local_correction=use_correction,
+            correction_hidden=config.correction_hidden,
+            use_triton_kernel=config.use_triton_kernel,
+            use_v_norm=config.use_v_norm,
+            correction_pool=config.correction_pool,
+        ).to(device)
+        fourway_predictor = FourWayPredictor(
+            vocab_size=config.vocab_size,
+            encoder_dim=config.predictor_encoder_dim,
+            encoder_layers=config.predictor_encoder_layers,
+            encoder_heads=config.predictor_encoder_heads,
+            max_seq_len=config.predictor_max_seq_len,
+            num_layers=config.num_hidden_layers,
+            num_heads=config.num_attention_heads,
+            hidden_dim=config.fourway_hidden,
+            causal=config.predictor_causal,
+            dropout=config.predictor_dropout,
+        ).to(device)
+        if config.freeze_predictor:
+            # Freeze external predictor at identity. Only corrections learn.
+            for p in fourway_predictor.parameters():
+                p.requires_grad_(False)
+            fourway_predictor.eval()
+        elif config.freeze_predictor_embed:
+            # Freeze only token + position embeddings (25M + 1M params).
+            # Prevents memorization through the lookup table while keeping
+            # encoder/trunk/heads trainable.
+            for p in fourway_predictor.embed.parameters():
+                p.requires_grad_(False)
+            for p in fourway_predictor.pos_embed.parameters():
+                p.requires_grad_(False)
+        if is_main:
+            pred_params = sum(p.numel() for p in fourway_predictor.parameters())
+            corr_params = sum(p.numel() for p in fourway_model.get_routing_parameters())
+            mode_str = "fourway_corrected" if use_correction else "fourway"
+            print(f"Mode: {mode_str} (4-way per-head per-token)")
+            print(f"  Predictor: {pred_params:,} params"
+                  f"{' (FROZEN at identity)' if config.freeze_predictor else ''}")
+            if use_correction:
+                print(f"  Correction MLPs: {corr_params:,} params")
+        if config.use_torch_compile:
+            fourway_model = torch.compile(fourway_model)
+            fourway_predictor = torch.compile(fourway_predictor)
+            if is_main:
+                print("  torch.compile enabled")
 
-    # Combined module for DDP
-    combined = DAGFormerPretrainModule(base_model, predictor)
-    combined_raw = combined
+    elif config.routing_mode == "dynamic_head":
+        routing_model = DynamicDenseHeadFormer(
+            model=base_model,
+            num_layers=config.num_hidden_layers,
+            num_heads=config.num_attention_heads,
+            routing_rank=config.routing_rank,
+            routing_hidden=config.routing_hidden,
+        ).to(device)
+        if is_main:
+            routing_params = sum(p.numel() for p in routing_model.get_routing_parameters())
+            print(f"Mode: dynamic_head (per-head per-token routing, {routing_params:,} routing params)")
 
-    if world_size > 1:
-        combined = DDP(combined, device_ids=[local_rank], find_unused_parameters=True)
-        combined_raw = combined.module
+    elif config.routing_mode == "layer_dwa_gate":
+        routing_model = LayerDWAGateFormer(
+            model=base_model,
+            num_layers=config.num_hidden_layers,
+            num_heads=config.num_attention_heads,
+            dwa_hidden=config.dwa_hidden,
+        ).to(device)
+        if is_main:
+            routing_params = sum(p.numel() for p in routing_model.get_routing_parameters())
+            print(f"Mode: layer_dwa_gate (layer DWA + head gating, {routing_params:,} routing params)")
 
-    # Optimizer with two param groups (different LRs)
-    # Deduplicate tied weights for base model
-    base_params = list(combined_raw.base_model.parameters())
-    predictor_params = list(combined_raw.predictor.get_trainable_parameters())
+    else:
+        # External predictor mode (existing behavior)
+        predictor = create_predictor(config)
+        predictor = predictor.to(device)
+        dagformer = DAGFormerOLMo(
+            model=base_model,
+            input_norm=config.input_norm,
+            num_layers=config.num_hidden_layers,
+            num_heads=config.num_attention_heads,
+        )
 
-    if is_main:
-        pred_param_count = sum(p.numel() for p in predictor_params)
-        base_param_count = sum(p.numel() for p in base_params)
-        print(f"Optimizer: base model {base_param_count:,} params (lr={config.lr}), "
-              f"predictor {pred_param_count:,} params (lr={config.predictor_lr})")
+    # Freeze base model if predictor-only mode
+    if config.freeze_base_model:
+        for p in base_model.parameters():
+            p.requires_grad_(False)
+        if is_main:
+            src = f"baseline {config.baseline_checkpoint}" if config.baseline_checkpoint else "random init"
+            print(f"Mode: predictor_only (base model FROZEN from {src})")
 
-    optimizer = torch.optim.AdamW(
-        [
-            {"params": base_params, "lr": config.lr},
-            {"params": predictor_params, "lr": config.predictor_lr},
-        ],
-        betas=(config.beta1, config.beta2),
-        weight_decay=config.weight_decay,
-    )
+    # ─── DDP wrapping ───
+    if use_fourway:
+        # Wrap fourway_model (contains base_model) and predictor separately
+        combined = DAGFormerPretrainModule(fourway_model, fourway_predictor)
+        combined_raw = combined
+        if world_size > 1:
+            combined = DDP(combined, device_ids=[local_rank], find_unused_parameters=True)
+            combined_raw = combined.module
+    elif use_routing_mode:
+        combined = routing_model
+        combined_raw = combined
+        if world_size > 1:
+            combined = DDP(combined, device_ids=[local_rank], find_unused_parameters=True)
+            combined_raw = combined.module
+    else:
+        combined = DAGFormerPretrainModule(base_model, predictor)
+        combined_raw = combined
+        if world_size > 1:
+            combined = DDP(combined, device_ids=[local_rank], find_unused_parameters=True)
+            combined_raw = combined.module
+
+    # ─── Optimizer ───
+    if use_fourway:
+        base_params = [p for p in base_model.parameters() if p.requires_grad]
+        # Split predictor params: bias (identity init) gets NO weight decay
+        # Also filter on requires_grad to exclude frozen predictor params
+        pred_bias_params = [p for n, p in fourway_predictor.named_parameters()
+                            if 'bias' in n and p.requires_grad]
+        pred_other_params = [p for n, p in fourway_predictor.named_parameters()
+                             if 'bias' not in n and p.requires_grad]
+        corr_params = list(fourway_model.get_routing_parameters())
+        pred_other_params = pred_other_params + corr_params
+        if is_main:
+            bp_count = sum(p.numel() for p in base_params)
+            pp_count = sum(p.numel() for p in pred_other_params) + sum(p.numel() for p in pred_bias_params)
+            bias_count = sum(p.numel() for p in pred_bias_params)
+            print(f"Optimizer: base {bp_count:,} (lr={config.lr}), "
+                  f"predictor {pp_count:,} (lr={config.predictor_lr}), "
+                  f"bias params {bias_count:,} (wd=0)")
+        # Build param groups, skipping empty ones (handles freeze_predictor where
+        # pred_bias_params/pred_other_params may be empty).
+        param_groups = []
+        if not config.freeze_base_model and len(base_params) > 0:
+            param_groups.append({"params": base_params, "lr": config.lr,
+                                 "weight_decay": config.weight_decay})
+        if len(pred_other_params) > 0:
+            param_groups.append({"params": pred_other_params, "lr": config.predictor_lr,
+                                 "weight_decay": config.weight_decay})
+        if len(pred_bias_params) > 0:
+            param_groups.append({"params": pred_bias_params, "lr": config.predictor_lr,
+                                 "weight_decay": 0.0})
+        optimizer = torch.optim.AdamW(param_groups, betas=(config.beta1, config.beta2))
+    elif use_routing_mode:
+        base_params = [p for p in base_model.parameters() if p.requires_grad]
+        routing_params = list(combined_raw.get_routing_parameters())
+        if is_main:
+            bp_count = sum(p.numel() for p in base_params)
+            rp_count = sum(p.numel() for p in routing_params)
+            print(f"Optimizer: base {bp_count:,} (lr={config.lr}), "
+                  f"routing {rp_count:,} (lr={config.predictor_lr})")
+        optimizer = torch.optim.AdamW(
+            [
+                {"params": base_params, "lr": config.lr},
+                {"params": routing_params, "lr": config.predictor_lr},
+            ],
+            betas=(config.beta1, config.beta2),
+            weight_decay=config.weight_decay,
+        )
+    elif config.freeze_base_model:
+        predictor_params = list(combined_raw.predictor.get_trainable_parameters())
+        if is_main:
+            pred_param_count = sum(p.numel() for p in predictor_params)
+            print(f"Optimizer: predictor only, {pred_param_count:,} params (lr={config.predictor_lr})")
+        optimizer = torch.optim.AdamW(
+            [{"params": predictor_params, "lr": config.predictor_lr}],
+            betas=(config.beta1, config.beta2),
+            weight_decay=config.weight_decay,
+        )
+    else:
+        base_params = list(combined_raw.base_model.parameters())
+        predictor_params = list(combined_raw.predictor.get_trainable_parameters())
+        if is_main:
+            pred_param_count = sum(p.numel() for p in predictor_params)
+            base_param_count = sum(p.numel() for p in base_params)
+            print(f"Optimizer: base model {base_param_count:,} params (lr={config.lr}), "
+                  f"predictor {pred_param_count:,} params (lr={config.predictor_lr})")
+        optimizer = torch.optim.AdamW(
+            [
+                {"params": base_params, "lr": config.lr},
+                {"params": predictor_params, "lr": config.predictor_lr},
+            ],
+            betas=(config.beta1, config.beta2),
+            weight_decay=config.weight_decay,
+        )
 
     # Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_id)
@@ -658,12 +992,36 @@ def main() -> None:
             print(f"Loading base model from baseline checkpoint: {config.baseline_checkpoint}")
         bl_ckpt = torch.load(config.baseline_checkpoint, map_location=device)
         # Baseline checkpoints use "model_state_dict" key (from pretrain_baseline.py)
-        combined_raw.base_model.load_state_dict(bl_ckpt["model_state_dict"])
+        # FourWay wraps OLMo under .olmo, so we need to load into the inner model.
+        if use_fourway:
+            combined_raw.base_model.olmo.load_state_dict(bl_ckpt["model_state_dict"])
+        else:
+            combined_raw.base_model.load_state_dict(bl_ckpt["model_state_dict"])
         if is_main:
             bl_step = bl_ckpt.get("step", "?")
             bl_nll = bl_ckpt.get("best_eval_nll", "?")
             print(f"  Loaded baseline @ step {bl_step} (best_eval_nll={bl_nll})")
         del bl_ckpt
+
+    # Load from predictor-only checkpoint (for two-stage training: predictor-first → unfreeze LLM)
+    # Loads BOTH predictor AND base model weights (the predictor was trained for this specific LLM).
+    # Optimizer and step counter are NOT restored (fresh start for phase 2).
+    if config.predictor_checkpoint:
+        if is_main:
+            print(f"Loading predictor + base model from: {config.predictor_checkpoint}")
+        pred_ckpt = torch.load(config.predictor_checkpoint, map_location=device)
+        combined_raw.predictor.load_state_dict(pred_ckpt["predictor_state_dict"])
+        # Load base model from the companion _model.pt file
+        if "model_state_path" in pred_ckpt:
+            model_state = torch.load(pred_ckpt["model_state_path"], map_location=device)
+            combined_raw.base_model.load_state_dict(model_state)
+            del model_state
+        elif "model_state_dict" in pred_ckpt:
+            combined_raw.base_model.load_state_dict(pred_ckpt["model_state_dict"])
+        if is_main:
+            pred_step = pred_ckpt.get("step", "?")
+            print(f"  Loaded checkpoint @ step {pred_step} (fresh optimizer for phase 2)")
+        del pred_ckpt
 
     # Resume from DAGFormer checkpoint (for continuing interrupted runs)
     global_step = 0
@@ -675,15 +1033,32 @@ def main() -> None:
         ckpt = torch.load(resume_path, map_location=device)
 
         # Load predictor
-        combined_raw.predictor.load_state_dict(ckpt["predictor_state_dict"])
+        if "predictor_state_dict" in ckpt:
+            combined_raw.predictor.load_state_dict(ckpt["predictor_state_dict"])
 
-        # Load base model
+        # Load base model — FourWay wraps OLMo under .olmo, need to load into inner model
+        model_state = None
         if "model_state_path" in ckpt:
             model_state = torch.load(ckpt["model_state_path"], map_location=device)
-            combined_raw.base_model.load_state_dict(model_state)
-            del model_state
         elif "model_state_dict" in ckpt:
-            combined_raw.base_model.load_state_dict(ckpt["model_state_dict"])
+            model_state = ckpt["model_state_dict"]
+
+        if model_state is not None:
+            if use_fourway:
+                # FourWay: combined_raw.base_model is FourWayDAGFormer, real OLMo at .olmo
+                combined_raw.base_model.olmo.load_state_dict(model_state)
+            else:
+                combined_raw.base_model.load_state_dict(model_state)
+            del model_state
+
+        # Load routing state (correction MLPs, v_norms — may be empty for pure fourway)
+        if use_fourway and "routing_state_dict" in ckpt and len(ckpt["routing_state_dict"]) > 0:
+            m, u = combined_raw.base_model.load_state_dict(
+                ckpt["routing_state_dict"], strict=False
+            )
+            if is_main:
+                print(f"  Routing state loaded: {len(ckpt['routing_state_dict'])} keys "
+                      f"(missing={len(m)}, unexpected={len(u)})")
 
         optimizer.load_state_dict(ckpt["optimizer_state_dict"])
         global_step = ckpt["step"] + 1
@@ -713,11 +1088,20 @@ def main() -> None:
     def save_on_signal(signum: int, frame: Any) -> None:
         if is_main:
             print(f"\nSignal {signum}, saving checkpoint...")
-            save_checkpoint(
-                config.save_dir, global_step,
-                combined_raw.base_model, combined_raw.predictor,
-                optimizer, best_eval_nll,
-            )
+            if use_fourway:
+                save_checkpoint(
+                    config.save_dir, global_step,
+                    base_model, fourway_predictor,
+                    optimizer, best_eval_nll,
+                    routing_model=fourway_model,
+                )
+            else:
+                save_checkpoint(
+                    config.save_dir, global_step,
+                    base_model, predictor,
+                    optimizer, best_eval_nll,
+                    routing_model=routing_model if use_routing_mode else None,
+                )
         raise SystemExit(0)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
@@ -730,7 +1114,15 @@ def main() -> None:
     # Collapse alarm state
     collapse_counter = 0
 
+    # Force always-DAGFormer when base model is frozen (no point in standard forward)
+    if config.freeze_base_model and config.standard_steps_per_dag_step > 0:
+        if is_main:
+            print("Warning: freeze_base_model=True, forcing standard_steps_per_dag_step=0")
+        config.standard_steps_per_dag_step = 0
+
     if is_main:
+        if config.freeze_base_model:
+            print(f"Mode: predictor_only (base model frozen, random init)")
         if config.baseline_checkpoint:
             print(f"Mode: staged (initialized from baseline checkpoint)")
         if config.standard_steps_per_dag_step > 0:
@@ -763,8 +1155,20 @@ def main() -> None:
             use_dagformer = True
 
         # Set LRs for each param group
-        optimizer.param_groups[0]["lr"] = base_lr   # base model
-        optimizer.param_groups[1]["lr"] = pred_lr if use_dagformer else 0.0  # predictor
+        if use_fourway:
+            if config.freeze_base_model:
+                optimizer.param_groups[0]["lr"] = pred_lr  # only predictor+correction
+            else:
+                optimizer.param_groups[0]["lr"] = base_lr   # base model
+                optimizer.param_groups[1]["lr"] = pred_lr    # predictor+correction
+        elif use_routing_mode:
+            optimizer.param_groups[0]["lr"] = base_lr   # base model
+            optimizer.param_groups[1]["lr"] = pred_lr    # routing params
+        elif config.freeze_base_model:
+            optimizer.param_groups[0]["lr"] = pred_lr  # only predictor
+        else:
+            optimizer.param_groups[0]["lr"] = base_lr   # base model
+            optimizer.param_groups[1]["lr"] = pred_lr if use_dagformer else 0.0  # predictor
 
         # Gradient accumulation
         optimizer.zero_grad()
@@ -789,7 +1193,79 @@ def main() -> None:
                 else combined.no_sync()
 
             with sync_ctx:
-                if use_dagformer:
+                if use_fourway:
+                    # 4-way per-head per-token routing
+                    rw = fourway_predictor(input_ids)  # dict of q/k/v/r lists
+
+                    # Apply routing regularization
+                    reg_loss = torch.tensor(0.0, device=device)
+                    if config.routing_noise_std > 0 and global_step < config.routing_noise_steps:
+                        for stream in ('q', 'k', 'v', 'r'):
+                            for i, α in enumerate(rw[stream]):
+                                rw[stream][i] = α + torch.randn_like(α) * config.routing_noise_std
+
+                    if config.routing_dropout > 0:
+                        # Reset random fraction of routing weights to identity
+                        # Identity = [0,...,0,1] (last source = 1)
+                        for stream in ('q', 'k', 'v', 'r'):
+                            for i, α in enumerate(rw[stream]):
+                                mask = torch.rand(α.shape[:-1], device=α.device) < config.routing_dropout
+                                identity = torch.zeros_like(α)
+                                identity[..., -1] = 1.0
+                                rw[stream][i] = torch.where(mask.unsqueeze(-1), identity, α)
+
+                    if config.routing_l2_lambda > 0:
+                        # L2 on deviation from identity (bias is identity, so deviation = dynamic part)
+                        for stream in ('q', 'k', 'v', 'r'):
+                            for α in rw[stream]:
+                                # At identity init, last source = 1, rest = 0
+                                # Deviation = sum of squares of all logits
+                                # (W=0 init means the predictor's output heads contribute the deviation)
+                                reg_loss = reg_loss + config.routing_l2_lambda * α.pow(2).mean()
+
+                    if config.routing_l1_lambda > 0:
+                        frac = global_step / max(config.total_steps, 1)
+                        if frac >= config.routing_l1_start_frac:
+                            ramp = min(1.0, (frac - config.routing_l1_start_frac) /
+                                       max(config.routing_l1_warmup_frac - config.routing_l1_start_frac, 1e-8))
+                            l1_coeff = config.routing_l1_lambda * ramp
+                            for stream in ('q', 'k', 'v', 'r'):
+                                for α in rw[stream]:
+                                    reg_loss = reg_loss + l1_coeff * α.abs().mean()
+
+                    # Entropy regularization: encourage uniform routing
+                    if config.routing_entropy_lambda > 0:
+                        for stream in ('q', 'k', 'v', 'r'):
+                            for α in rw[stream]:
+                                p = F.softmax(α, dim=-1)
+                                ent = -(p * (p + 1e-8).log()).sum(dim=-1).mean()
+                                reg_loss = reg_loss - config.routing_entropy_lambda * ent
+
+                    # Apply deterministic transforms (clamp, top_k, temperature,
+                    # delayed_start, normalize). Must match eval path exactly.
+                    rw = apply_deterministic_routing_transforms(rw, config, global_step)
+
+                    logits = fourway_model(input_ids, rw)
+                    nll = F.cross_entropy(
+                        logits.contiguous().view(-1, vocab_size),
+                        labels.contiguous().view(-1),
+                        label_smoothing=config.label_smoothing,
+                    )
+                    sparsity_loss = reg_loss
+                    total_loss = (nll + reg_loss) / accum_steps
+                    total_loss.backward()
+                elif use_routing_mode:
+                    # Internal routing mode: model computes routing internally
+                    logits = combined_raw(input_ids)
+                    nll = F.cross_entropy(
+                        logits.contiguous().view(-1, vocab_size),
+                        labels.contiguous().view(-1),
+                        label_smoothing=config.label_smoothing,
+                    )
+                    sparsity_loss = torch.tensor(0.0)
+                    total_loss = nll / accum_steps
+                    total_loss.backward()
+                elif use_dagformer:
                     # DAGFormer step: per-head routing with predictor
                     embedding = combined_raw.base_model.model.embed_tokens(input_ids)
 
@@ -806,6 +1282,7 @@ def main() -> None:
                     nll = F.cross_entropy(
                         logits.contiguous().view(-1, vocab_size),
                         labels.contiguous().view(-1),
+                        label_smoothing=config.label_smoothing,
                     )
                     sparsity_loss = lambda_t * A.mean()
                     total_loss = (nll + sparsity_loss) / accum_steps
@@ -817,6 +1294,7 @@ def main() -> None:
                     nll = F.cross_entropy(
                         outputs.logits.contiguous().view(-1, vocab_size),
                         labels.contiguous().view(-1),
+                        label_smoothing=config.label_smoothing,
                     )
                     sparsity_loss = torch.tensor(0.0)
                     total_loss = nll / accum_steps
@@ -826,10 +1304,20 @@ def main() -> None:
             accum_sparsity += sparsity_loss.item() / accum_steps
             accum_total += total_loss.item()
 
-        # Gradient clipping (over all params)
+        # Gradient clipping
         if config.max_grad_norm > 0:
-            all_params = list(combined_raw.base_model.parameters()) + \
-                list(combined_raw.predictor.parameters())
+            if use_fourway:
+                all_params = [p for p in base_model.parameters() if p.requires_grad]
+                all_params += list(fourway_predictor.parameters())
+                all_params += list(fourway_model.get_routing_parameters())
+            elif use_routing_mode:
+                all_params = list(base_model.parameters()) + \
+                    list(combined_raw.get_routing_parameters())
+            elif config.freeze_base_model:
+                all_params = list(combined_raw.predictor.parameters())
+            else:
+                all_params = list(combined_raw.base_model.parameters()) + \
+                    list(combined_raw.predictor.parameters())
             torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
 
         # Step
@@ -843,13 +1331,20 @@ def main() -> None:
 
             # Gradient norms
             base_grad_norm = 0.0
-            for p in combined_raw.base_model.parameters():
+            for p in base_model.parameters():
                 if p.grad is not None:
                     base_grad_norm += p.grad.data.norm(2).item() ** 2
             base_grad_norm = base_grad_norm ** 0.5
 
             pred_grad_norm = 0.0
-            for p in combined_raw.predictor.parameters():
+            if use_fourway:
+                routing_params_iter = list(fourway_predictor.parameters()) + \
+                    list(fourway_model.get_routing_parameters())
+            elif use_routing_mode:
+                routing_params_iter = combined_raw.get_routing_parameters()
+            else:
+                routing_params_iter = combined_raw.predictor.parameters()
+            for p in routing_params_iter:
                 if p.grad is not None:
                     pred_grad_norm += p.grad.data.norm(2).item() ** 2
             pred_grad_norm = pred_grad_norm ** 0.5
@@ -888,11 +1383,11 @@ def main() -> None:
             if csv_logger is not None:
                 csv_logger.log(global_step, metrics)
 
-        # Eval (rank 0 only)
-        if is_main and global_step > 0 and global_step % config.eval_every == 0:
+        # Eval (rank 0 only, but all ranks must sync at boundary)
+        do_eval = global_step > 0 and global_step % config.eval_every == 0
+        if do_eval and is_main:
             combined.eval()
-            eval_nll_soft_total = 0.0
-            eval_nll_hard_total = 0.0
+            eval_nll_routing_total = 0.0
             eval_nll_baseline_total = 0.0
             n_eval = 0
 
@@ -901,38 +1396,47 @@ def main() -> None:
                     eids = eb["olmo_ids"].to(device)
                     elabels = eb["olmo_labels"].to(device)
 
-                    # Soft eval
-                    embedding_eval = combined_raw.base_model.model.embed_tokens(eids)
-                    eval_raw = eb.get("raw_text")
-                    A_soft = predict_A(
-                        combined_raw.predictor, config.predictor_type,
-                        batch_size=eids.shape[0], tau=tau, mode="eval_soft",
-                        embedding=embedding_eval, input_ids=eids,
-                        raw_texts=eval_raw,
-                    )
-                    logits_soft = dagformer(eids, A_soft)
-                    nll_soft = F.cross_entropy(
-                        logits_soft.contiguous().view(-1, vocab_size),
-                        elabels.contiguous().view(-1),
-                    )
-                    eval_nll_soft_total += nll_soft.item()
+                    if use_fourway:
+                        rw_eval = fourway_predictor(eids)
+                        # CRITICAL: apply the SAME deterministic transforms as training
+                        # (clamp, top_k, temperature, delayed_start, normalize).
+                        # Without this, eval sees raw α but base model was trained on
+                        # transformed α → distribution shift. See Codex audit Finding 1.
+                        rw_eval = apply_deterministic_routing_transforms(
+                            rw_eval, config, global_step
+                        )
+                        logits_r = fourway_model(eids, rw_eval)
+                        nll_r = F.cross_entropy(
+                            logits_r.contiguous().view(-1, vocab_size),
+                            elabels.contiguous().view(-1),
+                        )
+                        eval_nll_routing_total += nll_r.item()
+                    elif use_routing_mode:
+                        logits_r = combined_raw(eids)
+                        nll_r = F.cross_entropy(
+                            logits_r.contiguous().view(-1, vocab_size),
+                            elabels.contiguous().view(-1),
+                        )
+                        eval_nll_routing_total += nll_r.item()
+                    else:
+                        # Predictor mode: soft eval
+                        embedding_eval = combined_raw.base_model.model.embed_tokens(eids)
+                        eval_raw = eb.get("raw_text")
+                        A_soft = predict_A(
+                            combined_raw.predictor, config.predictor_type,
+                            batch_size=eids.shape[0], tau=tau, mode="eval_soft",
+                            embedding=embedding_eval, input_ids=eids,
+                            raw_texts=eval_raw,
+                        )
+                        logits_soft = dagformer(eids, A_soft)
+                        nll_soft = F.cross_entropy(
+                            logits_soft.contiguous().view(-1, vocab_size),
+                            elabels.contiguous().view(-1),
+                        )
+                        eval_nll_routing_total += nll_soft.item()
 
-                    # Hard eval
-                    A_hard = predict_A(
-                        combined_raw.predictor, config.predictor_type,
-                        batch_size=eids.shape[0], tau=tau, mode="eval_hard",
-                        embedding=embedding_eval, input_ids=eids,
-                        raw_texts=eval_raw,
-                    )
-                    logits_hard = dagformer(eids, A_hard)
-                    nll_hard = F.cross_entropy(
-                        logits_hard.contiguous().view(-1, vocab_size),
-                        elabels.contiguous().view(-1),
-                    )
-                    eval_nll_hard_total += nll_hard.item()
-
-                    # Baseline (standard forward, no A)
-                    eout_base = combined_raw.base_model(input_ids=eids)
+                    # Baseline (standard forward, no routing)
+                    eout_base = base_model(input_ids=eids)
                     nll_base = F.cross_entropy(
                         eout_base.logits.contiguous().view(-1, vocab_size),
                         elabels.contiguous().view(-1),
@@ -941,35 +1445,47 @@ def main() -> None:
 
                     n_eval += 1
 
-            eval_nll_soft = eval_nll_soft_total / max(n_eval, 1)
-            eval_nll_hard = eval_nll_hard_total / max(n_eval, 1)
+            eval_nll_routing = eval_nll_routing_total / max(n_eval, 1)
             eval_nll_baseline = eval_nll_baseline_total / max(n_eval, 1)
 
             eval_metrics = {
-                "eval/nll_soft": eval_nll_soft,
-                "eval/nll_hard": eval_nll_hard,
+                "eval/nll_soft": eval_nll_routing,
+                "eval/nll_hard": eval_nll_routing,  # same for routing mode
                 "eval/nll_baseline": eval_nll_baseline,
             }
             log_metrics(eval_metrics, global_step, wandb_run)
             if csv_logger is not None:
                 csv_logger.log(global_step, eval_metrics)
 
-            print(f"  [eval @ step {global_step}] soft={eval_nll_soft:.4f} "
-                  f"hard={eval_nll_hard:.4f} baseline={eval_nll_baseline:.4f}")
+            print(f"  [eval @ step {global_step}] routing={eval_nll_routing:.4f} "
+                  f"baseline={eval_nll_baseline:.4f}")
 
-            if eval_nll_soft < best_eval_nll:
-                best_eval_nll = eval_nll_soft
-                print(f"  New best eval NLL (soft): {eval_nll_soft:.4f}")
+            if eval_nll_routing < best_eval_nll:
+                best_eval_nll = eval_nll_routing
+                print(f"  New best eval NLL: {eval_nll_routing:.4f}")
 
             combined.train()
 
+        # Barrier: all ranks wait for eval to finish (prevents NCCL timeout)
+        if do_eval and world_size > 1:
+            torch.distributed.barrier()
+
         # Checkpoint
         if is_main and global_step > 0 and global_step % config.save_every == 0:
-            save_checkpoint(
-                config.save_dir, global_step,
-                combined_raw.base_model, combined_raw.predictor,
-                optimizer, best_eval_nll,
-            )
+            if use_fourway:
+                save_checkpoint(
+                    config.save_dir, global_step,
+                    base_model, fourway_predictor,
+                    optimizer, best_eval_nll,
+                    routing_model=fourway_model,
+                )
+            else:
+                save_checkpoint(
+                    config.save_dir, global_step,
+                    base_model, predictor,
+                    optimizer, best_eval_nll,
+                    routing_model=routing_model if use_routing_mode else None,
+                )
 
         global_step += 1
 
@@ -979,53 +1495,57 @@ def main() -> None:
     # ── Final eval & save ──
     if is_main:
         combined.eval()
-        eval_nll_soft_total = 0.0
-        eval_nll_hard_total = 0.0
+        eval_nll_final_total = 0.0
         n_eval = 0
         with torch.no_grad():
             for eb in eval_batches:
                 eids = eb["olmo_ids"].to(device)
                 elabels = eb["olmo_labels"].to(device)
 
-                embedding_eval = combined_raw.base_model.model.embed_tokens(eids)
-                eval_raw = eb.get("raw_text")
-                A_soft = predict_A(
-                    combined_raw.predictor, config.predictor_type,
-                    batch_size=eids.shape[0], tau=tau, mode="eval_soft",
-                    embedding=embedding_eval, input_ids=eids,
-                    raw_texts=eval_raw,
-                )
-                logits_soft = dagformer(eids, A_soft)
-                nll_soft = F.cross_entropy(
-                    logits_soft.contiguous().view(-1, vocab_size),
+                if use_fourway:
+                    rw_eval = fourway_predictor(eids)
+                    # Same deterministic transforms as training (final eval)
+                    rw_eval = apply_deterministic_routing_transforms(
+                        rw_eval, config, global_step
+                    )
+                    logits_eval = fourway_model(eids, rw_eval)
+                elif use_routing_mode:
+                    logits_eval = combined_raw(eids)
+                else:
+                    embedding_eval = combined_raw.base_model.model.embed_tokens(eids)
+                    eval_raw = eb.get("raw_text")
+                    A_soft = predict_A(
+                        combined_raw.predictor, config.predictor_type,
+                        batch_size=eids.shape[0], tau=tau, mode="eval_soft",
+                        embedding=embedding_eval, input_ids=eids,
+                        raw_texts=eval_raw,
+                    )
+                    logits_eval = dagformer(eids, A_soft)
+
+                nll_eval = F.cross_entropy(
+                    logits_eval.contiguous().view(-1, vocab_size),
                     elabels.contiguous().view(-1),
                 )
-                eval_nll_soft_total += nll_soft.item()
-
-                A_hard = predict_A(
-                    combined_raw.predictor, config.predictor_type,
-                    batch_size=eids.shape[0], tau=tau, mode="eval_hard",
-                    embedding=embedding_eval, input_ids=eids,
-                    raw_texts=eval_raw,
-                )
-                logits_hard = dagformer(eids, A_hard)
-                nll_hard = F.cross_entropy(
-                    logits_hard.contiguous().view(-1, vocab_size),
-                    elabels.contiguous().view(-1),
-                )
-                eval_nll_hard_total += nll_hard.item()
-
+                eval_nll_final_total += nll_eval.item()
                 n_eval += 1
 
-        final_nll_soft = eval_nll_soft_total / max(n_eval, 1)
-        final_nll_hard = eval_nll_hard_total / max(n_eval, 1)
-        print(f"\nFinal eval NLL: soft={final_nll_soft:.4f} hard={final_nll_hard:.4f}")
+        final_nll = eval_nll_final_total / max(n_eval, 1)
+        print(f"\nFinal eval NLL: {final_nll:.4f}")
 
-        save_checkpoint(
-            config.save_dir, global_step,
-            combined_raw.base_model, combined_raw.predictor,
-            optimizer, best_eval_nll,
-        )
+        if use_fourway:
+            save_checkpoint(
+                config.save_dir, global_step,
+                base_model, fourway_predictor,
+                optimizer, best_eval_nll,
+                routing_model=fourway_model,
+            )
+        else:
+            save_checkpoint(
+                config.save_dir, global_step,
+                base_model, predictor,
+                optimizer, best_eval_nll,
+                routing_model=routing_model if use_routing_mode else None,
+            )
 
     finish_wandb(wandb_run)
 

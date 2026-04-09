@@ -842,3 +842,227 @@ Run with cascading gate bug (layer 0 not exempted). 500/1000 steps completed bef
 - eval/nll_hard very high (4.5-4.9) due to cascading gate layer 0 bug (now fixed in `80579d6`)
 - mean_A stable ~0.42 (= ~0.89 over valid entries), no collapse
 - Baseline NLL = 2.4569 confirmed correct after double-shift fix
+
+---
+
+## FourWay — Per-Head Per-Token 4-way Routing (Q/K/V/R)
+
+**动机**: MUDDFormer-style per-layer per-token 路由，但扩展到 per-head 粒度。External predictor 从 input_ids 预测所有层的 routing weights `α ∈ [B, T, H, l+1]` (Q/K/V per-head) + `[B, T, l+1]` (R per-token)。
+
+**架构要点** (详见 `src/model/olmo_graph.py:FourWayDAGFormer` 和 `src/model/predictor.py:FourWayPredictor`):
+- 4 streams: Q/K/V 按 head 路由, R 按 token 共享路由
+- Identity init: 每个 head 的 `W=0`, `bias=[0,...,0,1]` → init 恰好等于 dense OLMo-2
+- Causal predictor: 2-layer transformer encoder, dim=256, causal mask (KV cache 兼容)
+- 项目 then 混合优化: L 次标准 QKV projection + einsum in head_dim（vs per-head D=1024 einsum 减小 overhead 从 3.5x → 2.5x）
+- 无 Gumbel-sigmoid，纯 soft continuous gates
+- Bias params 单独 wd=0 group（防止 identity init 被 wd 腐蚀）
+
+**Dense baseline 参考**: 同 300M 配置 (12L × 16H × 1024), 5000 steps, from-scratch → eval NLL **3.85**, train/eval gap = 0.
+
+### FourWay 主要 runs
+
+| # | Run | Job ID | Config | Step | Train NLL | Eval NLL | Gap | 备注 |
+|---|-----|--------|--------|------|-----------|----------|-----|------|
+| 1 | **joint_causal (best)** | — | fourway_corrected_joint_causal (causal pred, base lr 5e-4, pred lr 3e-4, wd 0.1) | 5000 | ~3.5 | **5.49** | 2.0 | 最好的 from-scratch FourWay 结果 |
+| 2 | predfirst_causal | — | predictor-first warmup (pred lr 3e-4) then joint | 5000 | — | ~5.6 | ~1.9 | 和 joint 相差不大 |
+| 3 | long_train @ 6000 | 17253035 | 同 joint_causal, 10000 步计划 | 6000 | ~3.6 | **5.37** | 1.8 | Gap 随训练慢慢缩小 (5000:2.0 → 6000:1.8) |
+| 4 | long_train resume | 17253035 | phase2 从 6000 resume | — | — | — | — | **FAILED**: resume 时 key prefix 不匹配 bug (见 "Known bugs") |
+
+### 正则化 ablations (全部 5000 步 / 4×A40 DDP, from-scratch)
+
+所有变体：train NLL 3.5-5.0, **eval NLL 5.4-6.9**, gap 从没被 close 到 < 1.5。
+
+| Variant | Job | 机制 | Train NLL | Eval NLL | Gap | 结论 |
+|---------|-----|------|-----------|----------|-----|------|
+| **baseline dense** | 16056723 | 无 routing | — | **3.85** | 0 | 目标 |
+| fourway joint causal | — | 无 reg | ~3.5 | 5.49 | 2.0 | **最好 FourWay 基线** |
+| L2 decay (λ=1e-3..1e-2) | reg_l2decay | L2 on α logits | ~3.6 | ~5.55 | ~1.95 | 没用 |
+| L2 clamp (±2) | reg_l2clamp | clamp α logits | ~3.7 | ~5.52 | ~1.85 | 没用 |
+| L1 delayed (start@15%) | reg_delayed_l1 | 晚启动 L1 稀疏 | ~3.7 | ~5.56 | ~1.9 | 没用 |
+| Entropy reg | reg_entropy | 对 softmax(α) 的熵惩罚 | ~3.7 | ~5.60 | ~1.9 | 没用 |
+| Top-k=2 | reg_top2 | 保留 top-2 sources | ~3.8 | ~5.65 | ~1.85 | 没用 |
+| Temperature (τ=2) | reg_temp | α / τ 再用 | ~4.5 | **7.36** | ~2.9 | 变差 |
+| Noise injection | reg_noise | α += N(0, 0.1) 训练 | ~3.7 | ~5.60 | ~1.9 | 没用 |
+| Small predictor (hidden 128) | reg_small_pred | 减 predictor 容量 | ~3.9 | ~5.62 | ~1.7 | 最多减 0.3 gap |
+| Tiny predictor (hidden 64) | reg_tiny_pred | 更小 | ~4.1 | ~5.68 | ~1.6 | 最多减 0.4 gap |
+| Low pred LR (1e-5) | reg_low_pred_lr | predictor 慢更新 | ~4.3 | ~5.72 | ~1.4 | train 变差更多 |
+| Micro pred | reg_micro_pred | 超小 predictor | ~4.5 | ~5.85 | ~1.35 | train 变差 |
+| Dropout routing 0.15 | 17308934 | 15% token 位置 reset 成 identity | 3.73 | 6.52 | 2.79 | **最差 gap — identity dropout 是 shortcut, 不是 regularizer** |
+| Lower base lr (1.7e-4) | 17308932 | base LR 减 3x | 4.65 | 6.81 | 2.16 | 同时变差 |
+| Lower both lr | 17308933 | base + pred 都减 | 4.89 | 6.85 | 1.96 | 最小 gap 但 train 最差 |
+| Regularized combo | 17308935 | 上面多个一起 | 4.38 | 6.73 | 2.35 | 没用 |
+
+### Normalization 实验 (全部爆炸)
+
+| Variant | Mechanism | Train | Eval | 状态 |
+|---------|-----------|-------|------|------|
+| softmax | `α = softmax(raw + bias)` per stream | ~3.6 | **9.31** | 爆炸 |
+| softmax_dropout | softmax + routing_dropout 0.1 | ~3.7 | **11.2** | 爆炸 |
+| sinkhorn | Sinkhorn-Knopp 20 iters | ~3.6 | **10.8** | 爆炸 |
+| sinkhorn_lite | 5 iters | ~3.7 | **12.4** | 爆炸 |
+| sinkhorn_dropout | + dropout | — | **14-16** | 爆炸 |
+| row_col (mHC-lite substitute) | alternating row/col normalize | — | **13+** | 爆炸 |
+
+**失败原因** (Codex Q3): softmax 破坏 identity init. `softmax([0,1]) = [0.269, 0.731]` 不是 one-hot，27% 信号从错误层来，直接污染 R stream (residual carrier)，从 step 0 就严重 off-policy。
+
+### Identity init 数学验证 (2026-04-06)
+
+**Task**: 验证 FourWay 在 identity init 下是否 bit-exact 等于 dense OLMo 的 forward。
+
+**Script**: `scripts/verify_identity_init.py` (Job 17347931)
+
+| Dtype | seq_len | max_abs_diff (logits) | NLL diff | Result |
+|-------|---------|----------------------|----------|--------|
+| **fp32** | 128 | **6.3e-6** | **0.000000** | **PASS** |
+| bf16 | 128 | 0.064 (~2%) | 8.5e-4 | bf16 噪声 |
+| bf16 | 1024 | 0.063 (~2%) | 6.1e-5 | bf16 噪声 |
+
+**结论**: FourWay 的 forward 数学是正确的。**Identity init 不是 overfit 根因**。bf16 2% logit drift 来自 einsum vs native attention 的累加顺序差异，NLL 影响 < 1e-3 可忽略。
+
+### Eval with forced identity routing (Codex's Q5 experiment)
+
+**Task**: Load 最好 checkpoint (joint_causal step 5000)，跑 eval 对比 3 种 routing 模式 — 诊断是 predictor overfit 还是 base model co-adapt。
+
+**Script**: `scripts/eval_force_identity.py` (Job 17348622)
+
+| Eval mode | NLL | 说明 |
+|-----------|-----|------|
+| `dense_baseline` (trained base, 直接 forward, no wrapper) | **7.0774** | 完全等于下面 fw_id ✓ 验证 forward 正确 |
+| `fw_with_identity` (FourWay forward + α=identity) | **7.0774** | |
+| `fw_with_predictor` (FourWay forward + 真实 predictor) | **6.3161** | |
+
+**注**: 这里的绝对 NLL 比 training log (5.49) 高 ~0.8，是因为只用了 13 eval batches 而且我的 eval pipeline 和训练 eval 略有不同。**关键是相对比较**：
+
+- `fw_id == dense` (exact): 确认 forward 数学正确
+- `fw_with_predictor (6.32) < fw_with_identity (7.08)` by **0.76 nats**: predictor 的 routing **有效**，不是 garbage
+- `fw_with_identity (7.08) >> 真 dense baseline (3.85)` by **3.2 nats**: **base model 已经强依赖 predictor 的 non-identity α**，脱离 predictor 就废
+
+**诊断 (H2 confirmed)**: base model co-adapted to routing. 这是联合训练的自然结果，不是 bug —— 但说明 predictor + base 的平衡点不在 dense baseline 附近，它们一起走到了一个完全不同的解空间。
+
+### α 统计 (from joint_causal step 5000 predictor)
+
+| Stream | mean_norm | max | min | 观察 |
+|--------|-----------|-----|-----|------|
+| Q | 1.31 | 2.79 | -1.33 | 温和，q_norm 下游保护 |
+| K | 1.15 | 2.68 | -1.91 | 温和，k_norm 下游保护 |
+| **V** | **1.59** | **10.77** | **-7.67** | **outlier！无 norm 保护** |
+| R | 0.94 | 1.96 | -2.22 | 实际比 identity (=1.0) 更小 |
+
+**关键发现**: **V stream 是 outlier 最严重的**（max ±10, mean norm 59% 高于 identity），因为 Q/K 有 OLMo-2 自带的 `q_norm`/`k_norm` (post-projection RMSNorm), R norm 实际上很温和, **只有 V 完全没有 post-mix 归一化**。
+
+Codex 最初把 runaway 归因于 R (因为 R 直接进残差流)，但实际数据显示 **R 其实很乖，V 才是放飞的那个**。
+
+### Approach A: V Post-Mix RMSNorm (2026-04-06, running)
+
+**动机**: 给 V 加一个和 Q/K 对称的 `Olmo2RMSNorm(model_dim)` post-mix，Q/K/R 保持 raw。
+
+**实现**:
+- `src/model/olmo_graph.py:FourWayDAGFormer.__init__`: 加 `use_v_norm: bool` 参数 → `self.v_norms = nn.ModuleList([Olmo2RMSNorm(model_dim) for _ in range(num_layers-1)])`
+- Forward: 在 V mixing einsum 之后 apply v_norm (rearrange `b h t d → b t (h d)` → norm → rearrange 回来)
+- `scripts/pretrain_dagformer.py`: 加 `use_v_norm` config 字段, 传给构造函数
+- `configs/fourway_vnorm.yaml`: 基于 fourway_corrected_joint_causal + `use_v_norm: true`
+
+**Identity init drift** (Job 17349536): 
+- max_abs_diff (fp32) = 0.173 (vs 6e-6 无 vnorm) 
+- **NLL diff = 1e-5** (可忽略) 
+- 结论: v_norm 在 init 时对 NLL 影响为零，只是改变了 V 的 scale，训练可从近似 identity 状态起步。
+
+**Training**: Job 17350168 (submitted 2026-04-06)
+
+---
+
+## Known Bugs (FourWay)
+
+1. **Checkpoint resume 在 FourWay 模式下损坏** (Codex-identified, 2026-04-06):
+   - `save_checkpoint()` 存 `predictor_state_dict` + `routing_state_dict` + 外部 `model_state_path`
+   - `load_checkpoint()` 在 FourWay 模式下把 bare OLMo weights 加载到 `combined_raw.base_model`（是 `FourWayDAGFormer` wrapper，真 OLMo 在 `.olmo` 下）→ 键前缀错位
+   - `routing_state_dict` 根本没被 load 回去
+   - 症状: long_train 17253035 resume 失败
+   - 修复: 需要改 `load_checkpoint()`, 把 bare model weights 加载到 `combined_raw.base_model.olmo`, 把 routing_state_dict 加载到 wrapper 本身
+   - 状态: **未修**
+
+2. **Predictor bias param group (wd=0) LR 不被 scheduler 更新** (Codex-identified):
+   - Optimizer 3 个 group: `[base, pred_other, pred_bias_wd0]`
+   - LR scheduler 只更新 `[0]` 和 `[1]`, group `[2]` 的 LR 锁在初始值
+   - 影响很小（bias 一般不需要严格退火）, 状态: **未修**
+
+### Approach B: Identity Predictor + Correction MLPs Only (Track 2, 2026-04-06)
+
+**动机** (Codex Q5 follow-up + corrected eval data):
+
+修好 `eval_force_identity.py` 的 correction MLPs 加载 bug 后 (Job 17351237), joint_causal step 5000 真实数据：
+
+| Mode | NLL | Δ |
+|------|-----|---|
+| dense_baseline (pure OLMo, no FW) | 7.0774 | — |
+| fw_id_noc (α=identity, corr OFF) | 7.0774 | bit-exact ✓ |
+| fw_id (α=identity, **corr ON**) | 5.9662 | corrections alone -1.11 |
+| fw_pred_noc (predictor α, corr OFF) | 6.3161 | predictor alone -0.76 |
+| **fw_pred (full)** | **5.4924** | matches training log ✓ |
+
+**关键发现**: Local correction MLPs 贡献 **-1.11 nats**，external predictor 增量只 -0.47。Correction = 70% of routing benefit. Local > global.
+
+**实验设计**: 冻结 `FourWayPredictor` 在 identity init (W=0, bias=[0,...,0,1])，只训 correction MLPs + base model。如果 eval ≥ joint_causal 5.49，说明 external predictor 完全可去 → overfit 主要来自 predictor 全局记忆。
+
+**实现**:
+- `scripts/pretrain_dagformer.py`: 加 `freeze_predictor: bool = False` 配置, after 创建 fourway_predictor 调用 `requires_grad_(False)` + `eval()`
+- Optimizer 改为按 `requires_grad` 过滤, 跳过空 param groups (handles freeze_predictor)
+- `configs/fourway_local_only.yaml`: 基于 `fourway_corrected_joint_causal` + `freeze_predictor: true`
+
+**Job**: 17352435 (PENDING, submitted 2026-04-06)
+
+**期望结果**:
+- 若 eval ≤ 5.49: external predictor 不必要，可去
+- 若 eval ≈ 5.97 (= fw_id 单独 corrections): correction 需要 predictor 提供初始 α 才能完全发挥
+- 若 eval > 5.97: 反直觉，corrections 自己上路效果反而差
+
+
+### Approach C: Classical predictor dropout (Track 4, 2026-04-06)
+
+**动机**: 我们之前试过 `routing_dropout` (reset α to identity) 但 Codex 指出那不是经典 dropout，是 shortcut。**Predictor 内部的真正 nn.Dropout 从来没试过** — `src/model/predictor.py:982` 一直是 `dropout=0.0` hardcoded。
+
+如果 overfit 来自 "predictor encoder 记住了具体 input_ids → α 的映射"，经典 dropout 应该有效：
+- nn.Dropout(0.1) 在训练时随机置零 encoder 注意力 + FFN + trunk 激活
+- 强迫 encoder 学冗余表征
+- eval 自动关闭 (`combined.eval()` propagates to children)
+- 这是 routing_dropout 完全没做到的事
+
+**实现**:
+- `src/model/predictor.py:FourWayPredictor.__init__`: 加 `dropout: float = 0.0` 参数, 传给 `nn.TransformerEncoderLayer(dropout=dropout)`, 也加到 trunk 末尾 `nn.Dropout(dropout)`
+- `scripts/pretrain_dagformer.py`: 加 `predictor_dropout: float = 0.0` config
+- 同步更新 `eval_force_identity.py` 用 `dropout=config.get("predictor_dropout", 0.0)` 加载 checkpoint
+- `configs/fourway_pred_dropout.yaml`: 基于 `fourway_corrected_joint_causal` + `predictor_dropout: 0.1`
+
+**Job**: 17360292 (PENDING, submitted 2026-04-06)
+
+**期望**:
+- 若 eval ≤ 5.0: predictor memorization 是 overfit 主因，经典 dropout 解决了
+- 若 eval ≈ 5.49: dropout 没用，predictor 不靠死记上面的具体 mapping
+- 若 eval > 5.49: dropout 太强，predictor 学不出有用 routing
+
+### Approach D: Label smoothing + Smaller correction MLPs (Track 5, 2026-04-06)
+
+**动机**: 经典 overfit 工具箱中我们从来没试过的两个最直接方法。
+
+**1. Label smoothing 0.1 on train NLL**:
+- 直接打击症状: train NLL 3.5 < dense baseline 3.85 (FourWay 在 train 上 over-confident)
+- F.cross_entropy 自带 `label_smoothing=0.1`, 仅训练 loss 用, eval 仍 raw NLL
+- 实现: `pretrain_dagformer.py` 4 处 train cross_entropy 加 `label_smoothing=config.label_smoothing`
+
+**2. Smaller correction MLPs (correction_hidden 128 → 32, 4x reduction)**:
+- 上一轮发现 corrections 占 70% routing benefit (-1.11 of -1.59 nats)
+- 它们是 dominant capacity
+- 之前从没改过 correction_hidden，default 128
+- 直接削减最可能的 overfit source
+
+**Configs**:
+- `fourway_label_smooth.yaml`: 仅 label smoothing 0.1
+- `fourway_small_corr.yaml`: 仅 correction_hidden 32
+- `fourway_smooth_small_corr.yaml`: 两个组合
+
+**Jobs**: 17362778, 17362779, 17362780 (PENDING, submitted 2026-04-06)
+
+**期望**:
+- label_smooth 单独: 若 train NLL 升回 ~3.85 + eval ~5.0 → label smoothing 直接生效
+- small_corr 单独: 若 corrections 1.11 → ~0.7 但 eval 改善 → corrections 是 overfit 主源
+- combo: 若 显著优于两个单独 → 两个机制独立有效
