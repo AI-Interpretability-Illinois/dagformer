@@ -1071,3 +1071,134 @@ class FourWayPredictor(nn.Module):
     def get_trainable_parameters(self) -> list[nn.Parameter]:
         """All parameters are trainable."""
         return list(self.parameters())
+
+
+class AttentionPoolingPredictor(nn.Module):
+    """Predictor for a single token position using cross-attention pooling.
+
+    Predicts the topology (adjacency matrix A) for processing token t, given:
+    - Query: raw embedding (layer 0) of token t                    [B, D]
+    - Keys/Values: DAG-modified last-layer hidden states of
+      tokens 0..t-1, accumulated from previous steps              [B, t, D]
+
+    The forward is inherently single-step: topology for token t can only be
+    computed after tokens 0..t-1 have been fully processed by DAGFormerOLMo,
+    so the pipeline calls this once per token in a sequential loop.
+
+    For t=0 (no previous tokens), a learnable null K/V token provides the
+    only context, acting as a learned prior over the empty-history topology.
+
+    Pipeline (single step at position t):
+        embed_t         [B, D]
+        hidden_prev     [B, t, D]   (t=0 allowed: empty history)
+
+        Q      = q_proj(embed_t)          [B, d_attn]
+        K_full = [null_kv, k_proj(hidden_prev)]  [B, t+1, d_attn]
+        V_full = [null_kv, v_proj(hidden_prev)]  [B, t+1, d_attn]
+        scores = Q · K_full^T / √d        [B, t+1]
+        pooled = softmax(scores) @ V_full  [B, d_attn]  ← single pooled vector
+        pooled = out_proj(pooled)          [B, d_attn]
+        Z      = MLP(pooled)              [B, N, N]
+        A      = mask → Gumbel → cascade  [B, N, N]
+    """
+
+    def __init__(
+        self,
+        model_dim: int = 2048,
+        attn_dim: int = 256,
+        mlp_hidden_dim: int = 1024,
+        num_nodes: int = 256,
+        heads_per_layer: int = 16,
+        rank: int = 32,
+        cascading_gate_k: float = 5.0,
+        init_logit: float = 15.0,
+    ):
+        super().__init__()
+        self.num_nodes = num_nodes
+        self.heads_per_layer = heads_per_layer
+        self.cascading_gate_k = cascading_gate_k
+        self.attn_dim = attn_dim
+        self.scale = attn_dim ** -0.5
+
+        # Single-head cross-attention: Q from embedding, K/V from past hidden states
+        self.q_proj = nn.Linear(model_dim, attn_dim, bias=False)
+        self.k_proj = nn.Linear(model_dim, attn_dim, bias=False)
+        self.v_proj = nn.Linear(model_dim, attn_dim, bias=False)
+        self.out_proj = nn.Linear(attn_dim, attn_dim, bias=False)
+
+        # Learned prior for the empty-history case (t=0)
+        self.null_kv = nn.Parameter(torch.zeros(1, 1, attn_dim))
+
+        # 2-layer MLP (PredictorMLP): pooled vector → logit matrix [N, N]
+        self.mlp = PredictorMLP(
+            input_dim=attn_dim,
+            hidden_dim=mlp_hidden_dim,
+            rank=rank,
+            num_nodes=num_nodes,
+            init_logit=init_logit,
+        )
+
+        # Block-upper-triangular mask
+        self.register_buffer(
+            'dag_mask',
+            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        )
+
+    def forward(
+        self,
+        embed_t: torch.Tensor,
+        hidden_prev: torch.Tensor,
+        tau: float,
+        mode: str = "train",
+    ) -> torch.Tensor:
+        """Predict topology for token t from its embedding and past hidden states.
+
+        Args:
+            embed_t: [B, D] — raw embedding of the current token t
+            hidden_prev: [B, t, D] — DAG-modified last-layer hidden states of
+                tokens 0..t-1 (t=0 is valid: pass an empty [B, 0, D] tensor)
+            tau: Gumbel-Sigmoid temperature
+            mode: "train", "eval_soft", or "eval_hard"
+
+        Returns:
+            A: [B, N, N] — adjacency matrix for token t
+        """
+        B = embed_t.shape[0]
+
+        # Cast to float32 (OLMo outputs may be bfloat16)
+        embed_t = embed_t.float()
+        hidden_prev = hidden_prev.float()
+
+        # Single query vector from the current token's raw embedding
+        Q = self.q_proj(embed_t)       # [B, d_attn]
+
+        # Keys and values from all previous tokens' last-layer hidden states.
+        # Prepend null_kv so softmax is well-defined when t=0 (empty history).
+        null = self.null_kv.expand(B, 1, self.attn_dim)         # [B, 1, d_attn]
+        K_full = torch.cat([null, self.k_proj(hidden_prev)], dim=1)  # [B, t+1, d_attn]
+        V_full = torch.cat([null, self.v_proj(hidden_prev)], dim=1)  # [B, t+1, d_attn]
+
+        # Attention: Q [B, 1, d_attn] × K_full^T [B, d_attn, t+1] → [B, 1, t+1]
+        scores = torch.bmm(Q.unsqueeze(1), K_full.transpose(1, 2)) * self.scale
+        attn_weights = torch.softmax(scores, dim=-1)             # [B, 1, t+1]
+        pooled = torch.bmm(attn_weights, V_full).squeeze(1)      # [B, d_attn]
+        pooled = self.out_proj(pooled)                           # [B, d_attn]
+
+        # MLP → logit matrix
+        Z = self.mlp(pooled)  # [B, N, N]
+
+        # Apply block-upper-triangular mask
+        mask = self.dag_mask  # [N, N]
+        Z_masked = Z * mask + (-1e9) * (1 - mask)
+
+        # Gumbel-Sigmoid + cascading gate
+        hard = (mode == "eval_hard")
+        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
+        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
+                           heads_per_layer=self.heads_per_layer)
+
+        return A  # [B, N, N]
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
