@@ -1,0 +1,49 @@
+# Quick 1000-step run with ALL fixes: SDPA + nn.RMSNorm + bias filter + LR scheduler
+# Just enough to see step 500 eval and compare trend to old experiments.
+
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway_corrected"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+
+replace_rmsnorm: true
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 1000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 250
+
+wandb_project: "dagformer"
+wandb_run_name: "fourway_full_fix_quick"
+log_every: 10
+save_every: 1000
+save_dir: "checkpoints/fourway_full_fix_quick"

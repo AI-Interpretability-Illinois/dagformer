@@ -906,11 +906,17 @@ class FourWayDAGFormer(nn.Module):
             # RoPE (same for all approaches)
             q_per_head, k_per_head = apply_rotary_pos_emb(q_per_head, k_per_head, cos, sin)
 
-            # Standard attention (shape is [B, H, T, hd] — same as standard transformer!)
-            attn_w = torch.matmul(q_per_head, k_per_head.transpose(-2, -1)) * self.scaling
-            attn_w = attn_w + causal_mask
-            attn_w = F.softmax(attn_w, dim=-1, dtype=torch.float32).to(q_per_head.dtype)
-            attn_values = torch.matmul(attn_w, v_per_head)  # [B, H, T, hd]
+            # Attention: use F.scaled_dot_product_attention with is_causal=True
+            # to match HF's native OLMo2 SDPA dispatch. Using attn_mask=None
+            # + is_causal=True enables flash attention kernels (same as HF).
+            # Our old manual matmul+softmax(dtype=f32) had 7% gradient deviation.
+            attn_values = F.scaled_dot_product_attention(
+                q_per_head, k_per_head, v_per_head,
+                attn_mask=None,
+                dropout_p=0.0,
+                is_causal=True,
+                scale=self.scaling,
+            )  # [B, H, T, hd]
 
             # Standard O projection (concat heads → single matmul)
             attn_concat = rearrange(attn_values, 'b h t d -> b t (h d)')  # [B, T, H*hd]

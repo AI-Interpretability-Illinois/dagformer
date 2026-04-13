@@ -42,7 +42,8 @@ from src.model.olmo_graph import (
     LayerDWAGateFormer, create_all_ones_A,
 )
 from src.model.predictor import (
-    ContextEmbedPredictor, FourWayPredictor, MiniEncoderPredictor,
+    ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
+    FourWayPredictor, FourWayStaticPredictor, MiniEncoderPredictor,
     PerTokenSeq2MatrixPredictor, SeqToMatrixPredictor, SelfEmbedPredictor,
     StaticPredictor, StructurePredictor,
 )
@@ -181,13 +182,19 @@ class DAGFormerPretrainConfig:
     use_torch_compile: bool = False      # torch.compile the fourway forward for speed
     use_triton_kernel: bool = False      # use fused Triton kernel for routing+proj
     predictor_causal: bool = True        # causal mask in FourWayPredictor encoder
+    fourway_predictor_variant: str = "encoder"  # "encoder", "static", or "attn_bottleneck" (single memory read over dense scout states)
     use_v_norm: bool = False             # add post-mix RMSNorm on V (symmetric with Q/K norm)
     freeze_predictor: bool = False       # freeze FourWayPredictor at identity init (local-only experiment)
     predictor_dropout: float = 0.0       # classical nn.Dropout inside FourWayPredictor encoder + trunk (regularizes input→α mapping)
     label_smoothing: float = 0.0         # cross_entropy label smoothing on TRAIN loss only (eval NLL uses 0)
     alpha_share_heads: bool = False      # DIAGNOSTIC: mean α over H dim then broadcast (reduces DoF 16x, for code-vs-arch test)
+    route_q: bool = True                 # enable learned Q routing; if false force Q stream to identity
+    route_k: bool = True                 # enable learned K routing; if false force K stream to identity
+    route_v: bool = True                 # enable learned V routing; if false force V stream to identity
+    route_r: bool = True                 # enable learned R routing; if false force R stream to identity
     correction_pool: str = "none"        # "none"=per-token, "mean"=seq-avg (reduces per-token memorization)
     freeze_predictor_embed: bool = False # freeze only predictor.embed + pos_embed (keep encoder/heads trainable)
+    replace_rmsnorm: bool = False        # replace Olmo2RMSNorm (has f32 cast breaking gradients) with torch.nn.RMSNorm
 
     # Routing regularization (fourway modes)
     routing_l2_lambda: float = 0.0       # L2 decay on routing logits (deviation from init)
@@ -235,6 +242,34 @@ class DAGFormerPretrainConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+def replace_olmo_rmsnorm(model: nn.Module) -> int:
+    """Replace all Olmo2RMSNorm modules with torch.nn.RMSNorm.
+
+    Olmo2RMSNorm casts input to float32 internally, which breaks gradient
+    flow when the input comes from mixed-precision computation (einsum etc).
+    torch.nn.RMSNorm operates in native dtype → correct gradients.
+
+    Returns: number of modules replaced.
+    """
+    count = 0
+    for name, module in list(model.named_modules()):
+        if type(module).__name__ == "Olmo2RMSNorm":
+            hidden_size = module.weight.shape[0]
+            eps = module.variance_epsilon
+            new_norm = nn.RMSNorm(hidden_size, eps=eps).to(
+                device=module.weight.device, dtype=module.weight.dtype
+            )
+            new_norm.weight = module.weight  # share the parameter (same nn.Parameter)
+            # Navigate to parent and replace
+            parts = name.split(".")
+            parent = model
+            for part in parts[:-1]:
+                parent = getattr(parent, part)
+            setattr(parent, parts[-1], new_norm)
+            count += 1
+    return count
 
 
 # ─── Routing post-processing (shared between train and eval) ───────────────
@@ -360,6 +395,58 @@ def create_model(config: DAGFormerPretrainConfig) -> Olmo2ForCausalLM:
         print(f"  weight tying: ON (saves {config.vocab_size * config.hidden_size:,} params)")
 
     return model
+
+
+def predict_fourway_routing(
+    predictor: nn.Module,
+    base_model: Olmo2ForCausalLM,
+    input_ids: torch.Tensor,
+    config: DAGFormerPretrainConfig,
+) -> dict[str, list[torch.Tensor]]:
+    """Run the selected FourWay predictor variant.
+
+    The bottleneck variant reads from a dense scout pass of the current base
+    model under ``torch.no_grad()``. This keeps the predictor input
+    task-aligned while avoiding a gradient path through the scout memory read.
+    """
+    if config.fourway_predictor_variant == "attn_bottleneck":
+        with torch.no_grad():
+            query_states = base_model.model.embed_tokens(input_ids)
+            scout = base_model.model(
+                inputs_embeds=query_states,
+                use_cache=False,
+                return_dict=True,
+            )
+            memory_states = scout.last_hidden_state
+        return predictor(query_states=query_states, memory_states=memory_states)
+
+    return predictor(input_ids)
+
+
+def apply_fourway_stream_mask(
+    rw: dict[str, list[torch.Tensor]],
+    config: DAGFormerPretrainConfig,
+) -> dict[str, list[torch.Tensor]]:
+    """Force disabled FourWay streams to exact identity routing.
+
+    This is used for clean QK-only / VR-only ablations. Disabled streams are
+    replaced with constant identity tensors before any regularization terms are
+    computed, so they do not receive gradients or contribute confounds.
+    """
+    stream_flags = {
+        "q": config.route_q,
+        "k": config.route_k,
+        "v": config.route_v,
+        "r": config.route_r,
+    }
+    for stream, enabled in stream_flags.items():
+        if enabled:
+            continue
+        for i, α in enumerate(rw[stream]):
+            identity = torch.zeros_like(α)
+            identity[..., -1] = 1.0
+            rw[stream][i] = identity
+    return rw
 
 
 def create_predictor(
@@ -664,20 +751,40 @@ def compute_topology_metrics(
 class DAGFormerPretrainModule(nn.Module):
     """Wraps base model + predictor for DDP.
 
-    DDP needs a single nn.Module to wrap. This combines both the base OLMo model
-    and the predictor into one module so DDP can sync gradients for both.
-    The DAGFormerOLMo wrapper is NOT an nn.Module member here — we use it
-    as a functional helper to avoid double-wrapping the base model's parameters.
+    DDP needs a single nn.Module to wrap AND its forward() must be called
+    during training for gradient synchronization to work. Without calling
+    forward(), DDP's reducer never calls prepare_for_backward() and
+    gradient all-reduce may not fire — causing each GPU to train
+    independently (confirmed by DDP CHECK: params DIVERGED at step 10).
     """
 
     def __init__(
         self,
-        base_model: Olmo2ForCausalLM,
+        base_model,
         predictor: nn.Module,
     ):
         super().__init__()
         self.base_model = base_model
         self.predictor = predictor
+
+    def forward(self, input_ids: torch.Tensor,
+                routing_weights: dict | None = None):
+        """Forward through base model.
+
+        DDP traces the autograd graph from the output to find all "used"
+        parameters. When routing_weights is passed, it was created by the
+        predictor (outside this forward), so predictor params are reachable
+        from the output through the rw tensors → DDP syncs all gradients.
+
+        Args:
+            input_ids: [B, T] token IDs
+            routing_weights: pre-computed routing dict (from predictor)
+        """
+        if routing_weights is not None:
+            # FourWay: use pre-computed routing
+            return self.base_model(input_ids, routing_weights)
+        # Standard forward (non-FourWay or routing_mode)
+        return self.base_model(input_ids=input_ids)
 
 
 # ─── Main ────────────────────────────────────────────────────────────────────
@@ -756,6 +863,10 @@ def main() -> None:
 
     # Create base model
     base_model = create_model(config)
+    if config.replace_rmsnorm:
+        n = replace_olmo_rmsnorm(base_model)
+        if is_main:
+            print(f"Replaced {n} Olmo2RMSNorm → torch.nn.RMSNorm (fixes gradient bug)")
     base_model = base_model.to(device, dtype=torch.bfloat16)
 
     # ─── Routing mode ───
@@ -779,24 +890,45 @@ def main() -> None:
             use_v_norm=config.use_v_norm,
             correction_pool=config.correction_pool,
         ).to(device)
-        fourway_predictor = FourWayPredictor(
-            vocab_size=config.vocab_size,
-            encoder_dim=config.predictor_encoder_dim,
-            encoder_layers=config.predictor_encoder_layers,
-            encoder_heads=config.predictor_encoder_heads,
-            max_seq_len=config.predictor_max_seq_len,
-            num_layers=config.num_hidden_layers,
-            num_heads=config.num_attention_heads,
-            hidden_dim=config.fourway_hidden,
-            causal=config.predictor_causal,
-            dropout=config.predictor_dropout,
-        ).to(device)
+        if config.fourway_predictor_variant == "attn_bottleneck":
+            fourway_predictor = FourWayAttentionBottleneckPredictor(
+                model_dim=config.hidden_size,
+                encoder_dim=config.predictor_encoder_dim,
+                attn_heads=config.predictor_encoder_heads,
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+                hidden_dim=config.fourway_hidden,
+                dropout=config.predictor_dropout,
+            ).to(device)
+        elif config.fourway_predictor_variant == "static":
+            fourway_predictor = FourWayStaticPredictor(
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+            ).to(device)
+        elif config.fourway_predictor_variant == "encoder":
+            fourway_predictor = FourWayPredictor(
+                vocab_size=config.vocab_size,
+                encoder_dim=config.predictor_encoder_dim,
+                encoder_layers=config.predictor_encoder_layers,
+                encoder_heads=config.predictor_encoder_heads,
+                max_seq_len=config.predictor_max_seq_len,
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+                hidden_dim=config.fourway_hidden,
+                causal=config.predictor_causal,
+                dropout=config.predictor_dropout,
+            ).to(device)
+        else:
+            raise ValueError(
+                f"Unknown fourway_predictor_variant: {config.fourway_predictor_variant}. "
+                "Expected 'encoder', 'static', or 'attn_bottleneck'."
+            )
         if config.freeze_predictor:
             # Freeze external predictor at identity. Only corrections learn.
             for p in fourway_predictor.parameters():
                 p.requires_grad_(False)
             fourway_predictor.eval()
-        elif config.freeze_predictor_embed:
+        elif config.freeze_predictor_embed and hasattr(fourway_predictor, "embed"):
             # Freeze only token + position embeddings (25M + 1M params).
             # Prevents memorization through the lookup table while keeping
             # encoder/trunk/heads trainable.
@@ -809,7 +941,7 @@ def main() -> None:
             corr_params = sum(p.numel() for p in fourway_model.get_routing_parameters())
             mode_str = "fourway_corrected" if use_correction else "fourway"
             print(f"Mode: {mode_str} (4-way per-head per-token)")
-            print(f"  Predictor: {pred_params:,} params"
+            print(f"  Predictor [{config.fourway_predictor_variant}]: {pred_params:,} params"
                   f"{' (FROZEN at identity)' if config.freeze_predictor else ''}")
             if use_correction:
                 print(f"  Correction MLPs: {corr_params:,} params")
@@ -885,12 +1017,13 @@ def main() -> None:
     # ─── Optimizer ───
     if use_fourway:
         base_params = [p for p in base_model.parameters() if p.requires_grad]
-        # Split predictor params: bias (identity init) gets NO weight decay
-        # Also filter on requires_grad to exclude frozen predictor params
+        # Split predictor params: identity-init routing biases get NO weight decay.
+        # Use 'layer_biases' (not 'bias') to avoid catching encoder/trunk biases
+        # which should have normal weight decay. (Codex audit finding.)
         pred_bias_params = [p for n, p in fourway_predictor.named_parameters()
-                            if 'bias' in n and p.requires_grad]
+                            if 'layer_biases' in n and p.requires_grad]
         pred_other_params = [p for n, p in fourway_predictor.named_parameters()
-                             if 'bias' not in n and p.requires_grad]
+                             if 'layer_biases' not in n and p.requires_grad]
         corr_params = list(fourway_model.get_routing_parameters())
         pred_other_params = pred_other_params + corr_params
         if is_main:
@@ -1060,7 +1193,14 @@ def main() -> None:
                 print(f"  Routing state loaded: {len(ckpt['routing_state_dict'])} keys "
                       f"(missing={len(m)}, unexpected={len(u)})")
 
-        optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+        try:
+            optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+            if is_main:
+                print("  Optimizer state restored")
+        except (ValueError, RuntimeError) as e:
+            if is_main:
+                print(f"  WARNING: could not restore optimizer state ({e})")
+                print("  Continuing with fresh optimizer momentum (model weights OK)")
         global_step = ckpt["step"] + 1
         best_eval_nll = ckpt.get("best_eval_nll", float("inf"))
         del ckpt
@@ -1158,9 +1298,13 @@ def main() -> None:
         if use_fourway:
             if config.freeze_base_model:
                 optimizer.param_groups[0]["lr"] = pred_lr  # only predictor+correction
+                if len(optimizer.param_groups) > 1:
+                    optimizer.param_groups[1]["lr"] = pred_lr  # routing biases
             else:
                 optimizer.param_groups[0]["lr"] = base_lr   # base model
                 optimizer.param_groups[1]["lr"] = pred_lr    # predictor+correction
+                if len(optimizer.param_groups) > 2:
+                    optimizer.param_groups[2]["lr"] = pred_lr  # routing biases
         elif use_routing_mode:
             optimizer.param_groups[0]["lr"] = base_lr   # base model
             optimizer.param_groups[1]["lr"] = pred_lr    # routing params
@@ -1194,8 +1338,15 @@ def main() -> None:
 
             with sync_ctx:
                 if use_fourway:
-                    # 4-way per-head per-token routing
-                    rw = fourway_predictor(input_ids)  # dict of q/k/v/r lists
+                    # 4-way per-head per-token routing.
+                    # Predictor is called raw (outside DDP forward) to get rw,
+                    # then rw is passed to combined(input_ids, rw) which goes
+                    # through DDP forward. DDP traces the autograd graph from
+                    # the output logits back through rw → predictor params,
+                    # so ALL params are found as "used" and gradients are synced.
+                    rw = predict_fourway_routing(
+                        fourway_predictor, base_model, input_ids, config,
+                    )
 
                     # Apply routing regularization
                     reg_loss = torch.tensor(0.0, device=device)
@@ -1213,6 +1364,10 @@ def main() -> None:
                                 identity = torch.zeros_like(α)
                                 identity[..., -1] = 1.0
                                 rw[stream][i] = torch.where(mask.unsqueeze(-1), identity, α)
+
+                    # Clean stream-ablation controls: disabled streams are
+                    # pinned to exact identity before any loss terms.
+                    rw = apply_fourway_stream_mask(rw, config)
 
                     if config.routing_l2_lambda > 0:
                         # L2 on deviation from identity (bias is identity, so deviation = dynamic part)
@@ -1245,7 +1400,10 @@ def main() -> None:
                     # delayed_start, normalize). Must match eval path exactly.
                     rw = apply_deterministic_routing_transforms(rw, config, global_step)
 
-                    logits = fourway_model(input_ids, rw)
+                    # Call through DDP wrapper (combined) to trigger gradient sync.
+                    # Previously called fourway_model directly, bypassing DDP —
+                    # causing each GPU to train independently (params DIVERGED).
+                    logits = combined(input_ids, rw)
                     nll = F.cross_entropy(
                         logits.contiguous().view(-1, vocab_size),
                         labels.contiguous().view(-1),
@@ -1256,7 +1414,7 @@ def main() -> None:
                     total_loss.backward()
                 elif use_routing_mode:
                     # Internal routing mode: model computes routing internally
-                    logits = combined_raw(input_ids)
+                    logits = combined(input_ids)
                     nll = F.cross_entropy(
                         logits.contiguous().view(-1, vocab_size),
                         labels.contiguous().view(-1),
@@ -1322,6 +1480,21 @@ def main() -> None:
 
         # Step
         optimizer.step()
+
+        # DDP sync check: verify all GPUs have identical parameters
+        if world_size > 1 and global_step == 10:
+            param = next(base_model.parameters())
+            param_sum = param.data.sum().clone()
+            dist.all_reduce(param_sum, op=dist.ReduceOp.SUM)
+            mean_val = param_sum.item() / world_size
+            local_val = next(base_model.parameters()).data.sum().item()
+            diff = abs(local_val - mean_val)
+            if local_rank == 0:
+                if diff < 1e-6:
+                    print(f"[DDP CHECK @ step 10] PASS — params identical across {world_size} GPUs (diff={diff:.2e})")
+                else:
+                    print(f"[DDP CHECK @ step 10] FAIL — params DIVERGED! local={local_val:.6f} mean={mean_val:.6f} diff={diff:.2e}")
+                    print(f"  → DDP gradient sync is NOT working. This is the overfit root cause.")
 
         # Logging
         if is_main and global_step % config.log_every == 0:
@@ -1397,7 +1570,13 @@ def main() -> None:
                     elabels = eb["olmo_labels"].to(device)
 
                     if use_fourway:
-                        rw_eval = fourway_predictor(eids)
+                        rw_eval = predict_fourway_routing(
+                            fourway_predictor,
+                            base_model,
+                            eids,
+                            config,
+                        )
+                        rw_eval = apply_fourway_stream_mask(rw_eval, config)
                         # CRITICAL: apply the SAME deterministic transforms as training
                         # (clamp, top_k, temperature, delayed_start, normalize).
                         # Without this, eval sees raw α but base model was trained on
@@ -1503,7 +1682,13 @@ def main() -> None:
                 elabels = eb["olmo_labels"].to(device)
 
                 if use_fourway:
-                    rw_eval = fourway_predictor(eids)
+                    rw_eval = predict_fourway_routing(
+                        fourway_predictor,
+                        base_model,
+                        eids,
+                        config,
+                    )
+                    rw_eval = apply_fourway_stream_mask(rw_eval, config)
                     # Same deterministic transforms as training (final eval)
                     rw_eval = apply_deterministic_routing_transforms(
                         rw_eval, config, global_step

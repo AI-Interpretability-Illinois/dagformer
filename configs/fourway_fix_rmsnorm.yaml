@@ -1,0 +1,57 @@
+# THE FIX: replace Olmo2RMSNorm with torch.nn.RMSNorm.
+#
+# Root cause: Olmo2RMSNorm casts input to float32 internally.
+# When gradients flow through einsum → q_norm → RoPE, the f32 cast
+# corrupts the backward pass, producing wrong gradient directions
+# (confirmed by torch.autograd.gradcheck FAIL + sign flips in bf16).
+# torch.nn.RMSNorm operates in native dtype → correct gradients.
+#
+# Expected: if this was the root cause, eval NLL should drop
+# significantly below 5.5 (the floor for ALL previous experiments).
+
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway_corrected"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+
+replace_rmsnorm: true                # <-- THE FIX
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 5000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "fourway_fix_rmsnorm"
+log_every: 10
+save_every: 1000
+save_dir: "checkpoints/fourway_fix_rmsnorm"

@@ -1073,131 +1073,183 @@ class FourWayPredictor(nn.Module):
         return list(self.parameters())
 
 
-class AttentionPoolingPredictor(nn.Module):
-    """Predictor for a single token position using cross-attention pooling.
+class FourWayStaticPredictor(nn.Module):
+    """Static FourWay routing shared across all inputs and token positions.
 
-    Predicts the topology (adjacency matrix A) for processing token t, given:
-    - Query: raw embedding (layer 0) of token t                    [B, D]
-    - Keys/Values: DAG-modified last-layer hidden states of
-      tokens 0..t-1, accumulated from previous steps              [B, t, D]
-
-    The forward is inherently single-step: topology for token t can only be
-    computed after tokens 0..t-1 have been fully processed by DAGFormerOLMo,
-    so the pipeline calls this once per token in a sequential loop.
-
-    For t=0 (no previous tokens), a learnable null K/V token provides the
-    only context, acting as a learned prior over the empty-history topology.
-
-    Pipeline (single step at position t):
-        embed_t         [B, D]
-        hidden_prev     [B, t, D]   (t=0 allowed: empty history)
-
-        Q      = q_proj(embed_t)          [B, d_attn]
-        K_full = [null_kv, k_proj(hidden_prev)]  [B, t+1, d_attn]
-        V_full = [null_kv, v_proj(hidden_prev)]  [B, t+1, d_attn]
-        scores = Q · K_full^T / √d        [B, t+1]
-        pooled = softmax(scores) @ V_full  [B, d_attn]  ← single pooled vector
-        pooled = out_proj(pooled)          [B, d_attn]
-        Z      = MLP(pooled)              [B, N, N]
-        A      = mask → Gumbel → cascade  [B, N, N]
+    This is the cleanest control for whether FourWay's layer-mixing math is
+    itself problematic, or whether the train/eval pathology mainly comes from
+    input-conditioned routing bandwidth.
     """
 
     def __init__(
         self,
-        model_dim: int = 2048,
-        attn_dim: int = 256,
-        mlp_hidden_dim: int = 1024,
-        num_nodes: int = 256,
-        heads_per_layer: int = 16,
-        rank: int = 32,
-        cascading_gate_k: float = 5.0,
-        init_logit: float = 15.0,
+        num_layers: int = 12,
+        num_heads: int = 16,
     ):
         super().__init__()
-        self.num_nodes = num_nodes
-        self.heads_per_layer = heads_per_layer
-        self.cascading_gate_k = cascading_gate_k
-        self.attn_dim = attn_dim
-        self.scale = attn_dim ** -0.5
+        self.num_layers = num_layers
+        self.num_heads = num_heads
 
-        # Single-head cross-attention: Q from embedding, K/V from past hidden states
-        self.q_proj = nn.Linear(model_dim, attn_dim, bias=False)
-        self.k_proj = nn.Linear(model_dim, attn_dim, bias=False)
-        self.v_proj = nn.Linear(model_dim, attn_dim, bias=False)
-        self.out_proj = nn.Linear(attn_dim, attn_dim, bias=False)
+        self.q_biases = nn.ParameterList()
+        self.k_biases = nn.ParameterList()
+        self.v_biases = nn.ParameterList()
+        self.r_biases = nn.ParameterList()
 
-        # Learned prior for the empty-history case (t=0)
-        self.null_kv = nn.Parameter(torch.zeros(1, 1, attn_dim))
+        for l in range(1, num_layers):
+            n_src = l + 1
 
-        # 2-layer MLP (PredictorMLP): pooled vector → logit matrix [N, N]
-        self.mlp = PredictorMLP(
-            input_dim=attn_dim,
-            hidden_dim=mlp_hidden_dim,
-            rank=rank,
-            num_nodes=num_nodes,
-            init_logit=init_logit,
+            q = torch.zeros(num_heads, n_src)
+            k = torch.zeros(num_heads, n_src)
+            v = torch.zeros(num_heads, n_src)
+            r = torch.zeros(n_src)
+
+            q[:, -1] = 1.0
+            k[:, -1] = 1.0
+            v[:, -1] = 1.0
+            r[-1] = 1.0
+
+            self.q_biases.append(nn.Parameter(q))
+            self.k_biases.append(nn.Parameter(k))
+            self.v_biases.append(nn.Parameter(v))
+            self.r_biases.append(nn.Parameter(r))
+
+    def forward(self, input_ids: torch.Tensor) -> dict[str, list[torch.Tensor]]:
+        """Broadcast static routing weights to every batch/time position."""
+        B, T = input_ids.shape
+        result: dict[str, list[torch.Tensor]] = {'q': [], 'k': [], 'v': [], 'r': []}
+
+        for q, k, v, r in zip(self.q_biases, self.k_biases, self.v_biases, self.r_biases):
+            n_src = r.shape[0]
+            α_q = q.view(1, 1, self.num_heads, n_src).expand(B, T, self.num_heads, n_src)
+            α_k = k.view(1, 1, self.num_heads, n_src).expand(B, T, self.num_heads, n_src)
+            α_v = v.view(1, 1, self.num_heads, n_src).expand(B, T, self.num_heads, n_src)
+            α_r = r.view(1, 1, n_src).expand(B, T, n_src)
+
+            result['q'].append(α_q)
+            result['k'].append(α_k)
+            result['v'].append(α_v)
+            result['r'].append(α_r)
+
+        return result
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
+
+
+class FourWayAttentionBottleneckPredictor(nn.Module):
+    """FourWay predictor with a single causal memory read per token.
+
+    Query = current token layer-0 embedding from the base model.
+    Key/Value = dense scout pass final hidden states from the same base model.
+
+    Each token first reads a single summary vector from its causal prefix via
+    cross-attention, then a small MLP predicts all Q/K/V/R routing weights.
+    This deliberately bottlenecks conditional bandwidth compared with the
+    independent token+pos encoder in ``FourWayPredictor``.
+    """
+
+    def __init__(
+        self,
+        model_dim: int = 1024,
+        encoder_dim: int = 256,
+        attn_heads: int = 4,
+        num_layers: int = 12,
+        num_heads: int = 16,
+        hidden_dim: int = 512,
+        dropout: float = 0.0,
+    ):
+        super().__init__()
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+
+        self.query_norm = nn.LayerNorm(model_dim)
+        self.memory_norm = nn.LayerNorm(model_dim)
+        self.query_proj = nn.Linear(model_dim, encoder_dim, bias=False)
+        self.key_proj = nn.Linear(model_dim, encoder_dim, bias=False)
+        self.value_proj = nn.Linear(model_dim, encoder_dim, bias=False)
+        self.cross_attn = nn.MultiheadAttention(
+            embed_dim=encoder_dim,
+            num_heads=attn_heads,
+            dropout=dropout,
+            batch_first=True,
         )
 
-        # Block-upper-triangular mask
-        self.register_buffer(
-            'dag_mask',
-            create_block_upper_triangular_mask(num_nodes, heads_per_layer),
+        self.trunk = nn.Sequential(
+            nn.LayerNorm(encoder_dim),
+            nn.Linear(encoder_dim, hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
         )
+
+        self.layer_heads = nn.ModuleList()
+        self.layer_biases = nn.ParameterList()
+
+        for l in range(1, num_layers):
+            n_src = l + 1
+            out_dim = (3 * num_heads + 1) * n_src
+            head = nn.Linear(hidden_dim, out_dim, bias=False)
+            nn.init.zeros_(head.weight)
+            self.layer_heads.append(head)
+
+            bias = torch.zeros(out_dim)
+            for stream in range(3 * num_heads + 1):
+                bias[stream * n_src + (n_src - 1)] = 1.0
+            self.layer_biases.append(nn.Parameter(bias))
 
     def forward(
         self,
-        embed_t: torch.Tensor,
-        hidden_prev: torch.Tensor,
-        tau: float,
-        mode: str = "train",
-    ) -> torch.Tensor:
-        """Predict topology for token t from its embedding and past hidden states.
+        query_states: torch.Tensor,
+        memory_states: torch.Tensor,
+    ) -> dict[str, list[torch.Tensor]]:
+        """Predict per-token 4-way routing weights from a bottleneck memory read.
 
         Args:
-            embed_t: [B, D] — raw embedding of the current token t
-            hidden_prev: [B, t, D] — DAG-modified last-layer hidden states of
-                tokens 0..t-1 (t=0 is valid: pass an empty [B, 0, D] tensor)
-            tau: Gumbel-Sigmoid temperature
-            mode: "train", "eval_soft", or "eval_hard"
+            query_states: [B, T, D] current-token layer-0 embeddings.
+            memory_states: [B, T, D] dense scout final hidden states.
 
         Returns:
-            A: [B, N, N] — adjacency matrix for token t
+            dict with 'q', 'k', 'v', 'r' keys, each a list of tensors:
+                'q'/'k'/'v': [B, T, H, l+1]
+                'r': [B, T, l+1]
         """
-        B = embed_t.shape[0]
+        B, T, _ = query_states.shape
+        H = self.num_heads
+        dtype = self.query_norm.weight.dtype
 
-        # Cast to float32 (OLMo outputs may be bfloat16)
-        embed_t = embed_t.float()
-        hidden_prev = hidden_prev.float()
+        q_in = query_states.to(dtype=dtype)
+        m_in = memory_states.to(dtype=dtype)
 
-        # Single query vector from the current token's raw embedding
-        Q = self.q_proj(embed_t)       # [B, d_attn]
+        q = self.query_proj(self.query_norm(q_in))
+        k = self.key_proj(self.memory_norm(m_in))
+        v = self.value_proj(self.memory_norm(m_in))
 
-        # Keys and values from all previous tokens' last-layer hidden states.
-        # Prepend null_kv so softmax is well-defined when t=0 (empty history).
-        null = self.null_kv.expand(B, 1, self.attn_dim)         # [B, 1, d_attn]
-        K_full = torch.cat([null, self.k_proj(hidden_prev)], dim=1)  # [B, t+1, d_attn]
-        V_full = torch.cat([null, self.v_proj(hidden_prev)], dim=1)  # [B, t+1, d_attn]
+        causal_mask = torch.triu(
+            torch.ones(T, T, device=q.device, dtype=torch.bool),
+            diagonal=1,
+        )
+        x, _ = self.cross_attn(q, k, v, attn_mask=causal_mask, need_weights=False)
+        x = x + q
+        x = self.trunk(x)
 
-        # Attention: Q [B, 1, d_attn] × K_full^T [B, d_attn, t+1] → [B, 1, t+1]
-        scores = torch.bmm(Q.unsqueeze(1), K_full.transpose(1, 2)) * self.scale
-        attn_weights = torch.softmax(scores, dim=-1)             # [B, 1, t+1]
-        pooled = torch.bmm(attn_weights, V_full).squeeze(1)      # [B, d_attn]
-        pooled = self.out_proj(pooled)                           # [B, d_attn]
+        result: dict[str, list[torch.Tensor]] = {'q': [], 'k': [], 'v': [], 'r': []}
 
-        # MLP → logit matrix
-        Z = self.mlp(pooled)  # [B, N, N]
+        for l in range(1, self.num_layers):
+            n_src = l + 1
+            raw = self.layer_heads[l - 1](x) + self.layer_biases[l - 1]
 
-        # Apply block-upper-triangular mask
-        mask = self.dag_mask  # [N, N]
-        Z_masked = Z * mask + (-1e9) * (1 - mask)
+            qkv_size = H * n_src
+            α_q = raw[:, :, :qkv_size].view(B, T, H, n_src)
+            α_k = raw[:, :, qkv_size:2*qkv_size].view(B, T, H, n_src)
+            α_v = raw[:, :, 2*qkv_size:3*qkv_size].view(B, T, H, n_src)
+            α_r = raw[:, :, 3*qkv_size:]
 
-        # Gumbel-Sigmoid + cascading gate
-        hard = (mode == "eval_hard")
-        A = gumbel_sigmoid(Z_masked, tau=tau, mode=mode)
-        A = cascading_gate(A, k=self.cascading_gate_k, hard=hard,
-                           heads_per_layer=self.heads_per_layer)
+            result['q'].append(α_q)
+            result['k'].append(α_k)
+            result['v'].append(α_v)
+            result['r'].append(α_r)
 
-        return A  # [B, N, N]
+        return result
 
     def get_trainable_parameters(self) -> list[nn.Parameter]:
         """All parameters are trainable."""

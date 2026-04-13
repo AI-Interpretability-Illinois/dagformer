@@ -1066,3 +1066,238 @@ Codex 最初把 runaway 归因于 R (因为 R 直接进残差流)，但实际数
 - label_smooth 单独: 若 train NLL 升回 ~3.85 + eval ~5.0 → label smoothing 直接生效
 - small_corr 单独: 若 corrections 1.11 → ~0.7 但 eval 改善 → corrections 是 overfit 主源
 - combo: 若 显著优于两个单独 → 两个机制独立有效
+
+### Root-cause update + clean diagnostics (2026-04-09)
+
+**范围修正**: 只看当前 **FourWay soft routing** 线。旧的 hard gate / Gumbel `A` 线不再作为主分析对象。
+
+**最新判断**:
+- 目前更像不是某个单独组件坏掉，而是 **dynamic conditional DoF 太大**。FourWay 不只是 “多了 ~30M 静态参数”，更像一个 input-conditioned routing / 小型 hypernetwork。
+- “它等价于更大的 LLM，需要更大的 recipe” 这个说法 **部分成立**，但不够精确。更准确的是: **大条件化空间 + joint training 下的 predictor/base co-adaptation**，让模型很容易收敛到 train 好、eval 差的解。
+- 现有证据支持这个判断:
+  - 真 dense baseline (独立 300M OLMo-2) eval NLL = **3.8459**
+  - `fourway_corrected_joint_causal` eval NLL = **5.4924**
+  - pure FourWay `long_train` 到 6000 step 能降到 **5.3702**，说明 recipe 确实重要，但离 dense 仍很远
+  - forced-identity eval 显示: `fw_pred=5.4924`, `fw_id=5.9662`, `fw_pred_noc=6.3161`, `fw_id_noc=7.0774`
+  - 结论: routing 是有效的，但学到的是泛化差的解；而且 **correction MLPs (-1.11 nats)** 比 external predictor (-0.47 nats) 更像主容量来源
+- 因此当前工作假说是: **过拟合主因是 dynamic routing 的自由度和 joint co-adaptation，不只是某个局部模块 bug**。单靠常规小正则化大概率只能缓解，不能直接追平 dense baseline。
+
+**诊断原则**:
+- 不再重跑 baseline。
+- 优先做能区分 “head-level routing 太自由 / correction token-level memorization / predictor embedding lookup memorization / 真正 layer-level routing 是否更稳” 的 clean ablation。
+
+**关于 `alpha_share_heads`**:
+- `alpha_share_heads` **不等于** MUDDFormer。
+- 它只是在 predictor 输出后，把 `Q/K/V` 的 per-head `α` 先按 head 维平均，再 broadcast 回各 head；`R` 不变。
+- 真正更接近 MUDDFormer-style 的对照应是 `routing_mode: layer_dwa_gate`。
+
+### 2026-04-09 新提交实验 (4×A40, no baseline rerun)
+
+| Job ID | Job Name | Config | 目标 | 备注 |
+|--------|----------|--------|------|------|
+| 17463826 | `fw_a_share` | `configs/fourway_alpha_shared_pure.yaml` | pure FourWay + `alpha_share_heads: true`，测试 per-head routing DoF 是否是主因 | clean shared-head 诊断，不走 corrected |
+| 17463827 | `fw_corr_mean` | `configs/fourway_corr_pool_mean.yaml` | 测试 correction 是否主要靠 token-local memorization | 若改善明显，说明 local correction 是主要 overfit 源 |
+| 17463828 | `fw_freeze_emb` | `configs/fourway_freeze_embed.yaml` | 测试 predictor embedding table 是否在记 input→α 映射 | 若改善明显，说明 predictor lookup-style memorization 存在 |
+| 17463880 | `fw_layer_dwa` | `configs/fourway_layer_dwa_gate.yaml` | 真正 layer-level DWA / MUDDFormer-style 对照 | 用来和 shared-head FourWay 区分 |
+
+**Log paths**:
+- `logs/fw_a_share_17463826.out`
+- `logs/fw_corr_mean_17463827.out`
+- `logs/fw_freeze_emb_17463828.out`
+- `logs/fw_layer_dwa_17463880.out`
+
+**预期判读**:
+- 若 `fw_a_share` 明显优于 5.49: 说明问题主要在 **per-head dynamic routing DoF**，不是单纯 recipe。
+- 若 `fw_corr_mean` 改善最大: 说明 **token-local correction memorization** 是主过拟合源。
+- 若 `fw_freeze_emb` 改善最大: 说明 predictor 的独立 embedding 在做 **lookup-table style memorization**。
+- 若前三个都只是在 5.4-5.7 间小波动，而 `fw_layer_dwa` 更稳: 后续主线应往 **更低 DoF 的 layer-level routing** 收缩。
+- 若四个都不改善太多: 更支持 “**dynamic routing 整体需要更强约束 + 更长/更大 recipe**” 这个方向，而不是继续扫小组件。
+
+### Approach E: Attention bottleneck predictor (2026-04-09)
+
+**动机**: 一个新的架构性假说是，当前 external FourWay predictor 看到了 **过分详细的 token-level 输入信号**:
+- 独立 token embedding + pos embedding
+- 2-layer predictor encoder 对全序列做表征
+- 然后每个 token 直接输出所有层的 `α_q/α_k/α_v/α_r`
+
+这给了 predictor 很大的 conditional bandwidth，容易学成 input-pattern → routing 的记忆器。  
+如果 routing 真正只需要和 **next-token prediction** 相关的摘要信号，更合理的做法是先对 prefix memory 做一次读操作，把信息压成一个向量，再让 MLP 产出 routing。
+
+**实现**:
+- 新增 `FourWayAttentionBottleneckPredictor` (`src/model/predictor.py`)
+- Query = 当前 token 的 layer-0 embedding（来自 base model 的 `embed_tokens`）
+- Key/Value = 同一个 base model 在 **dense scout pass** 下的 final hidden states
+- 用单次 causal multi-head attention 做 memory read
+- attention 输出 + query residual → 小 MLP trunk → 每层 routing heads
+- 仍保留 FourWay 的 identity init：routing output head `W=0`，bias=`[0,...,0,1]`
+
+**训练接法**:
+- `scripts/pretrain_dagformer.py` 新增 `fourway_predictor_variant`
+  - `"encoder"` = 现有独立 encoder predictor
+  - `"attn_bottleneck"` = 新 bottleneck predictor
+- bottleneck 变体在 train/eval 都通过 helper `predict_fourway_routing()` 调用
+- dense scout pass 用当前 base model、`torch.no_grad()`、`return_dict=True`，只取 `last_hidden_state`
+- 目的不是做第二个可训练分支，而是给 predictor 一个更 task-aligned、但更低带宽的 memory source
+
+**设计判断**:
+- 这是在测试 “**过拟合来自 predictor 输入过宽**” 的结构性版本，不是又一个小正则
+- 它不会变成真正的 next-token leakage，因为 query 用的是当前位置输入 token 的 layer-0 embedding，而不是 label token 本身
+- 它也不等于 MUDDFormer；FourWay mixing 仍然不变，只是 external predictor 被换成了 bottleneck reader
+
+**Config / Job**:
+- Config: `configs/fourway_attn_bottleneck_pure.yaml`
+- 设定: pure FourWay, `fourway_predictor_variant: attn_bottleneck`, `predictor_lr: 1e-4`
+- Job: **17464685** (`fw_attn_bneck`, 4×A40)
+- Logs:
+  - `logs/fw_attn_bneck_17464685.out`
+  - `logs/fw_attn_bneck_17464685.err`
+
+**判读**:
+- 若它明显优于 pure FourWay 当前参考线（尤其优于 `fourway_long_train` 早期区间）: 说明 predictor 输入带宽过宽这个方向是对的
+- 若 train 变差但 eval 改善: 说明 bottleneck 在发挥 regularization 作用
+- 若 train/eval 一起显著变差: 说明 “一个向量/token” 压得太狠，后续可以尝试少量 latent slots（比如 4 或 8 个 summary vectors）而不是回退到全带宽 predictor
+
+### External diagnosis update (Gemini-DeepThink, 2026-04-09)
+
+**共识**:
+- Gemini 的核心判断和当前内部判断 **高度一致**，最有价值的重述是：
+  - `open-loop controller`
+  - `predictor/base co-adaptation`
+  - `missing trust region around identity`
+- 这比“dynamic gating 只是更大的模型、需要更大的 recipe”更精确。
+- 特别是 `open-loop` 这个词很有用：当前 external predictor 基本是用 layer-0 / token-level 输入去决定深层 routing，但它并不真正基于运行中的深层状态做闭环校正。
+
+**保留分歧 / 需要谨慎的点**:
+- `fw_id_noc = 7.0774` 不能直接推出“residual stream 已经被 shred / chaos”这一种解释；更保守的表述仍然是：**base 已与 learned routing 强共适应**，脱离 learned routing 就不能工作。
+- Gemini 提议“立刻 kill independent predictor + local corrections”过于激进。因为有一批 **几何 / 归一化约束** 相关实验的旧结论后来发现混入了 eval bug，已经重新提交；这些结果在新评估下可能会改变我们对 “trust region / bounded routing” 的判断。
+- 因此当前不宜把 `softmax_fixed / sinkhorn_fixed / 相关几何约束 rerun` 线彻底判死，直到新的评估结果回来。
+
+**当前综合判断**:
+- 最可疑主因仍是：**open-loop conditional routing + missing trust region + joint co-adaptation**
+- 但 “bounded geometry / constrained routing” 现在需要重新进入主分析线，因为旧负结果不再完全可信
+
+**按信息增益排序的下一步**:
+1. `static learned router`:
+   - 完全去掉 input-conditioned predictor，只学静态 FourWay α
+   - 用来判定问题是否主要来自 token-conditional bandwidth，而不是 FourWay mixing 数学本身
+2. `frozen dense baseline + router-only`:
+   - 从 dense baseline 3.8459 checkpoint 出发，冻结 base，只训练 FourWay router
+   - 用来判定 joint co-adaptation 是否是主要病灶
+3. `train vs eval α distribution audit`:
+   - 对最好 overfit checkpoint 比较 train/eval 的 distance-to-identity / entropy / L2 / token-frequency-conditioned stats
+   - 用来直接验证 external predictor 是否在输出 OOD routing fingerprints
+4. 等待 `softmax_fixed / sinkhorn_fixed / 相关几何约束 rerun`:
+   - 因为之前的 eval bug，旧结论需要暂时降权
+   - 这些 rerun 会直接影响 “trust region / bounded routing” 是否值得升级为主线
+
+### Approach F: Static learned router + frozen dense pure (2026-04-09)
+
+**来源**:
+- 基于 Gemini-DeepThink 的诊断建议，和当前内部判断合并后的最高信息增益实验
+- 目标是优先区分：
+  - FourWay mixing 数学本身是否有根本问题
+  - 问题是否主要来自 input-conditioned routing bandwidth
+  - 问题是否主要来自 joint co-adaptation
+
+**F1. Static learned router**:
+- 新增 `FourWayStaticPredictor`
+- 不看 input，不看 token，不看 sequence
+- 直接学习每层的静态 `α_q / α_k / α_v / α_r`
+- 对所有 batch / time 位置 broadcast 同一组 α
+- 仍保留 identity init：每个 stream 默认 `[0,...,0,1]`
+- 这是最干净的控制实验：
+  - 若它泛化接近 dense baseline，说明 FourWay math 本身没问题，病灶主要在 token-conditional routing bandwidth
+  - 若它仍严重过拟合或明显变坏，说明 FourWay mixing 本身就可能与稳定 residual learning 张力很大
+
+**F2. Frozen dense baseline + pure FourWay router**:
+- 从 `pretrain_300m_baseline_5k/checkpoint_step5000.pt` 出发
+- 加 pure FourWay external predictor
+- **冻结 base model**
+- 只训练 external router
+- 这是最直接的 joint co-adaptation 测试：
+  - 若接近 dense baseline，说明 joint training 让 base + router 一起走歪了
+  - 若仍然明显过拟合，说明 external predictor 本身就更像 train-set-conditioned noise source
+
+**实现**:
+- `src/model/predictor.py`: 新增 `FourWayStaticPredictor`
+- `scripts/pretrain_dagformer.py`: `fourway_predictor_variant` 现在支持
+  - `"encoder"`
+  - `"static"`
+  - `"attn_bottleneck"`
+
+**Configs / Jobs**:
+- `configs/fourway_static_pure.yaml`
+  - Job: **17466822** (`fw_static_pure`)
+  - Logs:
+    - `logs/fw_static_pure_17466822.out`
+    - `logs/fw_static_pure_17466822.err`
+- `configs/fourway_frozen_dense_pure.yaml`
+  - Job: **17466823** (`fw_frz_dense`)
+  - Logs:
+    - `logs/fw_frz_dense_17466823.out`
+    - `logs/fw_frz_dense_17466823.err`
+
+### External diagnosis update (GPT-Pro, 2026-04-09)
+
+**新增共识**:
+- GPT-Pro 和 Gemini / 当前内部判断总体一致，但它把问题进一步收紧到了一个更具体的对象：
+  - **高带宽 conditional code 写进 attention logits**
+  - 特别是 `Q/K` routing 不是普通 depth mixing，而是在合成 token-specific attention kernels
+- 这个表述比“只是更大的动态模型”更强，也更能解释为什么很多 broad regularization 几乎没用
+
+**最重要的新点**:
+- 不要把 `Q/K/V/R` 当成四个风险差不多的 stream
+- `V/R` 更像信息 transport / residual mixing
+- `Q/K` 直接改的是 **看什么、怎么竞争注意力**
+- 因此当前最可疑的“毒性轴”是 **Q/K**, 而 local corrections 更像次级加速器/掩盖器
+
+**和现有判断的合并版**:
+- 目前最可信的解释是：
+  - `open-loop conditional routing`
+  - `missing trust region around identity`
+  - `joint co-adaptation`
+  - 且坏自由度很可能主要集中在 **Q/K**
+- 这也解释了为什么此前很多正则化 sweep 信息量不高：它们主要在管 predictor 或 α 的边缘统计，没有直接管到 attention-logit operator space
+
+### Approach G: QK-only vs VR-only split (2026-04-09)
+
+**动机**:
+- 直接测试 GPT-Pro 的核心判断：真正的病灶是否主要在 `Q/K` attention-kernel rewiring，而不是 generic FourWay routing 本身
+- 如果 `QK-only` 明显更容易出现 “train 很低 / eval 很差”，而 `VR-only` gap 小得多，那么后续就不该再把四路一视同仁
+
+**实现**:
+- `scripts/pretrain_dagformer.py` 新增 stream 开关：
+  - `route_q`
+  - `route_k`
+  - `route_v`
+  - `route_r`
+- 禁用的 stream 在 train/eval 都被强制成 exact identity `[0,...,0,1]`
+- 强制发生在 regularization 和 deterministic transforms 之前，因此禁用 stream 不参与梯度和损失
+
+**Configs / Jobs**:
+- `configs/fourway_qk_only_pure.yaml`
+  - `route_q: true`
+  - `route_k: true`
+  - `route_v: false`
+  - `route_r: false`
+  - Job: **17468404** (`fw_qk_only`)
+  - Logs:
+    - `logs/fw_qk_only_17468404.out`
+    - `logs/fw_qk_only_17468404.err`
+- `configs/fourway_vr_only_pure.yaml`
+  - `route_q: false`
+  - `route_k: false`
+  - `route_v: true`
+  - `route_r: true`
+  - Job: **17468405** (`fw_vr_only`)
+  - Logs:
+    - `logs/fw_vr_only_17468405.out`
+    - `logs/fw_vr_only_17468405.err`
+
+**预期判读**:
+- 若 `QK-only` 比 `VR-only` 更容易出现低 train / 高 eval gap:
+  - 强支持 “Q/K 是主毒性轴”
+- 若 `VR-only` 也同样严重过拟合:
+  - 说明问题更接近 token-local conditional bandwidth / predictor side-channel，而不只是 attention-logit rewiring
+- 若 `VR-only` 明显更稳:
+  - 后续主线应考虑先只保留 `V/R`，把 `Q/K` tie/shared/移除，再重新引入 trust region
