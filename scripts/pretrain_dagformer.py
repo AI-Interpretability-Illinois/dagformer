@@ -1207,6 +1207,23 @@ def main() -> None:
         if is_main:
             print(f"Resumed at step {global_step}")
 
+        # Rebuild dataloader to skip already-seen data.
+        # Without this, the stream restarts from the beginning of Dolma
+        # on every resume, causing the model to retrain on the same prefix.
+        samples_seen = global_step * config.gradient_accumulation_steps * config.micro_batch_size
+        if is_main:
+            print(f"  Rebuilding dataloader: skipping {samples_seen} samples to avoid data repetition")
+        train_loader = build_train_dataloader(
+            olmo_tokenizer=tokenizer,
+            seq_len=config.seq_len,
+            batch_size=config.micro_batch_size,
+            dataset_name=config.dataset,
+            dataset_version=config.dataset_name,
+            rank=local_rank,
+            world_size=world_size,
+            skip_samples=samples_seen,
+        )
+
     # Wandb
     wandb_run = None
     if is_main:

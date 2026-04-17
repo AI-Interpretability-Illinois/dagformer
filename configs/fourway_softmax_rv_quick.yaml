@@ -1,8 +1,4 @@
-# All known fixes combined:
-# 1. replace_rmsnorm: Olmo2RMSNorm → nn.RMSNorm (eliminates 7% gradient deviation in bf16)
-# 2. Bias filter: 'layer_biases' not 'bias' (already in code)
-# 3. LR scheduler: group 2 updated (already in code)
-
+# softmax_rv + all bugfixes, 1K quick run for comparison with plain quick
 hidden_size: 1024
 num_hidden_layers: 12
 num_attention_heads: 16
@@ -21,6 +17,8 @@ fourway_hidden: 512
 predictor_causal: true
 correction_hidden: 128
 
+routing_normalize: "softmax_rv"
+
 replace_rmsnorm: true
 
 dataset: "allenai/dolma"
@@ -30,7 +28,7 @@ seed: 42
 
 micro_batch_size: 4
 gradient_accumulation_steps: 32
-total_steps: 5000
+total_steps: 1000
 lr: 5e-4
 predictor_lr: 3e-4
 beta1: 0.9
@@ -42,10 +40,10 @@ lr_schedule: "linear"
 
 eval_skip: 1000000
 eval_size: 50
-eval_every: 500
+eval_every: 250
 
 wandb_project: "dagformer"
-wandb_run_name: "fourway_full_fix"
+wandb_run_name: "fourway_softmax_rv_quick"
 log_every: 10
-save_every: 500
-save_dir: "checkpoints/fourway_full_fix"
+save_every: 1000
+save_dir: "checkpoints/fourway_softmax_rv_quick"

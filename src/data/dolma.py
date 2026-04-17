@@ -52,6 +52,7 @@ class DolmaPackedDataset(IterableDataset):
         rank: int = 0,
         world_size: int = 1,
         max_samples: Optional[int] = None,
+        skip_samples: int = 0,
     ):
         super().__init__()
         self.olmo_tokenizer = olmo_tokenizer
@@ -61,6 +62,7 @@ class DolmaPackedDataset(IterableDataset):
         self.rank = rank
         self.world_size = world_size
         self.max_samples = max_samples
+        self.skip_samples = skip_samples  # skip first N packed sequences on resume
 
         self.eos_id = olmo_tokenizer.eos_token_id
         assert self.eos_id is not None, "OLMo tokenizer must have an EOS token"
@@ -111,21 +113,34 @@ class DolmaPackedDataset(IterableDataset):
         return dataset
 
     def __iter__(self) -> Iterator[dict]:
-        """Yield packed sequences from Dolma stream with retry on HTTP errors."""
+        """Yield packed sequences from Dolma stream with retry on HTTP errors.
+
+        On resume (skip_samples > 0), fast-forwards through the stream to avoid
+        re-training on already-seen data. On HTTP retry, also fast-forwards to
+        the last yielded position instead of restarting from the beginning.
+        """
         buffer: list[int] = []
-        sample_count = 0
+        sample_count = 0  # total samples produced (including skipped)
+        yielded_count = 0  # samples actually yielded (after skip)
         retries = 0
         # For dolmino_mix, HF .shard() doesn't work on interleaved datasets,
         # so we do manual document-level modulo sharding here instead.
         manual_shard = (self.dataset_version == "dolmino_mix" and self.world_size > 1)
 
+        # Track how many docs we've consumed for HTTP retry fast-forward
+        docs_consumed = 0
+
+        if self.skip_samples > 0:
+            print(f"[DolmaDataset] Resuming: will skip first {self.skip_samples} packed sequences")
+
         while retries <= MAX_RETRIES:
             try:
                 dataset = self._load_stream()
                 doc_idx = 0
+                docs_skipped_for_retry = 0
 
                 for doc in dataset:
-                    if self.max_samples is not None and sample_count >= self.max_samples:
+                    if self.max_samples is not None and yielded_count >= self.max_samples:
                         return
 
                     # Manual DDP sharding: each rank takes every world_size-th doc
@@ -135,18 +150,31 @@ class DolmaPackedDataset(IterableDataset):
                             continue
                         doc_idx += 1
 
+                    # On HTTP retry, skip docs we already processed
+                    if docs_skipped_for_retry < docs_consumed:
+                        docs_skipped_for_retry += 1
+                        continue
+
                     text = doc.get("text", "")
                     if not text.strip():
+                        docs_consumed += 1
                         continue
 
                     tokens = self.olmo_tokenizer(text, add_special_tokens=False)["input_ids"]
                     buffer.extend(tokens)
                     buffer.append(self.eos_id)
+                    docs_consumed += 1
 
                     # Yield packed sequences as buffer fills
                     while len(buffer) >= self.seq_len + 1:
                         chunk = buffer[:self.seq_len + 1]
                         buffer = buffer[self.seq_len + 1:]
+
+                        sample_count += 1
+
+                        # Fast-forward: skip already-seen samples on resume
+                        if sample_count <= self.skip_samples:
+                            continue
 
                         olmo_ids = torch.tensor(chunk[:self.seq_len], dtype=torch.long)
                         olmo_labels = torch.tensor(chunk[1:self.seq_len + 1], dtype=torch.long)
@@ -157,9 +185,9 @@ class DolmaPackedDataset(IterableDataset):
                             "olmo_labels": olmo_labels,
                             "raw_text": raw_text,
                         }
-                        sample_count += 1
+                        yielded_count += 1
 
-                        if self.max_samples is not None and sample_count >= self.max_samples:
+                        if self.max_samples is not None and yielded_count >= self.max_samples:
                             return
 
                 # Stream exhausted normally
@@ -170,9 +198,9 @@ class DolmaPackedDataset(IterableDataset):
                 if retries > MAX_RETRIES:
                     raise RuntimeError(f"Dolma stream failed after {MAX_RETRIES} retries: {e}") from e
                 print(f"[DolmaDataset] Stream error (retry {retries}/{MAX_RETRIES}): {e}")
-                print(f"[DolmaDataset] Waiting {RETRY_WAIT}s before reconnecting...")
+                print(f"[DolmaDataset] Resuming from doc {docs_consumed} after {RETRY_WAIT}s...")
                 time.sleep(RETRY_WAIT)
-                buffer = []  # reset buffer, data order doesn't matter for training
+                buffer = []  # reset buffer on retry
 
 
 def build_train_dataloader(
@@ -184,8 +212,15 @@ def build_train_dataloader(
     rank: int = 0,
     world_size: int = 1,
     num_workers: int = 0,
+    skip_samples: int = 0,
 ) -> torch.utils.data.DataLoader:
-    """Build training dataloader with sequence packing."""
+    """Build training dataloader with sequence packing.
+
+    Args:
+        skip_samples: number of packed sequences to skip (for resume).
+            On resume, pass step * accum_steps * batch_size to fast-forward
+            past already-seen data instead of retraining on the same prefix.
+    """
     dataset = DolmaPackedDataset(
         olmo_tokenizer=olmo_tokenizer,
         seq_len=seq_len,
@@ -193,6 +228,7 @@ def build_train_dataloader(
         dataset_version=dataset_version,
         rank=rank,
         world_size=world_size,
+        skip_samples=skip_samples,
     )
     return torch.utils.data.DataLoader(
         dataset,

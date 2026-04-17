@@ -1,7 +1,6 @@
-# All known fixes combined:
-# 1. replace_rmsnorm: Olmo2RMSNorm → nn.RMSNorm (eliminates 7% gradient deviation in bf16)
-# 2. Bias filter: 'layer_biases' not 'bias' (already in code)
-# 3. LR scheduler: group 2 updated (already in code)
+# fourway_softmax_rv + ALL bugfixes (SDPA + nn.RMSNorm + bias filter + LR scheduler)
+# Re-run of the previous top-3.57 softmax_rv experiment with the fixed code path
+# to see if softmax-normalized R/V routing still helps under correct DDP/attention.
 
 hidden_size: 1024
 num_hidden_layers: 12
@@ -21,7 +20,9 @@ fourway_hidden: 512
 predictor_causal: true
 correction_hidden: 128
 
-replace_rmsnorm: true
+routing_normalize: "softmax_rv"     # softmax on R and V streams (the regularization)
+
+replace_rmsnorm: true               # bugfix: Olmo2RMSNorm → nn.RMSNorm
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"
@@ -45,7 +46,7 @@ eval_size: 50
 eval_every: 500
 
 wandb_project: "dagformer"
-wandb_run_name: "fourway_full_fix"
+wandb_run_name: "fourway_softmax_rv_full_fix"
 log_every: 10
 save_every: 500
-save_dir: "checkpoints/fourway_full_fix"
+save_dir: "checkpoints/fourway_softmax_rv_full_fix"
