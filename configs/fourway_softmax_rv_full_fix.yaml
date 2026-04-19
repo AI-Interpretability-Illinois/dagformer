@@ -23,6 +23,7 @@ correction_hidden: 128
 routing_normalize: "softmax_rv"     # softmax on R and V streams (the regularization)
 
 replace_rmsnorm: true               # bugfix: Olmo2RMSNorm → nn.RMSNorm
+use_torch_compile: true             # fuse small ops for ~15-30% speedup
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

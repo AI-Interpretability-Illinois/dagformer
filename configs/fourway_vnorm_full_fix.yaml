@@ -22,6 +22,7 @@ correction_hidden: 128
 use_v_norm: true                    # V post-mix RMSNorm (the regularization)
 
 replace_rmsnorm: true               # bugfix: Olmo2RMSNorm → nn.RMSNorm
+use_torch_compile: true             # fuse small ops for ~15-30% speedup
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

@@ -22,6 +22,7 @@ predictor_causal: true
 correction_hidden: 128
 
 replace_rmsnorm: true
+use_torch_compile: true             # fuse small ops for ~15-30% speedup
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

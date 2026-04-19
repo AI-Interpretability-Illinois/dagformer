@@ -771,23 +771,20 @@ class FourWayDAGFormer(nn.Module):
                 # This avoids per-head model_dim projection (the 3.5x bottleneck)
                 attn = self.olmo.model.layers[l].self_attn
 
-                # Project all layer outputs through QKV (L standard matmuls)
-                # Each: [B, T, D] → [B, T, H*hd] → [B, T, H, hd]
-                q_layers = []
-                k_layers = []
-                v_layers = []
-                for X_j in layer_outputs:
-                    q_j = attn.q_proj(X_j).view(batch, seq_len, H, self.head_dim)
-                    k_j = attn.k_proj(X_j).view(batch, seq_len, H, self.head_dim)
-                    v_j = attn.v_proj(X_j).view(batch, seq_len, H, self.head_dim)
-                    q_layers.append(q_j)
-                    k_layers.append(k_j)
-                    v_layers.append(v_j)
-
-                # Stack: [L, B, T, H, hd]
-                q_stack = torch.stack(q_layers, dim=0)
-                k_stack = torch.stack(k_layers, dim=0)
-                v_stack = torch.stack(v_layers, dim=0)
+                # Fused QKV projection: 1 matmul instead of 3*L separate matmuls.
+                # Stack all layer outputs → fuse Q/K/V weights → single large matmul.
+                # For layer 11 this replaces 36 small matmuls with 1 large one,
+                # dramatically improving GPU utilization on bandwidth-bound workloads.
+                L_cur = len(layer_outputs)
+                stacked = torch.stack(layer_outputs, dim=0)  # [L, B, T, D]
+                stacked_flat = stacked.reshape(-1, self.model_dim)  # [L*B*T, D]
+                W_qkv = torch.cat([attn.q_proj.weight, attn.k_proj.weight,
+                                   attn.v_proj.weight], dim=0)  # [3*D, D]
+                qkv_flat = F.linear(stacked_flat, W_qkv)  # [L*B*T, 3*D]
+                qkv = qkv_flat.view(L_cur, batch, seq_len, 3, H, self.head_dim)
+                q_stack = qkv[:, :, :, 0]  # [L, B, T, H, hd]
+                k_stack = qkv[:, :, :, 1]
+                v_stack = qkv[:, :, :, 2]
 
                 # Get routing weights
                 α_q = routing_weights['q'][l - 1].to(dtype=q_stack.dtype)  # [B, T, H, L]
@@ -899,8 +896,7 @@ class FourWayDAGFormer(nn.Module):
                         v_normed = self.v_norms[l - 1](v_concat)
                         v_per_head = rearrange(v_normed, 'b t (h d) -> b h t d', h=H)
 
-                    # R stream
-                    stacked = torch.stack(layer_outputs, dim=0)  # [L, B, T, D]
+                    # R stream (reuse stacked from fused QKV — no redundant torch.stack)
                     R = torch.einsum('lbtd, btl -> btd', stacked, α_r)
 
             # RoPE (same for all approaches)
