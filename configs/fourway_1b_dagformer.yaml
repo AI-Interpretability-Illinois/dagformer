@@ -28,6 +28,8 @@ predictor_max_seq_len: 4096
 fourway_hidden: 512
 predictor_causal: true
 correction_hidden: 128
+use_v_norm: true                    # combo winner: V post-mix RMSNorm
+routing_normalize: "softmax_rv"     # combo winner: softmax on R/V weights
 
 replace_rmsnorm: true
 use_torch_compile: false             # disabled: causes grad_fn detach at 1B scale (graph break in _detect_is_causal_mask)
