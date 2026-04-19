@@ -30,7 +30,7 @@ predictor_causal: true
 correction_hidden: 128
 
 replace_rmsnorm: true
-use_torch_compile: true
+use_torch_compile: false             # disabled: causes grad_fn detach at 1B scale (graph break in _detect_is_causal_mask)
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

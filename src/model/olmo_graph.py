@@ -676,8 +676,9 @@ class FourWayDAGFormer(nn.Module):
         # Each layer l in 1..num_layers-1 gets its own v_norm over model_dim.
         # Layer 0 is not routed, so no v_norm there.
         if use_v_norm:
+            # Use nn.RMSNorm (not Olmo2RMSNorm) to avoid f32 cast + torch.compile issues
             self.v_norms = nn.ModuleList([
-                Olmo2RMSNorm(self.model_dim, eps=self.rms_norm_eps)
+                nn.RMSNorm(self.model_dim, eps=self.rms_norm_eps)
                 for _ in range(num_layers - 1)
             ])
 
