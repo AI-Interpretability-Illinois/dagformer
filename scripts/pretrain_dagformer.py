@@ -808,7 +808,10 @@ def main() -> None:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.makedirs(config.save_dir, exist_ok=True)
     eval_cache_path = os.path.join(config.save_dir, "eval_cache.pt")
-    if not os.path.exists(eval_cache_path):
+    if config.eval_size <= 0:
+        if is_main:
+            print("eval_size=0, skipping eval set construction.")
+    elif not os.path.exists(eval_cache_path):
         if is_main:
             print("Pre-building eval cache (before DDP init)...")
             _tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_id)
@@ -1105,7 +1108,7 @@ def main() -> None:
 
     # Eval data (rank 0 only — cache was built before DDP init)
     eval_batches: list[dict] = []
-    if is_main:
+    if is_main and config.eval_size > 0:
         eval_batches = build_eval_dataloader(
             olmo_tokenizer=tokenizer,
             seq_len=config.seq_len,

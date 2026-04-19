@@ -39,9 +39,8 @@ warmup_steps: 200
 max_grad_norm: 1.0
 lr_schedule: "linear"
 
-eval_skip: 1000000
-eval_size: 50
-eval_every: 250
+eval_skip: 0
+eval_size: 0                        # skip eval for quick reg test
 
 wandb_project: "dagformer"
 wandb_run_name: "reg-75m-softmax-rv"
