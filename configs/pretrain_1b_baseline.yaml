@@ -1,0 +1,46 @@
+# Dense OLMo-2 1B baseline for scaling law
+# Architecture matches OLMo-2-0425-1B exactly
+# ~1.24B unique params (tied embeddings)
+#
+# Token budget options (adjust total_steps):
+#   10K steps =  5.2B tokens (~1.5 days on 4× A100, ~$200)
+#   20K steps = 10.5B tokens (~3 days, ~$400)
+#   46K steps = 24.1B tokens (Chinchilla, ~6 days, ~$800)
+#
+# Batch: 16 × 8 accum × 4 GPUs × 1024 = 524K tokens/step
+# micro_batch=16 fits on A100 80GB for 1B dense
+
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 16
+gradient_accumulation_steps: 8
+total_steps: 10000              # 5.2B tokens; set 46000 for Chinchilla 24B
+lr: 4e-4                        # slightly lower for 1B (Step Law)
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 500
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 1000
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-1b"
+log_every: 10
+save_every: 2000
+save_dir: "checkpoints/pretrain_1b_baseline"

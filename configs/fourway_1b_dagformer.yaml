@@ -1,0 +1,60 @@
+# FourWay DAGFormer 1B for scaling law
+# Base architecture: OLMo-2-0425-1B (2048 hidden, 16 layers, 16 heads)
+# All bugfixes: SDPA, nn.RMSNorm, fused QKV, torch.compile
+#
+# Token budget options (adjust total_steps):
+#   10K steps =  5.2B tokens (~3 days on 4× A100, ~$400)
+#   20K steps = 10.5B tokens (~6 days, ~$800)
+#   46K steps = 24.1B tokens (Chinchilla, ~14 days, ~$1800)
+#
+# Batch: 4 × 32 accum × 4 GPUs × 1024 = 524K tokens/step
+# micro_batch=4 for FourWay overhead on A100 80GB
+# If OOM, reduce to micro_batch=2, gradient_accumulation_steps=64
+
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway_corrected"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+
+replace_rmsnorm: true
+use_torch_compile: true
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 10000              # 5.2B tokens; set 46000 for Chinchilla 24B
+lr: 4e-4
+predictor_lr: 2e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 500
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 1000
+
+wandb_project: "dagformer"
+wandb_run_name: "dagformer-1b"
+log_every: 10
+save_every: 2000
+save_dir: "checkpoints/fourway_1b_dagformer"

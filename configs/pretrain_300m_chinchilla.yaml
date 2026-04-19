@@ -1,0 +1,38 @@
+# Dense OLMo-2 300M at Chinchilla-optimal tokens
+# 12000 steps × 524K tokens/step = 6.3B tokens (Chinchilla ~6B for 304M)
+# Previously only trained 5K steps (2.6B tokens) — under-trained.
+
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 8
+gradient_accumulation_steps: 16
+total_steps: 12000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 1000
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-300m-chinchilla"
+log_every: 10
+save_every: 3000
+save_dir: "checkpoints/pretrain_300m_chinchilla"
