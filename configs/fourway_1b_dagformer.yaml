@@ -49,9 +49,8 @@ warmup_steps: 500
 max_grad_norm: 1.0
 lr_schedule: "linear"
 
-eval_skip: 1000000
-eval_size: 50
-eval_every: 1000
+eval_skip: 0
+eval_size: 0
 
 wandb_project: "dagformer"
 wandb_run_name: "dagformer-1b"
