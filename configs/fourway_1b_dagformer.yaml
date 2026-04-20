@@ -56,5 +56,5 @@ eval_size: 0
 wandb_project: "dagformer"
 wandb_run_name: "dagformer-1b"
 log_every: 10
-save_every: 2000
+save_every: 500
 save_dir: "checkpoints/fourway_1b_dagformer"

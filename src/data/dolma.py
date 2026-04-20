@@ -27,7 +27,7 @@ DOLMINO_MIX = {
 }
 # Sum = 1.000
 
-MAX_RETRIES = 10
+MAX_RETRIES = 999999  # never crash from transient HTTP errors
 RETRY_WAIT = 30  # seconds
 
 
