@@ -334,6 +334,34 @@ class TrainStateWithModel(train_state.TrainState):
 
 # ─── Main ────────────────────────────────────────────────────────────────────
 
+def find_latest_checkpoint(save_dir: str):
+    """Return (path, step) of latest checkpoint, or (None, 0) if none."""
+    if not os.path.isdir(save_dir):
+        return None, 0
+    import re
+    candidates = []
+    for fn in os.listdir(save_dir):
+        m = re.match(r"checkpoint_step(\d+)\.pkl", fn)
+        if m:
+            candidates.append((int(m.group(1)), os.path.join(save_dir, fn)))
+    if not candidates:
+        return None, 0
+    candidates.sort(reverse=True)
+    return candidates[0][1], candidates[0][0]
+
+
+def save_checkpoint(state, step, save_dir):
+    """Save full TrainState (params + opt_state + step) for resume."""
+    import pickle
+    ckpt_path = os.path.join(save_dir, f"checkpoint_step{step}.pkl")
+    # Take from first device (all replicas identical)
+    params_cpu = jax.tree_util.tree_map(lambda x: x[0], state.params)
+    opt_state_cpu = jax.tree_util.tree_map(lambda x: x[0] if hasattr(x, 'shape') and x.ndim > 0 else x, state.opt_state)
+    with open(ckpt_path, 'wb') as f:
+        pickle.dump({'step': step, 'params': params_cpu, 'opt_state': opt_state_cpu}, f)
+    print(f"  Checkpoint saved: {ckpt_path}")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, required=True)
@@ -383,6 +411,23 @@ def main():
         model=model,
     )
 
+    # ─── Resume from checkpoint if exists ───
+    start_step = 0
+    ckpt_path, ckpt_step = find_latest_checkpoint(config.save_dir)
+    if ckpt_path is not None:
+        import pickle
+        print(f"Resuming from {ckpt_path} (step {ckpt_step})")
+        with open(ckpt_path, 'rb') as f:
+            ckpt = pickle.load(f)
+        # Restore params and opt_state
+        state = state.replace(
+            params=ckpt['params'],
+            opt_state=ckpt['opt_state'],
+            step=jnp.asarray(ckpt['step']),
+        )
+        start_step = ckpt['step']
+        print(f"Will resume training from step {start_step + 1}")
+
     # Replicate across devices
     state = jax.device_put_replicated(state, jax.devices())
 
@@ -390,12 +435,29 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_id)
     data_iter = build_data_iterator(tokenizer, config)
 
+    # Skip data already consumed (must match the number of micro-batches
+    # the previous run consumed before crashing).
+    if start_step > 0:
+        samples_to_skip = start_step * config.gradient_accumulation_steps * config.micro_batch_size * num_devices
+        print(f"Skipping {samples_to_skip:,} samples to fast-forward data stream...")
+        skipped = 0
+        for _ in range(samples_to_skip):
+            try:
+                next(data_iter)
+                skipped += 1
+                if skipped % 10000 == 0:
+                    print(f"  ...skipped {skipped:,}/{samples_to_skip:,}")
+            except StopIteration:
+                print(f"  Stream exhausted after {skipped} samples — restarting iterator")
+                data_iter = build_data_iterator(tokenizer, config)
+        print(f"Skip done. Resuming training.")
+
     # Training loop
     print(f"\nTraining starts (total_steps={config.total_steps})")
     t0 = time.time()
-    tokens_seen = 0
+    tokens_seen = start_step * tokens_per_step
 
-    for step in range(1, config.total_steps + 1):
+    for step in range(start_step + 1, config.total_steps + 1):
         # Gradient accumulation
         for _ in range(config.gradient_accumulation_steps):
             # Get batch: [num_devices, micro_batch, seq_len]
@@ -412,21 +474,17 @@ def main():
         if step % config.log_every == 0:
             loss_val = float(loss[0])  # take from first device
             elapsed = time.time() - t0
-            tok_per_sec = tokens_seen / elapsed
+            tok_per_sec = (tokens_seen - start_step * tokens_per_step) / max(elapsed, 1e-9)
             lr_val = float(lr_fn(step))
             print(f"[step {step}] loss={loss_val:.4f}, lr={lr_val:.6f}, "
                   f"tokens/sec={tok_per_sec:.0f}, tokens_seen={tokens_seen/1e9:.3f}B")
 
         # Checkpointing
         if step % config.save_every == 0:
-            ckpt_path = os.path.join(config.save_dir, f"checkpoint_step{step}.pkl")
-            # Save from first device
-            params_cpu = jax.tree_util.tree_map(lambda x: x[0], state.params)
-            import pickle
-            with open(ckpt_path, 'wb') as f:
-                pickle.dump({'step': step, 'params': params_cpu}, f)
-            print(f"  Checkpoint saved: {ckpt_path}")
+            save_checkpoint(state, step, config.save_dir)
 
+    # Final save
+    save_checkpoint(state, config.total_steps, config.save_dir)
     print(f"\nTraining complete. Final loss: {float(loss[0]):.4f}")
 
 
