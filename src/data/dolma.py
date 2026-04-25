@@ -67,6 +67,33 @@ class DolmaPackedDataset(IterableDataset):
         self.eos_id = olmo_tokenizer.eos_token_id
         assert self.eos_id is not None, "OLMo tokenizer must have an EOS token"
 
+    def _load_local_stream(self, local_dir: str):
+        """Iterate pre-downloaded *.json.gz files in local_dir (alphabetical order).
+        Each rank takes every world_size-th doc (manual shard).
+        Activated by env DOLMA_LOCAL_DIR — eliminates HTTP streaming instability.
+        """
+        import glob, gzip, json
+        files = sorted(glob.glob(os.path.join(local_dir, "**", "*.json.gz"), recursive=True))
+        if not files:
+            raise RuntimeError(f"DOLMA_LOCAL_DIR={local_dir} has no *.json.gz files")
+        if self.rank == 0:
+            print(f"[DolmaDataset] Local mode: {len(files)} files in {local_dir}")
+
+        def gen():
+            doc_idx = 0
+            for fpath in files:
+                with gzip.open(fpath, "rt", encoding="utf-8") as f:
+                    for line in f:
+                        take = (self.world_size <= 1) or (doc_idx % self.world_size == self.rank)
+                        doc_idx += 1
+                        if not take:
+                            continue
+                        try:
+                            yield json.loads(line)
+                        except Exception:
+                            continue
+        return gen()
+
     def _load_stream(self):
         """Load streaming dataset. Supports Dolmino multi-subset interleaving.
 
@@ -74,6 +101,10 @@ class DolmaPackedDataset(IterableDataset):
         some subsets have too few parquet files for per-subset sharding.
         DDP sharding is handled via manual modulo in __iter__ instead.
         """
+        local_dir = os.environ.get("DOLMA_LOCAL_DIR", "")
+        if local_dir and os.path.isdir(local_dir) and self.dataset_version != "dolmino_mix":
+            return self._load_local_stream(local_dir)
+
         if self.dataset_version == "dolmino_mix":
             # Interleave Dolmino subsets with approximate 50B mix proportions
             # Only keep 'text' column — metadata schemas differ across subsets
