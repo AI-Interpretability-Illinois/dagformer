@@ -132,17 +132,27 @@ def build_dagformer(yaml_path: str, ckpt_path: str, device: str = "cuda:0",
         correction_hidden=getattr(cfg, "correction_hidden", 128),
     )
 
-    # Load ckpt
+    # Load ckpt:
+    #   model_state_path -> base (Olmo2) state (no prefix)
+    #   predictor_state_dict -> may have _orig_mod. prefix from torch.compile
+    #   routing_state_dict   -> correction_mlps/v_norms (subset of fourway)
+    def strip_compile(sd):
+        return {k.replace("_orig_mod.", "", 1): v for k, v in sd.items()}
     ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     if "model_state_path" in ck:
         base_sd = torch.load(ck["model_state_path"], map_location="cpu", weights_only=False)
     else:
         base_sd = ck.get("model_state_dict", {})
-    base.load_state_dict(base_sd, strict=False)
-    predictor.load_state_dict(ck["predictor_state_dict"], strict=False)
+    base_sd = strip_compile(base_sd)
+    mb, ub = base.load_state_dict(base_sd, strict=False)
+    print(f"  base load: missing={len(mb)} unexpected={len(ub)}")
+    pred_sd = strip_compile(ck["predictor_state_dict"])
+    mp, up = predictor.load_state_dict(pred_sd, strict=False)
+    print(f"  predictor load: missing={len(mp)} unexpected={len(up)}")
     if "routing_state_dict" in ck:
-        # routing_state contains correction_mlps + v_norms (belong to fourway model)
-        fourway.load_state_dict(ck["routing_state_dict"], strict=False)
+        rs = strip_compile(ck["routing_state_dict"])
+        mr, ur = fourway.load_state_dict(rs, strict=False)
+        print(f"  routing load: missing={len(mr)} unexpected={len(ur)}")
     model = DAGFormerForCausalLM(cfg, base, predictor, fourway)
     model = model.to(device=device, dtype=dtype).eval()
     # Keep correction_mlps in fp32: their forward does hidden.float() first

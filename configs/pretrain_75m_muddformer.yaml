@@ -1,0 +1,36 @@
+# 75M MuDDFormer for DAGFormer scaling-study comparison
+# Same compute budget as pretrain_75m_baseline.yaml (Chinchilla 1.5B tokens)
+
+hidden_size: 512
+num_hidden_layers: 6
+num_attention_heads: 8
+intermediate_size: 2048
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 8
+gradient_accumulation_steps: 16
+total_steps: 3000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 0
+eval_size: 0
+
+wandb_project: "dagformer"
+wandb_run_name: "muddformer-75m"
+log_every: 10
+save_every: 1500
+save_dir: "checkpoints/pretrain_75m_muddformer"

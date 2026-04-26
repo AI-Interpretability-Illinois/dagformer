@@ -1,0 +1,80 @@
+{
+  "arc_challenge": {
+    "alias": "arc_challenge",
+    "acc,none": 0.17235494880546076,
+    "acc_stderr,none": 0.011037113093461288,
+    "acc_norm,none": 0.22610921501706485,
+    "acc_norm_stderr,none": 0.012224202097063337
+  },
+  "arc_easy": {
+    "alias": "arc_easy",
+    "acc,none": 0.3101851851851852,
+    "acc_stderr,none": 0.009491721291998401,
+    "acc_norm,none": 0.3042929292929293,
+    "acc_norm_stderr,none": 0.009441202922359051
+  },
+  "boolq": {
+    "alias": "boolq",
+    "acc,none": 0.48990825688073397,
+    "acc_stderr,none": 0.00874327354480195
+  },
+  "copa": {
+    "alias": "copa",
+    "acc,none": 0.57,
+    "acc_stderr,none": 0.049756985195624305
+  },
+  "hellaswag": {
+    "alias": "hellaswag",
+    "acc,none": 0.2638916550487951,
+    "acc_stderr,none": 0.004398404992933761,
+    "acc_norm,none": 0.26000796654052977,
+    "acc_norm_stderr,none": 0.004377421493297842
+  },
+  "lambada_openai": {
+    "alias": "lambada_openai",
+    "perplexity,none": 330.73076268763504,
+    "perplexity_stderr,none": 16.54508352280047,
+    "acc,none": 0.19192703279642925,
+    "acc_stderr,none": 0.0054866270029274135
+  },
+  "openbookqa": {
+    "alias": "openbookqa",
+    "acc,none": 0.144,
+    "acc_stderr,none": 0.015716934945725784,
+    "acc_norm,none": 0.27,
+    "acc_norm_stderr,none": 0.019874354831287473
+  },
+  "piqa": {
+    "alias": "piqa",
+    "acc,none": 0.5620239390642002,
+    "acc_stderr,none": 0.011575720065593988,
+    "acc_norm,none": 0.5484221980413493,
+    "acc_norm_stderr,none": 0.011610989358814248
+  },
+  "sciq": {
+    "alias": "sciq",
+    "acc,none": 0.483,
+    "acc_stderr,none": 0.015810153729833274,
+    "acc_norm,none": 0.427,
+    "acc_norm_stderr,none": 0.015649789644462186
+  },
+  "social_iqa": {
+    "alias": "social_iqa",
+    "acc,none": 0.34953940634595704,
+    "acc_stderr,none": 0.010789652212087036
+  },
+  "wikitext": {
+    "alias": "wikitext",
+    "word_perplexity,none": 129.4096546848073,
+    "word_perplexity_stderr,none": "N/A",
+    "byte_perplexity,none": 2.4828376703466035,
+    "byte_perplexity_stderr,none": "N/A",
+    "bits_per_byte,none": 1.3119899401931263,
+    "bits_per_byte_stderr,none": "N/A"
+  },
+  "winogrande": {
+    "alias": "winogrande",
+    "acc,none": 0.5074980268350434,
+    "acc_stderr,none": 0.014050905521228646
+  }
+}
