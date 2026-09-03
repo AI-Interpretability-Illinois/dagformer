@@ -1,0 +1,35 @@
+{
+  "config": {
+    "ckpt": "checkpoints/pretrain_150m_dagformer_mmap/checkpoint_step6000.pt",
+    "config_file": "configs/pretrain_150m_dagformer_mmap.yaml",
+    "hf_model": null,
+    "hf_revision": "main",
+    "mode": "fourway",
+    "tasks": [
+      "wikitext"
+    ],
+    "batch_size": 8,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "wikitext": {
+      "alias": "wikitext",
+      "word_perplexity,none": 71.59014199768228,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.222628223214388,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.1522666503978938,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "wikitext": 2.0
+  }
+}

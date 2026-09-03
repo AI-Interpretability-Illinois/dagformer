@@ -1,0 +1,52 @@
+# FourWay POS-TABLE 150M — ladder cell "position-conditioned routing, no content".
+# Learned per-layer/head/stream alphas shared across all tokens & contexts;
+# no external predictor, no correction MLPs (routing_mode "fourway", not
+# "fourway_corrected"). Mirrors pretrain_150m_dagformer_mmap.yaml exactly
+# otherwise (same data, steps, schedule) so the 2x2 comparison is clean:
+#   dense | DenseFormer (layer x static) | MUDDFormer (layer x dynamic)
+#   FourWayStatic (head x static) | DAGFormer (head x dynamic)
+
+hidden_size: 768
+num_hidden_layers: 8
+num_attention_heads: 12
+intermediate_size: 3072
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway"
+fourway_predictor_variant: "pos_table"
+
+replace_rmsnorm: true
+use_torch_compile: true
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/data/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 6000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "fourway-postable-150m"
+log_every: 10
+save_every: 1500
+keep_last_n: 2
+save_dir: "checkpoints/fourway_150m_postable_mmap"

@@ -1,0 +1,6962 @@
+[
+ {
+  "head": "L1/h0",
+  "n_windows": 5000,
+  "mean_dnll": 6.711196328978986e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.00014091533375903964,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.0028459811583161354,
+  "n_functions": 5,
+  "total_coverage": 0.07747800113296872,
+  "functions": [
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.034662142395973206,
+    "m0": 0.002603910630568862,
+    "contrast": 13.311571445292175,
+    "base_rate": 0.019744140625,
+    "coverage": 0.050989969660717754
+   },
+   {
+    "rule": "digit following a digit",
+    "spec": [
+     "number_cont",
+     null
+    ],
+    "m1": 0.019631432369351387,
+    "m0": 0.003171870717778802,
+    "contrast": 6.189228413161457,
+    "base_rate": 0.00394921875,
+    "coverage": 0.006932618513415367
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.011808247305452824,
+    "m0": 0.0031748032197356224,
+    "contrast": 3.719363528438194,
+    "base_rate": 0.007189453125,
+    "coverage": 0.00859463173480639
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.010006694123148918,
+    "m0": 0.003145275404676795,
+    "contrast": 3.1815001345413805,
+    "base_rate": 0.013349609375,
+    "coverage": 0.01466051912604088
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.01013858336955309,
+    "m0": 0.0032163625583052635,
+    "contrast": 3.152189215538941,
+    "base_rate": 0.002962890625,
+    "coverage": 0.0032328800249098798
+   }
+  ],
+  "rule": "target char-class = digit",
+  "spec": [
+   "class",
+   2
+  ],
+  "m1": 0.034662142395973206,
+  "m0": 0.002603910630568862,
+  "contrast": 13.311571445292175,
+  "base_rate": 0.019744140625,
+  "coverage": 0.050989969660717754,
+  "named": true
+ },
+ {
+  "head": "L1/h3",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004612481570802629,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.0006823870935477316,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h5",
+  "n_windows": 5000,
+  "mean_dnll": 0.0016033007996156812,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.00042282219510525465,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h7",
+  "n_windows": 5000,
+  "mean_dnll": 0.055433955043554306,
+  "n_functions": 2,
+  "total_coverage": 0.22830423521818385,
+  "functions": [
+   {
+    "rule": "preceding token \u2208 {'els', 'on', 'ad', 'aven', 'act', 'art', 'aid', 'y'}",
+    "spec": [
+     "prevset",
+     [
+      88,
+      263,
+      291,
+      329,
+      438,
+      472,
+      533,
+      561,
+      569,
+      675,
+      2053,
+      2910,
+      3864,
+      4511,
+      5389,
+      7596
+     ]
+    ],
+    "m1": 0.39960384368896484,
+    "m0": 0.05016374588012695,
+    "contrast": 7.965988916455167,
+    "base_rate": 0.002443359375,
+    "coverage": 0.011336186072802786
+   },
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.14664869010448456,
+    "m0": 0.038118693977594376,
+    "contrast": 3.8471593541657687,
+    "base_rate": 0.11885078125,
+    "coverage": 0.22220298604335936
+   }
+  ],
+  "rule": "preceding token \u2208 {'els', 'on', 'ad', 'aven', 'act', 'art', 'aid', 'y'}",
+  "spec": [
+   "prevset",
+   [
+    88,
+    263,
+    291,
+    329,
+    438,
+    472,
+    533,
+    561,
+    569,
+    675,
+    2053,
+    2910,
+    3864,
+    4511,
+    5389,
+    7596
+   ]
+  ],
+  "m1": 0.39960384368896484,
+  "m0": 0.05016374588012695,
+  "contrast": 7.965988916455167,
+  "base_rate": 0.002443359375,
+  "coverage": 0.011336186072802786,
+  "named": true
+ },
+ {
+  "head": "L1/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.0007076041074469686,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h9",
+  "n_windows": 5000,
+  "mean_dnll": 0.0005327592953108251,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.0012704278342425823,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h11",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004140395612921566,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.0011634256225079298,
+  "n_functions": 1,
+  "total_coverage": 0.17066101932865346,
+  "functions": [
+   {
+    "rule": "preceding token \u2208 {'\u0120for', '\u0120of', '\u0120to'}",
+    "spec": [
+     "prevset",
+     [
+      311,
+      315,
+      369
+     ]
+    ],
+    "m1": 0.010218455456197262,
+    "m0": 0.0007258114055730402,
+    "contrast": 14.078664757451174,
+    "base_rate": 0.05064140625,
+    "coverage": 0.17066101932865346
+   }
+  ],
+  "rule": "preceding token \u2208 {'\u0120for', '\u0120of', '\u0120to'}",
+  "spec": [
+   "prevset",
+   [
+    311,
+    315,
+    369
+   ]
+  ],
+  "m1": 0.010218455456197262,
+  "m0": 0.0007258114055730402,
+  "contrast": 14.078664757451174,
+  "base_rate": 0.05064140625,
+  "coverage": 0.17066101932865346,
+  "named": true
+ },
+ {
+  "head": "L1/h13",
+  "n_windows": 5000,
+  "mean_dnll": 9.039386350195855e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.00022581216762773693,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L1/h15",
+  "n_windows": 5000,
+  "mean_dnll": 0.0015247996198013425,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.0014235519338399172,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.00016898650210350752,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h2",
+  "n_windows": 5000,
+  "mean_dnll": 0.0005257794982753694,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h3",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002282596833538264,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.004899628926068544,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h5",
+  "n_windows": 5000,
+  "mean_dnll": 6.579300679732114e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.00015272262680809945,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h7",
+  "n_windows": 1000,
+  "mean_dnll": 0.000644050829578191,
+  "n_functions": 1,
+  "total_coverage": 0.005354616067641796,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.01014325488358736,
+    "m0": 0.0006354021024890244,
+    "contrast": 15.96352112127701,
+    "base_rate": 0.002693359375,
+    "coverage": 0.005354616067641796
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.01014325488358736,
+  "m0": 0.0006354021024890244,
+  "contrast": 15.96352112127701,
+  "base_rate": 0.002693359375,
+  "coverage": 0.005354616067641796,
+  "named": true
+ },
+ {
+  "head": "L2/h8",
+  "n_windows": 1000,
+  "mean_dnll": 0.009822768159210682,
+  "n_functions": 1,
+  "total_coverage": 0.17696260434459235,
+  "functions": [
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.028195800259709358,
+    "m0": 0.007640055846422911,
+    "contrast": 3.6905227954466704,
+    "base_rate": 0.068888671875,
+    "coverage": 0.17696260434459235
+   }
+  ],
+  "rule": "target char-class = whitespace",
+  "spec": [
+   "class",
+   0
+  ],
+  "m1": 0.028195800259709358,
+  "m0": 0.007640055846422911,
+  "contrast": 3.6905227954466704,
+  "base_rate": 0.068888671875,
+  "coverage": 0.17696260434459235,
+  "named": true
+ },
+ {
+  "head": "L2/h9",
+  "n_windows": 5000,
+  "mean_dnll": 0.00019516225438565016,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h10",
+  "n_windows": 1000,
+  "mean_dnll": 0.0020101771224290133,
+  "n_functions": 1,
+  "total_coverage": 0.0027135032310249274,
+  "functions": [
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.013288088142871857,
+    "m0": 0.0019418714800849557,
+    "contrast": 6.842928730942848,
+    "base_rate": 0.0022734375,
+    "coverage": 0.0027135032310249274
+   }
+  ],
+  "rule": "target is a pronoun 2nd token",
+  "spec": [
+   "lex",
+   "pronoun_2nd"
+  ],
+  "m1": 0.013288088142871857,
+  "m0": 0.0019418714800849557,
+  "contrast": 6.842928730942848,
+  "base_rate": 0.0022734375,
+  "coverage": 0.0027135032310249274,
+  "named": true
+ },
+ {
+  "head": "L2/h11",
+  "n_windows": 5000,
+  "mean_dnll": 0.007594718132168055,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.020732855424284935,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.00031792730442248285,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L2/h14",
+  "n_windows": 1000,
+  "mean_dnll": 0.0026057674549520016,
+  "n_functions": 1,
+  "total_coverage": 0.00350820448408453,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.010166194289922714,
+    "m0": 0.0026305417995899916,
+    "contrast": 3.8646769617982364,
+    "base_rate": 0.002962890625,
+    "coverage": 0.00350820448408453
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.010166194289922714,
+  "m0": 0.0026305417995899916,
+  "contrast": 3.8646769617982364,
+  "base_rate": 0.002962890625,
+  "coverage": 0.00350820448408453,
+  "named": true
+ },
+ {
+  "head": "L2/h15",
+  "n_windows": 5000,
+  "mean_dnll": 0.002460657386109233,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.00016716899699531496,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.00011112057109130546,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.00250016781501472,
+  "n_functions": 2,
+  "total_coverage": 0.01926912319356048,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.05121970921754837,
+    "m0": 0.002291173441335559,
+    "contrast": 22.35522998542251,
+    "base_rate": 0.002693359375,
+    "coverage": 0.009047682762979568
+   },
+   {
+    "rule": "target \u2208 {'),', 'dz', '_),', '\u0120which', ')', '--', ').', ')^'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      8,
+      62,
+      313,
+      570,
+      705,
+      902,
+      3677,
+      4063,
+      30876,
+      38977,
+      66116
+     ]
+    ],
+    "m1": 0.019047820940613747,
+    "m0": 0.0022739232517778873,
+    "contrast": 8.376633171643341,
+    "base_rate": 0.008884765625,
+    "coverage": 0.01703541920528736
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.05121970921754837,
+  "m0": 0.002291173441335559,
+  "contrast": 22.35522998542251,
+  "base_rate": 0.002693359375,
+  "coverage": 0.009047682762979568,
+  "named": true
+ },
+ {
+  "head": "L3/h3",
+  "n_windows": 5000,
+  "mean_dnll": 0.024833042174577713,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.00018602509226184338,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h5",
+  "n_windows": 5000,
+  "mean_dnll": 0.000164965313160792,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002886128786485642,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h7",
+  "n_windows": 5000,
+  "mean_dnll": 9.654404857428744e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.0015636286698281765,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.0011974930530413985,
+  "n_functions": 1,
+  "total_coverage": 0.004067935247097634,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.011323317885398865,
+    "m0": 0.0012516783317551017,
+    "contrast": 9.046507875167356,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004067935247097634
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.011323317885398865,
+  "m0": 0.0012516783317551017,
+  "contrast": 9.046507875167356,
+  "base_rate": 0.002962890625,
+  "coverage": 0.004067935247097634,
+  "named": true
+ },
+ {
+  "head": "L3/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.0013522339286282659,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h11",
+  "n_windows": 5000,
+  "mean_dnll": 0.047586310654878616,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.0006983490311540663,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h13",
+  "n_windows": 1000,
+  "mean_dnll": 0.020499523729085922,
+  "n_functions": 1,
+  "total_coverage": 0.0374163999562057,
+  "functions": [
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.0813504233956337,
+    "m0": 0.019592950120568275,
+    "contrast": 4.152025238416429,
+    "base_rate": 0.019744140625,
+    "coverage": 0.0374163999562057
+   }
+  ],
+  "rule": "target char-class = digit",
+  "spec": [
+   "class",
+   2
+  ],
+  "m1": 0.0813504233956337,
+  "m0": 0.019592950120568275,
+  "contrast": 4.152025238416429,
+  "base_rate": 0.019744140625,
+  "coverage": 0.0374163999562057,
+  "named": true
+ },
+ {
+  "head": "L3/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004027503600809723,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L3/h15",
+  "n_windows": 5000,
+  "mean_dnll": 0.002400996396318078,
+  "n_functions": 1,
+  "total_coverage": 0.003462846622780456,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120Towers', '\u0120which', '\u0120g', '\u0120Grande'}",
+    "spec": [
+     "tokset",
+     [
+      342,
+      902,
+      37623,
+      68457
+     ]
+    ],
+    "m1": 0.014011906459927559,
+    "m0": 0.0023422022350132465,
+    "contrast": 5.982364054847857,
+    "base_rate": 0.002096484375,
+    "coverage": 0.003462846622780456
+   }
+  ],
+  "rule": "target \u2208 {'\u0120Towers', '\u0120which', '\u0120g', '\u0120Grande'}",
+  "spec": [
+   "tokset",
+   [
+    342,
+    902,
+    37623,
+    68457
+   ]
+  ],
+  "m1": 0.014011906459927559,
+  "m0": 0.0023422022350132465,
+  "contrast": 5.982364054847857,
+  "base_rate": 0.002096484375,
+  "coverage": 0.003462846622780456,
+  "named": true
+ },
+ {
+  "head": "L4/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.00039767968701198697,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h1",
+  "n_windows": 1000,
+  "mean_dnll": 0.11191651970148087,
+  "n_functions": 1,
+  "total_coverage": 0.06844728576209806,
+  "functions": [
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.5917441844940186,
+    "m0": 0.11156050860881805,
+    "contrast": 5.304244233673613,
+    "base_rate": 0.019744140625,
+    "coverage": 0.06844728576209806
+   }
+  ],
+  "rule": "target char-class = digit",
+  "spec": [
+   "class",
+   2
+  ],
+  "m1": 0.5917441844940186,
+  "m0": 0.11156050860881805,
+  "contrast": 5.304244233673613,
+  "base_rate": 0.019744140625,
+  "coverage": 0.06844728576209806,
+  "named": true
+ },
+ {
+  "head": "L4/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.006601009983569384,
+  "n_functions": 1,
+  "total_coverage": 0.0032205158167544815,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.02060224488377571,
+    "m0": 0.0057792458683252335,
+    "contrast": 3.564867346567145,
+    "base_rate": 0.002693359375,
+    "coverage": 0.0032205158167544815
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.02060224488377571,
+  "m0": 0.0057792458683252335,
+  "contrast": 3.564867346567145,
+  "base_rate": 0.002693359375,
+  "coverage": 0.0032205158167544815,
+  "named": true
+ },
+ {
+  "head": "L4/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.014336335472762585,
+  "n_functions": 1,
+  "total_coverage": 0.02428515353316419,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120tipping', '\u0120which', '\u0120as', ')\u010a\u010a\u010a', '\u0120by'}",
+    "spec": [
+     "tokset",
+     [
+      439,
+      555,
+      902,
+      3707,
+      72293
+     ]
+    ],
+    "m1": 0.06733926385641098,
+    "m0": 0.012883118353784084,
+    "contrast": 5.2269382308850565,
+    "base_rate": 0.012791015625,
+    "coverage": 0.02428515353316419
+   }
+  ],
+  "rule": "target \u2208 {'\u0120tipping', '\u0120which', '\u0120as', ')\u010a\u010a\u010a', '\u0120by'}",
+  "spec": [
+   "tokset",
+   [
+    439,
+    555,
+    902,
+    3707,
+    72293
+   ]
+  ],
+  "m1": 0.06733926385641098,
+  "m0": 0.012883118353784084,
+  "contrast": 5.2269382308850565,
+  "base_rate": 0.012791015625,
+  "coverage": 0.02428515353316419,
+  "named": true
+ },
+ {
+  "head": "L4/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.0008081895066425204,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h5",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002248025411972776,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004480555944610387,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h7",
+  "n_windows": 5000,
+  "mean_dnll": 0.00019375886768102646,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.00022580346558243036,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h9",
+  "n_windows": 5000,
+  "mean_dnll": 0.00044983511907048523,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h10",
+  "n_windows": 1000,
+  "mean_dnll": 0.016245558857917786,
+  "n_functions": 1,
+  "total_coverage": 0.045410261080747735,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120and', '\u0120miles', '\u0120centuries', '\u0120rivers', '\u0120or', '\u0120nor'}",
+    "spec": [
+     "tokset",
+     [
+      323,
+      477,
+      6463,
+      8931,
+      24552,
+      36617
+     ]
+    ],
+    "m1": 0.05909533426165581,
+    "m0": 0.014954879879951477,
+    "contrast": 3.9515753209679105,
+    "base_rate": 0.025232421875,
+    "coverage": 0.045410261080747735
+   }
+  ],
+  "rule": "target \u2208 {'\u0120and', '\u0120miles', '\u0120centuries', '\u0120rivers', '\u0120or', '\u0120nor'}",
+  "spec": [
+   "tokset",
+   [
+    323,
+    477,
+    6463,
+    8931,
+    24552,
+    36617
+   ]
+  ],
+  "m1": 0.05909533426165581,
+  "m0": 0.014954879879951477,
+  "contrast": 3.9515753209679105,
+  "base_rate": 0.025232421875,
+  "coverage": 0.045410261080747735,
+  "named": true
+ },
+ {
+  "head": "L4/h11",
+  "n_windows": 5000,
+  "mean_dnll": 0.0005705453222617507,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h12",
+  "n_windows": 1000,
+  "mean_dnll": 0.018801994621753693,
+  "n_functions": 1,
+  "total_coverage": 0.02235448291783813,
+  "functions": [
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.055494025349617004,
+    "m0": 0.017495431005954742,
+    "contrast": 3.171915303528622,
+    "base_rate": 0.014861328125,
+    "coverage": 0.02235448291783813
+   }
+  ],
+  "rule": "target is a pronoun it they token",
+  "spec": [
+   "lex",
+   "pronoun_it_they"
+  ],
+  "m1": 0.055494025349617004,
+  "m0": 0.017495431005954742,
+  "contrast": 3.171915303528622,
+  "base_rate": 0.014861328125,
+  "coverage": 0.02235448291783813,
+  "named": true
+ },
+ {
+  "head": "L4/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.00017539793043397367,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.00037026708014309406,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L4/h15",
+  "n_windows": 1000,
+  "mean_dnll": 0.013145077973604202,
+  "n_functions": 3,
+  "total_coverage": 0.06284204562188392,
+  "functions": [
+   {
+    "rule": "target \u2208 {'_.', '\"', '),', '_\u010a', '_,', ',\"', '\u0120that', \"_'\"\u2026}",
+    "spec": [
+     "tokset",
+     [
+      1,
+      60,
+      62,
+      430,
+      705,
+      1359,
+      1462,
+      5056,
+      7022,
+      13220,
+      19893
+     ]
+    ],
+    "m1": 0.19518418610095978,
+    "m0": 0.010204865597188473,
+    "contrast": 19.126580770915265,
+    "base_rate": 0.01046875,
+    "coverage": 0.04697781870221871
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.1562073975801468,
+    "m0": 0.011752299033105373,
+    "contrast": 13.291645927330634,
+    "base_rate": 0.002693359375,
+    "coverage": 0.009975752033477555
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.04041033238172531,
+    "m0": 0.01192685216665268,
+    "contrast": 3.3881808726289124,
+    "base_rate": 0.00753125,
+    "coverage": 0.012969334225274982
+   }
+  ],
+  "rule": "target \u2208 {'_.', '\"', '),', '_\u010a', '_,', ',\"', '\u0120that', \"_'\"\u2026}",
+  "spec": [
+   "tokset",
+   [
+    1,
+    60,
+    62,
+    430,
+    705,
+    1359,
+    1462,
+    5056,
+    7022,
+    13220,
+    19893
+   ]
+  ],
+  "m1": 0.19518418610095978,
+  "m0": 0.010204865597188473,
+  "contrast": 19.126580770915265,
+  "base_rate": 0.01046875,
+  "coverage": 0.04697781870221871,
+  "named": true
+ },
+ {
+  "head": "L5/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.00040193868335336447,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.0006327559240162373,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.0022903906647115946,
+  "n_functions": 4,
+  "total_coverage": 0.061866517610740523,
+  "functions": [
+   {
+    "rule": "target \u2208 {'chi', '\u0120Alexander', 'Len', 'Ep', '\u0120Ber', '\u0120Pil', ']^', '\u0120her'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      568,
+      1077,
+      9084,
+      11522,
+      14946,
+      20643,
+      23176,
+      37451,
+      66490,
+      66620,
+      91404
+     ]
+    ],
+    "m1": 0.018458781763911247,
+    "m0": 0.0022937781177461147,
+    "contrast": 8.047326644675204,
+    "base_rate": 0.004439453125,
+    "coverage": 0.007325608209475777
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.015902407467365265,
+    "m0": 0.0021823851857334375,
+    "contrast": 7.286709775763493,
+    "base_rate": 0.013349609375,
+    "coverage": 0.020664481747760085
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.014003122225403786,
+    "m0": 0.002310871845111251,
+    "contrast": 6.059670619566375,
+    "base_rate": 0.00467578125,
+    "coverage": 0.005722715903220723
+   },
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.011353629641234875,
+    "m0": 0.0021845053415745497,
+    "contrast": 5.19734579044398,
+    "base_rate": 0.019744140625,
+    "coverage": 0.03540851237218542
+   }
+  ],
+  "rule": "target \u2208 {'chi', '\u0120Alexander', 'Len', 'Ep', '\u0120Ber', '\u0120Pil', ']^', '\u0120her'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    568,
+    1077,
+    9084,
+    11522,
+    14946,
+    20643,
+    23176,
+    37451,
+    66490,
+    66620,
+    91404
+   ]
+  ],
+  "m1": 0.018458781763911247,
+  "m0": 0.0022937781177461147,
+  "contrast": 8.047326644675204,
+  "base_rate": 0.004439453125,
+  "coverage": 0.007325608209475777,
+  "named": true
+ },
+ {
+  "head": "L5/h3",
+  "n_windows": 5000,
+  "mean_dnll": 0.013184186071157455,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h4",
+  "n_windows": 1000,
+  "mean_dnll": 0.007439272943884134,
+  "n_functions": 5,
+  "total_coverage": 0.055801005507914815,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120-', 'chi', 'theta', '\u0120which', 'lord'}",
+    "spec": [
+     "tokset",
+     [
+      482,
+      902,
+      14946,
+      16356,
+      26680
+     ]
+    ],
+    "m1": 0.04498979449272156,
+    "m0": 0.0075599150732159615,
+    "contrast": 5.951097870413385,
+    "base_rate": 0.0039609375,
+    "coverage": 0.00709621629253109
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.03952178731560707,
+    "m0": 0.0076136295683681965,
+    "contrast": 5.190925952032841,
+    "base_rate": 0.002962890625,
+    "coverage": 0.005537669378114767
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.03080253303050995,
+    "m0": 0.007487910334020853,
+    "contrast": 4.1136354011292795,
+    "base_rate": 0.009447265625,
+    "coverage": 0.014144872078330234
+   },
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.026820000261068344,
+    "m0": 0.007323223631829023,
+    "contrast": 3.6623216235675535,
+    "base_rate": 0.019744140625,
+    "coverage": 0.02935519107669306
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.024838129058480263,
+    "m0": 0.0076276990585029125,
+    "contrast": 3.2563068977914345,
+    "base_rate": 0.00467578125,
+    "coverage": 0.006623816148506576
+   }
+  ],
+  "rule": "target \u2208 {'\u0120-', 'chi', 'theta', '\u0120which', 'lord'}",
+  "spec": [
+   "tokset",
+   [
+    482,
+    902,
+    14946,
+    16356,
+    26680
+   ]
+  ],
+  "m1": 0.04498979449272156,
+  "m0": 0.0075599150732159615,
+  "contrast": 5.951097870413385,
+  "base_rate": 0.0039609375,
+  "coverage": 0.00709621629253109,
+  "named": true
+ },
+ {
+  "head": "L5/h5",
+  "n_windows": 5000,
+  "mean_dnll": 0.0014910564059391618,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.0007362102624028921,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h7",
+  "n_windows": 1000,
+  "mean_dnll": 0.007488733157515526,
+  "n_functions": 3,
+  "total_coverage": 0.05640218089738909,
+  "functions": [
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.04132048413157463,
+    "m0": 0.006943355314433575,
+    "contrast": 5.951083051400125,
+    "base_rate": 0.009447265625,
+    "coverage": 0.01834780087151419
+   },
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.022339368239045143,
+    "m0": 0.006722102407366037,
+    "contrast": 3.323271037133532,
+    "base_rate": 0.034962890625,
+    "coverage": 0.03466768214237885
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.023001639172434807,
+    "m0": 0.007225634064525366,
+    "contrast": 3.183338509399829,
+    "base_rate": 0.002693359375,
+    "coverage": 0.0033866971668650237
+   }
+  ],
+  "rule": "target is a wh word token",
+  "spec": [
+   "lex",
+   "wh_word"
+  ],
+  "m1": 0.04132048413157463,
+  "m0": 0.006943355314433575,
+  "contrast": 5.951083051400125,
+  "base_rate": 0.009447265625,
+  "coverage": 0.01834780087151419,
+  "named": true
+ },
+ {
+  "head": "L5/h8",
+  "n_windows": 1000,
+  "mean_dnll": 0.0067070662043988705,
+  "n_functions": 3,
+  "total_coverage": 0.05161355948577736,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\"', \"'\", '\u0120which', '_,', \"_'\", '\u0120to', '_', '\u0120nor'}",
+    "spec": [
+     "tokset",
+     [
+      1,
+      6,
+      62,
+      311,
+      902,
+      6463,
+      7022,
+      19893
+     ]
+    ],
+    "m1": 0.04134809970855713,
+    "m0": 0.005692393984645605,
+    "contrast": 7.263745239715933,
+    "base_rate": 0.02277734375,
+    "coverage": 0.03981507969410424
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.03618084266781807,
+    "m0": 0.006221501622349024,
+    "contrast": 5.815451777405056,
+    "base_rate": 0.009447265625,
+    "coverage": 0.016228723479336626
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.024072514846920967,
+    "m0": 0.00645708991214633,
+    "contrast": 3.7280749028503597,
+    "base_rate": 0.002693359375,
+    "coverage": 0.0040159071775098905
+   }
+  ],
+  "rule": "target \u2208 {'\"', \"'\", '\u0120which', '_,', \"_'\", '\u0120to', '_', '\u0120nor'}",
+  "spec": [
+   "tokset",
+   [
+    1,
+    6,
+    62,
+    311,
+    902,
+    6463,
+    7022,
+    19893
+   ]
+  ],
+  "m1": 0.04134809970855713,
+  "m0": 0.005692393984645605,
+  "contrast": 7.263745239715933,
+  "base_rate": 0.02277734375,
+  "coverage": 0.03981507969410424,
+  "named": true
+ },
+ {
+  "head": "L5/h9",
+  "n_windows": 5000,
+  "mean_dnll": 0.00043383502634242177,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004288740747142583,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.003864157944917679,
+  "n_functions": 6,
+  "total_coverage": 0.18524104919328993,
+  "functions": [
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.03334445878863335,
+    "m0": 0.0029683446045964956,
+    "contrast": 11.233351659035577,
+    "base_rate": 0.034962890625,
+    "coverage": 0.06117940245999745
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.04330926388502121,
+    "m0": 0.003924304153770208,
+    "contrast": 11.03616391288442,
+    "base_rate": 0.002693359375,
+    "coverage": 0.005795807681308763
+   },
+   {
+    "rule": "target \u2208 {')', '),', '\u0120being', 'dz'}",
+    "spec": [
+     "tokset",
+     [
+      8,
+      705,
+      1694,
+      38977
+     ]
+    ],
+    "m1": 0.04119517281651497,
+    "m0": 0.00395152997225523,
+    "contrast": 10.425119663967505,
+    "base_rate": 0.0021171875,
+    "coverage": 0.0044949886413182165
+   },
+   {
+    "rule": "target char-class = punctuation",
+    "spec": [
+     "class",
+     1
+    ],
+    "m1": 0.012558291666209698,
+    "m0": 0.0027947609778493643,
+    "contrast": 4.493511883751005,
+    "base_rate": 0.1265546875,
+    "coverage": 0.14634718416585812
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.01655789092183113,
+    "m0": 0.003910901956260204,
+    "contrast": 4.23377806629154,
+    "base_rate": 0.009447265625,
+    "coverage": 0.013742757962661188
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.015268786810338497,
+    "m0": 0.0038608445320278406,
+    "contrast": 3.954778982597063,
+    "base_rate": 0.014861328125,
+    "coverage": 0.02357744264174827
+   }
+  ],
+  "rule": "target is a sentence end token",
+  "spec": [
+   "lex",
+   "sentence_end"
+  ],
+  "m1": 0.03334445878863335,
+  "m0": 0.0029683446045964956,
+  "contrast": 11.233351659035577,
+  "base_rate": 0.034962890625,
+  "coverage": 0.06117940245999745,
+  "named": true
+ },
+ {
+  "head": "L5/h12",
+  "n_windows": 1000,
+  "mean_dnll": 0.0005114366067573428,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.0005280121113173664,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L5/h14",
+  "n_windows": 1000,
+  "mean_dnll": 0.005807805340737104,
+  "n_functions": 5,
+  "total_coverage": 0.12736809159637358,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120has', '\u0120came', '\u0120we', '\u0120see', '\u0120they', '\u0120will', '\u0120she', '\u0120is'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      374,
+      568,
+      574,
+      584,
+      690,
+      706,
+      814,
+      1051,
+      1364,
+      1518,
+      3782
+     ]
+    ],
+    "m1": 0.037086181342601776,
+    "m0": 0.0046703447587788105,
+    "contrast": 7.940780233170404,
+    "base_rate": 0.026251953125,
+    "coverage": 0.05275795370618015
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.03205275908112526,
+    "m0": 0.004491994623094797,
+    "contrast": 7.135529262731451,
+    "base_rate": 0.03734765625,
+    "coverage": 0.067167102761727
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.021739067509770393,
+    "m0": 0.00527667161077261,
+    "contrast": 4.119844688721753,
+    "base_rate": 0.014861328125,
+    "coverage": 0.024714818939384636
+   },
+   {
+    "rule": "target is a pronoun 1st token",
+    "spec": [
+     "lex",
+     "pronoun_1st"
+    ],
+    "m1": 0.020674610510468483,
+    "m0": 0.005336578004062176,
+    "contrast": 3.8741325423766084,
+    "base_rate": 0.012044921875,
+    "coverage": 0.01780379811198172
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.018003422766923904,
+    "m0": 0.00545505341142416,
+    "contrast": 3.300320163542399,
+    "base_rate": 0.00528125,
+    "coverage": 0.00764821645336642
+   }
+  ],
+  "rule": "target \u2208 {'\u0120has', '\u0120came', '\u0120we', '\u0120see', '\u0120they', '\u0120will', '\u0120she', '\u0120is'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    374,
+    568,
+    574,
+    584,
+    690,
+    706,
+    814,
+    1051,
+    1364,
+    1518,
+    3782
+   ]
+  ],
+  "m1": 0.037086181342601776,
+  "m0": 0.0046703447587788105,
+  "contrast": 7.940780233170404,
+  "base_rate": 0.026251953125,
+  "coverage": 0.05275795370618015,
+  "named": true
+ },
+ {
+  "head": "L5/h15",
+  "n_windows": 5000,
+  "mean_dnll": 0.0007803654880262911,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L6/h0",
+  "n_windows": 1000,
+  "mean_dnll": 0.025011707097291946,
+  "n_functions": 3,
+  "total_coverage": 0.1715628468368435,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120with', '\u0120basis', '\u0120influence', '\u0120into', '\u0120whether', '\u0120upon', '\u0120from', '\u0120purpose'}",
+    "spec": [
+     "tokset",
+     [
+      449,
+      505,
+      1139,
+      3508,
+      5304,
+      7580,
+      8197,
+      10383
+     ]
+    ],
+    "m1": 0.20338311791419983,
+    "m0": 0.02241065725684166,
+    "contrast": 9.075285726040445,
+    "base_rate": 0.01081640625,
+    "coverage": 0.036122825853852944
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120these', 'ed', '\u0120this', \"'s\", '\u0120her', '\u0120their', '\u0120his'}",
+    "spec": [
+     "prevset",
+     [
+      291,
+      420,
+      596,
+      813,
+      872,
+      1077,
+      1521
+     ]
+    ],
+    "m1": 0.08695767819881439,
+    "m0": 0.023445339873433113,
+    "contrast": 3.708953620132833,
+    "base_rate": 0.014529296875,
+    "coverage": 0.035807366306463605
+   },
+   {
+    "rule": "target is a preposition token",
+    "spec": [
+     "lex",
+     "preposition"
+    ],
+    "m1": 0.062045853585004807,
+    "m0": 0.020311230793595314,
+    "contrast": 3.054755972964945,
+    "base_rate": 0.09720703125,
+    "coverage": 0.13367465636471948
+   }
+  ],
+  "rule": "target \u2208 {'\u0120with', '\u0120basis', '\u0120influence', '\u0120into', '\u0120whether', '\u0120upon', '\u0120from', '\u0120purpose'}",
+  "spec": [
+   "tokset",
+   [
+    449,
+    505,
+    1139,
+    3508,
+    5304,
+    7580,
+    8197,
+    10383
+   ]
+  ],
+  "m1": 0.20338311791419983,
+  "m0": 0.02241065725684166,
+  "contrast": 9.075285726040445,
+  "base_rate": 0.01081640625,
+  "coverage": 0.036122825853852944,
+  "named": true
+ },
+ {
+  "head": "L6/h1",
+  "n_windows": 1000,
+  "mean_dnll": 0.0003512314287945628,
+  "n_functions": 1,
+  "total_coverage": 0.005288322826053678,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.014220120385289192,
+    "m0": 0.00029145213193260133,
+    "contrast": 48.790586265389244,
+    "base_rate": 0.002962890625,
+    "coverage": 0.005288322826053678
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.014220120385289192,
+  "m0": 0.00029145213193260133,
+  "contrast": 48.790586265389244,
+  "base_rate": 0.002962890625,
+  "coverage": 0.005288322826053678,
+  "named": true
+ },
+ {
+  "head": "L6/h2",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002592466480564326,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L6/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.0030324032995849848,
+  "n_functions": 9,
+  "total_coverage": 0.3617515881301633,
+  "functions": [
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.06319111585617065,
+    "m0": 0.0027297642081975937,
+    "contrast": 23.148928272414572,
+    "base_rate": 0.00753125,
+    "coverage": 0.030231364515889696
+   },
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.03514938801527023,
+    "m0": 0.0027504493482410908,
+    "contrast": 12.779507478568267,
+    "base_rate": 0.013416015625,
+    "coverage": 0.02987410929920603
+   },
+   {
+    "rule": "target \u2208 {'\u0120(', '\u0120\u0120\u0120\u0120', '\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120', '\u0120\u0120\u0120', '\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120\u0120', '\u0120carrying', '\u010a\u010a', '\u0120than'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      62,
+      220,
+      257,
+      260,
+      262,
+      271,
+      313,
+      320,
+      415,
+      765,
+      1109,
+      6663,
+      15691
+     ]
+    ],
+    "m1": 0.027916930615901947,
+    "m0": 0.0022527314722537994,
+    "contrast": 12.39248039979296,
+    "base_rate": 0.036330078125,
+    "coverage": 0.06904274256423629
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.03546416386961937,
+    "m0": 0.0030979409348219633,
+    "contrast": 11.447656561488792,
+    "base_rate": 0.002693359375,
+    "coverage": 0.009158130540762841
+   },
+   {
+    "rule": "target char-class = punctuation",
+    "spec": [
+     "class",
+     1
+    ],
+    "m1": 0.014941984787583351,
+    "m0": 0.001481644925661385,
+    "contrast": 10.084727135898275,
+    "base_rate": 0.1265546875,
+    "coverage": 0.2145994342356281
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120or', '\u0120and', '\u0120/', '2', ';', '\u0120then', ');\u010a', '.\u010a\u010a'}",
+    "spec": [
+     "prevset",
+     [
+      17,
+      26,
+      317,
+      323,
+      382,
+      477,
+      611,
+      1243
+     ]
+    ],
+    "m1": 0.014638776890933514,
+    "m0": 0.0027855299413204193,
+    "contrast": 5.255293319157188,
+    "base_rate": 0.0337109375,
+    "coverage": 0.08074190128866486
+   },
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.011268043890595436,
+    "m0": 0.0025870949029922485,
+    "contrast": 4.3554814620688065,
+    "base_rate": 0.068888671875,
+    "coverage": 0.06778511595763555
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.012202116660773754,
+    "m0": 0.003158318344503641,
+    "contrast": 3.8634853519465056,
+    "base_rate": 0.002962890625,
+    "coverage": 0.005655961920518414
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.010715446434915066,
+    "m0": 0.003149738535284996,
+    "contrast": 3.4020114097964345,
+    "base_rate": 0.00467578125,
+    "coverage": 0.006503653285578402
+   }
+  ],
+  "rule": "target is a quote token",
+  "spec": [
+   "lex",
+   "quote"
+  ],
+  "m1": 0.06319111585617065,
+  "m0": 0.0027297642081975937,
+  "contrast": 23.148928272414572,
+  "base_rate": 0.00753125,
+  "coverage": 0.030231364515889696,
+  "named": true
+ },
+ {
+  "head": "L6/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.0007129626465030015,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L6/h5",
+  "n_windows": 1000,
+  "mean_dnll": 0.009286581538617611,
+  "n_functions": 4,
+  "total_coverage": 0.12337778109993451,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.09056684374809265,
+    "m0": 0.008376912213861942,
+    "contrast": 10.811482970804505,
+    "base_rate": 0.002693359375,
+    "coverage": 0.008747900001060833
+   },
+   {
+    "rule": "target \u2208 {'\u0120itself', '\u0120are', '\u0120each', '\u0120is', '\u0120ensued', '\u0120were', '\u0120being', '\u0120together'}",
+    "spec": [
+     "tokset",
+     [
+      374,
+      527,
+      1051,
+      1694,
+      1855,
+      3871,
+      5196,
+      96763
+     ]
+    ],
+    "m1": 0.08156333118677139,
+    "m0": 0.00766984885558486,
+    "contrast": 10.634281420993117,
+    "base_rate": 0.012564453125,
+    "coverage": 0.03644593145824769
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.04236268252134323,
+    "m0": 0.007288335356861353,
+    "contrast": 5.812394798966316,
+    "base_rate": 0.03734765625,
+    "coverage": 0.07603423073249173
+   },
+   {
+    "rule": "preceding token \u2208 {')', '\u0120was', '\u0120were', '\u0120which'}",
+    "spec": [
+     "prevset",
+     [
+      8,
+      574,
+      902,
+      1051
+     ]
+    ],
+    "m1": 0.0344906710088253,
+    "m0": 0.008216898888349533,
+    "contrast": 4.197528955568441,
+    "base_rate": 0.014515625,
+    "coverage": 0.03452113045347817
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.09056684374809265,
+  "m0": 0.008376912213861942,
+  "contrast": 10.811482970804505,
+  "base_rate": 0.002693359375,
+  "coverage": 0.008747900001060833,
+  "named": true
+ },
+ {
+  "head": "L6/h6",
+  "n_windows": 1000,
+  "mean_dnll": 0.004507521167397499,
+  "n_functions": 1,
+  "total_coverage": 0.17370572749395513,
+  "functions": [
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.023475326597690582,
+    "m0": 0.002683822764083743,
+    "contrast": 8.746973500578775,
+    "base_rate": 0.089759765625,
+    "coverage": 0.17370572749395513
+   }
+  ],
+  "rule": "target char-class = capitalized",
+  "spec": [
+   "class",
+   3
+  ],
+  "m1": 0.023475326597690582,
+  "m0": 0.002683822764083743,
+  "contrast": 8.746973500578775,
+  "base_rate": 0.089759765625,
+  "coverage": 0.17370572749395513,
+  "named": true
+ },
+ {
+  "head": "L6/h7",
+  "n_windows": 5000,
+  "mean_dnll": 0.0004095954354852438,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L6/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.0003867612686008215,
+  "n_functions": 1,
+  "total_coverage": 0.007071209594627113,
+  "functions": [
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.013388575986027718,
+    "m0": 0.00034013597178272903,
+    "contrast": 39.36242296236762,
+    "base_rate": 0.00427265625,
+    "coverage": 0.007071209594627113
+   }
+  ],
+  "rule": "target is a code symbol token",
+  "spec": [
+   "lex",
+   "code_symbol"
+  ],
+  "m1": 0.013388575986027718,
+  "m0": 0.00034013597178272903,
+  "contrast": 39.36242296236762,
+  "base_rate": 0.00427265625,
+  "coverage": 0.007071209594627113,
+  "named": true
+ },
+ {
+  "head": "L6/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.008571997284889221,
+  "n_functions": 9,
+  "total_coverage": 0.15423093228044962,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120one', '\u0120sometimes', '\u0120before', '\u0120nor', '\u0120but', '2', 'then', '\u0120until'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      17,
+      477,
+      719,
+      832,
+      1023,
+      1047,
+      1053,
+      1243,
+      1457,
+      1603,
+      3156,
+      3473,
+      3734,
+      6463,
+      7170,
+      7389,
+      11680,
+      12222
+     ]
+    ],
+    "m1": 0.09703151136636734,
+    "m0": 0.0065941461361944675,
+    "contrast": 14.71479542040677,
+    "base_rate": 0.0164296875,
+    "coverage": 0.05085268697087227
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.07155635952949524,
+    "m0": 0.007742990739643574,
+    "contrast": 9.241436795621059,
+    "base_rate": 0.00528125,
+    "coverage": 0.014187272237228911
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.04437753185629845,
+    "m0": 0.007824202999472618,
+    "contrast": 5.671827770737757,
+    "base_rate": 0.006998046875,
+    "coverage": 0.013659990267267223
+   },
+   {
+    "rule": "target is a conjunction token",
+    "spec": [
+     "lex",
+     "conjunction"
+    ],
+    "m1": 0.03154657408595085,
+    "m0": 0.007172349840402603,
+    "contrast": 4.3983596433411085,
+    "base_rate": 0.03723828125,
+    "coverage": 0.057966028612305855
+   },
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.0311929639428854,
+    "m0": 0.008027339354157448,
+    "contrast": 3.885840945135852,
+    "base_rate": 0.0022734375,
+    "coverage": 0.0032257385676897387
+   },
+   {
+    "rule": "preceding token \u2208 {';', '-'}",
+    "spec": [
+     "prevset",
+     [
+      12,
+      26
+     ]
+    ],
+    "m1": 0.028867170214653015,
+    "m0": 0.00797538086771965,
+    "contrast": 3.6195350032113036,
+    "base_rate": 0.0050078125,
+    "coverage": 0.008259025986614014
+   },
+   {
+    "rule": "target is a quantifier token",
+    "spec": [
+     "lex",
+     "quantifier"
+    ],
+    "m1": 0.02740124613046646,
+    "m0": 0.007874594070017338,
+    "contrast": 3.4797026852212243,
+    "base_rate": 0.01051953125,
+    "coverage": 0.017508858794951624
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.026344191282987595,
+    "m0": 0.00794774480164051,
+    "contrast": 3.3146750355584937,
+    "base_rate": 0.007189453125,
+    "coverage": 0.011230167300534418
+   },
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.02365865744650364,
+    "m0": 0.0077662235125899315,
+    "contrast": 3.046352890584499,
+    "base_rate": 0.019744140625,
+    "coverage": 0.027378903252235333
+   }
+  ],
+  "rule": "target \u2208 {'\u0120one', '\u0120sometimes', '\u0120before', '\u0120nor', '\u0120but', '2', 'then', '\u0120until'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    17,
+    477,
+    719,
+    832,
+    1023,
+    1047,
+    1053,
+    1243,
+    1457,
+    1603,
+    3156,
+    3473,
+    3734,
+    6463,
+    7170,
+    7389,
+    11680,
+    12222
+   ]
+  ],
+  "m1": 0.09703151136636734,
+  "m0": 0.0065941461361944675,
+  "contrast": 14.71479542040677,
+  "base_rate": 0.0164296875,
+  "coverage": 0.05085268697087227,
+  "named": true
+ },
+ {
+  "head": "L6/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.00034767817123793066,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L6/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.010994323529303074,
+  "n_functions": 8,
+  "total_coverage": 0.6208795893612491,
+  "functions": [
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.2441767305135727,
+    "m0": 0.0075680878944695,
+    "contrast": 32.263992426939005,
+    "base_rate": 0.019744140625,
+    "coverage": 0.1460336677724354
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120\u0120', '\u0120\u0120\u0120\u0120', 'g', '\u0120[', '\u0120CHAPTER', '\u0120c', '[', '\u0120'}",
+    "spec": [
+     "prevset",
+     [
+      58,
+      70,
+      220,
+      256,
+      257,
+      272,
+      382,
+      510,
+      96424
+     ]
+    ],
+    "m1": 0.15666459500789642,
+    "m0": 0.007867947220802307,
+    "contrast": 19.911749610328613,
+    "base_rate": 0.029380859375,
+    "coverage": 0.1456135735294546
+   },
+   {
+    "rule": "target occurred in the previous 128 tokens",
+    "spec": [
+     "seen128",
+     null
+    ],
+    "m1": 0.025631651282310486,
+    "m0": 0.0021289042197167873,
+    "contrast": 12.039833001843698,
+    "base_rate": 0.430197265625,
+    "coverage": 0.486663519691217
+   },
+   {
+    "rule": "preceding token char-class = whitespace",
+    "spec": [
+     "prev_class",
+     0
+    ],
+    "m1": 0.06959966570138931,
+    "m0": 0.007996179163455963,
+    "contrast": 8.704115337919493,
+    "base_rate": 0.068884765625,
+    "coverage": 0.18000894031129652
+   },
+   {
+    "rule": "digit following a digit",
+    "spec": [
+     "number_cont",
+     null
+    ],
+    "m1": 0.06460690498352051,
+    "m0": 0.012032092548906803,
+    "contrast": 5.369548540365115,
+    "base_rate": 0.00394921875,
+    "coverage": 0.011889122030118793
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.05404065549373627,
+    "m0": 0.012126832269132137,
+    "contrast": 4.45628786598231,
+    "base_rate": 0.002693359375,
+    "coverage": 0.005785895890525679
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.0422401949763298,
+    "m0": 0.012150568887591362,
+    "contrast": 3.4763964853914904,
+    "base_rate": 0.002962890625,
+    "coverage": 0.006197685707150217
+   },
+   {
+    "rule": "target occurred in the previous 8 tokens",
+    "spec": [
+     "in_prev8",
+     null
+    ],
+    "m1": 0.03425147011876106,
+    "m0": 0.010164990089833736,
+    "contrast": 3.3695527310958053,
+    "base_rate": 0.08613671875,
+    "coverage": 0.1119616111452764
+   }
+  ],
+  "rule": "target char-class = digit",
+  "spec": [
+   "class",
+   2
+  ],
+  "m1": 0.2441767305135727,
+  "m0": 0.0075680878944695,
+  "contrast": 32.263992426939005,
+  "base_rate": 0.019744140625,
+  "coverage": 0.1460336677724354,
+  "named": true
+ },
+ {
+  "head": "L6/h12",
+  "n_windows": 1000,
+  "mean_dnll": 0.00028827792266383767,
+  "n_functions": 2,
+  "total_coverage": 0.10276546013072027,
+  "functions": [
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.02603977732360363,
+    "m0": -0.0006892653182148933,
+    "contrast": Infinity,
+    "base_rate": 0.034962890625,
+    "coverage": 0.0938816009531427
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.012730760499835014,
+    "m0": 0.0001789701054804027,
+    "contrast": 71.13344692769954,
+    "base_rate": 0.00528125,
+    "coverage": 0.00888386284606726
+   }
+  ],
+  "rule": "target is a sentence end token",
+  "spec": [
+   "lex",
+   "sentence_end"
+  ],
+  "m1": 0.02603977732360363,
+  "m0": -0.0006892653182148933,
+  "contrast": Infinity,
+  "base_rate": 0.034962890625,
+  "coverage": 0.0938816009531427,
+  "named": true
+ },
+ {
+  "head": "L6/h13",
+  "n_windows": 1000,
+  "mean_dnll": 0.0017808584962040186,
+  "n_functions": 7,
+  "total_coverage": 0.3557128769151794,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.06896860897541046,
+    "m0": 0.002231479622423649,
+    "contrast": 30.907120227476,
+    "base_rate": 0.002962890625,
+    "coverage": 0.012925055636758127
+   },
+   {
+    "rule": "target \u2208 {'\u0120(', '\u0120CARE', '\u0120Ware', '\u0120f', '\u0120CAR', '\u010a\u010a', '\u0120_', '\u0120sch'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      271,
+      282,
+      320,
+      721,
+      5817,
+      28876,
+      36284,
+      63427,
+      66490,
+      69834
+     ]
+    ],
+    "m1": 0.044620316475629807,
+    "m0": 0.0022014614660292864,
+    "contrast": 20.26849761586343,
+    "base_rate": 0.005369140625,
+    "coverage": 0.016113463280597793
+   },
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.020544415339827538,
+    "m0": 0.002064341213554144,
+    "contrast": 9.952044364049943,
+    "base_rate": 0.019744140625,
+    "coverage": 0.05398339361271116
+   },
+   {
+    "rule": "target occurred in the previous 8 tokens",
+    "spec": [
+     "in_prev8",
+     null
+    ],
+    "m1": 0.011935283429920673,
+    "m0": 0.001533214352093637,
+    "contrast": 7.7844845462232914,
+    "base_rate": 0.08613671875,
+    "coverage": 0.0992484633376511
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.010935279540717602,
+    "m0": 0.0015904221218079329,
+    "contrast": 6.875708901915161,
+    "base_rate": 0.089759765625,
+    "coverage": 0.15153260466710644
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.014881126582622528,
+    "m0": 0.002310456009581685,
+    "contrast": 6.440774687295085,
+    "base_rate": 0.009447265625,
+    "coverage": 0.014433295021687283
+   },
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.010555077344179153,
+    "m0": 0.0021348181180655956,
+    "contrast": 4.94425134153505,
+    "base_rate": 0.034962890625,
+    "coverage": 0.04739514969550713
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.06896860897541046,
+  "m0": 0.002231479622423649,
+  "contrast": 30.907120227476,
+  "base_rate": 0.002962890625,
+  "coverage": 0.012925055636758127,
+  "named": true
+ },
+ {
+  "head": "L6/h14",
+  "n_windows": 1000,
+  "mean_dnll": 0.002630172995850444,
+  "n_functions": 5,
+  "total_coverage": 0.12806386837932388,
+  "functions": [
+   {
+    "rule": "target \u2208 {';', '\u0120so', '\u0120latter', '\u0120did', ',\"', '\u0120do', '\u0120him', '.\"\u010a\u010a'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      26,
+      30,
+      656,
+      779,
+      1359,
+      1403,
+      1461,
+      1550,
+      1855,
+      2266,
+      15629
+     ]
+    ],
+    "m1": 0.024568144232034683,
+    "m0": 0.0022166837006807327,
+    "contrast": 11.08328816803675,
+    "base_rate": 0.01093359375,
+    "coverage": 0.02103894460150821
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.020062722265720367,
+    "m0": 0.0021955356933176517,
+    "contrast": 9.137962241644903,
+    "base_rate": 0.014861328125,
+    "coverage": 0.030916202900597153
+   },
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.016387708485126495,
+    "m0": 0.0019565096590667963,
+    "contrast": 8.375991607903945,
+    "base_rate": 0.034962890625,
+    "coverage": 0.03628506410856004
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.011910969391465187,
+    "m0": 0.0023944685235619545,
+    "contrast": 4.974368747911838,
+    "base_rate": 0.006998046875,
+    "coverage": 0.011363548047381926
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120be', '\u0120this', '\u0120I', '\u0120he', '\u0120did', '\u0120do', '\u0120these', '\u0120not'}",
+    "spec": [
+     "prevset",
+     [
+      358,
+      387,
+      420,
+      539,
+      568,
+      656,
+      956,
+      1115,
+      1521,
+      1550,
+      4250
+     ]
+    ],
+    "m1": 0.010947159491479397,
+    "m0": 0.0023193128872662783,
+    "contrast": 4.720001148436064,
+    "base_rate": 0.0164296875,
+    "coverage": 0.03326718407911168
+   }
+  ],
+  "rule": "target \u2208 {';', '\u0120so', '\u0120latter', '\u0120did', ',\"', '\u0120do', '\u0120him', '.\"\u010a\u010a'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    26,
+    30,
+    656,
+    779,
+    1359,
+    1403,
+    1461,
+    1550,
+    1855,
+    2266,
+    15629
+   ]
+  ],
+  "m1": 0.024568144232034683,
+  "m0": 0.0022166837006807327,
+  "contrast": 11.08328816803675,
+  "base_rate": 0.01093359375,
+  "coverage": 0.02103894460150821,
+  "named": true
+ },
+ {
+  "head": "L6/h15",
+  "n_windows": 1000,
+  "mean_dnll": 0.0021989005617797375,
+  "n_functions": 3,
+  "total_coverage": 0.1912128605251362,
+  "functions": [
+   {
+    "rule": "target is a determiner token",
+    "spec": [
+     "lex",
+     "determiner"
+    ],
+    "m1": 0.014149907976388931,
+    "m0": 0.0010121363447979093,
+    "contrast": 13.980238975821196,
+    "base_rate": 0.087380859375,
+    "coverage": 0.10916663069215976
+   },
+   {
+    "rule": "target occurred in the previous 8 tokens",
+    "spec": [
+     "in_prev8",
+     null
+    ],
+    "m1": 0.013271700590848923,
+    "m0": 0.0011127981124445796,
+    "contrast": 11.926422629971787,
+    "base_rate": 0.08613671875,
+    "coverage": 0.09450185871176546
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.015842145308852196,
+    "m0": 0.0020610473584383726,
+    "contrast": 7.686453804174385,
+    "base_rate": 0.007189453125,
+    "coverage": 0.012215428762152206
+   }
+  ],
+  "rule": "target is a determiner token",
+  "spec": [
+   "lex",
+   "determiner"
+  ],
+  "m1": 0.014149907976388931,
+  "m0": 0.0010121363447979093,
+  "contrast": 13.980238975821196,
+  "base_rate": 0.087380859375,
+  "coverage": 0.10916663069215976,
+  "named": true
+ },
+ {
+  "head": "L7/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.004510874394327402,
+  "n_functions": 2,
+  "total_coverage": 0.12169693553410983,
+  "functions": [
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.018748905509710312,
+    "m0": 0.00427370285615325,
+    "contrast": 4.38704003080508,
+    "base_rate": 0.00779453125,
+    "coverage": 0.010145228595452346
+   },
+   {
+    "rule": "position < 64",
+    "spec": [
+     "pos<64",
+     null
+    ],
+    "m1": 0.01255915779620409,
+    "m0": 0.0038416858296841383,
+    "contrast": 3.2691787806179606,
+    "base_rate": 0.0625,
+    "coverage": 0.11265983159747059
+   }
+  ],
+  "rule": "target is a time word token",
+  "spec": [
+   "lex",
+   "time_word"
+  ],
+  "m1": 0.018748905509710312,
+  "m0": 0.00427370285615325,
+  "contrast": 4.38704003080508,
+  "base_rate": 0.00779453125,
+  "coverage": 0.010145228595452346,
+  "named": true
+ },
+ {
+  "head": "L7/h1",
+  "n_windows": 1000,
+  "mean_dnll": 0.013230904005467892,
+  "n_functions": 4,
+  "total_coverage": 0.6217979314747896,
+  "functions": [
+   {
+    "rule": "target occurred in the previous 128 tokens",
+    "spec": [
+     "seen128",
+     null
+    ],
+    "m1": 0.026898009702563286,
+    "m0": 0.0023429272696375847,
+    "contrast": 11.48051416326039,
+    "base_rate": 0.430197265625,
+    "coverage": 0.4457976503137211
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.07456174492835999,
+    "m0": 0.006826562341302633,
+    "contrast": 10.922297519681369,
+    "base_rate": 0.089759765625,
+    "coverage": 0.2633798080224569
+   },
+   {
+    "rule": "target char-class = digit",
+    "spec": [
+     "class",
+     2
+    ],
+    "m1": 0.09247299283742905,
+    "m0": 0.011303842067718506,
+    "contrast": 8.180669217018988,
+    "base_rate": 0.019744140625,
+    "coverage": 0.06457640305461144
+   },
+   {
+    "rule": "preceding token \u2208 {'.\u010a\u010a', '.\"\u010a\u010a', '[', '-', '\u0120['}",
+    "spec": [
+     "prevset",
+     [
+      12,
+      58,
+      382,
+      510,
+      2266
+     ]
+    ],
+    "m1": 0.08864320814609528,
+    "m0": 0.012565442360937595,
+    "contrast": 7.054523477952668,
+    "base_rate": 0.004482421875,
+    "coverage": 0.01290760245210866
+   }
+  ],
+  "rule": "target occurred in the previous 128 tokens",
+  "spec": [
+   "seen128",
+   null
+  ],
+  "m1": 0.026898009702563286,
+  "m0": 0.0023429272696375847,
+  "contrast": 11.48051416326039,
+  "base_rate": 0.430197265625,
+  "coverage": 0.4457976503137211,
+  "named": true
+ },
+ {
+  "head": "L7/h2",
+  "n_windows": 5000,
+  "mean_dnll": 0.00046294956700876355,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L7/h3",
+  "n_windows": 5000,
+  "mean_dnll": 0.0009636143804527819,
+  "n_functions": 1,
+  "total_coverage": 0.23929849704660863,
+  "functions": [
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.010884007439017296,
+    "m0": -0.00036580415326170623,
+    "contrast": Infinity,
+    "base_rate": 0.12155625,
+    "coverage": 0.23929849704660863
+   }
+  ],
+  "rule": "target char-class = capitalized",
+  "spec": [
+   "class",
+   3
+  ],
+  "m1": 0.010884007439017296,
+  "m0": -0.00036580415326170623,
+  "contrast": Infinity,
+  "base_rate": 0.12155625,
+  "coverage": 0.23929849704660863,
+  "named": true
+ },
+ {
+  "head": "L7/h4",
+  "n_windows": 1000,
+  "mean_dnll": 0.001312296255491674,
+  "n_functions": 2,
+  "total_coverage": 0.00901268560739527,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.012379234656691551,
+    "m0": 0.0013189397286623716,
+    "contrast": 9.385747041865358,
+    "base_rate": 0.002693359375,
+    "coverage": 0.004799200195463262
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.011523683555424213,
+    "m0": 0.0013184925774112344,
+    "contrast": 8.740044314887339,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004213485892079618
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.012379234656691551,
+  "m0": 0.0013189397286623716,
+  "contrast": 9.385747041865358,
+  "base_rate": 0.002693359375,
+  "coverage": 0.004799200195463262,
+  "named": true
+ },
+ {
+  "head": "L7/h5",
+  "n_windows": 1000,
+  "mean_dnll": 0.0010985793778672814,
+  "n_functions": 1,
+  "total_coverage": 0.0034459423872370944,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.011262258514761925,
+    "m0": 0.0008400602382607758,
+    "contrast": 13.406489203772834,
+    "base_rate": 0.002962890625,
+    "coverage": 0.0034459423872370944
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.011262258514761925,
+  "m0": 0.0008400602382607758,
+  "contrast": 13.406489203772834,
+  "base_rate": 0.002962890625,
+  "coverage": 0.0034459423872370944,
+  "named": true
+ },
+ {
+  "head": "L7/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.00016395797138102353,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L7/h7",
+  "n_windows": 5000,
+  "mean_dnll": 0.008149403147399426,
+  "n_functions": 3,
+  "total_coverage": 0.15299686496627116,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120student', '\u0120students', '\u0120employee', '\u0120bride', '\u0120clients', '\u0120Student', '\u0120runners', '\u0120university'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      26,
+      2978,
+      4236,
+      4632,
+      5575,
+      7102,
+      8403,
+      8420,
+      8993,
+      9548,
+      9689,
+      10017,
+      11988,
+      12374,
+      12631,
+      13306,
+      15679,
+      39380,
+      42447
+     ]
+    ],
+    "m1": 0.2248414158821106,
+    "m0": 0.008449999615550041,
+    "contrast": 26.608452794287476,
+    "base_rate": 0.00382890625,
+    "coverage": 0.024243386271948393
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120our', '\u0120The', '\u0120this', '\u0120your', '\u0120the', '\u0120his'}",
+    "spec": [
+     "prevset",
+     [
+      279,
+      420,
+      578,
+      701,
+      813,
+      1057
+     ]
+    ],
+    "m1": 0.035931531339883804,
+    "m0": 0.007812698371708393,
+    "contrast": 4.5991192326073,
+    "base_rate": 0.052130078125,
+    "coverage": 0.1333115449831213
+   },
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.028254155069589615,
+    "m0": 0.009197109378874302,
+    "contrast": 3.072069049704815,
+    "base_rate": 0.00427265625,
+    "coverage": 0.0065658891421916145
+   }
+  ],
+  "rule": "target \u2208 {'\u0120student', '\u0120students', '\u0120employee', '\u0120bride', '\u0120clients', '\u0120Student', '\u0120runners', '\u0120university'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    26,
+    2978,
+    4236,
+    4632,
+    5575,
+    7102,
+    8403,
+    8420,
+    8993,
+    9548,
+    9689,
+    10017,
+    11988,
+    12374,
+    12631,
+    13306,
+    15679,
+    39380,
+    42447
+   ]
+  ],
+  "m1": 0.2248414158821106,
+  "m0": 0.008449999615550041,
+  "contrast": 26.608452794287476,
+  "base_rate": 0.00382890625,
+  "coverage": 0.024243386271948393,
+  "named": true
+ },
+ {
+  "head": "L7/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.0077578406780958176,
+  "n_functions": 2,
+  "total_coverage": 0.008500371919144782,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120$', '\u0120years', '\u0120cost', '\u0120price', 'g', '\u0120time'}",
+    "spec": [
+     "tokset",
+     [
+      70,
+      400,
+      892,
+      1667,
+      2853,
+      3430
+     ]
+    ],
+    "m1": 0.06221636384725571,
+    "m0": 0.007914558984339237,
+    "contrast": 7.861001980067998,
+    "base_rate": 0.0028015625,
+    "coverage": 0.0061342448086600075
+   },
+   {
+    "rule": "target is a month unit token",
+    "spec": [
+     "lex",
+     "month_unit"
+    ],
+    "m1": 0.02754823863506317,
+    "m0": 0.008014941588044167,
+    "contrast": 3.4371103435309736,
+    "base_rate": 0.00264921875,
+    "coverage": 0.003667428965839286
+   }
+  ],
+  "rule": "target \u2208 {'\u0120$', '\u0120years', '\u0120cost', '\u0120price', 'g', '\u0120time'}",
+  "spec": [
+   "tokset",
+   [
+    70,
+    400,
+    892,
+    1667,
+    2853,
+    3430
+   ]
+  ],
+  "m1": 0.06221636384725571,
+  "m0": 0.007914558984339237,
+  "contrast": 7.861001980067998,
+  "base_rate": 0.0028015625,
+  "coverage": 0.0061342448086600075,
+  "named": true
+ },
+ {
+  "head": "L7/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.0021495323162525892,
+  "n_functions": 1,
+  "total_coverage": 0.18962430574493275,
+  "functions": [
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.012497945688664913,
+    "m0": 0.000760662485845387,
+    "contrast": 16.430343182725668,
+    "base_rate": 0.089759765625,
+    "coverage": 0.18962430574493275
+   }
+  ],
+  "rule": "target char-class = capitalized",
+  "spec": [
+   "class",
+   3
+  ],
+  "m1": 0.012497945688664913,
+  "m0": 0.000760662485845387,
+  "contrast": 16.430343182725668,
+  "base_rate": 0.089759765625,
+  "coverage": 0.18962430574493275,
+  "named": true
+ },
+ {
+  "head": "L7/h10",
+  "n_windows": 1000,
+  "mean_dnll": 0.001631483668461442,
+  "n_functions": 5,
+  "total_coverage": 0.05705879827699811,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\"', '\u0120continued', 'dz', '\u0120your', '\u0120\"', '\u0120also', '\u0120you', '\u0120still'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      1,
+      62,
+      330,
+      477,
+      499,
+      539,
+      701,
+      1101,
+      2011,
+      2103,
+      8738,
+      38977
+     ]
+    ],
+    "m1": 0.034525446593761444,
+    "m0": 0.0011767141986638308,
+    "contrast": 29.340554089485273,
+    "base_rate": 0.012896484375,
+    "coverage": 0.037290032188715405
+   },
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.02959265746176243,
+    "m0": 0.0015430264174938202,
+    "contrast": 19.17832198221645,
+    "base_rate": 0.0022734375,
+    "coverage": 0.0058560783275035085
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.02732633426785469,
+    "m0": 0.001537336385808885,
+    "contrast": 17.775117092201434,
+    "base_rate": 0.002693359375,
+    "coverage": 0.006176228278283514
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.025302618741989136,
+    "m0": 0.0014269818784669042,
+    "contrast": 17.731562764604497,
+    "base_rate": 0.00753125,
+    "coverage": 0.017049761568038564
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.015922188758850098,
+    "m0": 0.0015307910507544875,
+    "contrast": 10.401281579874968,
+    "base_rate": 0.00528125,
+    "coverage": 0.011058056670180769
+   }
+  ],
+  "rule": "target \u2208 {'\"', '\u0120continued', 'dz', '\u0120your', '\u0120\"', '\u0120also', '\u0120you', '\u0120still'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    1,
+    62,
+    330,
+    477,
+    499,
+    539,
+    701,
+    1101,
+    2011,
+    2103,
+    8738,
+    38977
+   ]
+  ],
+  "m1": 0.034525446593761444,
+  "m0": 0.0011767141986638308,
+  "contrast": 29.340554089485273,
+  "base_rate": 0.012896484375,
+  "coverage": 0.037290032188715405,
+  "named": true
+ },
+ {
+  "head": "L7/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.0063135577365756035,
+  "n_functions": 4,
+  "total_coverage": 0.6116218795139471,
+  "functions": [
+   {
+    "rule": "target occurred in the previous 128 tokens",
+    "spec": [
+     "seen128",
+     null
+    ],
+    "m1": 0.014780191704630852,
+    "m0": -0.0007124070543795824,
+    "contrast": Infinity,
+    "base_rate": 0.430197265625,
+    "coverage": 0.4407512369652237
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.06660497188568115,
+    "m0": -2.854334525181912e-05,
+    "contrast": Infinity,
+    "base_rate": 0.089759765625,
+    "coverage": 0.3510054364807213
+   },
+   {
+    "rule": "target \u2208 {'\u0120C', '\u0120D', '\u0120B', '\u0120f', '\u0120L', '\u0120T'}",
+    "spec": [
+     "tokset",
+     [
+      282,
+      350,
+      356,
+      423,
+      426,
+      445
+     ]
+    ],
+    "m1": 0.4815068244934082,
+    "m0": 0.004867925774306059,
+    "contrast": 98.9141673102131,
+    "base_rate": 0.002275390625,
+    "coverage": 0.043226343500768295
+   },
+   {
+    "rule": "sentence-initial capitalized word",
+    "spec": [
+     "sent_initial_cap",
+     null
+    ],
+    "m1": 0.03303515911102295,
+    "m0": 0.005256646312773228,
+    "contrast": 6.284455362870842,
+    "base_rate": 0.025048828125,
+    "coverage": 0.06084105360317992
+   }
+  ],
+  "rule": "target occurred in the previous 128 tokens",
+  "spec": [
+   "seen128",
+   null
+  ],
+  "m1": 0.014780191704630852,
+  "m0": -0.0007124070543795824,
+  "contrast": Infinity,
+  "base_rate": 0.430197265625,
+  "coverage": 0.4407512369652237,
+  "named": true
+ },
+ {
+  "head": "L7/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.00039959009154699743,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L7/h13",
+  "n_windows": 1000,
+  "mean_dnll": 0.0007812410476617515,
+  "n_functions": 3,
+  "total_coverage": 0.16278955499122366,
+  "functions": [
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.02520555630326271,
+    "m0": -0.00011930835898965597,
+    "contrast": Infinity,
+    "base_rate": 0.034962890625,
+    "coverage": 0.13077422684339315
+   },
+   {
+    "rule": "target \u2208 {'!', '.\u010a\u010a', '?\u010a', \"?'\", '\u0120we', '!\"\u010a\u010a', '!\"', '?\"\u010a\u010a'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      0,
+      26,
+      30,
+      382,
+      584,
+      1980,
+      5380,
+      7673,
+      9135,
+      12241,
+      17642,
+      20837,
+      31931
+     ]
+    ],
+    "m1": 0.06746873259544373,
+    "m0": 5.160154614713974e-07,
+    "contrast": Infinity,
+    "base_rate": 0.01134765625,
+    "coverage": 0.08824059538659619
+   },
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.011623254045844078,
+    "m0": 0.0006184820085763931,
+    "contrast": 18.793196705265853,
+    "base_rate": 0.013416015625,
+    "coverage": 0.028186394145824873
+   }
+  ],
+  "rule": "target is a sentence end token",
+  "spec": [
+   "lex",
+   "sentence_end"
+  ],
+  "m1": 0.02520555630326271,
+  "m0": -0.00011930835898965597,
+  "contrast": Infinity,
+  "base_rate": 0.034962890625,
+  "coverage": 0.13077422684339315,
+  "named": true
+ },
+ {
+  "head": "L7/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.0014263307675719261,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L7/h15",
+  "n_windows": 1000,
+  "mean_dnll": 0.0022434673737734556,
+  "n_functions": 3,
+  "total_coverage": 0.02301901344749838,
+  "functions": [
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.027727453038096428,
+    "m0": 0.0027292848099023104,
+    "contrast": 10.159237664569305,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004653681396464499
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.019499098882079124,
+    "m0": 0.0027249199338257313,
+    "contrast": 7.155842870840903,
+    "base_rate": 0.00467578125,
+    "coverage": 0.007245346660431079
+   },
+   {
+    "rule": "target is a quantifier token",
+    "spec": [
+     "lex",
+     "quantifier"
+    ],
+    "m1": 0.01304544322192669,
+    "m0": 0.002694464521482587,
+    "contrast": 4.841571717837517,
+    "base_rate": 0.01051953125,
+    "coverage": 0.01527982199610629
+   }
+  ],
+  "rule": "target is a open bracket token",
+  "spec": [
+   "lex",
+   "open_bracket"
+  ],
+  "m1": 0.027727453038096428,
+  "m0": 0.0027292848099023104,
+  "contrast": 10.159237664569305,
+  "base_rate": 0.002962890625,
+  "coverage": 0.004653681396464499,
+  "named": true
+ },
+ {
+  "head": "L8/h0",
+  "n_windows": 1000,
+  "mean_dnll": 0.0005376216140575707,
+  "n_functions": 4,
+  "total_coverage": 0.19257836610494528,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120(', '\u0120(_', '\u0120&', '(', ':', '\u0120['}",
+    "spec": [
+     "tokset",
+     [
+      7,
+      25,
+      320,
+      510,
+      612,
+      5570
+     ]
+    ],
+    "m1": 0.21066433191299438,
+    "m0": -0.00026988988975062966,
+    "contrast": Infinity,
+    "base_rate": 0.00390234375,
+    "coverage": 0.09527726804868714
+   },
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.020448772236704826,
+    "m0": 0.00028269970789551735,
+    "contrast": 72.33389941903465,
+    "base_rate": 0.013416015625,
+    "coverage": 0.03767030331255249
+   },
+   {
+    "rule": "target is a pronoun 1st token",
+    "spec": [
+     "lex",
+     "pronoun_1st"
+    ],
+    "m1": 0.021460067480802536,
+    "m0": 0.0002983569575008005,
+    "contrast": 71.92749135318877,
+    "base_rate": 0.012044921875,
+    "coverage": 0.04851494280513018
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.01217692531645298,
+    "m0": 0.00046504291822202504,
+    "contrast": 26.184519405237694,
+    "base_rate": 0.00753125,
+    "coverage": 0.016596804546106795
+   }
+  ],
+  "rule": "target \u2208 {'\u0120(', '\u0120(_', '\u0120&', '(', ':', '\u0120['}",
+  "spec": [
+   "tokset",
+   [
+    7,
+    25,
+    320,
+    510,
+    612,
+    5570
+   ]
+  ],
+  "m1": 0.21066433191299438,
+  "m0": -0.00026988988975062966,
+  "contrast": Infinity,
+  "base_rate": 0.00390234375,
+  "coverage": 0.09527726804868714,
+  "named": true
+ },
+ {
+  "head": "L8/h1",
+  "n_windows": 1000,
+  "mean_dnll": 0.0001482877996750176,
+  "n_functions": 1,
+  "total_coverage": 0.06350928985097112,
+  "functions": [
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.011202380061149597,
+    "m0": -0.0001900227362057194,
+    "contrast": Infinity,
+    "base_rate": 0.034962890625,
+    "coverage": 0.06350928985097112
+   }
+  ],
+  "rule": "target is a sentence end token",
+  "spec": [
+   "lex",
+   "sentence_end"
+  ],
+  "m1": 0.011202380061149597,
+  "m0": -0.0001900227362057194,
+  "contrast": Infinity,
+  "base_rate": 0.034962890625,
+  "coverage": 0.06350928985097112,
+  "named": true
+ },
+ {
+  "head": "L8/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.010955213569104671,
+  "n_functions": 3,
+  "total_coverage": 0.25034520789755177,
+  "functions": [
+   {
+    "rule": "target \u2208 {',\u010a', '\u0120his', '\u0120him', '\u010a'}",
+    "spec": [
+     "tokset",
+     [
+      198,
+      345,
+      813,
+      1461
+     ]
+    ],
+    "m1": 0.06391511857509613,
+    "m0": 0.007462505716830492,
+    "contrast": 8.564833448763164,
+    "base_rate": 0.0475859375,
+    "coverage": 0.2204866787080147
+   },
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.03994937241077423,
+    "m0": 0.007944053038954735,
+    "contrast": 5.02884009143407,
+    "base_rate": 0.068888671875,
+    "coverage": 0.20026276780355043
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.03531954064965248,
+    "m0": 0.009769142605364323,
+    "contrast": 3.6154186786318596,
+    "base_rate": 0.014861328125,
+    "coverage": 0.02465436434580303
+   }
+  ],
+  "rule": "target \u2208 {',\u010a', '\u0120his', '\u0120him', '\u010a'}",
+  "spec": [
+   "tokset",
+   [
+    198,
+    345,
+    813,
+    1461
+   ]
+  ],
+  "m1": 0.06391511857509613,
+  "m0": 0.007462505716830492,
+  "contrast": 8.564833448763164,
+  "base_rate": 0.0475859375,
+  "coverage": 0.2204866787080147,
+  "named": true
+ },
+ {
+  "head": "L8/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.0011552415089681745,
+  "n_functions": 2,
+  "total_coverage": 0.2960029701503027,
+  "functions": [
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.022021425887942314,
+    "m0": -0.0007387325167655945,
+    "contrast": Infinity,
+    "base_rate": 0.089759765625,
+    "coverage": 0.2934483552613535
+   },
+   {
+    "rule": "target \u2208 {'\u0120M', '\u0120N', '\u0120P', '\u0120V', '\u0120ch', '\u0120z', '\u0120E', '\u0120Sp'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      350,
+      386,
+      393,
+      432,
+      445,
+      452,
+      469,
+      480,
+      507,
+      523,
+      650,
+      735,
+      800,
+      1167,
+      1630,
+      3165,
+      4410,
+      4584
+     ]
+    ],
+    "m1": 0.20749273896217346,
+    "m0": 0.0005788029520772398,
+    "contrast": 358.48597215600256,
+    "base_rate": 0.003505859375,
+    "coverage": 0.061515847644129866
+   }
+  ],
+  "rule": "target char-class = capitalized",
+  "spec": [
+   "class",
+   3
+  ],
+  "m1": 0.022021425887942314,
+  "m0": -0.0007387325167655945,
+  "contrast": Infinity,
+  "base_rate": 0.089759765625,
+  "coverage": 0.2934483552613535,
+  "named": true
+ },
+ {
+  "head": "L8/h4",
+  "n_windows": 5000,
+  "mean_dnll": 6.51062946417369e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L8/h5",
+  "n_windows": 1000,
+  "mean_dnll": 0.004259671084582806,
+  "n_functions": 6,
+  "total_coverage": 0.5112597309274348,
+  "functions": [
+   {
+    "rule": "target \u2208 {'aram', '\u0120de', 'iker', '\u0120she', '\u0120her', 'orgen', '\u0120und', '\u0120must'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      409,
+      640,
+      1077,
+      1364,
+      2011,
+      2073,
+      2428,
+      25840,
+      40663
+     ]
+    ],
+    "m1": 0.10064367949962616,
+    "m0": 0.0033570833038538694,
+    "contrast": 29.97950017626583,
+    "base_rate": 0.00241015625,
+    "coverage": 0.01265873559616922
+   },
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.06894107162952423,
+    "m0": 0.003442652989178896,
+    "contrast": 20.02556512266062,
+    "base_rate": 0.0022734375,
+    "coverage": 0.00837546219616523
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.014208544045686722,
+    "m0": 0.0025446077343076468,
+    "contrast": 5.583785608335688,
+    "base_rate": 0.089759765625,
+    "coverage": 0.1924401604355175
+   },
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.010559375397861004,
+    "m0": 0.001917751389555633,
+    "contrast": 5.5061231895692915,
+    "base_rate": 0.19369140625,
+    "coverage": 0.27591440679852486
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.013611523434519768,
+    "m0": 0.0034559876658022404,
+    "contrast": 3.9385335686260667,
+    "base_rate": 0.013349609375,
+    "coverage": 0.02260303420343004
+   },
+   {
+    "rule": "preceding token char-class = capitalized",
+    "spec": [
+     "prev_class",
+     3
+    ],
+    "m1": 0.010198382660746574,
+    "m0": 0.002939991420134902,
+    "contrast": 3.468847762922594,
+    "base_rate": 0.089767578125,
+    "coverage": 0.1605689817623438
+   }
+  ],
+  "rule": "target \u2208 {'aram', '\u0120de', 'iker', '\u0120she', '\u0120her', 'orgen', '\u0120und', '\u0120must'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    409,
+    640,
+    1077,
+    1364,
+    2011,
+    2073,
+    2428,
+    25840,
+    40663
+   ]
+  ],
+  "m1": 0.10064367949962616,
+  "m0": 0.0033570833038538694,
+  "contrast": 29.97950017626583,
+  "base_rate": 0.00241015625,
+  "coverage": 0.01265873559616922,
+  "named": true
+ },
+ {
+  "head": "L8/h6",
+  "n_windows": 1000,
+  "mean_dnll": 6.198078335728496e-05,
+  "n_functions": 1,
+  "total_coverage": 0.0666526016619776,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120Anne', '\u0120C', '\u0120I', '\u0120your', 'I', '\u0120we', '\u0120A', '\u0120Mr'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      40,
+      356,
+      358,
+      362,
+      445,
+      584,
+      602,
+      603,
+      701,
+      757,
+      856,
+      4491,
+      29026,
+      40139
+     ]
+    ],
+    "m1": 0.021391065791249275,
+    "m0": -0.0001976409985218197,
+    "contrast": Infinity,
+    "base_rate": 0.011126953125,
+    "coverage": 0.0666526016619776
+   }
+  ],
+  "rule": "target \u2208 {'\u0120Anne', '\u0120C', '\u0120I', '\u0120your', 'I', '\u0120we', '\u0120A', '\u0120Mr'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    40,
+    356,
+    358,
+    362,
+    445,
+    584,
+    602,
+    603,
+    701,
+    757,
+    856,
+    4491,
+    29026,
+    40139
+   ]
+  ],
+  "m1": 0.021391065791249275,
+  "m0": -0.0001976409985218197,
+  "contrast": Infinity,
+  "base_rate": 0.011126953125,
+  "coverage": 0.0666526016619776,
+  "named": true
+ },
+ {
+  "head": "L8/h7",
+  "n_windows": 1000,
+  "mean_dnll": 0.0007682450814172626,
+  "n_functions": 3,
+  "total_coverage": 0.06531404931065596,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120before', '\u0120any', '\u0120only', '\u0120again', '\u0120so', 'too', '\u0120too', '\u0120such'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      779,
+      904,
+      1047,
+      1193,
+      1578,
+      1603,
+      1778,
+      2288,
+      10489,
+      37227
+     ]
+    ],
+    "m1": 0.041335057467222214,
+    "m0": 0.0004892227589152753,
+    "contrast": 84.49128073859849,
+    "base_rate": 0.008134765625,
+    "coverage": 0.03658616235815072
+   },
+   {
+    "rule": "target is a quantifier token",
+    "spec": [
+     "lex",
+     "quantifier"
+    ],
+    "m1": 0.014976099133491516,
+    "m0": 0.0006710112211294472,
+    "contrast": 22.318701479065762,
+    "base_rate": 0.01051953125,
+    "coverage": 0.02675750244734792
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.013470413163304329,
+    "m0": 0.0007620726828463376,
+    "contrast": 17.676021548223463,
+    "base_rate": 0.00467578125,
+    "coverage": 0.011250974690049455
+   }
+  ],
+  "rule": "target \u2208 {'\u0120before', '\u0120any', '\u0120only', '\u0120again', '\u0120so', 'too', '\u0120too', '\u0120such'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    779,
+    904,
+    1047,
+    1193,
+    1578,
+    1603,
+    1778,
+    2288,
+    10489,
+    37227
+   ]
+  ],
+  "m1": 0.041335057467222214,
+  "m0": 0.0004892227589152753,
+  "contrast": 84.49128073859849,
+  "base_rate": 0.008134765625,
+  "coverage": 0.03658616235815072,
+  "named": true
+ },
+ {
+  "head": "L8/h8",
+  "n_windows": 1000,
+  "mean_dnll": 0.003952833823859692,
+  "n_functions": 5,
+  "total_coverage": 0.21614811752603227,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120it', 'it', '\u0120them', '\u0120him', 'them', '\u0120they'}",
+    "spec": [
+     "tokset",
+     [
+      275,
+      433,
+      814,
+      1124,
+      1461,
+      49818
+     ]
+    ],
+    "m1": 0.33263760805130005,
+    "m0": 0.0007689383928664029,
+    "contrast": 432.59331454541285,
+    "base_rate": 0.009744140625,
+    "coverage": 0.1479108930084175
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.07358743995428085,
+    "m0": 0.003061216324567795,
+    "contrast": 24.038627836819234,
+    "base_rate": 0.013349609375,
+    "coverage": 0.05587514992302196
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.01929670386016369,
+    "m0": 0.0038919628132134676,
+    "contrast": 4.958090502470918,
+    "base_rate": 0.007189453125,
+    "coverage": 0.012590567867233919
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.014482060447335243,
+    "m0": 0.0039027682505548,
+    "contrast": 3.7107149381151543,
+    "base_rate": 0.009447265625,
+    "coverage": 0.011113491872602922
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120into', '\u0120on', '\u0120upon', '\u0120about', '\u0120send'}",
+    "spec": [
+     "prevset",
+     [
+      389,
+      922,
+      1139,
+      3708,
+      5304
+     ]
+    ],
+    "m1": 0.012156259268522263,
+    "m0": 0.003945397213101387,
+    "contrast": 3.0811243106664294,
+    "base_rate": 0.00698046875,
+    "coverage": 0.011919515896941214
+   }
+  ],
+  "rule": "target \u2208 {'\u0120it', 'it', '\u0120them', '\u0120him', 'them', '\u0120they'}",
+  "spec": [
+   "tokset",
+   [
+    275,
+    433,
+    814,
+    1124,
+    1461,
+    49818
+   ]
+  ],
+  "m1": 0.33263760805130005,
+  "m0": 0.0007689383928664029,
+  "contrast": 432.59331454541285,
+  "base_rate": 0.009744140625,
+  "coverage": 0.1479108930084175,
+  "named": true
+ },
+ {
+  "head": "L8/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.002698812633752823,
+  "n_functions": 4,
+  "total_coverage": 0.13340599404554004,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.2706877291202545,
+    "m0": 0.0017426625126972795,
+    "contrast": 155.32997763364185,
+    "base_rate": 0.002693359375,
+    "coverage": 0.04043826477427777
+   },
+   {
+    "rule": "target \u2208 {'),', '_),', ')', ']\u010a\u010a\u010a', '.).', ');', '_)', '\u0120had'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      8,
+      60,
+      422,
+      570,
+      705,
+      1047,
+      1237,
+      2533,
+      2595,
+      3677,
+      4063,
+      6266,
+      16726,
+      22414,
+      25390,
+      36284,
+      36434,
+      66116
+     ]
+    ],
+    "m1": 0.14495733380317688,
+    "m0": 0.0014549446059390903,
+    "contrast": 99.63082663866405,
+    "base_rate": 0.007052734375,
+    "coverage": 0.059537787791752554
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.016170091927051544,
+    "m0": 0.001935396227054298,
+    "contrast": 8.354925829148002,
+    "base_rate": 0.03734765625,
+    "coverage": 0.06120660573192468
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.015882836654782295,
+    "m0": 0.0023724823258817196,
+    "contrast": 6.694606944597376,
+    "base_rate": 0.006998046875,
+    "coverage": 0.012741095247883668
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.2706877291202545,
+  "m0": 0.0017426625126972795,
+  "contrast": 155.32997763364185,
+  "base_rate": 0.002693359375,
+  "coverage": 0.04043826477427777,
+  "named": true
+ },
+ {
+  "head": "L8/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.003997955936938524,
+  "n_functions": 1,
+  "total_coverage": 0.0036293057796680703,
+  "functions": [
+   {
+    "rule": "preceding token \u2208 {'\u0120G', '\u0120St', '\u0120M', '\u0120R', '\u0120C', '\u0120T'}",
+    "spec": [
+     "prevset",
+     [
+      350,
+      356,
+      386,
+      432,
+      480,
+      800
+     ]
+    ],
+    "m1": 0.012789392843842506,
+    "m0": 0.0037234702613204718,
+    "contrast": 3.4348046167305615,
+    "base_rate": 0.00214609375,
+    "coverage": 0.0036293057796680703
+   }
+  ],
+  "rule": "preceding token \u2208 {'\u0120G', '\u0120St', '\u0120M', '\u0120R', '\u0120C', '\u0120T'}",
+  "spec": [
+   "prevset",
+   [
+    350,
+    356,
+    386,
+    432,
+    480,
+    800
+   ]
+  ],
+  "m1": 0.012789392843842506,
+  "m0": 0.0037234702613204718,
+  "contrast": 3.4348046167305615,
+  "base_rate": 0.00214609375,
+  "coverage": 0.0036293057796680703,
+  "named": true
+ },
+ {
+  "head": "L8/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.0007366100326180458,
+  "n_functions": 2,
+  "total_coverage": 0.1469534333546032,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120has', '\u0120every', '\u0120another', '\u0120whose', '\u0120will', '\u0120such', '\u0120had', '\u0120each'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      574,
+      690,
+      706,
+      1023,
+      1047,
+      1053,
+      1475,
+      1778,
+      1855,
+      2500,
+      4985,
+      6832,
+      43063
+     ]
+    ],
+    "m1": 0.035168714821338654,
+    "m0": 0.00040012167301028967,
+    "contrast": 87.89505091476073,
+    "base_rate": 0.0164375,
+    "coverage": 0.07606021217751659
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.019861342385411263,
+    "m0": 0.00023877350031398237,
+    "contrast": 83.1806811027773,
+    "base_rate": 0.03734765625,
+    "coverage": 0.12757448415362
+   }
+  ],
+  "rule": "target \u2208 {'\u0120has', '\u0120every', '\u0120another', '\u0120whose', '\u0120will', '\u0120such', '\u0120had', '\u0120each'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    574,
+    690,
+    706,
+    1023,
+    1047,
+    1053,
+    1475,
+    1778,
+    1855,
+    2500,
+    4985,
+    6832,
+    43063
+   ]
+  ],
+  "m1": 0.035168714821338654,
+  "m0": 0.00040012167301028967,
+  "contrast": 87.89505091476073,
+  "base_rate": 0.0164375,
+  "coverage": 0.07606021217751659,
+  "named": true
+ },
+ {
+  "head": "L8/h12",
+  "n_windows": 5000,
+  "mean_dnll": 8.317671745317057e-05,
+  "n_functions": 1,
+  "total_coverage": 0.07218446204929561,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120R', '.\u010a', '\u010a', ',\u010a', ';', 'the', '\u0120K'}",
+    "spec": [
+     "tokset",
+     [
+      26,
+      198,
+      345,
+      432,
+      627,
+      735,
+      1820
+     ]
+    ],
+    "m1": 0.01591373421251774,
+    "m0": -0.0003063218027818948,
+    "contrast": Infinity,
+    "base_rate": 0.0243546875,
+    "coverage": 0.07218446204929561
+   }
+  ],
+  "rule": "target \u2208 {'\u0120R', '.\u010a', '\u010a', ',\u010a', ';', 'the', '\u0120K'}",
+  "spec": [
+   "tokset",
+   [
+    26,
+    198,
+    345,
+    432,
+    627,
+    735,
+    1820
+   ]
+  ],
+  "m1": 0.01591373421251774,
+  "m0": -0.0003063218027818948,
+  "contrast": Infinity,
+  "base_rate": 0.0243546875,
+  "coverage": 0.07218446204929561,
+  "named": true
+ },
+ {
+  "head": "L8/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.0008408206049352884,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L8/h14",
+  "n_windows": 5000,
+  "mean_dnll": 8.752010035095736e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L8/h15",
+  "n_windows": 1000,
+  "mean_dnll": 8.833198080537841e-05,
+  "n_functions": 2,
+  "total_coverage": 0.07317211311086343,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120_', '\u0120-', ',\u010a', '--', '\u0120\"'}",
+    "spec": [
+     "tokset",
+     [
+      313,
+      330,
+      345,
+      482,
+      721
+     ]
+    ],
+    "m1": 0.02812955528497696,
+    "m0": -0.00015778355009388179,
+    "contrast": Infinity,
+    "base_rate": 0.010126953125,
+    "coverage": 0.06172710411490791
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.010715551674365997,
+    "m0": 4.8343608796130866e-05,
+    "contrast": 221.65394643073495,
+    "base_rate": 0.00753125,
+    "coverage": 0.024976571633274724
+   }
+  ],
+  "rule": "target \u2208 {'\u0120_', '\u0120-', ',\u010a', '--', '\u0120\"'}",
+  "spec": [
+   "tokset",
+   [
+    313,
+    330,
+    345,
+    482,
+    721
+   ]
+  ],
+  "m1": 0.02812955528497696,
+  "m0": -0.00015778355009388179,
+  "contrast": Infinity,
+  "base_rate": 0.010126953125,
+  "coverage": 0.06172710411490791,
+  "named": true
+ },
+ {
+  "head": "L9/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.0003149528056383133,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.000142066361149773,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.008101660758256912,
+  "n_functions": 3,
+  "total_coverage": 0.2295309626929989,
+  "functions": [
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.1459478735923767,
+    "m0": 0.0074523878283798695,
+    "contrast": 19.584041645898267,
+    "base_rate": 0.002693359375,
+    "coverage": 0.011775124041976429
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.11086107790470123,
+    "m0": 0.007043528836220503,
+    "contrast": 15.739422735747375,
+    "base_rate": 0.00753125,
+    "coverage": 0.026043421201174158
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.031008925288915634,
+    "m0": 0.005539253819733858,
+    "contrast": 5.59803292971426,
+    "base_rate": 0.089759765625,
+    "coverage": 0.19171547571187939
+   }
+  ],
+  "rule": "target is a close bracket token",
+  "spec": [
+   "lex",
+   "close_bracket"
+  ],
+  "m1": 0.1459478735923767,
+  "m0": 0.0074523878283798695,
+  "contrast": 19.584041645898267,
+  "base_rate": 0.002693359375,
+  "coverage": 0.011775124041976429,
+  "named": true
+ },
+ {
+  "head": "L9/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.0018658540211617947,
+  "n_functions": 1,
+  "total_coverage": 0.2956475668351297,
+  "functions": [
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.2758241593837738,
+    "m0": -0.0018860807176679373,
+    "contrast": Infinity,
+    "base_rate": 0.013349609375,
+    "coverage": 0.2956475668351297
+   }
+  ],
+  "rule": "target is a pronoun 3rd token",
+  "spec": [
+   "lex",
+   "pronoun_3rd"
+  ],
+  "m1": 0.2758241593837738,
+  "m0": -0.0018860807176679373,
+  "contrast": Infinity,
+  "base_rate": 0.013349609375,
+  "coverage": 0.2956475668351297,
+  "named": true
+ },
+ {
+  "head": "L9/h4",
+  "n_windows": 5000,
+  "mean_dnll": 0.014705621637403965,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h5",
+  "n_windows": 5000,
+  "mean_dnll": 0.00024534191470593214,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h6",
+  "n_windows": 5000,
+  "mean_dnll": 0.009480956941843033,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h7",
+  "n_windows": 5000,
+  "mean_dnll": 0.0003234944015275687,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h8",
+  "n_windows": 1000,
+  "mean_dnll": 0.0024570710957050323,
+  "n_functions": 4,
+  "total_coverage": 0.25003783828376624,
+  "functions": [
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.18151529133319855,
+    "m0": -0.0001459405611967668,
+    "contrast": Infinity,
+    "base_rate": 0.014861328125,
+    "coverage": 0.1565316731526878
+   },
+   {
+    "rule": "target \u2208 {'\u0120They', '\u0120their', 'their', '\u0120they', '\u0120its', '\u0120her', 'they', '\u0120themselves'}",
+    "spec": [
+     "tokset",
+     [
+      814,
+      872,
+      1077,
+      1202,
+      2435,
+      5694,
+      20670,
+      50828
+     ]
+    ],
+    "m1": 0.34120747447013855,
+    "m0": -1.2804373454855522e-06,
+    "contrast": Infinity,
+    "base_rate": 0.00748828125,
+    "coverage": 0.1415971559661795
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.0814385786652565,
+    "m0": 0.0014864575350657105,
+    "contrast": 54.78701997474581,
+    "base_rate": 0.013349609375,
+    "coverage": 0.0804166657466294
+   },
+   {
+    "rule": "target is a code symbol token",
+    "spec": [
+     "lex",
+     "code_symbol"
+    ],
+    "m1": 0.011116955429315567,
+    "m0": 0.0024373410269618034,
+    "contrast": 4.561099701002073,
+    "base_rate": 0.013416015625,
+    "coverage": 0.013089497816217809
+   }
+  ],
+  "rule": "target is a pronoun it they token",
+  "spec": [
+   "lex",
+   "pronoun_it_they"
+  ],
+  "m1": 0.18151529133319855,
+  "m0": -0.0001459405611967668,
+  "contrast": Infinity,
+  "base_rate": 0.014861328125,
+  "coverage": 0.1565316731526878,
+  "named": true
+ },
+ {
+  "head": "L9/h9",
+  "n_windows": 5000,
+  "mean_dnll": 0.00043858238495886326,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h10",
+  "n_windows": 5000,
+  "mean_dnll": 0.0009232175070792437,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.0010874898871406913,
+  "n_functions": 4,
+  "total_coverage": 0.15593990553904594,
+  "functions": [
+   {
+    "rule": "target is a pronoun 1st token",
+    "spec": [
+     "lex",
+     "pronoun_1st"
+    ],
+    "m1": 0.14038781821727753,
+    "m0": -0.000587929505854845,
+    "contrast": Infinity,
+    "base_rate": 0.012044921875,
+    "coverage": 0.12575814878418046
+   },
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.04234124720096588,
+    "m0": 0.0010161625687032938,
+    "contrast": 41.66778870333392,
+    "base_rate": 0.0022734375,
+    "coverage": 0.009144656613055701
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.014672131277620792,
+    "m0": 0.001007198472507298,
+    "contrast": 14.567269190844092,
+    "base_rate": 0.00753125,
+    "coverage": 0.016446414820500715
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.011265660636126995,
+    "m0": 0.0010799336014315486,
+    "contrast": 10.43180860489326,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004590676591882182
+   }
+  ],
+  "rule": "target is a pronoun 1st token",
+  "spec": [
+   "lex",
+   "pronoun_1st"
+  ],
+  "m1": 0.14038781821727753,
+  "m0": -0.000587929505854845,
+  "contrast": Infinity,
+  "base_rate": 0.012044921875,
+  "coverage": 0.12575814878418046,
+  "named": true
+ },
+ {
+  "head": "L9/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.0008401352679356933,
+  "n_functions": 1,
+  "total_coverage": 0.060940129386922115,
+  "functions": [
+   {
+    "rule": "target \u2208 {',\u010a', '\u010a'}",
+    "spec": [
+     "tokset",
+     [
+      198,
+      345
+     ]
+    ],
+    "m1": 0.011483020149171352,
+    "m0": 0.0003284651320427656,
+    "contrast": 34.95963202473583,
+    "base_rate": 0.009558203125,
+    "coverage": 0.060940129386922115
+   }
+  ],
+  "rule": "target \u2208 {',\u010a', '\u010a'}",
+  "spec": [
+   "tokset",
+   [
+    198,
+    345
+   ]
+  ],
+  "m1": 0.011483020149171352,
+  "m0": 0.0003284651320427656,
+  "contrast": 34.95963202473583,
+  "base_rate": 0.009558203125,
+  "coverage": 0.060940129386922115,
+  "named": true
+ },
+ {
+  "head": "L9/h13",
+  "n_windows": 1000,
+  "mean_dnll": 0.005290967412292957,
+  "n_functions": 3,
+  "total_coverage": 0.3475040572779261,
+  "functions": [
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.05158005654811859,
+    "m0": 0.0005836445488967001,
+    "contrast": 88.37580449543066,
+    "base_rate": 0.089759765625,
+    "coverage": 0.2817978916388321
+   },
+   {
+    "rule": "target \u2208 {'EL', '\u0120AN', '\u0120C', '\u0120night', '\u0120B', '\u0120A', '\u0120water', '\u0120E'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      356,
+      362,
+      426,
+      469,
+      2006,
+      2147,
+      2818,
+      3090,
+      3814,
+      60318
+     ]
+    ],
+    "m1": 0.04537781700491905,
+    "m0": 0.005052222404628992,
+    "contrast": 8.981753646344346,
+    "base_rate": 0.00269921875,
+    "coverage": 0.007866697566478472
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120and', '\u0120C', '\u0120F', '\u0120B', '\u0120or'}",
+    "spec": [
+     "prevset",
+     [
+      323,
+      356,
+      426,
+      435,
+      477
+     ]
+    ],
+    "m1": 0.033344801515340805,
+    "m0": 0.004401013255119324,
+    "contrast": 7.576619197080045,
+    "base_rate": 0.026259765625,
+    "coverage": 0.08116645246645954
+   }
+  ],
+  "rule": "target char-class = capitalized",
+  "spec": [
+   "class",
+   3
+  ],
+  "m1": 0.05158005654811859,
+  "m0": 0.0005836445488967001,
+  "contrast": 88.37580449543066,
+  "base_rate": 0.089759765625,
+  "coverage": 0.2817978916388321,
+  "named": true
+ },
+ {
+  "head": "L9/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.00015514138794969767,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L9/h15",
+  "n_windows": 5000,
+  "mean_dnll": 0.0008221040479838848,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h0",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002610854571685195,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h1",
+  "n_windows": 5000,
+  "mean_dnll": 7.140183151932433e-05,
+  "n_functions": 1,
+  "total_coverage": 0.08164153450920299,
+  "functions": [
+   {
+    "rule": "target \u2208 {'!', '?\u010a', '.\"\u010a', '!\u010a', '.\u010a', '\u0120.\u010a', ';\u010a', '.\"'}",
+    "spec": [
+     "tokset",
+     [
+      0,
+      280,
+      627,
+      1210,
+      4999,
+      5380,
+      10246,
+      16853
+     ]
+    ],
+    "m1": 0.012321893125772476,
+    "m0": -0.00010403934720670804,
+    "contrast": Infinity,
+    "base_rate": 0.0140265625,
+    "coverage": 0.08164153450920299
+   }
+  ],
+  "rule": "target \u2208 {'!', '?\u010a', '.\"\u010a', '!\u010a', '.\u010a', '\u0120.\u010a', ';\u010a', '.\"'}",
+  "spec": [
+   "tokset",
+   [
+    0,
+    280,
+    627,
+    1210,
+    4999,
+    5380,
+    10246,
+    16853
+   ]
+  ],
+  "m1": 0.012321893125772476,
+  "m0": -0.00010403934720670804,
+  "contrast": Infinity,
+  "base_rate": 0.0140265625,
+  "coverage": 0.08164153450920299,
+  "named": true
+ },
+ {
+  "head": "L10/h2",
+  "n_windows": 5000,
+  "mean_dnll": 0.00012591613631229848,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.0022432305850088596,
+  "n_functions": 13,
+  "total_coverage": 0.7232315721982133,
+  "functions": [
+   {
+    "rule": "target occurred in the previous 128 tokens",
+    "spec": [
+     "seen128",
+     null
+    ],
+    "m1": 0.010741276666522026,
+    "m0": -0.0039243195205926895,
+    "contrast": Infinity,
+    "base_rate": 0.430197265625,
+    "coverage": 0.5840032556207313
+   },
+   {
+    "rule": "target \u2208 {'\u0120one', '\u0120so', '\u0120an', '\u0120three', '\u0120no', '\u0120those', '\u0120', '\u0120when'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      220,
+      439,
+      459,
+      682,
+      779,
+      813,
+      832,
+      872,
+      912,
+      994,
+      1063,
+      1077,
+      1202,
+      1403,
+      1405,
+      1884,
+      2380
+     ]
+    ],
+    "m1": 0.06534258276224136,
+    "m0": -0.0007754554972052574,
+    "contrast": Infinity,
+    "base_rate": 0.047796875,
+    "coverage": 0.23177588265495763
+   },
+   {
+    "rule": "target occurred in the previous 8 tokens",
+    "spec": [
+     "in_prev8",
+     null
+    ],
+    "m1": 0.02745676599442959,
+    "m0": 2.160571420972701e-05,
+    "contrast": 1270.8103850632442,
+    "base_rate": 0.08613671875,
+    "coverage": 0.1945988663581928
+   },
+   {
+    "rule": "target is a determiner token",
+    "spec": [
+     "lex",
+     "determiner"
+    ],
+    "m1": 0.026498449966311455,
+    "m0": 7.596081559313461e-05,
+    "contrast": 348.84367366780094,
+    "base_rate": 0.087380859375,
+    "coverage": 0.2237091589538989
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.08813293278217316,
+    "m0": 0.0017638339195400476,
+    "contrast": 49.96668439461435,
+    "base_rate": 0.007189453125,
+    "coverage": 0.04851037277356925
+   },
+   {
+    "rule": "target is a quantifier token",
+    "spec": [
+     "lex",
+     "quantifier"
+    ],
+    "m1": 0.03165411576628685,
+    "m0": 0.002073607174679637,
+    "contrast": 15.265242208267951,
+    "base_rate": 0.01051953125,
+    "coverage": 0.03318533201589505
+   },
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.017827847972512245,
+    "m0": 0.0012422185391187668,
+    "contrast": 14.35161963140509,
+    "base_rate": 0.068888671875,
+    "coverage": 0.1181248580034878
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.028248876333236694,
+    "m0": 0.0021381049882620573,
+    "contrast": 13.212109081789563,
+    "base_rate": 0.009447265625,
+    "coverage": 0.02719329529243606
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.026223214343190193,
+    "m0": 0.002062241081148386,
+    "contrast": 12.71588204837208,
+    "base_rate": 0.013349609375,
+    "coverage": 0.033353584119404846
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.022451329976320267,
+    "m0": 0.002278241328895092,
+    "contrast": 9.85467592549064,
+    "base_rate": 0.00528125,
+    "coverage": 0.011435572035304925
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.017377274110913277,
+    "m0": 0.0021586106158792973,
+    "contrast": 8.050212476062871,
+    "base_rate": 0.014861328125,
+    "coverage": 0.03307225123610112
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.01731652207672596,
+    "m0": 0.00234040804207325,
+    "contrast": 7.398932906326079,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004991578143874673
+   },
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.015509428456425667,
+    "m0": 0.0023548747412860394,
+    "contrast": 6.586094871422201,
+    "base_rate": 0.0022734375,
+    "coverage": 0.004117787443562021
+   }
+  ],
+  "rule": "target occurred in the previous 128 tokens",
+  "spec": [
+   "seen128",
+   null
+  ],
+  "m1": 0.010741276666522026,
+  "m0": -0.0039243195205926895,
+  "contrast": Infinity,
+  "base_rate": 0.430197265625,
+  "coverage": 0.5840032556207313,
+  "named": true
+ },
+ {
+  "head": "L10/h4",
+  "n_windows": 1000,
+  "mean_dnll": 7.456981984432787e-05,
+  "n_functions": 2,
+  "total_coverage": 0.34919391166079555,
+  "functions": [
+   {
+    "rule": "target char-class = punctuation",
+    "spec": [
+     "class",
+     1
+    ],
+    "m1": 0.01057630218565464,
+    "m0": -0.0013087049592286348,
+    "contrast": Infinity,
+    "base_rate": 0.1265546875,
+    "coverage": 0.34919391166079555
+   },
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.020785920321941376,
+    "m0": -0.0005505880108103156,
+    "contrast": Infinity,
+    "base_rate": 0.034962890625,
+    "coverage": 0.15429652750963715
+   }
+  ],
+  "rule": "target char-class = punctuation",
+  "spec": [
+   "class",
+   1
+  ],
+  "m1": 0.01057630218565464,
+  "m0": -0.0013087049592286348,
+  "contrast": Infinity,
+  "base_rate": 0.1265546875,
+  "coverage": 0.34919391166079555,
+  "named": true
+ },
+ {
+  "head": "L10/h5",
+  "n_windows": 1000,
+  "mean_dnll": 0.001673567690886557,
+  "n_functions": 1,
+  "total_coverage": 0.011483797288300849,
+  "functions": [
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.01195484958589077,
+    "m0": 0.0014446238055825233,
+    "contrast": 8.275406745820689,
+    "base_rate": 0.00753125,
+    "coverage": 0.011483797288300849
+   }
+  ],
+  "rule": "target is a quote token",
+  "spec": [
+   "lex",
+   "quote"
+  ],
+  "m1": 0.01195484958589077,
+  "m0": 0.0014446238055825233,
+  "contrast": 8.275406745820689,
+  "base_rate": 0.00753125,
+  "coverage": 0.011483797288300849,
+  "named": true
+ },
+ {
+  "head": "L10/h6",
+  "n_windows": 1000,
+  "mean_dnll": 0.0008281297632493079,
+  "n_functions": 2,
+  "total_coverage": 0.13550037030064352,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120we', '\u0120public', '\u0120cards', '\u0120card', '\u0120Car', '\u0120glass', '\u0120water', '\u0120blood'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      584,
+      586,
+      879,
+      1052,
+      1057,
+      1841,
+      3090,
+      3341,
+      3674,
+      3786,
+      3805,
+      4251,
+      4632,
+      5348,
+      5684,
+      6498,
+      6680,
+      7563,
+      9168,
+      12404,
+      14812,
+      23139
+     ]
+    ],
+    "m1": 0.1564548909664154,
+    "m0": -5.298472387949005e-05,
+    "contrast": Infinity,
+    "base_rate": 0.00612109375,
+    "coverage": 0.1028283385291929
+   },
+   {
+    "rule": "target is a pronoun 1st token",
+    "spec": [
+     "lex",
+     "pronoun_1st"
+    ],
+    "m1": 0.04759356752038002,
+    "m0": 0.0003357984824106097,
+    "contrast": 141.7325271356744,
+    "base_rate": 0.012044921875,
+    "coverage": 0.0787543211875529
+   }
+  ],
+  "rule": "target \u2208 {'\u0120we', '\u0120public', '\u0120cards', '\u0120card', '\u0120Car', '\u0120glass', '\u0120water', '\u0120blood'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    584,
+    586,
+    879,
+    1052,
+    1057,
+    1841,
+    3090,
+    3341,
+    3674,
+    3786,
+    3805,
+    4251,
+    4632,
+    5348,
+    5684,
+    6498,
+    6680,
+    7563,
+    9168,
+    12404,
+    14812,
+    23139
+   ]
+  ],
+  "m1": 0.1564548909664154,
+  "m0": -5.298472387949005e-05,
+  "contrast": Infinity,
+  "base_rate": 0.00612109375,
+  "coverage": 0.1028283385291929,
+  "named": true
+ },
+ {
+  "head": "L10/h7",
+  "n_windows": 5000,
+  "mean_dnll": 6.143411883385852e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h8",
+  "n_windows": 5000,
+  "mean_dnll": 9.368193423142657e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.001036559115163982,
+  "n_functions": 5,
+  "total_coverage": 0.29615312350647266,
+  "functions": [
+   {
+    "rule": "target char-class = punctuation",
+    "spec": [
+     "class",
+     1
+    ],
+    "m1": 0.012361237779259682,
+    "m0": -0.0004881939385086298,
+    "contrast": Infinity,
+    "base_rate": 0.1265546875,
+    "coverage": 0.2949740140222139
+   },
+   {
+    "rule": "target \u2208 {'_\u010a', \"'\", '_,', ',\"', \",'\", '_', ',\"\u010a', '?\"'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      6,
+      62,
+      510,
+      1359,
+      2965,
+      7022,
+      7673,
+      13220,
+      43352
+     ]
+    ],
+    "m1": 0.288598895072937,
+    "m0": 7.063282828312367e-05,
+    "contrast": 4085.903142885927,
+    "base_rate": 0.00369921875,
+    "coverage": 0.08616812276984202
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.0751657783985138,
+    "m0": 0.0005762091604992747,
+    "contrast": 130.44877372894248,
+    "base_rate": 0.00753125,
+    "coverage": 0.05744208853676182
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.04249696806073189,
+    "m0": 0.0010262663708999753,
+    "contrast": 41.40929612987761,
+    "base_rate": 0.002693359375,
+    "coverage": 0.011117178363616117
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.01584235392510891,
+    "m0": 0.001094265142455697,
+    "contrast": 14.47761909838073,
+    "base_rate": 0.002962890625,
+    "coverage": 0.0057473730618444515
+   }
+  ],
+  "rule": "target char-class = punctuation",
+  "spec": [
+   "class",
+   1
+  ],
+  "m1": 0.012361237779259682,
+  "m0": -0.0004881939385086298,
+  "contrast": Infinity,
+  "base_rate": 0.1265546875,
+  "coverage": 0.2949740140222139,
+  "named": true
+ },
+ {
+  "head": "L10/h10",
+  "n_windows": 1000,
+  "mean_dnll": 0.0016454175347462296,
+  "n_functions": 4,
+  "total_coverage": 0.5218864080527768,
+  "functions": [
+   {
+    "rule": "target is a preposition token",
+    "spec": [
+     "lex",
+     "preposition"
+    ],
+    "m1": 0.04113446921110153,
+    "m0": -0.0028117739129811525,
+    "contrast": Infinity,
+    "base_rate": 0.09720703125,
+    "coverage": 0.4618191002402311
+   },
+   {
+    "rule": "target \u2208 {'\u0120By', '\u0120with', '\u0120on', '\u0120at', '\u0120by', 'for', '\u0120for', '\u0120from'}",
+    "spec": [
+     "tokset",
+     [
+      369,
+      389,
+      449,
+      505,
+      520,
+      555,
+      2000,
+      3296
+     ]
+    ],
+    "m1": 0.07459758967161179,
+    "m0": -0.0004648305184673518,
+    "contrast": Infinity,
+    "base_rate": 0.02564453125,
+    "coverage": 0.2119888914648462
+   },
+   {
+    "rule": "target occurred in the previous 8 tokens",
+    "spec": [
+     "in_prev8",
+     null
+    ],
+    "m1": 0.011830966919660568,
+    "m0": 0.00048259887262247503,
+    "contrast": 24.515115121115578,
+    "base_rate": 0.08613671875,
+    "coverage": 0.15425262739127166
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120and', ')', 'or', '\u0120but', '\u0120even', '\u0120than', 'and', '\u0120as'}",
+    "spec": [
+     "prevset",
+     [
+      8,
+      269,
+      313,
+      323,
+      438,
+      439,
+      477,
+      539,
+      719,
+      1109,
+      1524
+     ]
+    ],
+    "m1": 0.013453693129122257,
+    "m0": 0.0009669060818850994,
+    "contrast": 13.914167447258857,
+    "base_rate": 0.039498046875,
+    "coverage": 0.13587673926685712
+   }
+  ],
+  "rule": "target is a preposition token",
+  "spec": [
+   "lex",
+   "preposition"
+  ],
+  "m1": 0.04113446921110153,
+  "m0": -0.0028117739129811525,
+  "contrast": Infinity,
+  "base_rate": 0.09720703125,
+  "coverage": 0.4618191002402311,
+  "named": true
+ },
+ {
+  "head": "L10/h11",
+  "n_windows": 1000,
+  "mean_dnll": 0.00047462497605010867,
+  "n_functions": 2,
+  "total_coverage": 0.05640895189943016,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120Canada', 'Canadian', '\u0120American', 'ising', '\u0120humor', '\u0120which', '\u0120honour', '\u0120colour'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      430,
+      902,
+      1933,
+      3778,
+      3876,
+      7008,
+      9017,
+      9210,
+      12152,
+      12745,
+      21073,
+      22139,
+      28485,
+      34662,
+      60674
+     ]
+    ],
+    "m1": 0.03326178342103958,
+    "m0": 9.897597192320973e-05,
+    "contrast": 336.0591745120286,
+    "base_rate": 0.010017578125,
+    "coverage": 0.05055971814959675
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.012113199569284916,
+    "m0": 0.00031977135222405195,
+    "contrast": 37.88081541712857,
+    "base_rate": 0.009447265625,
+    "coverage": 0.025141691963198
+   }
+  ],
+  "rule": "target \u2208 {'\u0120Canada', 'Canadian', '\u0120American', 'ising', '\u0120humor', '\u0120which', '\u0120honour', '\u0120colour'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    430,
+    902,
+    1933,
+    3778,
+    3876,
+    7008,
+    9017,
+    9210,
+    12152,
+    12745,
+    21073,
+    22139,
+    28485,
+    34662,
+    60674
+   ]
+  ],
+  "m1": 0.03326178342103958,
+  "m0": 9.897597192320973e-05,
+  "contrast": 336.0591745120286,
+  "base_rate": 0.010017578125,
+  "coverage": 0.05055971814959675,
+  "named": true
+ },
+ {
+  "head": "L10/h12",
+  "n_windows": 1000,
+  "mean_dnll": 0.0007143652765080333,
+  "n_functions": 2,
+  "total_coverage": 0.1702481503439877,
+  "functions": [
+   {
+    "rule": "target \u2208 {',\u010a', '.\u010a', 'the', '\u010a'}",
+    "spec": [
+     "tokset",
+     [
+      198,
+      345,
+      627,
+      1820
+     ]
+    ],
+    "m1": 0.01814400404691696,
+    "m0": -0.00028678509988822043,
+    "contrast": Infinity,
+    "base_rate": 0.0483828125,
+    "coverage": 0.16028434205619263
+   },
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.011911123991012573,
+    "m0": -0.00023154397786129266,
+    "contrast": Infinity,
+    "base_rate": 0.068888671875,
+    "coverage": 0.14533506754382863
+   }
+  ],
+  "rule": "target \u2208 {',\u010a', '.\u010a', 'the', '\u010a'}",
+  "spec": [
+   "tokset",
+   [
+    198,
+    345,
+    627,
+    1820
+   ]
+  ],
+  "m1": 0.01814400404691696,
+  "m0": -0.00028678509988822043,
+  "contrast": Infinity,
+  "base_rate": 0.0483828125,
+  "coverage": 0.16028434205619263,
+  "named": true
+ },
+ {
+  "head": "L10/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.00017026464047376066,
+  "n_functions": 1,
+  "total_coverage": 0.007283608518558271,
+  "functions": [
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.01130504347383976,
+    "m0": 6.989316898398101e-05,
+    "contrast": 161.74747315336052,
+    "base_rate": 0.00385078125,
+    "coverage": 0.007283608518558271
+   }
+  ],
+  "rule": "target is a quote token",
+  "spec": [
+   "lex",
+   "quote"
+  ],
+  "m1": 0.01130504347383976,
+  "m0": 6.989316898398101e-05,
+  "contrast": 161.74747315336052,
+  "base_rate": 0.00385078125,
+  "coverage": 0.007283608518558271,
+  "named": true
+ },
+ {
+  "head": "L10/h14",
+  "n_windows": 5000,
+  "mean_dnll": 0.0002338704071007669,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L10/h15",
+  "n_windows": 1000,
+  "mean_dnll": 0.004137002397328615,
+  "n_functions": 8,
+  "total_coverage": 0.15333621558047164,
+  "functions": [
+   {
+    "rule": "target is a pronoun 2nd token",
+    "spec": [
+     "lex",
+     "pronoun_2nd"
+    ],
+    "m1": 0.04352772608399391,
+    "m0": 0.0035087557043880224,
+    "contrast": 12.405459299876158,
+    "base_rate": 0.0022734375,
+    "coverage": 0.004303136744448971
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.024637360125780106,
+    "m0": 0.0032823728397488594,
+    "contrast": 7.505960269786158,
+    "base_rate": 0.014861328125,
+    "coverage": 0.02350663555074263
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.02272636629641056,
+    "m0": 0.003464944427832961,
+    "contrast": 6.558941065217615,
+    "base_rate": 0.006998046875,
+    "coverage": 0.009434978109170931
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.02171613834798336,
+    "m0": 0.0033546171616762877,
+    "contrast": 6.473507199591115,
+    "base_rate": 0.013349609375,
+    "coverage": 0.019458092511707464
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.014728931710124016,
+    "m0": 0.003167961025610566,
+    "contrast": 4.6493411980298225,
+    "base_rate": 0.03734765625,
+    "coverage": 0.03428357005635768
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.012384764850139618,
+    "m0": 0.003558466210961342,
+    "contrast": 3.4803660104991687,
+    "base_rate": 0.00467578125,
+    "coverage": 0.0056973758812445124
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.011993901804089546,
+    "m0": 0.0035196784883737564,
+    "contrast": 3.4076697186143408,
+    "base_rate": 0.009447265625,
+    "coverage": 0.012618787169359933
+   },
+   {
+    "rule": "target \u2208 {'\u010a'}",
+    "spec": [
+     "tokset",
+     [
+      198
+     ]
+    ],
+    "m1": 0.010634620673954487,
+    "m0": 0.0033228015527129173,
+    "contrast": 3.2004982859333864,
+    "base_rate": 0.037875,
+    "coverage": 0.0440336604993648
+   }
+  ],
+  "rule": "target is a pronoun 2nd token",
+  "spec": [
+   "lex",
+   "pronoun_2nd"
+  ],
+  "m1": 0.04352772608399391,
+  "m0": 0.0035087557043880224,
+  "contrast": 12.405459299876158,
+  "base_rate": 0.0022734375,
+  "coverage": 0.004303136744448971,
+  "named": true
+ },
+ {
+  "head": "L11/h0",
+  "n_windows": 1000,
+  "mean_dnll": 0.0009576660813763738,
+  "n_functions": 5,
+  "total_coverage": 0.38939738687350717,
+  "functions": [
+   {
+    "rule": "target char-class = punctuation",
+    "spec": [
+     "class",
+     1
+    ],
+    "m1": 0.018661098554730415,
+    "m0": -0.0013674903893843293,
+    "contrast": Infinity,
+    "base_rate": 0.1265546875,
+    "coverage": 0.3028433026868399
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.2915717661380768,
+    "m0": -0.0010364846093580127,
+    "contrast": Infinity,
+    "base_rate": 0.00753125,
+    "coverage": 0.1795326378472517
+   },
+   {
+    "rule": "target \u2208 {'!', '\"', \"'\", '\u0120\"', \"\u0120'\"}",
+    "spec": [
+     "tokset",
+     [
+      0,
+      1,
+      6,
+      330,
+      364
+     ]
+    ],
+    "m1": 0.3645981252193451,
+    "m0": -0.00034601386869326234,
+    "contrast": Infinity,
+    "base_rate": 0.004146484375,
+    "coverage": 0.12411256859184873
+   },
+   {
+    "rule": "target is a pronoun 3rd token",
+    "spec": [
+     "lex",
+     "pronoun_3rd"
+    ],
+    "m1": 0.013469467870891094,
+    "m0": 0.00100076908711344,
+    "contrast": 13.459116637726732,
+    "base_rate": 0.013349609375,
+    "coverage": 0.02249875489169999
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.011621871031820774,
+    "m0": 0.0010095074540004134,
+    "contrast": 11.512417254341557,
+    "base_rate": 0.014861328125,
+    "coverage": 0.027367410433212346
+   }
+  ],
+  "rule": "target char-class = punctuation",
+  "spec": [
+   "class",
+   1
+  ],
+  "m1": 0.018661098554730415,
+  "m0": -0.0013674903893843293,
+  "contrast": Infinity,
+  "base_rate": 0.1265546875,
+  "coverage": 0.3028433026868399,
+  "named": true
+ },
+ {
+  "head": "L11/h1",
+  "n_windows": 5000,
+  "mean_dnll": 0.02703326754271984,
+  "n_functions": 4,
+  "total_coverage": 0.4444597981842846,
+  "functions": [
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.18190845847129822,
+    "m0": 0.006335787009447813,
+    "contrast": 28.711264788421637,
+    "base_rate": 0.11885078125,
+    "coverage": 0.3574370343692133
+   },
+   {
+    "rule": "digit following a digit",
+    "spec": [
+     "number_cont",
+     null
+    ],
+    "m1": 0.0996532067656517,
+    "m0": 0.027007082477211952,
+    "contrast": 3.6898915997215593,
+    "base_rate": 0.00269296875,
+    "coverage": 0.004589714314999254
+   },
+   {
+    "rule": "preceding token char-class = capitalized",
+    "spec": [
+     "prev_class",
+     3
+    ],
+    "m1": 0.0713430866599083,
+    "m0": 0.021094389259815216,
+    "contrast": 3.3820882786029167,
+    "base_rate": 0.121562109375,
+    "coverage": 0.217142548606692
+   },
+   {
+    "rule": "target is a quote token",
+    "spec": [
+     "lex",
+     "quote"
+    ],
+    "m1": 0.0823727548122406,
+    "m0": 0.026989461854100227,
+    "contrast": 3.0520339848764553,
+    "base_rate": 0.00385078125,
+    "coverage": 0.0075193797090980195
+   }
+  ],
+  "rule": "target continues a word (no leading space)",
+  "spec": [
+   "word_internal",
+   null
+  ],
+  "m1": 0.18190845847129822,
+  "m0": 0.006335787009447813,
+  "contrast": 28.711264788421637,
+  "base_rate": 0.11885078125,
+  "coverage": 0.3574370343692133,
+  "named": true
+ },
+ {
+  "head": "L11/h2",
+  "n_windows": 1000,
+  "mean_dnll": 0.004990023095160723,
+  "n_functions": 4,
+  "total_coverage": 0.45211818653220837,
+  "functions": [
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.018616653978824615,
+    "m0": 0.001666212105192244,
+    "contrast": 11.173039687331203,
+    "base_rate": 0.19369140625,
+    "coverage": 0.33615605703714524
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.04820651561021805,
+    "m0": 0.004536808002740145,
+    "contrast": 10.62564595660699,
+    "base_rate": 0.009447265625,
+    "coverage": 0.021401348127306916
+   },
+   {
+    "rule": "preceding token \u2208 {'\u010a'}",
+    "spec": [
+     "prevset",
+     [
+      198
+     ]
+    ],
+    "m1": 0.03807903453707695,
+    "m0": 0.0036451849155128,
+    "contrast": 10.446393096554345,
+    "base_rate": 0.037875,
+    "coverage": 0.14130920574637187
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.025645745918154716,
+    "m0": 0.0029084745328873396,
+    "contrast": 8.81759342506442,
+    "base_rate": 0.089759765625,
+    "coverage": 0.12742128476330797
+   }
+  ],
+  "rule": "target continues a word (no leading space)",
+  "spec": [
+   "word_internal",
+   null
+  ],
+  "m1": 0.018616653978824615,
+  "m0": 0.001666212105192244,
+  "contrast": 11.173039687331203,
+  "base_rate": 0.19369140625,
+  "coverage": 0.33615605703714524,
+  "named": true
+ },
+ {
+  "head": "L11/h3",
+  "n_windows": 1000,
+  "mean_dnll": 0.00032871324219740927,
+  "n_functions": 2,
+  "total_coverage": 0.05193059460707086,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120e', '\u0120con', '\u0120l', 'ex', '\u0120c', '\u0120s', '\u0120self', '\u0120g'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      272,
+      274,
+      282,
+      293,
+      294,
+      296,
+      305,
+      326,
+      327,
+      342,
+      384,
+      390,
+      409,
+      436,
+      506,
+      559,
+      628,
+      659,
+      671,
+      958,
+      1080,
+      1322,
+      1772
+     ]
+    ],
+    "m1": 0.093234583735466,
+    "m0": 1.4400390682567377e-05,
+    "contrast": 6474.448213987182,
+    "base_rate": 0.00340234375,
+    "coverage": 0.043294414208873255
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.017388904467225075,
+    "m0": 0.00028087827377021313,
+    "contrast": 61.90904064531157,
+    "base_rate": 0.002962890625,
+    "coverage": 0.008636184188381517
+   }
+  ],
+  "rule": "target \u2208 {'\u0120e', '\u0120con', '\u0120l', 'ex', '\u0120c', '\u0120s', '\u0120self', '\u0120g'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    272,
+    274,
+    282,
+    293,
+    294,
+    296,
+    305,
+    326,
+    327,
+    342,
+    384,
+    390,
+    409,
+    436,
+    506,
+    559,
+    628,
+    659,
+    671,
+    958,
+    1080,
+    1322,
+    1772
+   ]
+  ],
+  "m1": 0.093234583735466,
+  "m0": 1.4400390682567377e-05,
+  "contrast": 6474.448213987182,
+  "base_rate": 0.00340234375,
+  "coverage": 0.043294414208873255,
+  "named": true
+ },
+ {
+  "head": "L11/h4",
+  "n_windows": 1000,
+  "mean_dnll": 0.0037012118846178055,
+  "n_functions": 7,
+  "total_coverage": 0.24057028447232398,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120right', '\u0120partly', 'than', '\u0120second', '\u0120than', '\u0120normal', '\u0120old', '\u0120good'}",
+    "spec": [
+     "tokset",
+     [
+      1109,
+      1314,
+      1695,
+      2132,
+      2362,
+      4725,
+      28135,
+      54895
+     ]
+    ],
+    "m1": 0.6987825036048889,
+    "m0": 0.001936679007485509,
+    "contrast": 360.8148283241602,
+    "base_rate": 0.0024140625,
+    "coverage": 0.06662737541847631
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.30690276622772217,
+    "m0": 0.0021941575687378645,
+    "contrast": 139.87271041990866,
+    "base_rate": 0.00467578125,
+    "coverage": 0.06216611119445466
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.0261353999376297,
+    "m0": 0.0034558551851660013,
+    "contrast": 7.5626432640505135,
+    "base_rate": 0.007189453125,
+    "coverage": 0.01439193258392449
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.02413163147866726,
+    "m0": 0.0034743479918688536,
+    "contrast": 6.945657583852688,
+    "base_rate": 0.006998046875,
+    "coverage": 0.012845808180406353
+   },
+   {
+    "rule": "target is a conjunction token",
+    "spec": [
+     "lex",
+     "conjunction"
+    ],
+    "m1": 0.018766915425658226,
+    "m0": 0.0030330042354762554,
+    "contrast": 6.187566507869174,
+    "base_rate": 0.03723828125,
+    "coverage": 0.07215228966099727
+   },
+   {
+    "rule": "target char-class = capitalized",
+    "spec": [
+     "class",
+     3
+    ],
+    "m1": 0.012548670172691345,
+    "m0": 0.0027383356355130672,
+    "contrast": 4.582590245676793,
+    "base_rate": 0.089759765625,
+    "coverage": 0.12577953397164207
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.011669078841805458,
+    "m0": 0.0035761685576289892,
+    "contrast": 3.2630114195573863,
+    "base_rate": 0.00528125,
+    "coverage": 0.007289750306567989
+   }
+  ],
+  "rule": "target \u2208 {'\u0120right', '\u0120partly', 'than', '\u0120second', '\u0120than', '\u0120normal', '\u0120old', '\u0120good'}",
+  "spec": [
+   "tokset",
+   [
+    1109,
+    1314,
+    1695,
+    2132,
+    2362,
+    4725,
+    28135,
+    54895
+   ]
+  ],
+  "m1": 0.6987825036048889,
+  "m0": 0.001936679007485509,
+  "contrast": 360.8148283241602,
+  "base_rate": 0.0024140625,
+  "coverage": 0.06662737541847631,
+  "named": true
+ },
+ {
+  "head": "L11/h5",
+  "n_windows": 1000,
+  "mean_dnll": 0.007643259596079588,
+  "n_functions": 17,
+  "total_coverage": 0.6071009149640204,
+  "functions": [
+   {
+    "rule": "target \u2208 {'this', 'by', 'other', '\u0120any', 'any', 'or', 'it', '\u0120or'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      269,
+      275,
+      300,
+      438,
+      477,
+      576,
+      904,
+      1023,
+      1605,
+      1729,
+      1962,
+      3852,
+      8248,
+      8370,
+      9210,
+      18403
+     ]
+    ],
+    "m1": 0.26897791028022766,
+    "m0": 0.005062943324446678,
+    "contrast": 53.126786741114444,
+    "base_rate": 0.008767578125,
+    "coverage": 0.06664883025317062
+   },
+   {
+    "rule": "target is a quantifier token",
+    "spec": [
+     "lex",
+     "quantifier"
+    ],
+    "m1": 0.13403823971748352,
+    "m0": 0.006030254065990448,
+    "contrast": 22.22762726921162,
+    "base_rate": 0.01051953125,
+    "coverage": 0.04130756220537045
+   },
+   {
+    "rule": "target is a wh word token",
+    "spec": [
+     "lex",
+     "wh_word"
+    ],
+    "m1": 0.12623876333236694,
+    "m0": 0.006243208423256874,
+    "contrast": 20.22017443180479,
+    "base_rate": 0.009447265625,
+    "coverage": 0.0357833937638874
+   },
+   {
+    "rule": "target is a conjunction token",
+    "spec": [
+     "lex",
+     "conjunction"
+    ],
+    "m1": 0.08240757882595062,
+    "m0": 0.004474753979593515,
+    "contrast": 18.416113869445955,
+    "base_rate": 0.03723828125,
+    "coverage": 0.11240523003702316
+   },
+   {
+    "rule": "target is a negation token",
+    "spec": [
+     "lex",
+     "negation"
+    ],
+    "m1": 0.10880281776189804,
+    "m0": 0.006838337983936071,
+    "contrast": 15.910710762978747,
+    "base_rate": 0.00528125,
+    "coverage": 0.016542907168134047
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.06931616365909576,
+    "m0": 0.004973800852894783,
+    "contrast": 13.936256337797145,
+    "base_rate": 0.03734765625,
+    "coverage": 0.07979844496526493
+   },
+   {
+    "rule": "target is a sentence end token",
+    "spec": [
+     "lex",
+     "sentence_end"
+    ],
+    "m1": 0.06575578451156616,
+    "m0": 0.0052617937326431274,
+    "contrast": 12.496838122640629,
+    "base_rate": 0.034962890625,
+    "coverage": 0.0783284831501352
+   },
+   {
+    "rule": "target is a comparative token",
+    "spec": [
+     "lex",
+     "comparative"
+    ],
+    "m1": 0.08109426498413086,
+    "m0": 0.0070305317640304565,
+    "contrast": 11.534584823160122,
+    "base_rate": 0.00467578125,
+    "coverage": 0.012664306199784817
+   },
+   {
+    "rule": "target follows a newline",
+    "spec": [
+     "prev_newline",
+     null
+    ],
+    "m1": 0.0372619554400444,
+    "m0": 0.005658460780978203,
+    "contrast": 6.5851751708355515,
+    "base_rate": 0.054373046875,
+    "coverage": 0.13771652649808186
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120and', '\u0120or', '\u010a', '\u0120\u0120\u0120'}",
+    "spec": [
+     "prevset",
+     [
+      198,
+      262,
+      323,
+      477
+     ]
+    ],
+    "m1": 0.03138875588774681,
+    "m0": 0.005720054265111685,
+    "contrast": 5.4874926762838925,
+    "base_rate": 0.064544921875,
+    "coverage": 0.15387504928066453
+   },
+   {
+    "rule": "target is a number word token",
+    "spec": [
+     "lex",
+     "number_word"
+    ],
+    "m1": 0.03798089921474457,
+    "m0": 0.007155218161642551,
+    "contrast": 5.308139927633691,
+    "base_rate": 0.007189453125,
+    "coverage": 0.011860928321808174
+   },
+   {
+    "rule": "target is a determiner token",
+    "spec": [
+     "lex",
+     "determiner"
+    ],
+    "m1": 0.027848798781633377,
+    "m0": 0.005416702013462782,
+    "contrast": 5.1412831483839065,
+    "base_rate": 0.087380859375,
+    "coverage": 0.1217699907568926
+   },
+   {
+    "rule": "target is a time word token",
+    "spec": [
+     "lex",
+     "time_word"
+    ],
+    "m1": 0.03370441496372223,
+    "m0": 0.007191298995167017,
+    "contrast": 4.686832655181437,
+    "base_rate": 0.006998046875,
+    "coverage": 0.011924705229200923
+   },
+   {
+    "rule": "preceding token char-class = whitespace",
+    "spec": [
+     "prev_class",
+     0
+    ],
+    "m1": 0.027066217735409737,
+    "m0": 0.00592019921168685,
+    "contrast": 4.571842393745687,
+    "base_rate": 0.068884765625,
+    "coverage": 0.13457948017901064
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.027612833306193352,
+    "m0": 0.007316702511161566,
+    "contrast": 3.773945061189821,
+    "base_rate": 0.002962890625,
+    "coverage": 0.004561884532008747
+   },
+   {
+    "rule": "target is a pronoun it they token",
+    "spec": [
+     "lex",
+     "pronoun_it_they"
+    ],
+    "m1": 0.025986112654209137,
+    "m0": 0.007096107583492994,
+    "contrast": 3.6620234894209016,
+    "base_rate": 0.014861328125,
+    "coverage": 0.02007789521884599
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.023210860788822174,
+    "m0": 0.00733407586812973,
+    "contrast": 3.164796929587967,
+    "base_rate": 0.002693359375,
+    "coverage": 0.0034962681731281467
+   }
+  ],
+  "rule": "target \u2208 {'this', 'by', 'other', '\u0120any', 'any', 'or', 'it', '\u0120or'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    269,
+    275,
+    300,
+    438,
+    477,
+    576,
+    904,
+    1023,
+    1605,
+    1729,
+    1962,
+    3852,
+    8248,
+    8370,
+    9210,
+    18403
+   ]
+  ],
+  "m1": 0.26897791028022766,
+  "m0": 0.005062943324446678,
+  "contrast": 53.126786741114444,
+  "base_rate": 0.008767578125,
+  "coverage": 0.06664883025317062,
+  "named": true
+ },
+ {
+  "head": "L11/h6",
+  "n_windows": 1000,
+  "mean_dnll": 0.001554117538034916,
+  "n_functions": 2,
+  "total_coverage": 0.43052467697636926,
+  "functions": [
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.023107126355171204,
+    "m0": -0.00018748424190562218,
+    "contrast": Infinity,
+    "base_rate": 0.068888671875,
+    "coverage": 0.2780300006222072
+   },
+   {
+    "rule": "position < 64",
+    "spec": [
+     "pos<64",
+     null
+    ],
+    "m1": 0.02250162698328495,
+    "m0": 1.1625488696154207e-05,
+    "contrast": 1935.5424594519322,
+    "base_rate": 0.0625,
+    "coverage": 0.38753170282281574
+   }
+  ],
+  "rule": "target char-class = whitespace",
+  "spec": [
+   "class",
+   0
+  ],
+  "m1": 0.023107126355171204,
+  "m0": -0.00018748424190562218,
+  "contrast": Infinity,
+  "base_rate": 0.068888671875,
+  "coverage": 0.2780300006222072,
+  "named": true
+ },
+ {
+  "head": "L11/h7",
+  "n_windows": 1000,
+  "mean_dnll": 0.002803347073495388,
+  "n_functions": 3,
+  "total_coverage": 0.37609918754092986,
+  "functions": [
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.02589241974055767,
+    "m0": -0.0026416832115501165,
+    "contrast": Infinity,
+    "base_rate": 0.19369140625,
+    "coverage": 0.36202315519046285
+   },
+   {
+    "rule": "target char-class = whitespace",
+    "spec": [
+     "class",
+     0
+    ],
+    "m1": 0.07085821777582169,
+    "m0": -0.0021438912954181433,
+    "contrast": Infinity,
+    "base_rate": 0.068888671875,
+    "coverage": 0.22672037100312206
+   },
+   {
+    "rule": "preceding token \u2208 {'\u0120St', '\u0120c', '\u0120write', '\u0120de', '\u0120an'}",
+    "spec": [
+     "prevset",
+     [
+      272,
+      409,
+      459,
+      800,
+      3350
+     ]
+    ],
+    "m1": 0.010553549975156784,
+    "m0": 0.0028608764987438917,
+    "contrast": 3.6889219020081674,
+    "base_rate": 0.00315234375,
+    "coverage": 0.005697242189875378
+   }
+  ],
+  "rule": "target continues a word (no leading space)",
+  "spec": [
+   "word_internal",
+   null
+  ],
+  "m1": 0.02589241974055767,
+  "m0": -0.0026416832115501165,
+  "contrast": Infinity,
+  "base_rate": 0.19369140625,
+  "coverage": 0.36202315519046285,
+  "named": true
+ },
+ {
+  "head": "L11/h8",
+  "n_windows": 5000,
+  "mean_dnll": 0.00019141711527481675,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L11/h9",
+  "n_windows": 1000,
+  "mean_dnll": 0.008360028266906738,
+  "n_functions": 7,
+  "total_coverage": 0.534863605558044,
+  "functions": [
+   {
+    "rule": "target \u2208 {'for', 'of', 'in', 'been', 'same', 'to', 'on'}",
+    "spec": [
+     "tokset",
+     [
+      258,
+      263,
+      998,
+      1073,
+      2000,
+      25030,
+      82850
+     ]
+    ],
+    "m1": 0.5002511143684387,
+    "m0": 0.006047999020665884,
+    "contrast": 82.71349129837675,
+    "base_rate": 0.003625,
+    "coverage": 0.054604549603823445
+   },
+   {
+    "rule": "target is a preposition token",
+    "spec": [
+     "lex",
+     "preposition"
+    ],
+    "m1": 0.06427054852247238,
+    "m0": 0.0017633454408496618,
+    "contrast": 36.44807593202149,
+    "base_rate": 0.09720703125,
+    "coverage": 0.2214020193063459
+   },
+   {
+    "rule": "preceding token \u2208 {'\u010a'}",
+    "spec": [
+     "prevset",
+     [
+      198
+     ]
+    ],
+    "m1": 0.08316447585821152,
+    "m0": 0.004874242469668388,
+    "contrast": 17.0620309464969,
+    "base_rate": 0.037875,
+    "coverage": 0.19044868017661512
+   },
+   {
+    "rule": "target is a open bracket token",
+    "spec": [
+     "lex",
+     "open_bracket"
+    ],
+    "m1": 0.059782978147268295,
+    "m0": 0.007685123942792416,
+    "contrast": 7.779051918002763,
+    "base_rate": 0.002962890625,
+    "coverage": 0.0065345514999116455
+   },
+   {
+    "rule": "target is a close bracket token",
+    "spec": [
+     "lex",
+     "close_bracket"
+    ],
+    "m1": 0.0443965345621109,
+    "m0": 0.007740757428109646,
+    "contrast": 5.7354251149752,
+    "base_rate": 0.002693359375,
+    "coverage": 0.004081206271266971
+   },
+   {
+    "rule": "target is a be have modal token",
+    "spec": [
+     "lex",
+     "be_have_modal"
+    ],
+    "m1": 0.03221774473786354,
+    "m0": 0.00689369160681963,
+    "contrast": 4.673511171574883,
+    "base_rate": 0.03734765625,
+    "coverage": 0.049631214637686806
+   },
+   {
+    "rule": "target continues a word (no leading space)",
+    "spec": [
+     "word_internal",
+     null
+    ],
+    "m1": 0.02098012901842594,
+    "m0": 0.004682839848101139,
+    "contrast": 4.480214933451813,
+    "base_rate": 0.19369140625,
+    "coverage": 0.33302053701276096
+   }
+  ],
+  "rule": "target \u2208 {'for', 'of', 'in', 'been', 'same', 'to', 'on'}",
+  "spec": [
+   "tokset",
+   [
+    258,
+    263,
+    998,
+    1073,
+    2000,
+    25030,
+    82850
+   ]
+  ],
+  "m1": 0.5002511143684387,
+  "m0": 0.006047999020665884,
+  "contrast": 82.71349129837675,
+  "base_rate": 0.003625,
+  "coverage": 0.054604549603823445,
+  "named": true
+ },
+ {
+  "head": "L11/h10",
+  "n_windows": 1000,
+  "mean_dnll": 0.0002539663983043283,
+  "n_functions": 1,
+  "total_coverage": 0.21318229546703316,
+  "functions": [
+   {
+    "rule": "target \u2208 {',\u010a', '\u010a'}",
+    "spec": [
+     "tokset",
+     [
+      198,
+      345
+     ]
+    ],
+    "m1": 0.04004113748669624,
+    "m0": -0.0014746668748557568,
+    "contrast": Infinity,
+    "base_rate": 0.042041015625,
+    "coverage": 0.21318229546703316
+   }
+  ],
+  "rule": "target \u2208 {',\u010a', '\u010a'}",
+  "spec": [
+   "tokset",
+   [
+    198,
+    345
+   ]
+  ],
+  "m1": 0.04004113748669624,
+  "m0": -0.0014746668748557568,
+  "contrast": Infinity,
+  "base_rate": 0.042041015625,
+  "coverage": 0.21318229546703316,
+  "named": true
+ },
+ {
+  "head": "L11/h11",
+  "n_windows": 5000,
+  "mean_dnll": 0.00010835308057721704,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L11/h12",
+  "n_windows": 5000,
+  "mean_dnll": 0.00035269229556433856,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L11/h13",
+  "n_windows": 5000,
+  "mean_dnll": 0.00018866686150431633,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L11/h14",
+  "n_windows": 5000,
+  "mean_dnll": 3.4980072086909786e-05,
+  "n_functions": 0,
+  "total_coverage": 0.0,
+  "functions": [],
+  "named": false
+ },
+ {
+  "head": "L11/h15",
+  "n_windows": 1000,
+  "mean_dnll": 0.0002444815181661397,
+  "n_functions": 1,
+  "total_coverage": 0.10403559903487544,
+  "functions": [
+   {
+    "rule": "target \u2208 {'\u0120C', '\u0120U', '\u0120[', '\u0120D', '\u0120B', \"\u0120'\", '\u0120_', '\u0120F'\u2026}",
+    "spec": [
+     "tokset",
+     [
+      350,
+      356,
+      364,
+      423,
+      426,
+      435,
+      510,
+      549,
+      721
+     ]
+    ],
+    "m1": 0.1367189735174179,
+    "m0": -0.0003208872221875936,
+    "contrast": Infinity,
+    "base_rate": 0.004728515625,
+    "coverage": 0.10403559903487544
+   }
+  ],
+  "rule": "target \u2208 {'\u0120C', '\u0120U', '\u0120[', '\u0120D', '\u0120B', \"\u0120'\", '\u0120_', '\u0120F'\u2026}",
+  "spec": [
+   "tokset",
+   [
+    350,
+    356,
+    364,
+    423,
+    426,
+    435,
+    510,
+    549,
+    721
+   ]
+  ],
+  "m1": 0.1367189735174179,
+  "m0": -0.0003208872221875936,
+  "contrast": Infinity,
+  "base_rate": 0.004728515625,
+  "coverage": 0.10403559903487544,
+  "named": true
+ }
+]

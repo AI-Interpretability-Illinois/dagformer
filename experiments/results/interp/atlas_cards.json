@@ -1,0 +1,5998 @@
+{
+ "labels": {
+  "L1/h0": "no distinct single-head effect",
+  "L1/h1": "no distinct single-head effect",
+  "L1/h2": "nll_pos_q1 (z=4.6, +0.002)",
+  "L1/h3": "no distinct single-head effect",
+  "L1/h4": "no distinct single-head effect",
+  "L1/h5": "copy (period 512, -5 pts)",
+  "L1/h6": "no distinct single-head effect",
+  "L1/h7": "nll_freq_q0 (z=35.0, +0.049)",
+  "L1/h8": "nll_domain_prose (z=2.6, +0.005)",
+  "L1/h9": "no distinct single-head effect",
+  "L1/h10": "no distinct single-head effect",
+  "L1/h11": "no distinct single-head effect",
+  "L1/h12": "nll_hard_q2 (z=2.7, +0.002)",
+  "L1/h13": "no distinct single-head effect",
+  "L1/h14": "no distinct single-head effect",
+  "L1/h15": "nll_pos_q0 (z=2.7, +0.002)",
+  "L2/h0": "no distinct single-head effect",
+  "L2/h1": "no distinct single-head effect",
+  "L2/h2": "no distinct single-head effect",
+  "L2/h3": "no distinct single-head effect",
+  "L2/h4": "nll_hard_q2 (z=4.7, +0.004)",
+  "L2/h5": "no distinct single-head effect",
+  "L2/h6": "no distinct single-head effect",
+  "L2/h7": "no distinct single-head effect",
+  "L2/h8": "no distinct single-head effect",
+  "L2/h9": "no distinct single-head effect",
+  "L2/h10": "nll_domain_latex (z=5.6, +0.011)",
+  "L2/h11": "nll_hard_q1 (z=6.4, +0.008)",
+  "L2/h12": "nll_hard_q1 (z=10.7, +0.014)",
+  "L2/h13": "no distinct single-head effect",
+  "L2/h14": "nll_pos_q1 (z=6.7, +0.003)",
+  "L2/h15": "nll_domain_latex (z=5.2, +0.011)",
+  "L3/h0": "no distinct single-head effect",
+  "L3/h1": "no distinct single-head effect",
+  "L3/h2": "nll_domain_prose (z=4.0, +0.008)",
+  "L3/h3": "nll_hard_q1 (z=18.3, +0.023)",
+  "L3/h4": "no distinct single-head effect",
+  "L3/h5": "no distinct single-head effect",
+  "L3/h6": "no distinct single-head effect",
+  "L3/h7": "no distinct single-head effect",
+  "L3/h8": "no distinct single-head effect",
+  "L3/h9": "no distinct single-head effect",
+  "L3/h10": "nll_domain_latex (z=3.7, +0.008)",
+  "L3/h11": "copy (period 512, -15 pts)",
+  "L3/h12": "no distinct single-head effect",
+  "L3/h13": "copy (period 512, -8 pts)",
+  "L3/h14": "nll_pos_q3 (z=2.6, +0.001)",
+  "L3/h15": "nll_hard_q2 (z=3.4, +0.003)",
+  "L4/h0": "no distinct single-head effect",
+  "L4/h1": "copy (period 128, -75 pts)",
+  "L4/h2": "nll_pos_q3 (z=4.6, +0.003)",
+  "L4/h3": "nll_noncopyable (z=8.5, +0.008)",
+  "L4/h4": "nll_domain_latex (z=4.5, +0.009)",
+  "L4/h5": "no distinct single-head effect",
+  "L4/h6": "no distinct single-head effect",
+  "L4/h7": "no distinct single-head effect",
+  "L4/h8": "no distinct single-head effect",
+  "L4/h9": "no distinct single-head effect",
+  "L4/h10": "nll_noncopyable (z=8.1, +0.008)",
+  "L4/h11": "no distinct single-head effect",
+  "L4/h12": "nll_hard_q2 (z=14.7, +0.013)",
+  "L4/h13": "no distinct single-head effect",
+  "L4/h14": "no distinct single-head effect",
+  "L4/h15": "nll_domain_prose (z=11.9, +0.023)",
+  "L5/h0": "no distinct single-head effect",
+  "L5/h1": "no distinct single-head effect",
+  "L5/h2": "nll_domain_latex (z=4.2, +0.008)",
+  "L5/h3": "nll_hard_q1 (z=9.8, +0.013)",
+  "L5/h4": "nll_domain_latex (z=12.2, +0.025)",
+  "L5/h5": "no distinct single-head effect",
+  "L5/h6": "no distinct single-head effect",
+  "L5/h7": "nll_hard_q1 (z=10.8, +0.014)",
+  "L5/h8": "nll_class_lower (z=4.1, +0.002)",
+  "L5/h9": "no distinct single-head effect",
+  "L5/h10": "no distinct single-head effect",
+  "L5/h11": "nll_class_punct (z=5.5, +0.011)",
+  "L5/h12": "no distinct single-head effect",
+  "L5/h13": "no distinct single-head effect",
+  "L5/h14": "nll_freq_q2 (z=4.5, +0.004)",
+  "L5/h15": "nll_hard_q3 (z=3.6, +0.006)",
+  "L6/h0": "nll_noncopyable (z=16.9, +0.016)",
+  "L6/h1": "no distinct single-head effect",
+  "L6/h2": "no distinct single-head effect",
+  "L6/h3": "nll_domain_prose (z=11.4, +0.022)",
+  "L6/h4": "no distinct single-head effect",
+  "L6/h5": "nll_pos_q3 (z=8.2, +0.004)",
+  "L6/h6": "nll_class_cap (z=6.1, +0.013)",
+  "L6/h7": "nll_domain_prose (z=3.2, +0.006)",
+  "L6/h8": "no distinct single-head effect",
+  "L6/h9": "nll_hard_q2 (z=9.6, +0.009)",
+  "L6/h10": "no distinct single-head effect",
+  "L6/h11": "copy (period 512, -14 pts)",
+  "L6/h12": "nll_class_punct (z=4.6, +0.009)",
+  "L6/h13": "nll_copyable (z=5.3, +0.006)",
+  "L6/h14": "nll_class_punct (z=4.3, +0.008)",
+  "L6/h15": "nll_freq_q3 (z=5.8, +0.007)",
+  "L7/h0": "nll_noncopyable (z=10.7, +0.010)",
+  "L7/h1": "nll_domain_latex (z=54.0, +0.110)",
+  "L7/h2": "no distinct single-head effect",
+  "L7/h3": "nll_freq_q1 (z=4.2, +0.005)",
+  "L7/h4": "no distinct single-head effect",
+  "L7/h5": "nll_domain_code (z=8.6, +0.026)",
+  "L7/h6": "no distinct single-head effect",
+  "L7/h7": "nll_freq_q1 (z=13.7, +0.015)",
+  "L7/h8": "nll_freq_q0 (z=10.6, +0.015)",
+  "L7/h9": "nll_domain_code (z=13.1, +0.040)",
+  "L7/h10": "nll_noncopyable (z=3.5, +0.003)",
+  "L7/h11": "nll_class_cap (z=25.6, +0.054)",
+  "L7/h12": "no distinct single-head effect",
+  "L7/h13": "nll_class_punct (z=9.6, +0.019)",
+  "L7/h14": "nll_domain_latex (z=10.1, +0.021)",
+  "L7/h15": "nll_freq_q0 (z=4.3, +0.006)",
+  "L8/h0": "nll_class_punct (z=3.0, +0.006)",
+  "L8/h1": "nll_class_punct (z=2.9, +0.006)",
+  "L8/h2": "no distinct single-head effect",
+  "L8/h3": "nll_class_cap (z=7.2, +0.015)",
+  "L8/h4": "no distinct single-head effect",
+  "L8/h5": "nll_class_cap (z=4.0, +0.008)",
+  "L8/h6": "no distinct single-head effect",
+  "L8/h7": "no distinct single-head effect",
+  "L8/h8": "nll_freq_q2 (z=6.1, +0.006)",
+  "L8/h9": "nll_domain_prose (z=4.3, +0.009)",
+  "L8/h10": "nll_hard_q1 (z=3.4, +0.005)",
+  "L8/h11": "nll_freq_q2 (z=6.0, +0.006)",
+  "L8/h12": "no distinct single-head effect",
+  "L8/h13": "no distinct single-head effect",
+  "L8/h14": "no distinct single-head effect",
+  "L8/h15": "no distinct single-head effect",
+  "L9/h0": "no distinct single-head effect",
+  "L9/h1": "no distinct single-head effect",
+  "L9/h2": "nll_class_cap (z=12.7, +0.027)",
+  "L9/h3": "no distinct single-head effect",
+  "L9/h4": "nll_freq_q0 (z=23.4, +0.033)",
+  "L9/h5": "no distinct single-head effect",
+  "L9/h6": "nll_freq_q1 (z=8.8, +0.010)",
+  "L9/h7": "no distinct single-head effect",
+  "L9/h8": "nll_freq_q2 (z=10.6, +0.011)",
+  "L9/h9": "no distinct single-head effect",
+  "L9/h10": "no distinct single-head effect",
+  "L9/h11": "no distinct single-head effect",
+  "L9/h12": "no distinct single-head effect",
+  "L9/h13": "nll_class_cap (z=19.3, +0.040)",
+  "L9/h14": "no distinct single-head effect",
+  "L9/h15": "no distinct single-head effect",
+  "L10/h0": "nll_class_lower (z=4.1, +0.002)",
+  "L10/h1": "nll_class_punct (z=2.6, +0.005)",
+  "L10/h2": "no distinct single-head effect",
+  "L10/h3": "nll_class_ws (z=27.2, +0.083)",
+  "L10/h4": "nll_class_punct (z=8.8, +0.018)",
+  "L10/h5": "no distinct single-head effect",
+  "L10/h6": "nll_freq_q1 (z=5.5, +0.006)",
+  "L10/h7": "no distinct single-head effect",
+  "L10/h8": "no distinct single-head effect",
+  "L10/h9": "nll_domain_prose (z=3.7, +0.007)",
+  "L10/h10": "nll_freq_q2 (z=4.8, +0.005)",
+  "L10/h11": "nll_class_cap (z=5.6, +0.011)",
+  "L10/h12": "no distinct single-head effect",
+  "L10/h13": "no distinct single-head effect",
+  "L10/h14": "nll_class_digit (z=2.5, +0.004)",
+  "L10/h15": "nll_noncopyable (z=11.2, +0.011)",
+  "L11/h0": "nll_freq_q2 (z=4.5, +0.004)",
+  "L11/h1": "nll_hard_q0 (z=37.9, +0.033)",
+  "L11/h2": "nll_freq_q0 (z=13.3, +0.019)",
+  "L11/h3": "nll_domain_code (z=3.6, +0.011)",
+  "L11/h4": "nll_freq_q1 (z=22.1, +0.024)",
+  "L11/h5": "nll_freq_q2 (z=26.8, +0.030)",
+  "L11/h6": "no distinct single-head effect",
+  "L11/h7": "nll_hard_q3 (z=13.5, +0.025)",
+  "L11/h8": "no distinct single-head effect",
+  "L11/h9": "nll_class_lower (z=11.9, +0.005)",
+  "L11/h10": "no distinct single-head effect",
+  "L11/h11": "no distinct single-head effect",
+  "L11/h12": "no distinct single-head effect",
+  "L11/h13": "no distinct single-head effect",
+  "L11/h14": "no distinct single-head effect",
+  "L11/h15": "nll_class_cap (z=4.5, +0.009)"
+ },
+ "families": [
+  "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+  "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+  "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+  "Q:last+1.4,emb+0.4 | K:last+0.5,emb+0.9 | V:last+0.4,emb-10.7",
+  "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+  "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3"
+ ],
+ "cards": {
+  "L1/h0": {
+   "d_overall": -6.341934204101562e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.44999998807907104,
+    1.0800000429153442
+   ],
+   "wiring_k": [
+    0.10000000149011612,
+    1.0399999618530273
+   ],
+   "wiring_v": [
+    0.4399999976158142,
+    1.0
+   ]
+  },
+  "L1/h1": {
+   "d_overall": 0.00010776519775390625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.12999999523162842,
+    1.149999976158142
+   ],
+   "wiring_k": [
+    -0.09000000357627869,
+    1.2100000381469727
+   ],
+   "wiring_v": [
+    0.49000000953674316,
+    0.8100000023841858
+   ]
+  },
+  "L1/h2": {
+   "d_overall": 0.00400090217590332,
+   "label": "nll_pos_q1 (z=4.6, +0.002)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    1.9700000286102295,
+    1.2599999904632568
+   ],
+   "wiring_k": [
+    0.5400000214576721,
+    1.6100000143051147
+   ],
+   "wiring_v": [
+    4.389999866485596,
+    1.0299999713897705
+   ]
+  },
+  "L1/h3": {
+   "d_overall": 0.0002968311309814453,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.5600000023841858,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -0.5199999809265137,
+    0.9300000071525574
+   ],
+   "wiring_v": [
+    0.3199999928474426,
+    0.6800000071525574
+   ]
+  },
+  "L1/h4": {
+   "d_overall": 0.0005865097045898438,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.05999999865889549,
+    1.059999942779541
+   ],
+   "wiring_k": [
+    -0.23999999463558197,
+    1.149999976158142
+   ],
+   "wiring_v": [
+    0.550000011920929,
+    1.0199999809265137
+   ]
+  },
+  "L1/h5": {
+   "d_overall": 0.001741647720336914,
+   "label": "copy (period 512, -5 pts)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.5099999904632568,
+    1.0499999523162842
+   ],
+   "wiring_k": [
+    1.0499999523162842,
+    0.9800000190734863
+   ],
+   "wiring_v": [
+    -0.10999999940395355,
+    0.6399999856948853
+   ]
+  },
+  "L1/h6": {
+   "d_overall": 0.0003476142883300781,
+   "label": "no distinct single-head effect",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    1.2799999713897705,
+    1.309999942779541
+   ],
+   "wiring_k": [
+    0.9800000190734863,
+    1.409999966621399
+   ],
+   "wiring_v": [
+    4.559999942779541,
+    0.8899999856948853
+   ]
+  },
+  "L1/h7": {
+   "d_overall": 0.04348134994506836,
+   "label": "nll_freq_q0 (z=35.0, +0.049)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.41999998688697815,
+    1.399999976158142
+   ],
+   "wiring_k": [
+    0.4300000071525574,
+    2.009999990463257
+   ],
+   "wiring_v": [
+    3.5399999618530273,
+    1.4900000095367432
+   ]
+  },
+  "L1/h8": {
+   "d_overall": 0.0007627010345458984,
+   "label": "nll_domain_prose (z=2.6, +0.005)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.38999998569488525,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -0.25,
+    1.0299999713897705
+   ],
+   "wiring_v": [
+    0.009999999776482582,
+    0.6200000047683716
+   ]
+  },
+  "L1/h9": {
+   "d_overall": 0.0003116130828857422,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.5099999904632568,
+    0.9700000286102295
+   ],
+   "wiring_k": [
+    -0.07999999821186066,
+    0.9900000095367432
+   ],
+   "wiring_v": [
+    0.3100000023841858,
+    0.6499999761581421
+   ]
+  },
+  "L1/h10": {
+   "d_overall": 0.0013523101806640625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.8100000023841858,
+    1.0299999713897705
+   ],
+   "wiring_k": [
+    -0.550000011920929,
+    0.949999988079071
+   ],
+   "wiring_v": [
+    -0.2199999988079071,
+    0.6000000238418579
+   ]
+  },
+  "L1/h11": {
+   "d_overall": 0.0003421306610107422,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.07999999821186066,
+    0.8199999928474426
+   ],
+   "wiring_k": [
+    0.3700000047683716,
+    0.7900000214576721
+   ],
+   "wiring_v": [
+    -0.7900000214576721,
+    0.6000000238418579
+   ]
+  },
+  "L1/h12": {
+   "d_overall": 0.001783132553100586,
+   "label": "nll_hard_q2 (z=2.7, +0.002)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.36000001430511475,
+    1.0499999523162842
+   ],
+   "wiring_k": [
+    0.14000000059604645,
+    1.159999966621399
+   ],
+   "wiring_v": [
+    0.6000000238418579,
+    0.9700000286102295
+   ]
+  },
+  "L1/h13": {
+   "d_overall": 0.00023794174194335938,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    1.600000023841858,
+    1.309999942779541
+   ],
+   "wiring_k": [
+    0.5099999904632568,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    0.9900000095367432,
+    1.0299999713897705
+   ]
+  },
+  "L1/h14": {
+   "d_overall": 0.0001323223114013672,
+   "label": "no distinct single-head effect",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    1.2899999618530273,
+    1.340000033378601
+   ],
+   "wiring_k": [
+    0.15000000596046448,
+    1.2400000095367432
+   ],
+   "wiring_v": [
+    2.130000114440918,
+    0.8500000238418579
+   ]
+  },
+  "L1/h15": {
+   "d_overall": 0.002215862274169922,
+   "label": "nll_pos_q0 (z=2.7, +0.002)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    1.7100000381469727,
+    1.3200000524520874
+   ],
+   "wiring_k": [
+    -0.2800000011920929,
+    1.3799999952316284
+   ],
+   "wiring_v": [
+    2.140000104904175,
+    1.0700000524520874
+   ]
+  },
+  "L2/h0": {
+   "d_overall": 0.001230478286743164,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -1.909999966621399,
+    0.05999999865889549,
+    1.409999966621399
+   ],
+   "wiring_k": [
+    -1.8799999952316284,
+    -0.10999999940395355,
+    1.340000033378601
+   ],
+   "wiring_v": [
+    -1.4199999570846558,
+    0.30000001192092896,
+    1.1100000143051147
+   ]
+  },
+  "L2/h1": {
+   "d_overall": -5.4836273193359375e-06,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.009999999776482582,
+    -0.10000000149011612,
+    1.2699999809265137
+   ],
+   "wiring_k": [
+    -0.49000000953674316,
+    -0.3400000035762787,
+    1.2000000476837158
+   ],
+   "wiring_v": [
+    -1.7300000190734863,
+    0.23999999463558197,
+    0.9200000166893005
+   ]
+  },
+  "L2/h2": {
+   "d_overall": 0.0007891654968261719,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.1899999976158142,
+    0.05000000074505806,
+    0.9100000262260437
+   ],
+   "wiring_k": [
+    0.17000000178813934,
+    0.029999999329447746,
+    0.7400000095367432
+   ],
+   "wiring_v": [
+    -1.4500000476837158,
+    0.03999999910593033,
+    0.5699999928474426
+   ]
+  },
+  "L2/h3": {
+   "d_overall": 0.00015473365783691406,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.5,
+    -0.09000000357627869,
+    1.0399999618530273
+   ],
+   "wiring_k": [
+    -0.2800000011920929,
+    -0.2800000011920929,
+    0.9599999785423279
+   ],
+   "wiring_v": [
+    -1.350000023841858,
+    0.10000000149011612,
+    0.7699999809265137
+   ]
+  },
+  "L2/h4": {
+   "d_overall": 0.005014896392822266,
+   "label": "nll_hard_q2 (z=4.7, +0.004)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -1.409999966621399,
+    -0.1899999976158142,
+    1.3799999952316284
+   ],
+   "wiring_k": [
+    -2.0999999046325684,
+    -0.5799999833106995,
+    1.4600000381469727
+   ],
+   "wiring_v": [
+    1.090000033378601,
+    0.25999999046325684,
+    1.3200000524520874
+   ]
+  },
+  "L2/h5": {
+   "d_overall": 0.0002560615539550781,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -1.0299999713897705,
+    -0.07999999821186066,
+    1.0499999523162842
+   ],
+   "wiring_k": [
+    -1.0700000524520874,
+    -0.3400000035762787,
+    1.2000000476837158
+   ],
+   "wiring_v": [
+    -0.47999998927116394,
+    0.11999999731779099,
+    0.8299999833106995
+   ]
+  },
+  "L2/h6": {
+   "d_overall": 5.173683166503906e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.07999999821186066,
+    0.12999999523162842,
+    1.0399999618530273
+   ],
+   "wiring_k": [
+    0.12999999523162842,
+    -0.20000000298023224,
+    0.47999998927116394
+   ],
+   "wiring_v": [
+    -1.899999976158142,
+    -0.009999999776482582,
+    0.49000000953674316
+   ]
+  },
+  "L2/h7": {
+   "d_overall": 3.314018249511719e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -1.399999976158142,
+    -0.17000000178813934,
+    1.059999942779541
+   ],
+   "wiring_k": [
+    0.46000000834465027,
+    -0.25,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    -0.12999999523162842,
+    0.05999999865889549,
+    0.8899999856948853
+   ]
+  },
+  "L2/h8": {
+   "d_overall": 0.0003590583801269531,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.46000000834465027,
+    -0.03999999910593033,
+    0.7300000190734863
+   ],
+   "wiring_k": [
+    -0.6000000238418579,
+    -0.4399999976158142,
+    0.9700000286102295
+   ],
+   "wiring_v": [
+    0.8999999761581421,
+    0.23000000417232513,
+    0.7699999809265137
+   ]
+  },
+  "L2/h9": {
+   "d_overall": 7.891654968261719e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    1.0700000524520874,
+    -0.07000000029802322,
+    1.2200000286102295
+   ],
+   "wiring_k": [
+    -0.5799999833106995,
+    -0.1599999964237213,
+    1.0800000429153442
+   ],
+   "wiring_v": [
+    -0.800000011920929,
+    0.12999999523162842,
+    0.7400000095367432
+   ]
+  },
+  "L2/h10": {
+   "d_overall": 0.002015352249145508,
+   "label": "nll_domain_latex (z=5.6, +0.011)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.27000001072883606,
+    0.03999999910593033,
+    0.949999988079071
+   ],
+   "wiring_k": [
+    0.49000000953674316,
+    -0.05999999865889549,
+    0.8199999928474426
+   ],
+   "wiring_v": [
+    -1.2599999904632568,
+    0.17000000178813934,
+    0.6399999856948853
+   ]
+  },
+  "L2/h11": {
+   "d_overall": 0.00932765007019043,
+   "label": "nll_hard_q1 (z=6.4, +0.008)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -1.5499999523162842,
+    -0.10999999940395355,
+    1.4500000476837158
+   ],
+   "wiring_k": [
+    -2.299999952316284,
+    -0.30000001192092896,
+    1.5199999809265137
+   ],
+   "wiring_v": [
+    1.2100000381469727,
+    0.23000000417232513,
+    1.3200000524520874
+   ]
+  },
+  "L2/h12": {
+   "d_overall": 0.020018339157104492,
+   "label": "nll_hard_q1 (z=10.7, +0.014)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -1.649999976158142,
+    -0.2800000011920929,
+    1.2799999713897705
+   ],
+   "wiring_k": [
+    -0.7200000286102295,
+    -0.550000011920929,
+    1.409999966621399
+   ],
+   "wiring_v": [
+    -3.9100000858306885,
+    0.33000001311302185,
+    1.600000023841858
+   ]
+  },
+  "L2/h13": {
+   "d_overall": 1.52587890625e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.9800000190734863,
+    0.05999999865889549,
+    1.159999966621399
+   ],
+   "wiring_k": [
+    -0.05999999865889549,
+    -0.1599999964237213,
+    1.0800000429153442
+   ],
+   "wiring_v": [
+    -2.2899999618530273,
+    0.12999999523162842,
+    0.6299999952316284
+   ]
+  },
+  "L2/h14": {
+   "d_overall": 0.0038156509399414062,
+   "label": "nll_pos_q1 (z=6.7, +0.003)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -1.190000057220459,
+    -0.05000000074505806,
+    1.3300000429153442
+   ],
+   "wiring_k": [
+    -1.0,
+    -0.5099999904632568,
+    1.3799999952316284
+   ],
+   "wiring_v": [
+    -1.4299999475479126,
+    0.2199999988079071,
+    1.1200000047683716
+   ]
+  },
+  "L2/h15": {
+   "d_overall": 0.002211332321166992,
+   "label": "nll_domain_latex (z=5.2, +0.011)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.9800000190734863,
+    0.07000000029802322,
+    0.8100000023841858
+   ],
+   "wiring_k": [
+    0.5199999809265137,
+    -0.20999999344348907,
+    0.30000001192092896
+   ],
+   "wiring_v": [
+    -2.1500000953674316,
+    0.03999999910593033,
+    0.6000000238418579
+   ]
+  },
+  "L3/h0": {
+   "d_overall": 4.2438507080078125e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.6000000238418579,
+    0.09000000357627869,
+    -0.44999998807907104,
+    0.8600000143051147
+   ],
+   "wiring_k": [
+    0.27000001072883606,
+    0.05000000074505806,
+    0.07999999821186066,
+    0.029999999329447746
+   ],
+   "wiring_v": [
+    -3.319999933242798,
+    0.03999999910593033,
+    -0.05999999865889549,
+    0.5
+   ]
+  },
+  "L3/h1": {
+   "d_overall": -0.00018525123596191406,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.27000001072883606,
+    -0.11999999731779099,
+    -0.33000001311302185,
+    0.8500000238418579
+   ],
+   "wiring_k": [
+    0.3799999952316284,
+    0.09000000357627869,
+    0.10999999940395355,
+    0.10000000149011612
+   ],
+   "wiring_v": [
+    -3.049999952316284,
+    0.10999999940395355,
+    0.0,
+    0.5099999904632568
+   ]
+  },
+  "L3/h2": {
+   "d_overall": 0.0013420581817626953,
+   "label": "nll_domain_prose (z=4.0, +0.008)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.3700000047683716,
+    -0.11999999731779099,
+    -0.12999999523162842,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -0.25999999046325684,
+    -0.49000000953674316,
+    0.019999999552965164,
+    1.059999942779541
+   ],
+   "wiring_v": [
+    -0.8299999833106995,
+    0.11999999731779099,
+    -0.14000000059604645,
+    0.9800000190734863
+   ]
+  },
+  "L3/h3": {
+   "d_overall": 0.02544236183166504,
+   "label": "nll_hard_q1 (z=18.3, +0.023)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.2800000011920929,
+    -0.18000000715255737,
+    -0.029999999329447746,
+    1.2400000095367432
+   ],
+   "wiring_k": [
+    -0.4000000059604645,
+    -0.6200000047683716,
+    0.07000000029802322,
+    1.4700000286102295
+   ],
+   "wiring_v": [
+    -2.1500000953674316,
+    0.1599999964237213,
+    -0.009999999776482582,
+    1.25
+   ]
+  },
+  "L3/h4": {
+   "d_overall": 0.00016832351684570312,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.05999999865889549,
+    -0.14000000059604645,
+    -0.3100000023841858,
+    0.7799999713897705
+   ],
+   "wiring_k": [
+    -0.20000000298023224,
+    -0.009999999776482582,
+    0.09000000357627869,
+    0.05000000074505806
+   ],
+   "wiring_v": [
+    -2.700000047683716,
+    0.07999999821186066,
+    -0.03999999910593033,
+    0.5699999928474426
+   ]
+  },
+  "L3/h5": {
+   "d_overall": 0.00047278404235839844,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.6499999761581421,
+    0.05000000074505806,
+    -0.18000000715255737,
+    0.5699999928474426
+   ],
+   "wiring_k": [
+    -0.44999998807907104,
+    0.019999999552965164,
+    0.09000000357627869,
+    0.4699999988079071
+   ],
+   "wiring_v": [
+    -1.840000033378601,
+    0.09000000357627869,
+    -0.019999999552965164,
+    0.5600000023841858
+   ]
+  },
+  "L3/h6": {
+   "d_overall": 0.0008478164672851562,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.1899999976158142,
+    0.05000000074505806,
+    -0.3199999928474426,
+    1.2999999523162842
+   ],
+   "wiring_k": [
+    0.2199999988079071,
+    -0.44999998807907104,
+    -0.36000001430511475,
+    1.0299999713897705
+   ],
+   "wiring_v": [
+    -2.890000104904175,
+    0.1599999964237213,
+    0.07000000029802322,
+    0.6399999856948853
+   ]
+  },
+  "L3/h7": {
+   "d_overall": -0.00011754035949707031,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.3499999940395355,
+    -0.15000000596046448,
+    -0.30000001192092896,
+    0.6899999976158142
+   ],
+   "wiring_k": [
+    -0.03999999910593033,
+    0.07999999821186066,
+    -0.05000000074505806,
+    0.3799999952316284
+   ],
+   "wiring_v": [
+    -2.509999990463257,
+    -0.029999999329447746,
+    -0.07999999821186066,
+    0.49000000953674316
+   ]
+  },
+  "L3/h8": {
+   "d_overall": 0.001800537109375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.5699999928474426,
+    -0.09000000357627869,
+    -0.1599999964237213,
+    1.3899999856948853
+   ],
+   "wiring_k": [
+    -0.4699999988079071,
+    -0.30000001192092896,
+    -0.20999999344348907,
+    1.3600000143051147
+   ],
+   "wiring_v": [
+    -0.5400000214576721,
+    0.17000000178813934,
+    -0.07000000029802322,
+    0.9399999976158142
+   ]
+  },
+  "L3/h9": {
+   "d_overall": 0.0019779205322265625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.8299999833106995,
+    0.07000000029802322,
+    -0.3700000047683716,
+    1.0199999809265137
+   ],
+   "wiring_k": [
+    0.5299999713897705,
+    -0.20999999344348907,
+    -0.3100000023841858,
+    0.949999988079071
+   ],
+   "wiring_v": [
+    -2.4600000381469727,
+    0.12999999523162842,
+    -0.05999999865889549,
+    0.6499999761581421
+   ]
+  },
+  "L3/h10": {
+   "d_overall": 0.0010867118835449219,
+   "label": "nll_domain_latex (z=3.7, +0.008)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -1.399999976158142,
+    -0.2199999988079071,
+    -0.14000000059604645,
+    1.2400000095367432
+   ],
+   "wiring_k": [
+    -0.03999999910593033,
+    -0.1899999976158142,
+    -0.3799999952316284,
+    1.2400000095367432
+   ],
+   "wiring_v": [
+    0.25999999046325684,
+    0.10999999940395355,
+    0.03999999910593033,
+    0.8500000238418579
+   ]
+  },
+  "L3/h11": {
+   "d_overall": 0.05241966247558594,
+   "label": "copy (period 512, -15 pts)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.44999998807907104,
+    -0.3499999940395355,
+    0.07000000029802322,
+    1.059999942779541
+   ],
+   "wiring_k": [
+    -0.28999999165534973,
+    -0.6000000238418579,
+    0.07000000029802322,
+    1.5099999904632568
+   ],
+   "wiring_v": [
+    -2.2699999809265137,
+    0.30000001192092896,
+    0.12999999523162842,
+    1.440000057220459
+   ]
+  },
+  "L3/h12": {
+   "d_overall": 0.00038909912109375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.3100000023841858,
+    0.029999999329447746,
+    -0.3400000035762787,
+    0.699999988079071
+   ],
+   "wiring_k": [
+    -0.4699999988079071,
+    0.17000000178813934,
+    -0.10999999940395355,
+    0.41999998688697815
+   ],
+   "wiring_v": [
+    -2.799999952316284,
+    0.019999999552965164,
+    -0.12999999523162842,
+    0.46000000834465027
+   ]
+  },
+  "L3/h13": {
+   "d_overall": 0.023111343383789062,
+   "label": "copy (period 512, -8 pts)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.699999988079071,
+    -0.25,
+    0.029999999329447746,
+    1.0499999523162842
+   ],
+   "wiring_k": [
+    -0.3499999940395355,
+    -0.5799999833106995,
+    0.03999999910593033,
+    1.5199999809265137
+   ],
+   "wiring_v": [
+    -1.8600000143051147,
+    0.3100000023841858,
+    0.07000000029802322,
+    1.3899999856948853
+   ]
+  },
+  "L3/h14": {
+   "d_overall": 0.00014495849609375,
+   "label": "nll_pos_q3 (z=2.6, +0.001)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.5199999809265137,
+    -0.029999999329447746,
+    -0.1599999964237213,
+    1.2400000095367432
+   ],
+   "wiring_k": [
+    0.05000000074505806,
+    -0.3799999952316284,
+    -0.17000000178813934,
+    1.100000023841858
+   ],
+   "wiring_v": [
+    -4.21999979019165,
+    0.15000000596046448,
+    -0.03999999910593033,
+    0.699999988079071
+   ]
+  },
+  "L3/h15": {
+   "d_overall": 0.0022885799407958984,
+   "label": "nll_hard_q2 (z=3.4, +0.003)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.23999999463558197,
+    -0.17000000178813934,
+    -0.14000000059604645,
+    1.090000033378601
+   ],
+   "wiring_k": [
+    -0.11999999731779099,
+    -0.5,
+    -0.0,
+    1.25
+   ],
+   "wiring_v": [
+    -2.0799999237060547,
+    0.09000000357627869,
+    -0.14000000059604645,
+    1.0700000524520874
+   ]
+  },
+  "L4/h0": {
+   "d_overall": 0.0004470348358154297,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.5,
+    0.0,
+    -0.1599999964237213,
+    -0.07000000029802322,
+    0.4399999976158142
+   ],
+   "wiring_k": [
+    -0.019999999552965164,
+    0.03999999910593033,
+    -0.05000000074505806,
+    -0.3499999940395355,
+    0.8899999856948853
+   ],
+   "wiring_v": [
+    -0.949999988079071,
+    0.019999999552965164,
+    -0.019999999552965164,
+    -0.09000000357627869,
+    0.5199999809265137
+   ]
+  },
+  "L4/h1": {
+   "d_overall": 0.13289690017700195,
+   "label": "copy (period 128, -75 pts)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.6100000143051147,
+    0.009999999776482582,
+    0.11999999731779099,
+    0.30000001192092896,
+    1.0299999713897705
+   ],
+   "wiring_k": [
+    -0.6399999856948853,
+    -0.4300000071525574,
+    0.18000000715255737,
+    -0.41999998688697815,
+    1.440000057220459
+   ],
+   "wiring_v": [
+    0.18000000715255737,
+    0.41999998688697815,
+    0.07999999821186066,
+    -0.009999999776482582,
+    1.3600000143051147
+   ]
+  },
+  "L4/h2": {
+   "d_overall": 0.006373882293701172,
+   "label": "nll_pos_q3 (z=4.6, +0.003)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.10000000149011612,
+    -0.17000000178813934,
+    0.009999999776482582,
+    0.029999999329447746,
+    1.090000033378601
+   ],
+   "wiring_k": [
+    -0.20999999344348907,
+    -0.3700000047683716,
+    0.05999999865889549,
+    0.019999999552965164,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    0.36000001430511475,
+    0.15000000596046448,
+    -0.009999999776482582,
+    -0.3100000023841858,
+    1.2999999523162842
+   ]
+  },
+  "L4/h3": {
+   "d_overall": 0.012773513793945312,
+   "label": "nll_noncopyable (z=8.5, +0.008)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.12999999523162842,
+    -0.1899999976158142,
+    0.10000000149011612,
+    0.05000000074505806,
+    1.1399999856948853
+   ],
+   "wiring_k": [
+    -0.699999988079071,
+    -0.3700000047683716,
+    0.1599999964237213,
+    0.10000000149011612,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    -0.7099999785423279,
+    0.20000000298023224,
+    0.05999999865889549,
+    -0.07000000029802322,
+    1.1100000143051147
+   ]
+  },
+  "L4/h4": {
+   "d_overall": 0.0010104179382324219,
+   "label": "nll_domain_latex (z=4.5, +0.009)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.11999999731779099,
+    -0.07999999821186066,
+    0.019999999552965164,
+    0.05000000074505806,
+    0.9700000286102295
+   ],
+   "wiring_k": [
+    0.36000001430511475,
+    -0.2199999988079071,
+    -0.10999999940395355,
+    -0.2199999988079071,
+    0.9700000286102295
+   ],
+   "wiring_v": [
+    -1.690000057220459,
+    0.10000000149011612,
+    -0.009999999776482582,
+    -0.12999999523162842,
+    0.8700000047683716
+   ]
+  },
+  "L4/h5": {
+   "d_overall": 0.00032067298889160156,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.4000000059604645,
+    0.03999999910593033,
+    -0.009999999776482582,
+    0.05999999865889549,
+    0.8399999737739563
+   ],
+   "wiring_k": [
+    0.6800000071525574,
+    -0.09000000357627869,
+    0.14000000059604645,
+    -0.23999999463558197,
+    0.8199999928474426
+   ],
+   "wiring_v": [
+    -1.149999976158142,
+    0.05999999865889549,
+    0.0,
+    -0.05000000074505806,
+    0.550000011920929
+   ]
+  },
+  "L4/h6": {
+   "d_overall": 0.0004134178161621094,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.5400000214576721,
+    0.09000000357627869,
+    -0.20999999344348907,
+    -0.3100000023841858,
+    0.6499999761581421
+   ],
+   "wiring_k": [
+    0.25999999046325684,
+    -0.1599999964237213,
+    0.029999999329447746,
+    -0.3199999928474426,
+    0.9599999785423279
+   ],
+   "wiring_v": [
+    -1.4199999570846558,
+    0.03999999910593033,
+    -0.009999999776482582,
+    -0.10999999940395355,
+    0.5899999737739563
+   ]
+  },
+  "L4/h7": {
+   "d_overall": 0.0002193450927734375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.12999999523162842,
+    0.07000000029802322,
+    -0.029999999329447746,
+    -0.09000000357627869,
+    0.800000011920929
+   ],
+   "wiring_k": [
+    0.6499999761581421,
+    0.11999999731779099,
+    -0.07999999821186066,
+    -0.20999999344348907,
+    0.8999999761581421
+   ],
+   "wiring_v": [
+    -1.100000023841858,
+    0.019999999552965164,
+    -0.029999999329447746,
+    -0.07000000029802322,
+    0.49000000953674316
+   ]
+  },
+  "L4/h8": {
+   "d_overall": -2.8371810913085938e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.8299999833106995,
+    -0.029999999329447746,
+    -0.11999999731779099,
+    -0.4000000059604645,
+    0.41999998688697815
+   ],
+   "wiring_k": [
+    -0.5699999928474426,
+    -0.07000000029802322,
+    0.03999999910593033,
+    -0.1599999964237213,
+    0.8500000238418579
+   ],
+   "wiring_v": [
+    -1.4199999570846558,
+    -0.009999999776482582,
+    -0.019999999552965164,
+    -0.07999999821186066,
+    0.5199999809265137
+   ]
+  },
+  "L4/h9": {
+   "d_overall": 0.00030159950256347656,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.5,
+    0.10000000149011612,
+    0.12999999523162842,
+    0.30000001192092896,
+    1.1200000047683716
+   ],
+   "wiring_k": [
+    0.4699999988079071,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    -0.3199999928474426,
+    0.8600000143051147
+   ],
+   "wiring_v": [
+    -1.5700000524520874,
+    0.05000000074505806,
+    -0.03999999910593033,
+    -0.10999999940395355,
+    0.5699999928474426
+   ]
+  },
+  "L4/h10": {
+   "d_overall": 0.0198519229888916,
+   "label": "nll_noncopyable (z=8.1, +0.008)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.3400000035762787,
+    -0.23999999463558197,
+    0.05999999865889549,
+    0.029999999329447746,
+    1.090000033378601
+   ],
+   "wiring_k": [
+    -0.4399999976158142,
+    -0.4099999964237213,
+    0.1599999964237213,
+    0.10000000149011612,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    -0.8600000143051147,
+    0.12999999523162842,
+    0.0,
+    -0.18000000715255737,
+    1.2699999809265137
+   ]
+  },
+  "L4/h11": {
+   "d_overall": 0.0001590251922607422,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.25999999046325684,
+    0.05000000074505806,
+    -0.05999999865889549,
+    -0.05999999865889549,
+    0.7799999713897705
+   ],
+   "wiring_k": [
+    0.30000001192092896,
+    -0.20999999344348907,
+    -0.029999999329447746,
+    -0.3499999940395355,
+    0.9200000166893005
+   ],
+   "wiring_v": [
+    -1.4600000381469727,
+    -0.019999999552965164,
+    -0.05000000074505806,
+    -0.10000000149011612,
+    0.5699999928474426
+   ]
+  },
+  "L4/h12": {
+   "d_overall": 0.01600956916809082,
+   "label": "nll_hard_q2 (z=14.7, +0.013)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.38999998569488525,
+    -0.23000000417232513,
+    0.03999999910593033,
+    -0.009999999776482582,
+    1.159999966621399
+   ],
+   "wiring_k": [
+    0.27000001072883606,
+    -0.4300000071525574,
+    0.15000000596046448,
+    0.09000000357627869,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    -0.6100000143051147,
+    0.12999999523162842,
+    0.05999999865889549,
+    0.009999999776482582,
+    1.0399999618530273
+   ]
+  },
+  "L4/h13": {
+   "d_overall": -0.00042891502380371094,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.8299999833106995,
+    -0.029999999329447746,
+    -0.09000000357627869,
+    -0.38999998569488525,
+    0.5400000214576721
+   ],
+   "wiring_k": [
+    -0.3199999928474426,
+    -0.10000000149011612,
+    -0.019999999552965164,
+    -0.25,
+    0.8100000023841858
+   ],
+   "wiring_v": [
+    -1.1399999856948853,
+    0.019999999552965164,
+    0.009999999776482582,
+    -0.05000000074505806,
+    0.550000011920929
+   ]
+  },
+  "L4/h14": {
+   "d_overall": 0.0004608631134033203,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.1899999976158142,
+    0.05000000074505806,
+    0.029999999329447746,
+    0.18000000715255737,
+    0.9399999976158142
+   ],
+   "wiring_k": [
+    0.10000000149011612,
+    -0.029999999329447746,
+    -0.05000000074505806,
+    -0.18000000715255737,
+    0.9100000262260437
+   ],
+   "wiring_v": [
+    -1.840000033378601,
+    0.07000000029802322,
+    0.009999999776482582,
+    -0.07999999821186066,
+    0.7699999809265137
+   ]
+  },
+  "L4/h15": {
+   "d_overall": 0.008137702941894531,
+   "label": "nll_domain_prose (z=11.9, +0.023)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.15000000596046448,
+    -0.25,
+    0.0,
+    0.009999999776482582,
+    1.2100000381469727
+   ],
+   "wiring_k": [
+    -1.0099999904632568,
+    -0.3799999952316284,
+    0.14000000059604645,
+    0.03999999910593033,
+    1.090000033378601
+   ],
+   "wiring_v": [
+    -0.20000000298023224,
+    0.11999999731779099,
+    0.019999999552965164,
+    -0.07000000029802322,
+    1.0199999809265137
+   ]
+  },
+  "L5/h0": {
+   "d_overall": 0.0004646778106689453,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -1.4600000381469727,
+    -0.1899999976158142,
+    0.009999999776482582,
+    0.17000000178813934,
+    0.10999999940395355,
+    0.9700000286102295
+   ],
+   "wiring_k": [
+    0.6100000143051147,
+    -0.4699999988079071,
+    -0.09000000357627869,
+    0.03999999910593033,
+    -0.2199999988079071,
+    1.1699999570846558
+   ],
+   "wiring_v": [
+    -2.9000000953674316,
+    0.12999999523162842,
+    0.0,
+    -0.10999999940395355,
+    0.03999999910593033,
+    0.75
+   ]
+  },
+  "L5/h1": {
+   "d_overall": 0.0002613067626953125,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.25,
+    -0.20000000298023224,
+    -0.03999999910593033,
+    0.20999999344348907,
+    0.05999999865889549,
+    1.2100000381469727
+   ],
+   "wiring_k": [
+    0.7400000095367432,
+    -0.25999999046325684,
+    -0.09000000357627869,
+    0.23999999463558197,
+    0.07000000029802322,
+    1.4299999475479126
+   ],
+   "wiring_v": [
+    -2.2200000286102295,
+    0.14000000059604645,
+    -0.03999999910593033,
+    -0.03999999910593033,
+    0.029999999329447746,
+    0.8199999928474426
+   ]
+  },
+  "L5/h2": {
+   "d_overall": 0.0009071826934814453,
+   "label": "nll_domain_latex (z=4.2, +0.008)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.25999999046325684,
+    -1.059999942779541,
+    -0.49000000953674316,
+    0.019999999552965164,
+    -0.11999999731779099,
+    1.0700000524520874
+   ],
+   "wiring_k": [
+    0.8899999856948853,
+    -1.149999976158142,
+    -0.3199999928474426,
+    -0.09000000357627869,
+    -0.05999999865889549,
+    1.100000023841858
+   ],
+   "wiring_v": [
+    -2.299999952316284,
+    0.11999999731779099,
+    0.029999999329447746,
+    -0.05000000074505806,
+    0.05000000074505806,
+    0.6700000166893005
+   ]
+  },
+  "L5/h3": {
+   "d_overall": 0.01446986198425293,
+   "label": "nll_hard_q1 (z=9.8, +0.013)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.46000000834465027,
+    -0.20999999344348907,
+    0.10000000149011612,
+    0.11999999731779099,
+    0.009999999776482582,
+    1.3200000524520874
+   ],
+   "wiring_k": [
+    -0.949999988079071,
+    -0.5699999928474426,
+    0.20000000298023224,
+    0.3499999940395355,
+    -0.03999999910593033,
+    1.600000023841858
+   ],
+   "wiring_v": [
+    0.36000001430511475,
+    0.20999999344348907,
+    0.07999999821186066,
+    0.029999999329447746,
+    -0.07999999821186066,
+    1.2699999809265137
+   ]
+  },
+  "L5/h4": {
+   "d_overall": 0.007634639739990234,
+   "label": "nll_domain_latex (z=12.2, +0.025)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.4399999976158142,
+    -0.25999999046325684,
+    0.10000000149011612,
+    0.11999999731779099,
+    0.20000000298023224,
+    1.090000033378601
+   ],
+   "wiring_k": [
+    -0.8700000047683716,
+    -0.5600000023841858,
+    0.18000000715255737,
+    0.30000001192092896,
+    -0.0,
+    1.4299999475479126
+   ],
+   "wiring_v": [
+    -0.9300000071525574,
+    0.10999999940395355,
+    0.03999999910593033,
+    -0.09000000357627869,
+    -0.10999999940395355,
+    1.4700000286102295
+   ]
+  },
+  "L5/h5": {
+   "d_overall": 0.0009136199951171875,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -1.1200000047683716,
+    -0.3199999928474426,
+    0.019999999552965164,
+    0.15000000596046448,
+    0.05999999865889549,
+    1.1200000047683716
+   ],
+   "wiring_k": [
+    -0.699999988079071,
+    -0.5899999737739563,
+    0.10000000149011612,
+    0.25999999046325684,
+    0.029999999329447746,
+    1.2599999904632568
+   ],
+   "wiring_v": [
+    -1.6100000143051147,
+    0.07999999821186066,
+    -0.10000000149011612,
+    -0.10999999940395355,
+    -0.05000000074505806,
+    1.2000000476837158
+   ]
+  },
+  "L5/h6": {
+   "d_overall": 0.0006880760192871094,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.7200000286102295,
+    -0.03999999910593033,
+    -0.20000000298023224,
+    0.05999999865889549,
+    -0.009999999776482582,
+    0.9900000095367432
+   ],
+   "wiring_k": [
+    0.5,
+    -0.0,
+    0.1599999964237213,
+    -0.019999999552965164,
+    -0.36000001430511475,
+    1.0
+   ],
+   "wiring_v": [
+    -2.640000104904175,
+    0.009999999776482582,
+    -0.029999999329447746,
+    -0.029999999329447746,
+    -0.019999999552965164,
+    0.3799999952316284
+   ]
+  },
+  "L5/h7": {
+   "d_overall": 0.01114201545715332,
+   "label": "nll_hard_q1 (z=10.8, +0.014)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.05000000074505806,
+    -0.1899999976158142,
+    0.10000000149011612,
+    0.07999999821186066,
+    0.009999999776482582,
+    1.3600000143051147
+   ],
+   "wiring_k": [
+    -1.090000033378601,
+    -0.4699999988079071,
+    0.1599999964237213,
+    0.3199999928474426,
+    -0.05000000074505806,
+    1.590000033378601
+   ],
+   "wiring_v": [
+    1.2300000190734863,
+    0.15000000596046448,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    -0.07999999821186066,
+    1.3200000524520874
+   ]
+  },
+  "L5/h8": {
+   "d_overall": 0.004984378814697266,
+   "label": "nll_class_lower (z=4.1, +0.002)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.8899999856948853,
+    -0.2199999988079071,
+    0.11999999731779099,
+    0.18000000715255737,
+    0.07000000029802322,
+    1.1699999570846558
+   ],
+   "wiring_k": [
+    -0.33000001311302185,
+    -0.5899999737739563,
+    0.1899999976158142,
+    0.3499999940395355,
+    -0.029999999329447746,
+    1.5099999904632568
+   ],
+   "wiring_v": [
+    -1.2200000286102295,
+    0.17000000178813934,
+    0.07999999821186066,
+    0.029999999329447746,
+    -0.14000000059604645,
+    1.2100000381469727
+   ]
+  },
+  "L5/h9": {
+   "d_overall": 0.0004391670227050781,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.33000001311302185,
+    -0.11999999731779099,
+    -0.0,
+    0.019999999552965164,
+    0.05000000074505806,
+    0.8500000238418579
+   ],
+   "wiring_k": [
+    -0.2199999988079071,
+    0.2800000011920929,
+    -0.019999999552965164,
+    -0.07999999821186066,
+    -0.1899999976158142,
+    1.25
+   ],
+   "wiring_v": [
+    -2.200000047683716,
+    0.009999999776482582,
+    -0.03999999910593033,
+    -0.05999999865889549,
+    -0.03999999910593033,
+    0.41999998688697815
+   ]
+  },
+  "L5/h10": {
+   "d_overall": -0.00018739700317382812,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.12999999523162842,
+    0.009999999776482582,
+    -0.20999999344348907,
+    -0.009999999776482582,
+    -0.18000000715255737,
+    1.100000023841858
+   ],
+   "wiring_k": [
+    0.10999999940395355,
+    0.07000000029802322,
+    -0.07000000029802322,
+    -0.07000000029802322,
+    -0.4699999988079071,
+    1.5
+   ],
+   "wiring_v": [
+    -2.450000047683716,
+    0.10000000149011612,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    -0.0,
+    0.5
+   ]
+  },
+  "L5/h11": {
+   "d_overall": 0.0029277801513671875,
+   "label": "nll_class_punct (z=5.5, +0.011)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.36000001430511475,
+    -0.25,
+    0.029999999329447746,
+    0.10999999940395355,
+    0.03999999910593033,
+    1.159999966621399
+   ],
+   "wiring_k": [
+    -0.07000000029802322,
+    -0.6100000143051147,
+    0.1599999964237213,
+    0.28999999165534973,
+    -0.029999999329447746,
+    1.440000057220459
+   ],
+   "wiring_v": [
+    -0.1599999964237213,
+    0.09000000357627869,
+    -0.019999999552965164,
+    -0.05000000074505806,
+    -0.11999999731779099,
+    1.2300000190734863
+   ]
+  },
+  "L5/h12": {
+   "d_overall": 0.00021696090698242188,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.27000001072883606,
+    -0.11999999731779099,
+    -0.3100000023841858,
+    -0.41999998688697815,
+    0.33000001311302185,
+    0.8100000023841858
+   ],
+   "wiring_k": [
+    0.23999999463558197,
+    0.23999999463558197,
+    -0.15000000596046448,
+    -0.15000000596046448,
+    -0.14000000059604645,
+    1.190000057220459
+   ],
+   "wiring_v": [
+    -2.3299999237060547,
+    0.03999999910593033,
+    -0.009999999776482582,
+    -0.03999999910593033,
+    -0.019999999552965164,
+    0.46000000834465027
+   ]
+  },
+  "L5/h13": {
+   "d_overall": 0.00013446807861328125,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.4399999976158142,
+    -0.019999999552965164,
+    -0.15000000596046448,
+    -0.1899999976158142,
+    -0.10999999940395355,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -0.07999999821186066,
+    0.20999999344348907,
+    0.07000000029802322,
+    -0.07999999821186066,
+    -0.20999999344348907,
+    1.0099999904632568
+   ],
+   "wiring_v": [
+    -2.2799999713897705,
+    0.019999999552965164,
+    0.009999999776482582,
+    -0.029999999329447746,
+    -0.029999999329447746,
+    0.38999998569488525
+   ]
+  },
+  "L5/h14": {
+   "d_overall": 0.007132530212402344,
+   "label": "nll_freq_q2 (z=4.5, +0.004)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.44999998807907104,
+    -0.27000001072883606,
+    0.07999999821186066,
+    0.11999999731779099,
+    -0.03999999910593033,
+    1.2599999904632568
+   ],
+   "wiring_k": [
+    -0.5799999833106995,
+    -0.5400000214576721,
+    0.15000000596046448,
+    0.27000001072883606,
+    -0.05000000074505806,
+    1.5199999809265137
+   ],
+   "wiring_v": [
+    0.23000000417232513,
+    0.10000000149011612,
+    -0.07000000029802322,
+    -0.10000000149011612,
+    -0.11999999731779099,
+    1.2799999713897705
+   ]
+  },
+  "L5/h15": {
+   "d_overall": 0.0004775524139404297,
+   "label": "nll_hard_q3 (z=3.6, +0.006)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.949999988079071,
+    -0.2199999988079071,
+    0.029999999329447746,
+    0.18000000715255737,
+    -0.0,
+    1.2999999523162842
+   ],
+   "wiring_k": [
+    0.30000001192092896,
+    -0.4399999976158142,
+    0.18000000715255737,
+    0.25,
+    -0.019999999552965164,
+    1.2599999904632568
+   ],
+   "wiring_v": [
+    -2.559999942779541,
+    0.20999999344348907,
+    0.05000000074505806,
+    0.0,
+    0.03999999910593033,
+    0.7099999785423279
+   ]
+  },
+  "L6/h0": {
+   "d_overall": 0.024600505828857422,
+   "label": "nll_noncopyable (z=16.9, +0.016)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.20000000298023224,
+    -0.1899999976158142,
+    0.07999999821186066,
+    0.12999999523162842,
+    0.14000000059604645,
+    0.029999999329447746,
+    1.2100000381469727
+   ],
+   "wiring_k": [
+    0.05000000074505806,
+    -0.3499999940395355,
+    0.05999999865889549,
+    0.1599999964237213,
+    0.1599999964237213,
+    -0.019999999552965164,
+    1.1200000047683716
+   ],
+   "wiring_v": [
+    -1.1399999856948853,
+    0.07999999821186066,
+    0.1599999964237213,
+    0.07000000029802322,
+    0.07000000029802322,
+    -0.14000000059604645,
+    1.3200000524520874
+   ]
+  },
+  "L6/h1": {
+   "d_overall": 0.00041031837463378906,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.4399999976158142,
+    -0.07999999821186066,
+    -0.07999999821186066,
+    0.05999999865889549,
+    -0.05999999865889549,
+    0.11999999731779099,
+    1.0299999713897705
+   ],
+   "wiring_k": [
+    0.8299999833106995,
+    0.0,
+    0.0,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    -0.23999999463558197,
+    0.7699999809265137
+   ],
+   "wiring_v": [
+    -3.059999942779541,
+    0.10999999940395355,
+    -0.0,
+    -0.0,
+    -0.03999999910593033,
+    -0.029999999329447746,
+    0.46000000834465027
+   ]
+  },
+  "L6/h2": {
+   "d_overall": 0.0001888275146484375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.49000000953674316,
+    -0.05000000074505806,
+    -0.05999999865889549,
+    0.11999999731779099,
+    -0.009999999776482582,
+    -0.029999999329447746,
+    1.1200000047683716
+   ],
+   "wiring_k": [
+    1.440000057220459,
+    -0.10000000149011612,
+    0.10999999940395355,
+    -0.18000000715255737,
+    -0.14000000059604645,
+    -0.18000000715255737,
+    0.9399999976158142
+   ],
+   "wiring_v": [
+    -3.509999990463257,
+    0.10000000149011612,
+    0.0,
+    -0.05000000074505806,
+    -0.05000000074505806,
+    -0.029999999329447746,
+    0.5600000023841858
+   ]
+  },
+  "L6/h3": {
+   "d_overall": 0.0026988983154296875,
+   "label": "nll_domain_prose (z=11.4, +0.022)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.2800000011920929,
+    0.019999999552965164,
+    0.03999999910593033,
+    0.15000000596046448,
+    0.05000000074505806,
+    -0.019999999552965164,
+    1.3200000524520874
+   ],
+   "wiring_k": [
+    0.38999998569488525,
+    -0.2800000011920929,
+    -0.03999999910593033,
+    0.1599999964237213,
+    0.33000001311302185,
+    -0.05000000074505806,
+    1.4299999475479126
+   ],
+   "wiring_v": [
+    0.6200000047683716,
+    0.3400000035762787,
+    0.17000000178813934,
+    -0.009999999776482582,
+    0.11999999731779099,
+    -0.019999999552965164,
+    0.6499999761581421
+   ]
+  },
+  "L6/h4": {
+   "d_overall": 0.00022029876708984375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.23000000417232513,
+    -0.1899999976158142,
+    -0.03999999910593033,
+    0.27000001072883606,
+    0.10000000149011612,
+    -0.14000000059604645,
+    0.7200000286102295
+   ],
+   "wiring_k": [
+    0.9700000286102295,
+    -0.3400000035762787,
+    0.019999999552965164,
+    0.17000000178813934,
+    0.14000000059604645,
+    -0.12999999523162842,
+    0.7799999713897705
+   ],
+   "wiring_v": [
+    -0.7599999904632568,
+    0.10999999940395355,
+    0.05000000074505806,
+    0.029999999329447746,
+    -0.10999999940395355,
+    -0.05000000074505806,
+    0.7400000095367432
+   ]
+  },
+  "L6/h5": {
+   "d_overall": 0.008425474166870117,
+   "label": "nll_pos_q3 (z=8.2, +0.004)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.03999999910593033,
+    -0.15000000596046448,
+    0.05000000074505806,
+    0.1599999964237213,
+    0.07999999821186066,
+    -0.03999999910593033,
+    1.3300000429153442
+   ],
+   "wiring_k": [
+    -0.20999999344348907,
+    -0.27000001072883606,
+    0.07999999821186066,
+    0.12999999523162842,
+    0.12999999523162842,
+    -0.019999999552965164,
+    1.2100000381469727
+   ],
+   "wiring_v": [
+    0.15000000596046448,
+    0.25999999046325684,
+    0.019999999552965164,
+    0.07000000029802322,
+    0.05000000074505806,
+    -0.0,
+    1.0199999809265137
+   ]
+  },
+  "L6/h6": {
+   "d_overall": 0.0035524368286132812,
+   "label": "nll_class_cap (z=6.1, +0.013)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.07000000029802322,
+    -0.03999999910593033,
+    0.029999999329447746,
+    0.14000000059604645,
+    0.029999999329447746,
+    -0.009999999776482582,
+    1.340000033378601
+   ],
+   "wiring_k": [
+    0.46000000834465027,
+    -0.33000001311302185,
+    0.019999999552965164,
+    0.11999999731779099,
+    0.2199999988079071,
+    -0.11999999731779099,
+    1.4800000190734863
+   ],
+   "wiring_v": [
+    -2.3399999141693115,
+    0.25,
+    0.09000000357627869,
+    -0.029999999329447746,
+    0.1599999964237213,
+    0.25999999046325684,
+    0.6700000166893005
+   ]
+  },
+  "L6/h7": {
+   "d_overall": 0.0005962848663330078,
+   "label": "nll_domain_prose (z=3.2, +0.006)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.1599999964237213,
+    0.12999999523162842,
+    -0.17000000178813934,
+    -0.11999999731779099,
+    -0.25999999046325684,
+    -0.07000000029802322,
+    0.8600000143051147
+   ],
+   "wiring_k": [
+    0.05999999865889549,
+    -0.009999999776482582,
+    0.019999999552965164,
+    -0.0,
+    0.009999999776482582,
+    -0.2199999988079071,
+    0.6299999952316284
+   ],
+   "wiring_v": [
+    -2.299999952316284,
+    0.009999999776482582,
+    -0.05999999865889549,
+    -0.05000000074505806,
+    -0.05000000074505806,
+    -0.05999999865889549,
+    0.49000000953674316
+   ]
+  },
+  "L6/h8": {
+   "d_overall": 0.0003883838653564453,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.6000000238418579,
+    0.07999999821186066,
+    0.0,
+    -0.009999999776482582,
+    -0.07999999821186066,
+    0.019999999552965164,
+    1.0
+   ],
+   "wiring_k": [
+    0.09000000357627869,
+    -0.3199999928474426,
+    0.05000000074505806,
+    -0.07999999821186066,
+    -0.09000000357627869,
+    -0.15000000596046448,
+    0.5
+   ],
+   "wiring_v": [
+    -3.2200000286102295,
+    0.12999999523162842,
+    0.009999999776482582,
+    0.009999999776482582,
+    -0.019999999552965164,
+    -0.019999999552965164,
+    0.44999998807907104
+   ]
+  },
+  "L6/h9": {
+   "d_overall": 0.010742664337158203,
+   "label": "nll_hard_q2 (z=9.6, +0.009)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.3400000035762787,
+    -0.20000000298023224,
+    0.05000000074505806,
+    0.14000000059604645,
+    0.03999999910593033,
+    -0.10000000149011612,
+    1.3899999856948853
+   ],
+   "wiring_k": [
+    -0.5899999737739563,
+    -0.25,
+    0.019999999552965164,
+    0.20999999344348907,
+    0.14000000059604645,
+    -0.05000000074505806,
+    1.2100000381469727
+   ],
+   "wiring_v": [
+    3.680000066757202,
+    0.23999999463558197,
+    0.09000000357627869,
+    -0.07999999821186066,
+    0.1899999976158142,
+    0.10000000149011612,
+    1.100000023841858
+   ]
+  },
+  "L6/h10": {
+   "d_overall": 0.00016164779663085938,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -1.0099999904632568,
+    -0.05999999865889549,
+    -0.07000000029802322,
+    -0.15000000596046448,
+    -0.30000001192092896,
+    -0.14000000059604645,
+    0.8700000047683716
+   ],
+   "wiring_k": [
+    0.47999998927116394,
+    -0.0,
+    -0.03999999910593033,
+    0.05999999865889549,
+    -0.019999999552965164,
+    -0.25,
+    0.44999998807907104
+   ],
+   "wiring_v": [
+    -3.130000114440918,
+    0.03999999910593033,
+    -0.009999999776482582,
+    -0.03999999910593033,
+    -0.029999999329447746,
+    -0.03999999910593033,
+    0.44999998807907104
+   ]
+  },
+  "L6/h11": {
+   "d_overall": 0.012952327728271484,
+   "label": "copy (period 512, -14 pts)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    -0.5799999833106995,
+    0.029999999329447746,
+    0.05999999865889549,
+    0.20999999344348907,
+    0.07999999821186066,
+    -0.09000000357627869,
+    1.090000033378601
+   ],
+   "wiring_k": [
+    -0.8999999761581421,
+    -0.5799999833106995,
+    -0.009999999776482582,
+    -0.33000001311302185,
+    1.1100000143051147,
+    -0.20000000298023224,
+    1.4800000190734863
+   ],
+   "wiring_v": [
+    7.239999771118164,
+    0.6800000071525574,
+    0.2800000011920929,
+    0.12999999523162842,
+    0.18000000715255737,
+    0.03999999910593033,
+    0.46000000834465027
+   ]
+  },
+  "L6/h12": {
+   "d_overall": 0.0007073879241943359,
+   "label": "nll_class_punct (z=4.6, +0.009)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.4699999988079071,
+    -0.09000000357627869,
+    -0.07999999821186066,
+    -0.07999999821186066,
+    -0.019999999552965164,
+    -0.14000000059604645,
+    0.9300000071525574
+   ],
+   "wiring_k": [
+    1.3300000429153442,
+    -0.17000000178813934,
+    -0.07000000029802322,
+    -0.05999999865889549,
+    0.07999999821186066,
+    -0.20000000298023224,
+    0.9800000190734863
+   ],
+   "wiring_v": [
+    -2.7699999809265137,
+    0.1899999976158142,
+    0.05999999865889549,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    0.0,
+    0.47999998927116394
+   ]
+  },
+  "L6/h13": {
+   "d_overall": 0.0026531219482421875,
+   "label": "nll_copyable (z=5.3, +0.006)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.23999999463558197,
+    -0.07000000029802322,
+    0.019999999552965164,
+    0.17000000178813934,
+    0.05000000074505806,
+    -0.019999999552965164,
+    1.3899999856948853
+   ],
+   "wiring_k": [
+    0.30000001192092896,
+    -0.3100000023841858,
+    -0.17000000178813934,
+    -0.029999999329447746,
+    0.4699999988079071,
+    -0.2800000011920929,
+    1.5700000524520874
+   ],
+   "wiring_v": [
+    -3.7300000190734863,
+    0.38999998569488525,
+    0.12999999523162842,
+    -0.05000000074505806,
+    0.1599999964237213,
+    0.33000001311302185,
+    0.8700000047683716
+   ]
+  },
+  "L6/h14": {
+   "d_overall": 0.0030667781829833984,
+   "label": "nll_class_punct (z=4.3, +0.008)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.2199999988079071,
+    -0.18000000715255737,
+    0.029999999329447746,
+    0.11999999731779099,
+    0.09000000357627869,
+    -0.05999999865889549,
+    1.25
+   ],
+   "wiring_k": [
+    0.3199999928474426,
+    -0.23000000417232513,
+    0.009999999776482582,
+    0.11999999731779099,
+    0.12999999523162842,
+    -0.05999999865889549,
+    1.1399999856948853
+   ],
+   "wiring_v": [
+    0.18000000715255737,
+    0.10000000149011612,
+    -0.009999999776482582,
+    -0.20999999344348907,
+    0.009999999776482582,
+    0.009999999776482582,
+    1.149999976158142
+   ]
+  },
+  "L6/h15": {
+   "d_overall": 0.0026280879974365234,
+   "label": "nll_freq_q3 (z=5.8, +0.007)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.15000000596046448,
+    -0.18000000715255737,
+    -0.009999999776482582,
+    0.17000000178813934,
+    0.05999999865889549,
+    -0.03999999910593033,
+    1.440000057220459
+   ],
+   "wiring_k": [
+    0.9599999785423279,
+    -0.23999999463558197,
+    -0.03999999910593033,
+    0.09000000357627869,
+    0.1599999964237213,
+    0.05000000074505806,
+    1.2200000286102295
+   ],
+   "wiring_v": [
+    0.4300000071525574,
+    0.2800000011920929,
+    0.09000000357627869,
+    -0.05999999865889549,
+    0.07000000029802322,
+    0.20999999344348907,
+    0.8199999928474426
+   ]
+  },
+  "L7/h0": {
+   "d_overall": 0.0032973289489746094,
+   "label": "nll_noncopyable (z=10.7, +0.010)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.8799999952316284,
+    -0.05999999865889549,
+    -0.10000000149011612,
+    0.05999999865889549,
+    0.009999999776482582,
+    0.029999999329447746,
+    -0.14000000059604645,
+    0.8700000047683716
+   ],
+   "wiring_k": [
+    3.2699999809265137,
+    -0.28999999165534973,
+    -0.33000001311302185,
+    -0.2800000011920929,
+    0.10000000149011612,
+    -0.4300000071525574,
+    -0.20000000298023224,
+    0.7099999785423279
+   ],
+   "wiring_v": [
+    -3.0899999141693115,
+    0.07999999821186066,
+    0.019999999552965164,
+    -0.07000000029802322,
+    -0.029999999329447746,
+    -0.10000000149011612,
+    -0.05999999865889549,
+    0.33000001311302185
+   ]
+  },
+  "L7/h1": {
+   "d_overall": 0.011764287948608398,
+   "label": "nll_domain_latex (z=54.0, +0.110)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.550000011920929,
+    -0.12999999523162842,
+    -0.009999999776482582,
+    0.17000000178813934,
+    0.029999999329447746,
+    -0.029999999329447746,
+    0.05999999865889549,
+    1.2200000286102295
+   ],
+   "wiring_k": [
+    -1.5800000429153442,
+    -0.15000000596046448,
+    0.23999999463558197,
+    0.1899999976158142,
+    1.0299999713897705,
+    0.1899999976158142,
+    0.6499999761581421,
+    0.7699999809265137
+   ],
+   "wiring_v": [
+    13.449999809265137,
+    0.5199999809265137,
+    0.36000001430511475,
+    0.09000000357627869,
+    0.03999999910593033,
+    -0.07000000029802322,
+    -0.07999999821186066,
+    0.25999999046325684
+   ]
+  },
+  "L7/h2": {
+   "d_overall": 0.000640869140625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.1899999976158142,
+    -0.20999999344348907,
+    -0.3199999928474426,
+    0.07999999821186066,
+    -0.07000000029802322,
+    0.05000000074505806,
+    0.1899999976158142,
+    1.2599999904632568
+   ],
+   "wiring_k": [
+    2.890000104904175,
+    -0.5199999809265137,
+    -0.07999999821186066,
+    -0.28999999165534973,
+    -0.07000000029802322,
+    -0.3700000047683716,
+    -0.0,
+    0.9800000190734863
+   ],
+   "wiring_v": [
+    -4.570000171661377,
+    0.019999999552965164,
+    0.009999999776482582,
+    -0.05000000074505806,
+    -0.03999999910593033,
+    -0.07999999821186066,
+    -0.009999999776482582,
+    0.3799999952316284
+   ]
+  },
+  "L7/h3": {
+   "d_overall": 0.0005643367767333984,
+   "label": "nll_freq_q1 (z=4.2, +0.005)",
+   "wiring_family": 3,
+   "wiring_family_desc": "Q:last+1.4,emb+0.4 | K:last+0.5,emb+0.9 | V:last+0.4,emb-10.7",
+   "wiring_q": [
+    0.28999999165534973,
+    -0.009999999776482582,
+    0.0,
+    0.23999999463558197,
+    0.029999999329447746,
+    0.10000000149011612,
+    0.10000000149011612,
+    1.4700000286102295
+   ],
+   "wiring_k": [
+    1.2000000476837158,
+    -0.05000000074505806,
+    0.029999999329447746,
+    -0.1899999976158142,
+    -0.4099999964237213,
+    -0.05999999865889549,
+    -0.6399999856948853,
+    0.7799999713897705
+   ],
+   "wiring_v": [
+    -8.270000457763672,
+    0.029999999329447746,
+    0.07000000029802322,
+    -0.029999999329447746,
+    -0.029999999329447746,
+    -0.009999999776482582,
+    -0.03999999910593033,
+    0.30000001192092896
+   ]
+  },
+  "L7/h4": {
+   "d_overall": 5.650520324707031e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.1599999964237213,
+    -0.17000000178813934,
+    -0.009999999776482582,
+    0.38999998569488525,
+    0.23999999463558197,
+    -0.019999999552965164,
+    -0.10999999940395355,
+    0.7400000095367432
+   ],
+   "wiring_k": [
+    2.180000066757202,
+    -0.15000000596046448,
+    0.28999999165534973,
+    0.46000000834465027,
+    0.27000001072883606,
+    0.019999999552965164,
+    0.07000000029802322,
+    0.7400000095367432
+   ],
+   "wiring_v": [
+    -0.25999999046325684,
+    0.07999999821186066,
+    0.05000000074505806,
+    -0.0,
+    0.009999999776482582,
+    -0.05000000074505806,
+    -0.05000000074505806,
+    0.28999999165534973
+   ]
+  },
+  "L7/h5": {
+   "d_overall": 0.001226663589477539,
+   "label": "nll_domain_code (z=8.6, +0.026)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.07000000029802322,
+    -0.11999999731779099,
+    0.009999999776482582,
+    0.15000000596046448,
+    0.03999999910593033,
+    -0.029999999329447746,
+    0.10999999940395355,
+    1.2799999713897705
+   ],
+   "wiring_k": [
+    1.7300000190734863,
+    -0.36000001430511475,
+    0.14000000059604645,
+    0.10000000149011612,
+    -0.009999999776482582,
+    -0.05000000074505806,
+    0.029999999329447746,
+    1.2599999904632568
+   ],
+   "wiring_v": [
+    -3.869999885559082,
+    -0.019999999552965164,
+    -0.009999999776482582,
+    -0.009999999776482582,
+    0.019999999552965164,
+    -0.03999999910593033,
+    -0.029999999329447746,
+    0.47999998927116394
+   ]
+  },
+  "L7/h6": {
+   "d_overall": -0.00022220611572265625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.12999999523162842,
+    -0.12999999523162842,
+    -0.15000000596046448,
+    -0.20999999344348907,
+    -0.3799999952316284,
+    -0.3700000047683716,
+    -0.23000000417232513,
+    1.3700000047683716
+   ],
+   "wiring_k": [
+    2.859999895095825,
+    -0.3499999940395355,
+    0.029999999329447746,
+    0.12999999523162842,
+    0.07999999821186066,
+    0.07000000029802322,
+    0.05000000074505806,
+    1.0399999618530273
+   ],
+   "wiring_v": [
+    -3.440000057220459,
+    0.07999999821186066,
+    0.019999999552965164,
+    -0.019999999552965164,
+    -0.019999999552965164,
+    -0.03999999910593033,
+    -0.05999999865889549,
+    0.33000001311302185
+   ]
+  },
+  "L7/h7": {
+   "d_overall": 0.012872695922851562,
+   "label": "nll_freq_q1 (z=13.7, +0.015)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.5400000214576721,
+    -0.18000000715255737,
+    -0.05000000074505806,
+    0.1899999976158142,
+    0.07999999821186066,
+    -0.029999999329447746,
+    0.07999999821186066,
+    1.4199999570846558
+   ],
+   "wiring_k": [
+    -0.8799999952316284,
+    -0.10000000149011612,
+    0.07000000029802322,
+    0.3100000023841858,
+    0.3799999952316284,
+    0.11999999731779099,
+    0.5099999904632568,
+    1.0199999809265137
+   ],
+   "wiring_v": [
+    10.510000228881836,
+    0.2800000011920929,
+    0.12999999523162842,
+    0.07999999821186066,
+    0.07999999821186066,
+    -0.05000000074505806,
+    -0.07000000029802322,
+    0.44999998807907104
+   ]
+  },
+  "L7/h8": {
+   "d_overall": 0.009833335876464844,
+   "label": "nll_freq_q0 (z=10.6, +0.015)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.49000000953674316,
+    -0.28999999165534973,
+    -0.05000000074505806,
+    0.12999999523162842,
+    0.10999999940395355,
+    -0.05999999865889549,
+    0.09000000357627869,
+    1.4900000095367432
+   ],
+   "wiring_k": [
+    -0.5799999833106995,
+    -0.3100000023841858,
+    0.09000000357627869,
+    0.3100000023841858,
+    0.23999999463558197,
+    0.07000000029802322,
+    0.23000000417232513,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    3.5199999809265137,
+    0.20000000298023224,
+    0.05999999865889549,
+    -0.11999999731779099,
+    0.05000000074505806,
+    -0.0,
+    -0.03999999910593033,
+    0.4300000071525574
+   ]
+  },
+  "L7/h9": {
+   "d_overall": 0.0021545886993408203,
+   "label": "nll_domain_code (z=13.1, +0.040)",
+   "wiring_family": 3,
+   "wiring_family_desc": "Q:last+1.4,emb+0.4 | K:last+0.5,emb+0.9 | V:last+0.4,emb-10.7",
+   "wiring_q": [
+    0.4699999988079071,
+    -0.03999999910593033,
+    0.05000000074505806,
+    0.1899999976158142,
+    0.07999999821186066,
+    0.05999999865889549,
+    0.10000000149011612,
+    1.4199999570846558
+   ],
+   "wiring_k": [
+    1.25,
+    0.019999999552965164,
+    0.019999999552965164,
+    0.10000000149011612,
+    -0.949999988079071,
+    -0.1899999976158142,
+    -1.0,
+    0.23000000417232513
+   ],
+   "wiring_v": [
+    -11.75,
+    -0.07000000029802322,
+    0.05000000074505806,
+    -0.029999999329447746,
+    -0.03999999910593033,
+    -0.009999999776482582,
+    -0.11999999731779099,
+    0.4000000059604645
+   ]
+  },
+  "L7/h10": {
+   "d_overall": 0.0018856525421142578,
+   "label": "nll_noncopyable (z=3.5, +0.003)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.05999999865889549,
+    -0.20000000298023224,
+    0.03999999910593033,
+    0.11999999731779099,
+    0.1599999964237213,
+    0.07000000029802322,
+    0.2199999988079071,
+    1.1200000047683716
+   ],
+   "wiring_k": [
+    1.4700000286102295,
+    -0.30000001192092896,
+    0.15000000596046448,
+    0.23000000417232513,
+    0.1899999976158142,
+    0.10999999940395355,
+    0.17000000178813934,
+    0.9700000286102295
+   ],
+   "wiring_v": [
+    -0.41999998688697815,
+    0.10000000149011612,
+    0.0,
+    -0.03999999910593033,
+    0.0,
+    -0.10000000149011612,
+    -0.07000000029802322,
+    0.5
+   ]
+  },
+  "L7/h11": {
+   "d_overall": 0.0059049129486083984,
+   "label": "nll_class_cap (z=25.6, +0.054)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.49000000953674316,
+    -0.15000000596046448,
+    0.009999999776482582,
+    0.20000000298023224,
+    0.07000000029802322,
+    -0.009999999776482582,
+    0.05000000074505806,
+    1.340000033378601
+   ],
+   "wiring_k": [
+    -0.019999999552965164,
+    -0.4300000071525574,
+    0.0,
+    0.10999999940395355,
+    0.699999988079071,
+    0.18000000715255737,
+    0.5400000214576721,
+    0.9100000262260437
+   ],
+   "wiring_v": [
+    9.550000190734863,
+    0.20000000298023224,
+    0.07000000029802322,
+    0.009999999776482582,
+    -0.029999999329447746,
+    -0.05999999865889549,
+    -0.17000000178813934,
+    0.49000000953674316
+   ]
+  },
+  "L7/h12": {
+   "d_overall": 0.0002799034118652344,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.15000000596046448,
+    -0.1599999964237213,
+    -0.03999999910593033,
+    0.10999999940395355,
+    0.03999999910593033,
+    -0.009999999776482582,
+    0.07999999821186066,
+    1.2999999523162842
+   ],
+   "wiring_k": [
+    2.7200000286102295,
+    -0.2800000011920929,
+    -0.05000000074505806,
+    -0.10999999940395355,
+    -0.09000000357627869,
+    -0.1899999976158142,
+    -0.10000000149011612,
+    1.0700000524520874
+   ],
+   "wiring_v": [
+    -3.9800000190734863,
+    0.05999999865889549,
+    0.0,
+    -0.05000000074505806,
+    -0.019999999552965164,
+    -0.05000000074505806,
+    -0.05000000074505806,
+    0.3400000035762787
+   ]
+  },
+  "L7/h13": {
+   "d_overall": 0.001642465591430664,
+   "label": "nll_class_punct (z=9.6, +0.019)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.14000000059604645,
+    -0.10999999940395355,
+    -0.07000000029802322,
+    0.3199999928474426,
+    0.17000000178813934,
+    0.05000000074505806,
+    0.07999999821186066,
+    0.9800000190734863
+   ],
+   "wiring_k": [
+    1.559999942779541,
+    -0.2199999988079071,
+    0.10999999940395355,
+    0.25,
+    0.15000000596046448,
+    0.11999999731779099,
+    0.33000001311302185,
+    0.8999999761581421
+   ],
+   "wiring_v": [
+    0.20000000298023224,
+    0.07999999821186066,
+    -0.009999999776482582,
+    -0.029999999329447746,
+    0.0,
+    -0.019999999552965164,
+    -0.019999999552965164,
+    0.33000001311302185
+   ]
+  },
+  "L7/h14": {
+   "d_overall": 0.0013780593872070312,
+   "label": "nll_domain_latex (z=10.1, +0.021)",
+   "wiring_family": 3,
+   "wiring_family_desc": "Q:last+1.4,emb+0.4 | K:last+0.5,emb+0.9 | V:last+0.4,emb-10.7",
+   "wiring_q": [
+    0.3400000035762787,
+    -0.5,
+    -0.25999999046325684,
+    0.09000000357627869,
+    -0.25999999046325684,
+    0.1599999964237213,
+    0.03999999910593033,
+    1.3200000524520874
+   ],
+   "wiring_k": [
+    0.33000001311302185,
+    0.18000000715255737,
+    -0.019999999552965164,
+    -0.12999999523162842,
+    -0.49000000953674316,
+    -0.20000000298023224,
+    -0.8700000047683716,
+    0.4099999964237213
+   ],
+   "wiring_v": [
+    -11.960000038146973,
+    -0.009999999776482582,
+    0.009999999776482582,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.019999999552965164,
+    -0.07999999821186066,
+    0.3400000035762787
+   ]
+  },
+  "L7/h15": {
+   "d_overall": 0.002232074737548828,
+   "label": "nll_freq_q0 (z=4.3, +0.006)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.009999999776482582,
+    -0.2199999988079071,
+    -0.10000000149011612,
+    0.17000000178813934,
+    0.15000000596046448,
+    -0.019999999552965164,
+    0.1599999964237213,
+    1.309999942779541
+   ],
+   "wiring_k": [
+    -0.07999999821186066,
+    -0.11999999731779099,
+    0.03999999910593033,
+    0.3199999928474426,
+    0.3100000023841858,
+    0.09000000357627869,
+    0.12999999523162842,
+    0.9700000286102295
+   ],
+   "wiring_v": [
+    0.8500000238418579,
+    0.12999999523162842,
+    0.10000000149011612,
+    -0.07999999821186066,
+    0.09000000357627869,
+    -0.0,
+    -0.029999999329447746,
+    0.3700000047683716
+   ]
+  },
+  "L8/h0": {
+   "d_overall": 0.0005321502685546875,
+   "label": "nll_class_punct (z=3.0, +0.006)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.25999999046325684,
+    -0.3100000023841858,
+    -0.27000001072883606,
+    0.18000000715255737,
+    0.09000000357627869,
+    0.10999999940395355,
+    0.23000000417232513,
+    0.38999998569488525,
+    1.3600000143051147
+   ],
+   "wiring_k": [
+    1.3899999856948853,
+    -0.009999999776482582,
+    -0.05000000074505806,
+    0.6700000166893005,
+    0.6499999761581421,
+    0.25,
+    0.8700000047683716,
+    0.3400000035762787,
+    1.0199999809265137
+   ],
+   "wiring_v": [
+    0.05999999865889549,
+    0.7400000095367432,
+    0.3799999952316284,
+    0.009999999776482582,
+    0.23999999463558197,
+    0.12999999523162842,
+    0.14000000059604645,
+    0.07999999821186066,
+    0.6000000238418579
+   ]
+  },
+  "L8/h1": {
+   "d_overall": 0.0002803802490234375,
+   "label": "nll_class_punct (z=2.9, +0.006)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.009999999776482582,
+    -0.3199999928474426,
+    -0.18000000715255737,
+    -0.5899999737739563,
+    -0.3199999928474426,
+    -0.44999998807907104,
+    -0.4000000059604645,
+    0.019999999552965164,
+    1.2999999523162842
+   ],
+   "wiring_k": [
+    0.12999999523162842,
+    -0.2199999988079071,
+    -0.20999999344348907,
+    0.07999999821186066,
+    0.0,
+    -0.09000000357627869,
+    -0.20999999344348907,
+    0.03999999910593033,
+    1.2200000286102295
+   ],
+   "wiring_v": [
+    -2.549999952316284,
+    -0.05000000074505806,
+    -0.05999999865889549,
+    -0.14000000059604645,
+    0.05000000074505806,
+    -0.17000000178813934,
+    -0.11999999731779099,
+    0.05999999865889549,
+    0.5799999833106995
+   ]
+  },
+  "L8/h2": {
+   "d_overall": 0.00028896331787109375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.14000000059604645,
+    -0.3499999940395355,
+    -0.15000000596046448,
+    0.5699999928474426,
+    0.4000000059604645,
+    -0.019999999552965164,
+    -0.03999999910593033,
+    -0.15000000596046448,
+    0.7400000095367432
+   ],
+   "wiring_k": [
+    -0.5099999904632568,
+    -0.3100000023841858,
+    0.41999998688697815,
+    0.550000011920929,
+    0.4099999964237213,
+    -0.009999999776482582,
+    0.25999999046325684,
+    -0.12999999523162842,
+    0.8999999761581421
+   ],
+   "wiring_v": [
+    -0.3700000047683716,
+    0.3499999940395355,
+    0.27000001072883606,
+    0.11999999731779099,
+    -0.009999999776482582,
+    -0.07000000029802322,
+    -0.07000000029802322,
+    -0.17000000178813934,
+    0.6499999761581421
+   ]
+  },
+  "L8/h3": {
+   "d_overall": 0.0006897449493408203,
+   "label": "nll_class_cap (z=7.2, +0.015)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.5600000023841858,
+    -0.4000000059604645,
+    -0.1899999976158142,
+    0.12999999523162842,
+    -0.0,
+    -0.03999999910593033,
+    0.10999999940395355,
+    0.4699999988079071,
+    1.399999976158142
+   ],
+   "wiring_k": [
+    0.07999999821186066,
+    -0.009999999776482582,
+    0.2800000011920929,
+    0.5899999737739563,
+    0.6000000238418579,
+    0.20999999344348907,
+    0.8799999952316284,
+    0.5199999809265137,
+    1.0800000429153442
+   ],
+   "wiring_v": [
+    5.059999942779541,
+    1.0700000524520874,
+    0.9900000095367432,
+    0.12999999523162842,
+    -0.029999999329447746,
+    -0.23999999463558197,
+    -0.05000000074505806,
+    0.019999999552965164,
+    0.5799999833106995
+   ]
+  },
+  "L8/h4": {
+   "d_overall": 4.363059997558594e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.4000000059604645,
+    -0.6000000238418579,
+    -0.23000000417232513,
+    -0.0,
+    -0.029999999329447746,
+    0.10000000149011612,
+    0.23999999463558197,
+    0.3799999952316284,
+    1.350000023841858
+   ],
+   "wiring_k": [
+    1.4600000381469727,
+    -0.6899999976158142,
+    0.009999999776482582,
+    -0.2800000011920929,
+    -0.5799999833106995,
+    -0.4399999976158142,
+    -0.07999999821186066,
+    -0.009999999776482582,
+    1.0800000429153442
+   ],
+   "wiring_v": [
+    -2.390000104904175,
+    0.05999999865889549,
+    0.009999999776482582,
+    -0.1599999964237213,
+    0.05999999865889549,
+    -0.10999999940395355,
+    -0.009999999776482582,
+    0.10999999940395355,
+    0.5899999737739563
+   ]
+  },
+  "L8/h5": {
+   "d_overall": 0.005629539489746094,
+   "label": "nll_class_cap (z=4.0, +0.008)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.44999998807907104,
+    -0.4699999988079071,
+    -0.4000000059604645,
+    0.1599999964237213,
+    0.09000000357627869,
+    -0.20999999344348907,
+    0.23999999463558197,
+    0.4300000071525574,
+    1.75
+   ],
+   "wiring_k": [
+    -2.1600000858306885,
+    -0.1899999976158142,
+    0.1599999964237213,
+    0.8299999833106995,
+    0.47999998927116394,
+    0.33000001311302185,
+    0.6899999976158142,
+    0.2800000011920929,
+    1.3300000429153442
+   ],
+   "wiring_v": [
+    8.300000190734863,
+    1.340000033378601,
+    0.8999999761581421,
+    0.23999999463558197,
+    0.4000000059604645,
+    0.029999999329447746,
+    -0.03999999910593033,
+    -0.20999999344348907,
+    0.38999998569488525
+   ]
+  },
+  "L8/h6": {
+   "d_overall": 3.147125244140625e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.17000000178813934,
+    -0.4000000059604645,
+    -0.18000000715255737,
+    0.17000000178813934,
+    0.10999999940395355,
+    -0.029999999329447746,
+    0.3400000035762787,
+    0.4300000071525574,
+    1.399999976158142
+   ],
+   "wiring_k": [
+    0.800000011920929,
+    0.019999999552965164,
+    -0.019999999552965164,
+    0.5400000214576721,
+    0.4300000071525574,
+    0.05999999865889549,
+    0.6299999952316284,
+    0.49000000953674316,
+    1.090000033378601
+   ],
+   "wiring_v": [
+    -0.7599999904632568,
+    0.36000001430511475,
+    0.17000000178813934,
+    -0.019999999552965164,
+    -0.07000000029802322,
+    -0.009999999776482582,
+    0.029999999329447746,
+    -0.009999999776482582,
+    0.5600000023841858
+   ]
+  },
+  "L8/h7": {
+   "d_overall": 0.0011508464813232422,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.6200000047683716,
+    -0.3799999952316284,
+    -0.14000000059604645,
+    0.07000000029802322,
+    0.12999999523162842,
+    0.07999999821186066,
+    0.47999998927116394,
+    0.47999998927116394,
+    1.159999966621399
+   ],
+   "wiring_k": [
+    1.7300000190734863,
+    -0.800000011920929,
+    0.03999999910593033,
+    0.3799999952316284,
+    0.18000000715255737,
+    0.17000000178813934,
+    0.47999998927116394,
+    0.4099999964237213,
+    1.2100000381469727
+   ],
+   "wiring_v": [
+    0.4699999988079071,
+    -0.1899999976158142,
+    -0.3100000023841858,
+    -0.4300000071525574,
+    -0.11999999731779099,
+    -0.30000001192092896,
+    -0.23999999463558197,
+    0.36000001430511475,
+    1.2899999618530273
+   ]
+  },
+  "L8/h8": {
+   "d_overall": 0.0031099319458007812,
+   "label": "nll_freq_q2 (z=6.1, +0.006)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.9800000190734863,
+    -0.36000001430511475,
+    -0.3700000047683716,
+    0.10000000149011612,
+    -0.0,
+    -0.12999999523162842,
+    0.17000000178813934,
+    0.9800000190734863,
+    1.4600000381469727
+   ],
+   "wiring_k": [
+    0.019999999552965164,
+    -0.4300000071525574,
+    0.12999999523162842,
+    0.5099999904632568,
+    0.3100000023841858,
+    0.18000000715255737,
+    0.7799999713897705,
+    0.6299999952316284,
+    1.2799999713897705
+   ],
+   "wiring_v": [
+    4.849999904632568,
+    0.949999988079071,
+    0.5199999809265137,
+    0.07000000029802322,
+    0.3199999928474426,
+    0.6000000238418579,
+    0.3499999940395355,
+    0.28999999165534973,
+    0.5
+   ]
+  },
+  "L8/h9": {
+   "d_overall": 0.0015141963958740234,
+   "label": "nll_domain_prose (z=4.3, +0.009)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.3199999928474426,
+    -0.33000001311302185,
+    -0.10999999940395355,
+    0.15000000596046448,
+    0.2800000011920929,
+    0.14000000059604645,
+    0.5400000214576721,
+    0.6000000238418579,
+    1.25
+   ],
+   "wiring_k": [
+    0.33000001311302185,
+    -0.6899999976158142,
+    0.20999999344348907,
+    0.4699999988079071,
+    0.3400000035762787,
+    0.07999999821186066,
+    0.5899999737739563,
+    0.4099999964237213,
+    1.2300000190734863
+   ],
+   "wiring_v": [
+    -1.9800000190734863,
+    0.5099999904632568,
+    0.25999999046325684,
+    -0.20999999344348907,
+    -0.019999999552965164,
+    -0.1899999976158142,
+    -0.07000000029802322,
+    0.5299999713897705,
+    1.159999966621399
+   ]
+  },
+  "L8/h10": {
+   "d_overall": 0.003900766372680664,
+   "label": "nll_hard_q1 (z=3.4, +0.005)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.4000000059604645,
+    -0.46000000834465027,
+    -0.09000000357627869,
+    0.1599999964237213,
+    0.5199999809265137,
+    0.23999999463558197,
+    0.5699999928474426,
+    0.5799999833106995,
+    1.2200000286102295
+   ],
+   "wiring_k": [
+    -0.36000001430511475,
+    -0.6700000166893005,
+    0.05999999865889549,
+    0.4099999964237213,
+    0.2800000011920929,
+    0.05999999865889549,
+    0.5,
+    0.49000000953674316,
+    1.309999942779541
+   ],
+   "wiring_v": [
+    0.38999998569488525,
+    0.07000000029802322,
+    -0.11999999731779099,
+    -0.3100000023841858,
+    -0.10000000149011612,
+    -0.18000000715255737,
+    -0.33000001311302185,
+    0.28999999165534973,
+    1.7799999713897705
+   ]
+  },
+  "L8/h11": {
+   "d_overall": 0.0015213489532470703,
+   "label": "nll_freq_q2 (z=6.0, +0.006)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.5,
+    -0.23000000417232513,
+    -0.23999999463558197,
+    0.12999999523162842,
+    0.07999999821186066,
+    -0.05999999865889549,
+    0.2199999988079071,
+    0.5699999928474426,
+    1.5399999618530273
+   ],
+   "wiring_k": [
+    -0.1899999976158142,
+    0.10999999940395355,
+    0.11999999731779099,
+    0.6200000047683716,
+    0.5799999833106995,
+    0.3199999928474426,
+    0.6000000238418579,
+    0.44999998807907104,
+    1.159999966621399
+   ],
+   "wiring_v": [
+    6.0,
+    1.100000023841858,
+    0.75,
+    0.30000001192092896,
+    0.33000001311302185,
+    0.10000000149011612,
+    -0.0,
+    -0.05000000074505806,
+    0.3199999928474426
+   ]
+  },
+  "L8/h12": {
+   "d_overall": 7.677078247070312e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.23000000417232513,
+    -0.25999999046325684,
+    -0.1899999976158142,
+    0.11999999731779099,
+    0.09000000357627869,
+    0.029999999329447746,
+    0.029999999329447746,
+    0.1899999976158142,
+    1.2599999904632568
+   ],
+   "wiring_k": [
+    0.7099999785423279,
+    -0.4099999964237213,
+    0.05999999865889549,
+    0.3100000023841858,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.009999999776482582,
+    -0.10999999940395355,
+    0.9599999785423279
+   ],
+   "wiring_v": [
+    -2.0899999141693115,
+    0.14000000059604645,
+    0.019999999552965164,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.03999999910593033,
+    -0.05000000074505806,
+    0.10000000149011612,
+    0.550000011920929
+   ]
+  },
+  "L8/h13": {
+   "d_overall": 0.0004937648773193359,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.25,
+    -0.07999999821186066,
+    -0.23999999463558197,
+    0.019999999552965164,
+    -0.019999999552965164,
+    -0.07000000029802322,
+    -0.07999999821186066,
+    -0.25999999046325684,
+    1.190000057220459
+   ],
+   "wiring_k": [
+    1.0099999904632568,
+    0.029999999329447746,
+    0.20999999344348907,
+    0.4099999964237213,
+    0.17000000178813934,
+    -0.019999999552965164,
+    0.20999999344348907,
+    0.1599999964237213,
+    1.190000057220459
+   ],
+   "wiring_v": [
+    -0.9599999785423279,
+    0.2800000011920929,
+    0.019999999552965164,
+    0.09000000357627869,
+    0.07999999821186066,
+    0.019999999552965164,
+    -0.15000000596046448,
+    -0.1899999976158142,
+    0.7400000095367432
+   ]
+  },
+  "L8/h14": {
+   "d_overall": 9.918212890625e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.15000000596046448,
+    -0.47999998927116394,
+    -0.7900000214576721,
+    -0.5099999904632568,
+    -0.3400000035762787,
+    -0.20000000298023224,
+    0.15000000596046448,
+    0.18000000715255737,
+    1.25
+   ],
+   "wiring_k": [
+    2.440000057220459,
+    -0.6800000071525574,
+    0.25999999046325684,
+    0.03999999910593033,
+    -0.25999999046325684,
+    -0.4399999976158142,
+    -0.2800000011920929,
+    -0.05000000074505806,
+    1.190000057220459
+   ],
+   "wiring_v": [
+    -2.9800000190734863,
+    0.05999999865889549,
+    -0.019999999552965164,
+    -0.15000000596046448,
+    0.0,
+    -0.20000000298023224,
+    -0.009999999776482582,
+    0.07000000029802322,
+    0.5199999809265137
+   ]
+  },
+  "L8/h15": {
+   "d_overall": 0.00024819374084472656,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.17000000178813934,
+    0.0,
+    -0.20000000298023224,
+    0.3499999940395355,
+    0.5099999904632568,
+    0.10999999940395355,
+    0.07999999821186066,
+    0.20000000298023224,
+    1.25
+   ],
+   "wiring_k": [
+    0.9900000095367432,
+    0.18000000715255737,
+    0.25,
+    0.6600000262260437,
+    0.6000000238418579,
+    0.2199999988079071,
+    0.5199999809265137,
+    0.10000000149011612,
+    0.9300000071525574
+   ],
+   "wiring_v": [
+    0.3700000047683716,
+    0.5199999809265137,
+    0.18000000715255737,
+    0.14000000059604645,
+    0.03999999910593033,
+    0.029999999329447746,
+    0.009999999776482582,
+    -0.09000000357627869,
+    0.550000011920929
+   ]
+  },
+  "L9/h0": {
+   "d_overall": 0.00010466575622558594,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.3499999940395355,
+    -0.2199999988079071,
+    -0.10999999940395355,
+    0.029999999329447746,
+    -0.03999999910593033,
+    0.05999999865889549,
+    0.1599999964237213,
+    0.05999999865889549,
+    0.17000000178813934,
+    1.2599999904632568
+   ],
+   "wiring_k": [
+    1.4700000286102295,
+    -0.7900000214576721,
+    -0.4699999988079071,
+    0.07999999821186066,
+    -0.6399999856948853,
+    -0.1599999964237213,
+    -0.03999999910593033,
+    0.4099999964237213,
+    -0.10000000149011612,
+    0.9900000095367432
+   ],
+   "wiring_v": [
+    -4.019999980926514,
+    0.019999999552965164,
+    0.0,
+    -0.1899999976158142,
+    -0.10999999940395355,
+    -0.25999999046325684,
+    -0.10999999940395355,
+    -0.09000000357627869,
+    0.019999999552965164,
+    0.6200000047683716
+   ]
+  },
+  "L9/h1": {
+   "d_overall": 5.9604644775390625e-06,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.23000000417232513,
+    -0.3100000023841858,
+    -0.33000001311302185,
+    0.029999999329447746,
+    -0.07000000029802322,
+    -0.1599999964237213,
+    0.17000000178813934,
+    0.23999999463558197,
+    0.2800000011920929,
+    1.2999999523162842
+   ],
+   "wiring_k": [
+    1.3899999856948853,
+    -0.7699999809265137,
+    0.27000001072883606,
+    0.27000001072883606,
+    -0.10999999940395355,
+    -0.3100000023841858,
+    -0.0,
+    0.20000000298023224,
+    0.11999999731779099,
+    1.1799999475479126
+   ],
+   "wiring_v": [
+    -3.880000114440918,
+    0.029999999329447746,
+    -0.029999999329447746,
+    -0.12999999523162842,
+    -0.07999999821186066,
+    -0.12999999523162842,
+    -0.12999999523162842,
+    -0.18000000715255737,
+    0.019999999552965164,
+    0.4699999988079071
+   ]
+  },
+  "L9/h2": {
+   "d_overall": 0.008735895156860352,
+   "label": "nll_class_cap (z=12.7, +0.027)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.7099999785423279,
+    -0.25999999046325684,
+    -0.2800000011920929,
+    0.05000000074505806,
+    -0.019999999552965164,
+    -0.12999999523162842,
+    0.30000001192092896,
+    0.28999999165534973,
+    0.27000001072883606,
+    1.5199999809265137
+   ],
+   "wiring_k": [
+    -1.0800000429153442,
+    0.019999999552965164,
+    0.36000001430511475,
+    1.0399999618530273,
+    0.8199999928474426,
+    0.3799999952316284,
+    1.0099999904632568,
+    0.46000000834465027,
+    0.18000000715255737,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    12.880000114440918,
+    1.0199999809265137,
+    1.4299999475479126,
+    0.1899999976158142,
+    0.33000001311302185,
+    0.05000000074505806,
+    0.14000000059604645,
+    -0.2199999988079071,
+    -0.11999999731779099,
+    0.7799999713897705
+   ]
+  },
+  "L9/h3": {
+   "d_overall": 0.0006573200225830078,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.05999999865889549,
+    -0.38999998569488525,
+    -0.2199999988079071,
+    0.09000000357627869,
+    0.05000000074505806,
+    -0.10000000149011612,
+    0.3400000035762787,
+    0.3700000047683716,
+    0.17000000178813934,
+    1.4800000190734863
+   ],
+   "wiring_k": [
+    0.4699999988079071,
+    -0.2199999988079071,
+    0.11999999731779099,
+    0.7400000095367432,
+    0.3100000023841858,
+    0.2199999988079071,
+    0.9100000262260437,
+    0.5600000023841858,
+    0.25999999046325684,
+    1.2400000095367432
+   ],
+   "wiring_v": [
+    0.550000011920929,
+    0.28999999165534973,
+    0.14000000059604645,
+    0.009999999776482582,
+    0.10999999940395355,
+    0.11999999731779099,
+    0.09000000357627869,
+    -0.029999999329447746,
+    -0.009999999776482582,
+    0.5699999928474426
+   ]
+  },
+  "L9/h4": {
+   "d_overall": 0.016651630401611328,
+   "label": "nll_freq_q0 (z=23.4, +0.033)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.6800000071525574,
+    -0.3100000023841858,
+    -0.10999999940395355,
+    0.17000000178813934,
+    0.3700000047683716,
+    0.25999999046325684,
+    0.6000000238418579,
+    0.5899999737739563,
+    0.17000000178813934,
+    1.1299999952316284
+   ],
+   "wiring_k": [
+    -0.5299999713897705,
+    -0.7200000286102295,
+    0.07999999821186066,
+    0.4699999988079071,
+    0.3100000023841858,
+    0.1899999976158142,
+    0.6100000143051147,
+    0.5699999928474426,
+    0.2800000011920929,
+    1.350000023841858
+   ],
+   "wiring_v": [
+    2.4800000190734863,
+    -0.009999999776482582,
+    -0.10000000149011612,
+    -0.12999999523162842,
+    -0.019999999552965164,
+    -0.05000000074505806,
+    -0.10999999940395355,
+    0.09000000357627869,
+    0.27000001072883606,
+    1.7100000381469727
+   ]
+  },
+  "L9/h5": {
+   "d_overall": 0.00019598007202148438,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.36000001430511475,
+    0.2800000011920929,
+    -0.12999999523162842,
+    -0.33000001311302185,
+    -0.3700000047683716,
+    -0.25999999046325684,
+    -0.5899999737739563,
+    -0.5899999737739563,
+    -0.10000000149011612,
+    1.1299999952316284
+   ],
+   "wiring_k": [
+    3.390000104904175,
+    -0.10000000149011612,
+    0.6100000143051147,
+    0.3799999952316284,
+    -0.44999998807907104,
+    -0.6600000262260437,
+    -0.8500000238418579,
+    -0.7200000286102295,
+    0.5899999737739563,
+    1.9500000476837158
+   ],
+   "wiring_v": [
+    -1.5700000524520874,
+    0.07999999821186066,
+    -0.019999999552965164,
+    -0.09000000357627869,
+    0.009999999776482582,
+    0.05000000074505806,
+    -0.12999999523162842,
+    -0.11999999731779099,
+    0.029999999329447746,
+    0.44999998807907104
+   ]
+  },
+  "L9/h6": {
+   "d_overall": 0.011715888977050781,
+   "label": "nll_freq_q1 (z=8.8, +0.010)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    1.3700000047683716,
+    -0.30000001192092896,
+    -0.30000001192092896,
+    0.009999999776482582,
+    -0.029999999329447746,
+    -0.15000000596046448,
+    0.28999999165534973,
+    0.5099999904632568,
+    0.1899999976158142,
+    1.6699999570846558
+   ],
+   "wiring_k": [
+    -1.4700000286102295,
+    -0.3799999952316284,
+    0.0,
+    0.7400000095367432,
+    0.5899999737739563,
+    0.3100000023841858,
+    1.0499999523162842,
+    0.6499999761581421,
+    0.4000000059604645,
+    1.7400000095367432
+   ],
+   "wiring_v": [
+    9.720000267028809,
+    0.8100000023841858,
+    0.8500000238418579,
+    0.12999999523162842,
+    0.25999999046325684,
+    0.07999999821186066,
+    -0.07000000029802322,
+    -0.10000000149011612,
+    -0.05000000074505806,
+    0.7900000214576721
+   ]
+  },
+  "L9/h7": {
+   "d_overall": 0.0002956390380859375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.5199999809265137,
+    0.3100000023841858,
+    -0.10000000149011612,
+    -0.3799999952316284,
+    -0.3700000047683716,
+    -0.25999999046325684,
+    -0.6000000238418579,
+    -0.6299999952316284,
+    -0.3400000035762787,
+    0.6200000047683716
+   ],
+   "wiring_k": [
+    2.690000057220459,
+    -1.1100000143051147,
+    -0.20999999344348907,
+    0.5699999928474426,
+    0.41999998688697815,
+    -0.1599999964237213,
+    0.3400000035762787,
+    -0.05000000074505806,
+    0.10999999940395355,
+    1.1299999952316284
+   ],
+   "wiring_v": [
+    -3.200000047683716,
+    0.029999999329447746,
+    -0.029999999329447746,
+    -0.18000000715255737,
+    -0.029999999329447746,
+    -0.20999999344348907,
+    -0.019999999552965164,
+    -0.05999999865889549,
+    0.07999999821186066,
+    0.5199999809265137
+   ]
+  },
+  "L9/h8": {
+   "d_overall": 0.002188444137573242,
+   "label": "nll_freq_q2 (z=10.6, +0.011)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.2199999988079071,
+    -0.30000001192092896,
+    -0.28999999165534973,
+    0.10999999940395355,
+    -0.009999999776482582,
+    -0.09000000357627869,
+    0.3799999952316284,
+    0.4699999988079071,
+    0.28999999165534973,
+    1.5399999618530273
+   ],
+   "wiring_k": [
+    -0.3799999952316284,
+    -0.46000000834465027,
+    0.23000000417232513,
+    0.6800000071525574,
+    0.3499999940395355,
+    0.18000000715255737,
+    0.800000011920929,
+    0.6299999952316284,
+    0.23000000417232513,
+    1.090000033378601
+   ],
+   "wiring_v": [
+    0.8899999856948853,
+    0.6200000047683716,
+    0.1599999964237213,
+    -0.05000000074505806,
+    0.10000000149011612,
+    0.18000000715255737,
+    0.23000000417232513,
+    -0.10999999940395355,
+    -0.07000000029802322,
+    0.6499999761581421
+   ]
+  },
+  "L9/h9": {
+   "d_overall": -0.00023889541625976562,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.30000001192092896,
+    0.33000001311302185,
+    -0.019999999552965164,
+    -0.20999999344348907,
+    -0.20000000298023224,
+    -0.17000000178813934,
+    -0.47999998927116394,
+    -0.6000000238418579,
+    -0.4399999976158142,
+    0.47999998927116394
+   ],
+   "wiring_k": [
+    -1.4600000381469727,
+    0.009999999776482582,
+    -0.09000000357627869,
+    -0.5299999713897705,
+    -0.6800000071525574,
+    -0.44999998807907104,
+    -1.0,
+    -0.8799999952316284,
+    -0.6499999761581421,
+    0.4000000059604645
+   ],
+   "wiring_v": [
+    -2.559999942779541,
+    0.009999999776482582,
+    -0.0,
+    -0.07000000029802322,
+    -0.029999999329447746,
+    -0.0,
+    -0.09000000357627869,
+    -0.07999999821186066,
+    0.05000000074505806,
+    0.4099999964237213
+   ]
+  },
+  "L9/h10": {
+   "d_overall": -2.7894973754882812e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.5299999713897705,
+    -0.41999998688697815,
+    -0.17000000178813934,
+    0.5400000214576721,
+    0.25,
+    -0.07000000029802322,
+    -0.03999999910593033,
+    -0.20999999344348907,
+    -0.0,
+    0.9399999976158142
+   ],
+   "wiring_k": [
+    0.6899999976158142,
+    -0.3799999952316284,
+    0.36000001430511475,
+    0.8399999737739563,
+    0.6399999856948853,
+    0.05999999865889549,
+    0.33000001311302185,
+    -0.009999999776482582,
+    -0.019999999552965164,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    -1.059999942779541,
+    0.14000000059604645,
+    -0.0,
+    -0.05000000074505806,
+    -0.09000000357627869,
+    -0.14000000059604645,
+    -0.10999999940395355,
+    -0.20999999344348907,
+    0.009999999776482582,
+    0.6600000262260437
+   ]
+  },
+  "L9/h11": {
+   "d_overall": 0.0011103153228759766,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.49000000953674316,
+    -0.3799999952316284,
+    -0.23000000417232513,
+    0.18000000715255737,
+    0.11999999731779099,
+    -0.03999999910593033,
+    0.550000011920929,
+    0.3100000023841858,
+    0.27000001072883606,
+    1.3200000524520874
+   ],
+   "wiring_k": [
+    -0.17000000178813934,
+    -0.38999998569488525,
+    0.07999999821186066,
+    0.75,
+    0.5699999928474426,
+    0.28999999165534973,
+    0.8600000143051147,
+    0.7099999785423279,
+    0.3199999928474426,
+    1.3300000429153442
+   ],
+   "wiring_v": [
+    1.2599999904632568,
+    0.5199999809265137,
+    0.1599999964237213,
+    -0.019999999552965164,
+    0.28999999165534973,
+    0.1599999964237213,
+    0.10999999940395355,
+    0.07000000029802322,
+    0.029999999329447746,
+    0.550000011920929
+   ]
+  },
+  "L9/h12": {
+   "d_overall": 7.510185241699219e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.10000000149011612,
+    -0.47999998927116394,
+    -0.6299999952316284,
+    0.7599999904632568,
+    0.09000000357627869,
+    -0.27000001072883606,
+    0.07000000029802322,
+    -0.15000000596046448,
+    0.07000000029802322,
+    0.7599999904632568
+   ],
+   "wiring_k": [
+    1.9600000381469727,
+    -0.47999998927116394,
+    0.550000011920929,
+    0.5,
+    0.5199999809265137,
+    0.27000001072883606,
+    0.33000001311302185,
+    0.03999999910593033,
+    -0.2199999988079071,
+    0.7900000214576721
+   ],
+   "wiring_v": [
+    -1.590000033378601,
+    -0.25999999046325684,
+    -0.1899999976158142,
+    -0.20000000298023224,
+    -0.0,
+    -0.20999999344348907,
+    -0.27000001072883606,
+    -0.1599999964237213,
+    0.07999999821186066,
+    0.699999988079071
+   ]
+  },
+  "L9/h13": {
+   "d_overall": 0.004106998443603516,
+   "label": "nll_class_cap (z=19.3, +0.040)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    -1.0299999713897705,
+    -0.20999999344348907,
+    -0.20000000298023224,
+    0.15000000596046448,
+    0.07999999821186066,
+    0.05000000074505806,
+    0.44999998807907104,
+    0.46000000834465027,
+    0.23000000417232513,
+    1.309999942779541
+   ],
+   "wiring_k": [
+    0.20000000298023224,
+    -0.3100000023841858,
+    0.17000000178813934,
+    0.6800000071525574,
+    0.6899999976158142,
+    0.4300000071525574,
+    0.8600000143051147,
+    0.44999998807907104,
+    0.1599999964237213,
+    1.1200000047683716
+   ],
+   "wiring_v": [
+    4.71999979019165,
+    1.0299999713897705,
+    0.699999988079071,
+    0.12999999523162842,
+    0.1899999976158142,
+    0.12999999523162842,
+    0.05999999865889549,
+    -0.05999999865889549,
+    -0.10000000149011612,
+    0.5099999904632568
+   ]
+  },
+  "L9/h14": {
+   "d_overall": 0.00019216537475585938,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.5199999809265137,
+    -0.3499999940395355,
+    -0.28999999165534973,
+    0.0,
+    -0.2199999988079071,
+    -0.1899999976158142,
+    0.27000001072883606,
+    0.28999999165534973,
+    0.20000000298023224,
+    1.2000000476837158
+   ],
+   "wiring_k": [
+    1.4500000476837158,
+    -0.38999998569488525,
+    0.14000000059604645,
+    0.28999999165534973,
+    0.009999999776482582,
+    0.10000000149011612,
+    0.25,
+    0.33000001311302185,
+    0.12999999523162842,
+    1.1100000143051147
+   ],
+   "wiring_v": [
+    -4.510000228881836,
+    0.05000000074505806,
+    -0.009999999776482582,
+    -0.14000000059604645,
+    -0.029999999329447746,
+    -0.09000000357627869,
+    -0.05999999865889549,
+    -0.07999999821186066,
+    0.019999999552965164,
+    0.44999998807907104
+   ]
+  },
+  "L9/h15": {
+   "d_overall": 0.00011897087097167969,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.5199999809265137,
+    0.0,
+    -0.25999999046325684,
+    -0.5299999713897705,
+    -0.550000011920929,
+    -0.38999998569488525,
+    -0.3799999952316284,
+    -0.3100000023841858,
+    0.20999999344348907,
+    1.159999966621399
+   ],
+   "wiring_k": [
+    0.9599999785423279,
+    -0.6499999761581421,
+    -0.6100000143051147,
+    -0.6000000238418579,
+    -0.8199999928474426,
+    -0.6700000166893005,
+    -0.7599999904632568,
+    -0.1899999976158142,
+    0.17000000178813934,
+    1.3200000524520874
+   ],
+   "wiring_v": [
+    -2.3499999046325684,
+    0.25999999046325684,
+    0.05999999865889549,
+    -0.17000000178813934,
+    -0.009999999776482582,
+    0.009999999776482582,
+    -0.11999999731779099,
+    -0.10999999940395355,
+    0.11999999731779099,
+    0.6299999952316284
+   ]
+  },
+  "L10/h0": {
+   "d_overall": 0.0001704692840576172,
+   "label": "nll_class_lower (z=4.1, +0.002)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.3100000023841858,
+    -0.07000000029802322,
+    0.019999999552965164,
+    0.23999999463558197,
+    0.20000000298023224,
+    0.2800000011920929,
+    0.4399999976158142,
+    0.6100000143051147,
+    0.4000000059604645,
+    0.4699999988079071,
+    1.3899999856948853
+   ],
+   "wiring_k": [
+    0.8700000047683716,
+    -0.10000000149011612,
+    0.20999999344348907,
+    0.3100000023841858,
+    0.14000000059604645,
+    -0.03999999910593033,
+    0.4099999964237213,
+    0.2800000011920929,
+    0.2800000011920929,
+    -0.0,
+    1.0700000524520874
+   ],
+   "wiring_v": [
+    -3.9700000286102295,
+    0.05999999865889549,
+    0.1599999964237213,
+    -0.25999999046325684,
+    -0.10000000149011612,
+    -0.38999998569488525,
+    -0.07000000029802322,
+    -0.33000001311302185,
+    0.09000000357627869,
+    0.25999999046325684,
+    1.0099999904632568
+   ]
+  },
+  "L10/h1": {
+   "d_overall": 0.0003273487091064453,
+   "label": "nll_class_punct (z=2.6, +0.005)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.8799999952316284,
+    -0.12999999523162842,
+    -0.5600000023841858,
+    0.3100000023841858,
+    0.09000000357627869,
+    -0.1899999976158142,
+    0.47999998927116394,
+    0.4099999964237213,
+    0.3799999952316284,
+    0.20999999344348907,
+    1.1699999570846558
+   ],
+   "wiring_k": [
+    0.699999988079071,
+    -0.36000001430511475,
+    0.14000000059604645,
+    0.8100000023841858,
+    0.44999998807907104,
+    0.009999999776482582,
+    0.9100000262260437,
+    0.49000000953674316,
+    0.07000000029802322,
+    -0.009999999776482582,
+    0.7300000190734863
+   ],
+   "wiring_v": [
+    -1.2000000476837158,
+    0.4000000059604645,
+    0.1899999976158142,
+    0.28999999165534973,
+    -0.03999999910593033,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.07000000029802322,
+    0.07999999821186066,
+    -0.05999999865889549,
+    0.5799999833106995
+   ]
+  },
+  "L10/h2": {
+   "d_overall": -1.430511474609375e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.3700000047683716,
+    -0.07000000029802322,
+    -0.07999999821186066,
+    0.25999999046325684,
+    0.33000001311302185,
+    0.2199999988079071,
+    0.5899999737739563,
+    0.5099999904632568,
+    0.3700000047683716,
+    0.4000000059604645,
+    1.2799999713897705
+   ],
+   "wiring_k": [
+    0.9700000286102295,
+    -0.7799999713897705,
+    -0.23000000417232513,
+    0.3199999928474426,
+    0.11999999731779099,
+    0.05999999865889549,
+    0.3400000035762787,
+    0.4300000071525574,
+    0.2800000011920929,
+    0.009999999776482582,
+    0.9800000190734863
+   ],
+   "wiring_v": [
+    -1.5099999904632568,
+    0.009999999776482582,
+    -0.15000000596046448,
+    -0.25,
+    -0.2199999988079071,
+    -0.1599999964237213,
+    -0.1599999964237213,
+    -0.36000001430511475,
+    0.1599999964237213,
+    0.12999999523162842,
+    0.75
+   ]
+  },
+  "L10/h3": {
+   "d_overall": 0.002333402633666992,
+   "label": "nll_class_ws (z=27.2, +0.083)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.5199999809265137,
+    0.009999999776482582,
+    -0.09000000357627869,
+    0.28999999165534973,
+    0.09000000357627869,
+    0.3400000035762787,
+    0.8100000023841858,
+    1.0499999523162842,
+    0.38999998569488525,
+    0.36000001430511475,
+    0.7799999713897705
+   ],
+   "wiring_k": [
+    0.23999999463558197,
+    -0.3400000035762787,
+    0.0,
+    0.4099999964237213,
+    0.8999999761581421,
+    0.4000000059604645,
+    1.309999942779541,
+    1.0099999904632568,
+    0.20999999344348907,
+    0.05999999865889549,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    -1.1200000047683716,
+    1.8600000143051147,
+    1.5399999618530273,
+    0.7400000095367432,
+    0.5299999713897705,
+    0.4099999964237213,
+    0.17000000178813934,
+    0.029999999329447746,
+    0.2199999988079071,
+    0.11999999731779099,
+    0.6200000047683716
+   ]
+  },
+  "L10/h4": {
+   "d_overall": 0.00040531158447265625,
+   "label": "nll_class_punct (z=8.8, +0.018)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.14000000059604645,
+    -0.10999999940395355,
+    -0.28999999165534973,
+    0.3400000035762787,
+    0.30000001192092896,
+    0.009999999776482582,
+    0.7300000190734863,
+    0.5600000023841858,
+    0.5099999904632568,
+    0.25,
+    1.0800000429153442
+   ],
+   "wiring_k": [
+    0.27000001072883606,
+    -0.5199999809265137,
+    0.1599999964237213,
+    0.6600000262260437,
+    0.5600000023841858,
+    0.30000001192092896,
+    1.0499999523162842,
+    0.7200000286102295,
+    0.14000000059604645,
+    0.019999999552965164,
+    0.8399999737739563
+   ],
+   "wiring_v": [
+    -0.8399999737739563,
+    0.47999998927116394,
+    0.20999999344348907,
+    0.07999999821186066,
+    0.18000000715255737,
+    0.05999999865889549,
+    0.1899999976158142,
+    -0.019999999552965164,
+    0.2199999988079071,
+    0.1599999964237213,
+    0.6800000071525574
+   ]
+  },
+  "L10/h5": {
+   "d_overall": 5.340576171875e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.1599999964237213,
+    -0.10000000149011612,
+    -0.029999999329447746,
+    0.699999988079071,
+    0.6399999856948853,
+    0.12999999523162842,
+    0.1899999976158142,
+    -0.30000001192092896,
+    -0.03999999910593033,
+    0.14000000059604645,
+    0.8199999928474426
+   ],
+   "wiring_k": [
+    0.09000000357627869,
+    -0.23999999463558197,
+    0.7699999809265137,
+    0.7099999785423279,
+    0.800000011920929,
+    0.15000000596046448,
+    0.38999998569488525,
+    0.14000000059604645,
+    0.12999999523162842,
+    -0.019999999552965164,
+    0.8799999952316284
+   ],
+   "wiring_v": [
+    -1.25,
+    0.3799999952316284,
+    0.09000000357627869,
+    0.03999999910593033,
+    -0.029999999329447746,
+    0.019999999552965164,
+    0.05999999865889549,
+    0.009999999776482582,
+    0.029999999329447746,
+    -0.07999999821186066,
+    0.6100000143051147
+   ]
+  },
+  "L10/h6": {
+   "d_overall": 0.001222848892211914,
+   "label": "nll_freq_q1 (z=5.5, +0.006)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.6200000047683716,
+    -0.3499999940395355,
+    -0.3700000047683716,
+    0.15000000596046448,
+    0.05000000074505806,
+    -0.07999999821186066,
+    0.6100000143051147,
+    0.7400000095367432,
+    0.3199999928474426,
+    0.5400000214576721,
+    1.6100000143051147
+   ],
+   "wiring_k": [
+    -2.059999942779541,
+    0.49000000953674316,
+    0.18000000715255737,
+    0.4699999988079071,
+    0.4699999988079071,
+    0.25,
+    0.7799999713897705,
+    0.5600000023841858,
+    0.3199999928474426,
+    -0.10999999940395355,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    4.510000228881836,
+    1.9700000286102295,
+    1.7899999618530273,
+    0.4699999988079071,
+    0.1899999976158142,
+    -0.12999999523162842,
+    -0.10999999940395355,
+    -0.12999999523162842,
+    0.03999999910593033,
+    0.07000000029802322,
+    0.9200000166893005
+   ]
+  },
+  "L10/h7": {
+   "d_overall": 1.621246337890625e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.05999999865889549,
+    0.3100000023841858,
+    -0.009999999776482582,
+    0.15000000596046448,
+    0.25,
+    0.4099999964237213,
+    0.6899999976158142,
+    0.8500000238418579,
+    0.5699999928474426,
+    0.5,
+    1.3300000429153442
+   ],
+   "wiring_k": [
+    0.009999999776482582,
+    -0.3100000023841858,
+    -0.18000000715255737,
+    -0.23999999463558197,
+    -0.38999998569488525,
+    -0.4300000071525574,
+    -0.5699999928474426,
+    -0.33000001311302185,
+    0.009999999776482582,
+    0.05000000074505806,
+    1.440000057220459
+   ],
+   "wiring_v": [
+    -3.7200000286102295,
+    -0.15000000596046448,
+    -0.23999999463558197,
+    -0.33000001311302185,
+    -0.20999999344348907,
+    -0.3199999928474426,
+    -0.009999999776482582,
+    -0.20000000298023224,
+    0.07000000029802322,
+    0.20000000298023224,
+    0.6499999761581421
+   ]
+  },
+  "L10/h8": {
+   "d_overall": -0.0001895427703857422,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.10000000149011612,
+    -0.1899999976158142,
+    -0.07000000029802322,
+    0.20000000298023224,
+    0.11999999731779099,
+    0.3199999928474426,
+    0.550000011920929,
+    0.6700000166893005,
+    0.38999998569488525,
+    0.4399999976158142,
+    1.2000000476837158
+   ],
+   "wiring_k": [
+    -0.7599999904632568,
+    -0.14000000059604645,
+    -0.019999999552965164,
+    -0.27000001072883606,
+    -0.47999998927116394,
+    -0.4000000059604645,
+    -0.699999988079071,
+    -0.38999998569488525,
+    -0.4099999964237213,
+    -0.07999999821186066,
+    1.0399999618530273
+   ],
+   "wiring_v": [
+    -3.859999895095825,
+    -0.09000000357627869,
+    -0.28999999165534973,
+    -0.4699999988079071,
+    -0.23000000417232513,
+    -0.3199999928474426,
+    -0.029999999329447746,
+    -0.2199999988079071,
+    0.18000000715255737,
+    0.30000001192092896,
+    0.75
+   ]
+  },
+  "L10/h9": {
+   "d_overall": 0.0007989406585693359,
+   "label": "nll_domain_prose (z=3.7, +0.007)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.14000000059604645,
+    -0.1899999976158142,
+    -0.14000000059604645,
+    0.09000000357627869,
+    0.12999999523162842,
+    0.23000000417232513,
+    0.5699999928474426,
+    0.75,
+    0.550000011920929,
+    0.5099999904632568,
+    1.2899999618530273
+   ],
+   "wiring_k": [
+    0.5799999833106995,
+    -0.2199999988079071,
+    0.27000001072883606,
+    0.6299999952316284,
+    0.75,
+    0.3400000035762787,
+    1.0299999713897705,
+    0.47999998927116394,
+    0.10999999940395355,
+    -0.009999999776482582,
+    0.699999988079071
+   ],
+   "wiring_v": [
+    1.2000000476837158,
+    1.659999966621399,
+    1.149999976158142,
+    0.5299999713897705,
+    0.49000000953674316,
+    0.28999999165534973,
+    0.8600000143051147,
+    0.3700000047683716,
+    0.07999999821186066,
+    -0.009999999776482582,
+    0.4300000071525574
+   ]
+  },
+  "L10/h10": {
+   "d_overall": 0.002075672149658203,
+   "label": "nll_freq_q2 (z=4.8, +0.005)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.3700000047683716,
+    -0.20000000298023224,
+    -0.25,
+    0.18000000715255737,
+    0.009999999776482582,
+    0.25,
+    0.8199999928474426,
+    0.8100000023841858,
+    0.33000001311302185,
+    0.3199999928474426,
+    0.8500000238418579
+   ],
+   "wiring_k": [
+    0.3199999928474426,
+    -0.11999999731779099,
+    0.029999999329447746,
+    0.38999998569488525,
+    0.3700000047683716,
+    0.3499999940395355,
+    1.090000033378601,
+    0.7699999809265137,
+    0.46000000834465027,
+    0.019999999552965164,
+    0.9200000166893005
+   ],
+   "wiring_v": [
+    -1.6200000047683716,
+    -1.0800000429153442,
+    -0.8500000238418579,
+    -0.3400000035762787,
+    -0.28999999165534973,
+    -0.12999999523162842,
+    -0.23000000417232513,
+    -0.18000000715255737,
+    0.14000000059604645,
+    0.0,
+    0.7799999713897705
+   ]
+  },
+  "L10/h11": {
+   "d_overall": 0.002462625503540039,
+   "label": "nll_class_cap (z=5.6, +0.011)",
+   "wiring_family": 4,
+   "wiring_family_desc": "Q:last+1.4,emb+0.7 | K:last+1.3,emb-0.2 | V:last+0.9,emb+3.9",
+   "wiring_q": [
+    0.49000000953674316,
+    -0.23000000417232513,
+    -0.4399999976158142,
+    0.33000001311302185,
+    0.27000001072883606,
+    -0.1599999964237213,
+    0.36000001430511475,
+    0.3199999928474426,
+    0.33000001311302185,
+    0.8500000238418579,
+    1.5199999809265137
+   ],
+   "wiring_k": [
+    -1.1399999856948853,
+    0.23999999463558197,
+    0.3400000035762787,
+    0.800000011920929,
+    0.6899999976158142,
+    0.3199999928474426,
+    0.47999998927116394,
+    0.28999999165534973,
+    0.2199999988079071,
+    -0.029999999329447746,
+    0.7799999713897705
+   ],
+   "wiring_v": [
+    2.950000047683716,
+    1.309999942779541,
+    0.9200000166893005,
+    0.15000000596046448,
+    0.20999999344348907,
+    -0.03999999910593033,
+    0.05999999865889549,
+    -0.25999999046325684,
+    -0.07999999821186066,
+    0.25,
+    0.9100000262260437
+   ]
+  },
+  "L10/h12": {
+   "d_overall": 0.0001342296600341797,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.6899999976158142,
+    -0.4000000059604645,
+    -0.1599999964237213,
+    0.5799999833106995,
+    0.4000000059604645,
+    0.12999999523162842,
+    0.20999999344348907,
+    0.009999999776482582,
+    0.07999999821186066,
+    0.25999999046325684,
+    0.8399999737739563
+   ],
+   "wiring_k": [
+    0.05999999865889549,
+    -0.2199999988079071,
+    0.36000001430511475,
+    0.7799999713897705,
+    0.7200000286102295,
+    0.18000000715255737,
+    0.3799999952316284,
+    0.029999999329447746,
+    0.07999999821186066,
+    0.25999999046325684,
+    0.8999999761581421
+   ],
+   "wiring_v": [
+    0.12999999523162842,
+    0.8500000238418579,
+    0.44999998807907104,
+    0.09000000357627869,
+    0.2199999988079071,
+    0.05999999865889549,
+    0.1599999964237213,
+    -0.03999999910593033,
+    -0.07999999821186066,
+    0.2800000011920929,
+    0.75
+   ]
+  },
+  "L10/h13": {
+   "d_overall": 0.0001418590545654297,
+   "label": "no distinct single-head effect",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    -0.18000000715255737,
+    -0.18000000715255737,
+    0.03999999910593033,
+    0.09000000357627869,
+    -0.11999999731779099,
+    0.07999999821186066,
+    -0.0,
+    -0.3499999940395355,
+    -0.05000000074505806,
+    0.0,
+    1.2300000190734863
+   ],
+   "wiring_k": [
+    1.8200000524520874,
+    0.4099999964237213,
+    0.46000000834465027,
+    0.4300000071525574,
+    0.3499999940395355,
+    0.3100000023841858,
+    0.4399999976158142,
+    0.05999999865889549,
+    0.1899999976158142,
+    -0.029999999329447746,
+    0.9900000095367432
+   ],
+   "wiring_v": [
+    -2.609999895095825,
+    -0.029999999329447746,
+    -0.23999999463558197,
+    -0.20000000298023224,
+    -0.10000000149011612,
+    0.009999999776482582,
+    -0.18000000715255737,
+    -0.09000000357627869,
+    0.20999999344348907,
+    0.12999999523162842,
+    0.7400000095367432
+   ]
+  },
+  "L10/h14": {
+   "d_overall": 0.0001595020294189453,
+   "label": "nll_class_digit (z=2.5, +0.004)",
+   "wiring_family": 2,
+   "wiring_family_desc": "Q:last+1.1,emb-0.2 | K:last+1.0,emb+1.2 | V:last+0.6,emb-3.2",
+   "wiring_q": [
+    0.029999999329447746,
+    -0.019999999552965164,
+    0.1599999964237213,
+    0.2199999988079071,
+    0.20999999344348907,
+    0.3400000035762787,
+    0.550000011920929,
+    0.550000011920929,
+    0.28999999165534973,
+    0.23000000417232513,
+    1.1399999856948853
+   ],
+   "wiring_k": [
+    0.949999988079071,
+    0.6299999952316284,
+    0.029999999329447746,
+    0.09000000357627869,
+    0.009999999776482582,
+    0.03999999910593033,
+    0.33000001311302185,
+    0.36000001430511475,
+    -0.10999999940395355,
+    -0.23000000417232513,
+    0.6899999976158142
+   ],
+   "wiring_v": [
+    -2.690000057220459,
+    -0.1599999964237213,
+    -0.20999999344348907,
+    -0.019999999552965164,
+    -0.1599999964237213,
+    -0.27000001072883606,
+    -0.15000000596046448,
+    -0.25,
+    0.07000000029802322,
+    0.05999999865889549,
+    0.5600000023841858
+   ]
+  },
+  "L10/h15": {
+   "d_overall": 0.003708362579345703,
+   "label": "nll_noncopyable (z=11.2, +0.011)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.5,
+    -0.1599999964237213,
+    -0.23999999463558197,
+    0.17000000178813934,
+    0.05999999865889549,
+    0.25,
+    0.5400000214576721,
+    0.6000000238418579,
+    0.41999998688697815,
+    0.4000000059604645,
+    1.2899999618530273
+   ],
+   "wiring_k": [
+    0.10999999940395355,
+    -0.23000000417232513,
+    0.3400000035762787,
+    0.5400000214576721,
+    0.5600000023841858,
+    0.1899999976158142,
+    0.6399999856948853,
+    0.33000001311302185,
+    0.09000000357627869,
+    0.029999999329447746,
+    0.7699999809265137
+   ],
+   "wiring_v": [
+    0.029999999329447746,
+    0.33000001311302185,
+    0.6600000262260437,
+    0.4699999988079071,
+    0.5799999833106995,
+    0.46000000834465027,
+    0.5899999737739563,
+    0.38999998569488525,
+    0.1599999964237213,
+    0.20999999344348907,
+    0.7200000286102295
+   ]
+  },
+  "L11/h0": {
+   "d_overall": 0.0016543865203857422,
+   "label": "nll_freq_q2 (z=4.5, +0.004)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.6100000143051147,
+    -0.25999999046325684,
+    -0.20000000298023224,
+    0.25999999046325684,
+    0.1599999964237213,
+    0.09000000357627869,
+    0.5600000023841858,
+    0.6000000238418579,
+    0.33000001311302185,
+    0.4699999988079071,
+    0.12999999523162842,
+    1.2000000476837158
+   ],
+   "wiring_k": [
+    -0.009999999776482582,
+    0.5600000023841858,
+    0.20000000298023224,
+    0.699999988079071,
+    0.7799999713897705,
+    0.18000000715255737,
+    0.8799999952316284,
+    0.5,
+    0.23000000417232513,
+    0.0,
+    0.009999999776482582,
+    0.7300000190734863
+   ],
+   "wiring_v": [
+    1.7799999713897705,
+    0.6100000143051147,
+    0.3400000035762787,
+    0.20000000298023224,
+    0.14000000059604645,
+    0.029999999329447746,
+    0.029999999329447746,
+    -0.009999999776482582,
+    -0.03999999910593033,
+    0.10999999940395355,
+    -0.03999999910593033,
+    0.6700000166893005
+   ]
+  },
+  "L11/h1": {
+   "d_overall": 0.026778221130371094,
+   "label": "nll_hard_q0 (z=37.9, +0.033)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.33000001311302185,
+    -0.0,
+    0.4699999988079071,
+    0.6700000166893005,
+    0.75,
+    0.7099999785423279,
+    0.7300000190734863,
+    0.5699999928474426,
+    0.23999999463558197,
+    0.3199999928474426,
+    0.1899999976158142,
+    1.1100000143051147
+   ],
+   "wiring_k": [
+    -0.029999999329447746,
+    -0.5899999737739563,
+    -0.029999999329447746,
+    0.49000000953674316,
+    0.27000001072883606,
+    0.12999999523162842,
+    0.699999988079071,
+    0.6200000047683716,
+    0.27000001072883606,
+    0.15000000596046448,
+    0.33000001311302185,
+    1.5099999904632568
+   ],
+   "wiring_v": [
+    1.9700000286102295,
+    0.25999999046325684,
+    0.4300000071525574,
+    0.4099999964237213,
+    0.3499999940395355,
+    0.5899999737739563,
+    0.5600000023841858,
+    0.75,
+    0.25999999046325684,
+    0.25,
+    -0.009999999776482582,
+    0.41999998688697815
+   ]
+  },
+  "L11/h2": {
+   "d_overall": 0.0023910999298095703,
+   "label": "nll_freq_q0 (z=13.3, +0.019)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.8299999833106995,
+    -0.1599999964237213,
+    0.2199999988079071,
+    0.44999998807907104,
+    0.7699999809265137,
+    0.9100000262260437,
+    1.090000033378601,
+    0.8199999928474426,
+    0.38999998569488525,
+    0.47999998927116394,
+    0.25,
+    0.8700000047683716
+   ],
+   "wiring_k": [
+    -0.5099999904632568,
+    -0.5199999809265137,
+    -0.12999999523162842,
+    0.46000000834465027,
+    0.3799999952316284,
+    0.14000000059604645,
+    0.6899999976158142,
+    0.6800000071525574,
+    0.38999998569488525,
+    0.18000000715255737,
+    0.11999999731779099,
+    1.309999942779541
+   ],
+   "wiring_v": [
+    -0.41999998688697815,
+    0.10999999940395355,
+    -0.1599999964237213,
+    -0.15000000596046448,
+    -0.019999999552965164,
+    -0.03999999910593033,
+    0.10999999940395355,
+    0.3799999952316284,
+    0.27000001072883606,
+    0.5199999809265137,
+    0.33000001311302185,
+    1.2000000476837158
+   ]
+  },
+  "L11/h3": {
+   "d_overall": 3.5762786865234375e-05,
+   "label": "nll_domain_code (z=3.6, +0.011)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.009999999776482582,
+    0.4399999976158142,
+    0.05999999865889549,
+    -0.07000000029802322,
+    -0.009999999776482582,
+    -0.029999999329447746,
+    -0.2800000011920929,
+    -0.699999988079071,
+    -0.5,
+    -0.5699999928474426,
+    -0.5299999713897705,
+    0.5199999809265137
+   ],
+   "wiring_k": [
+    -0.03999999910593033,
+    -0.03999999910593033,
+    0.11999999731779099,
+    -0.20999999344348907,
+    -0.30000001192092896,
+    -0.23999999463558197,
+    -0.9200000166893005,
+    -0.9399999976158142,
+    -0.4399999976158142,
+    -0.3700000047683716,
+    -0.5799999833106995,
+    0.28999999165534973
+   ],
+   "wiring_v": [
+    -1.159999966621399,
+    0.9300000071525574,
+    1.0399999618530273,
+    0.18000000715255737,
+    -0.009999999776482582,
+    -0.15000000596046448,
+    0.019999999552965164,
+    -0.05999999865889549,
+    -0.05999999865889549,
+    0.1899999976158142,
+    0.27000001072883606,
+    0.949999988079071
+   ]
+  },
+  "L11/h4": {
+   "d_overall": 0.006107807159423828,
+   "label": "nll_freq_q1 (z=22.1, +0.024)",
+   "wiring_family": 1,
+   "wiring_family_desc": "Q:last+1.4,emb+0.5 | K:last+1.2,emb-1.2,early+0.3 | V:last+0.5,emb+10.2,early+0.3",
+   "wiring_q": [
+    0.6700000166893005,
+    -0.3199999928474426,
+    -0.20999999344348907,
+    0.12999999523162842,
+    -0.05000000074505806,
+    0.09000000357627869,
+    0.6499999761581421,
+    0.8999999761581421,
+    0.3400000035762787,
+    0.36000001430511475,
+    0.07000000029802322,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -1.7400000095367432,
+    0.019999999552965164,
+    -0.47999998927116394,
+    0.5199999809265137,
+    0.7200000286102295,
+    0.2800000011920929,
+    1.3899999856948853,
+    0.9200000166893005,
+    0.4000000059604645,
+    -0.009999999776482582,
+    0.20000000298023224,
+    1.0499999523162842
+   ],
+   "wiring_v": [
+    9.630000114440918,
+    3.190000057220459,
+    2.8499999046325684,
+    0.9200000166893005,
+    0.38999998569488525,
+    0.029999999329447746,
+    0.05999999865889549,
+    -0.019999999552965164,
+    -0.019999999552965164,
+    -0.07999999821186066,
+    -0.25999999046325684,
+    0.4300000071525574
+   ]
+  },
+  "L11/h5": {
+   "d_overall": 0.008188247680664062,
+   "label": "nll_freq_q2 (z=26.8, +0.030)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.05000000074505806,
+    -0.47999998927116394,
+    -0.03999999910593033,
+    0.27000001072883606,
+    0.3799999952316284,
+    0.4000000059604645,
+    0.8700000047683716,
+    0.7799999713897705,
+    0.3400000035762787,
+    0.5400000214576721,
+    0.17000000178813934,
+    0.9200000166893005
+   ],
+   "wiring_k": [
+    -0.25,
+    -0.44999998807907104,
+    -0.019999999552965164,
+    0.46000000834465027,
+    0.4399999976158142,
+    0.3499999940395355,
+    0.9100000262260437,
+    0.6800000071525574,
+    0.3700000047683716,
+    0.07000000029802322,
+    -0.029999999329447746,
+    1.2300000190734863
+   ],
+   "wiring_v": [
+    -2.430000066757202,
+    0.5899999737739563,
+    0.09000000357627869,
+    -0.07999999821186066,
+    0.019999999552965164,
+    0.3100000023841858,
+    0.36000001430511475,
+    1.0099999904632568,
+    0.44999998807907104,
+    0.4300000071525574,
+    -0.17000000178813934,
+    0.44999998807907104
+   ]
+  },
+  "L11/h6": {
+   "d_overall": -3.886222839355469e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    -0.15000000596046448,
+    -0.2199999988079071,
+    -0.5400000214576721,
+    -0.07999999821186066,
+    -0.09000000357627869,
+    0.07999999821186066,
+    0.25,
+    0.23000000417232513,
+    0.15000000596046448,
+    0.15000000596046448,
+    0.14000000059604645,
+    0.9599999785423279
+   ],
+   "wiring_k": [
+    0.9800000190734863,
+    0.05999999865889549,
+    0.10999999940395355,
+    0.009999999776482582,
+    -0.0,
+    -0.029999999329447746,
+    -0.03999999910593033,
+    -0.029999999329447746,
+    -0.15000000596046448,
+    -0.12999999523162842,
+    0.019999999552965164,
+    0.7300000190734863
+   ],
+   "wiring_v": [
+    -0.3499999940395355,
+    0.2199999988079071,
+    0.03999999910593033,
+    -0.0,
+    -0.05000000074505806,
+    -0.11999999731779099,
+    -0.09000000357627869,
+    -0.12999999523162842,
+    -0.009999999776482582,
+    -0.07999999821186066,
+    -0.1599999964237213,
+    0.47999998927116394
+   ]
+  },
+  "L11/h7": {
+   "d_overall": 0.004822254180908203,
+   "label": "nll_hard_q3 (z=13.5, +0.025)",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.05000000074505806,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.05000000074505806,
+    0.15000000596046448,
+    0.07000000029802322,
+    0.10999999940395355,
+    0.03999999910593033,
+    0.12999999523162842,
+    0.3100000023841858,
+    0.10000000149011612,
+    1.0499999523162842
+   ],
+   "wiring_k": [
+    0.8799999952316284,
+    0.49000000953674316,
+    0.3199999928474426,
+    0.41999998688697815,
+    0.3799999952316284,
+    0.3799999952316284,
+    0.5400000214576721,
+    0.4000000059604645,
+    0.25,
+    0.10999999940395355,
+    0.05999999865889549,
+    0.75
+   ],
+   "wiring_v": [
+    -0.41999998688697815,
+    0.09000000357627869,
+    0.07000000029802322,
+    0.07000000029802322,
+    0.10999999940395355,
+    0.1599999964237213,
+    0.03999999910593033,
+    0.009999999776482582,
+    0.1599999964237213,
+    -0.10999999940395355,
+    -0.18000000715255737,
+    0.9599999785423279
+   ]
+  },
+  "L11/h8": {
+   "d_overall": 0.00020313262939453125,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.20999999344348907,
+    0.30000001192092896,
+    -0.10000000149011612,
+    -0.23000000417232513,
+    -0.20000000298023224,
+    -0.4399999976158142,
+    -0.5600000023841858,
+    -0.7300000190734863,
+    -0.5099999904632568,
+    -0.4099999964237213,
+    -0.25,
+    1.149999976158142
+   ],
+   "wiring_k": [
+    -0.03999999910593033,
+    -0.09000000357627869,
+    0.05999999865889549,
+    0.029999999329447746,
+    -0.05000000074505806,
+    -0.10000000149011612,
+    -0.4300000071525574,
+    -0.699999988079071,
+    -0.49000000953674316,
+    -0.44999998807907104,
+    -0.4300000071525574,
+    0.4000000059604645
+   ],
+   "wiring_v": [
+    -2.25,
+    0.14000000059604645,
+    0.03999999910593033,
+    -0.11999999731779099,
+    -0.03999999910593033,
+    -0.09000000357627869,
+    0.03999999910593033,
+    -0.029999999329447746,
+    -0.0,
+    0.07999999821186066,
+    0.14000000059604645,
+    0.6899999976158142
+   ]
+  },
+  "L11/h9": {
+   "d_overall": 0.003798246383666992,
+   "label": "nll_class_lower (z=11.9, +0.005)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    -0.07000000029802322,
+    -0.41999998688697815,
+    0.009999999776482582,
+    0.4699999988079071,
+    0.6299999952316284,
+    0.5899999737739563,
+    0.800000011920929,
+    0.6700000166893005,
+    0.4300000071525574,
+    0.41999998688697815,
+    0.1599999964237213,
+    1.0299999713897705
+   ],
+   "wiring_k": [
+    -0.14000000059604645,
+    -0.550000011920929,
+    -0.05000000074505806,
+    0.47999998927116394,
+    0.4300000071525574,
+    0.11999999731779099,
+    0.7799999713897705,
+    0.8600000143051147,
+    0.4000000059604645,
+    0.10999999940395355,
+    0.20000000298023224,
+    1.2999999523162842
+   ],
+   "wiring_v": [
+    -1.2699999809265137,
+    0.20999999344348907,
+    0.12999999523162842,
+    -0.05999999865889549,
+    0.03999999910593033,
+    0.10000000149011612,
+    0.23999999463558197,
+    0.6399999856948853,
+    0.2800000011920929,
+    0.6200000047683716,
+    0.15000000596046448,
+    0.8399999737739563
+   ]
+  },
+  "L11/h10": {
+   "d_overall": 0.00014400482177734375,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.10999999940395355,
+    0.009999999776482582,
+    -0.15000000596046448,
+    0.2199999988079071,
+    0.41999998688697815,
+    0.20999999344348907,
+    0.36000001430511475,
+    0.20000000298023224,
+    0.10000000149011612,
+    0.3799999952316284,
+    -0.05000000074505806,
+    1.059999942779541
+   ],
+   "wiring_k": [
+    0.36000001430511475,
+    0.05999999865889549,
+    0.14000000059604645,
+    0.12999999523162842,
+    0.17000000178813934,
+    0.1599999964237213,
+    0.2199999988079071,
+    0.18000000715255737,
+    0.15000000596046448,
+    0.3199999928474426,
+    0.029999999329447746,
+    1.0399999618530273
+   ],
+   "wiring_v": [
+    -1.3899999856948853,
+    -0.11999999731779099,
+    -0.07999999821186066,
+    0.009999999776482582,
+    -0.11999999731779099,
+    0.07000000029802322,
+    -0.15000000596046448,
+    -0.17000000178813934,
+    0.019999999552965164,
+    -0.14000000059604645,
+    -0.019999999552965164,
+    0.800000011920929
+   ]
+  },
+  "L11/h11": {
+   "d_overall": 5.650520324707031e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.05000000074505806,
+    0.3499999940395355,
+    0.03999999910593033,
+    -0.14000000059604645,
+    -0.11999999731779099,
+    -0.30000001192092896,
+    -0.5099999904632568,
+    -0.7300000190734863,
+    -0.6200000047683716,
+    -0.47999998927116394,
+    -0.4399999976158142,
+    0.4399999976158142
+   ],
+   "wiring_k": [
+    -0.25,
+    0.3199999928474426,
+    0.27000001072883606,
+    0.09000000357627869,
+    -0.05000000074505806,
+    -0.019999999552965164,
+    0.10999999940395355,
+    0.5400000214576721,
+    0.4099999964237213,
+    0.47999998927116394,
+    0.4099999964237213,
+    1.5399999618530273
+   ],
+   "wiring_v": [
+    -2.680000066757202,
+    0.03999999910593033,
+    0.009999999776482582,
+    -0.05000000074505806,
+    -0.009999999776482582,
+    -0.029999999329447746,
+    0.019999999552965164,
+    0.03999999910593033,
+    0.07000000029802322,
+    0.27000001072883606,
+    0.23999999463558197,
+    0.800000011920929
+   ]
+  },
+  "L11/h12": {
+   "d_overall": 0.0001468658447265625,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.10000000149011612,
+    -0.1599999964237213,
+    -0.1599999964237213,
+    0.009999999776482582,
+    -0.12999999523162842,
+    -0.05999999865889549,
+    -0.09000000357627869,
+    -0.33000001311302185,
+    -0.3199999928474426,
+    -0.49000000953674316,
+    -0.38999998569488525,
+    0.9800000190734863
+   ],
+   "wiring_k": [
+    0.6399999856948853,
+    0.009999999776482582,
+    0.27000001072883606,
+    0.27000001072883606,
+    0.36000001430511475,
+    0.18000000715255737,
+    0.3400000035762787,
+    -0.10999999940395355,
+    0.05999999865889549,
+    0.03999999910593033,
+    -0.14000000059604645,
+    0.9700000286102295
+   ],
+   "wiring_v": [
+    -2.240000009536743,
+    0.14000000059604645,
+    -0.07999999821186066,
+    -0.07000000029802322,
+    -0.019999999552965164,
+    -0.10000000149011612,
+    -0.09000000357627869,
+    -0.05999999865889549,
+    0.07999999821186066,
+    -0.03999999910593033,
+    -0.05999999865889549,
+    0.8199999928474426
+   ]
+  },
+  "L11/h13": {
+   "d_overall": 7.939338684082031e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 5,
+   "wiring_family_desc": "Q:last+1.2 | K:last+1.1 | V:last+0.9,emb+0.3",
+   "wiring_q": [
+    0.07999999821186066,
+    -0.23000000417232513,
+    -0.5699999928474426,
+    -0.3100000023841858,
+    -0.3100000023841858,
+    -0.20000000298023224,
+    0.17000000178813934,
+    0.05000000074505806,
+    0.10999999940395355,
+    0.23999999463558197,
+    0.15000000596046448,
+    0.9300000071525574
+   ],
+   "wiring_k": [
+    0.7300000190734863,
+    0.20000000298023224,
+    -0.07000000029802322,
+    -0.30000001192092896,
+    -0.3400000035762787,
+    -0.25,
+    0.05000000074505806,
+    0.14000000059604645,
+    -0.2800000011920929,
+    -0.15000000596046448,
+    -0.28999999165534973,
+    0.5600000023841858
+   ],
+   "wiring_v": [
+    1.059999942779541,
+    0.20000000298023224,
+    0.11999999731779099,
+    0.1599999964237213,
+    0.1599999964237213,
+    0.09000000357627869,
+    0.05000000074505806,
+    0.03999999910593033,
+    0.019999999552965164,
+    -0.03999999910593033,
+    -0.07999999821186066,
+    0.5299999713897705
+   ]
+  },
+  "L11/h14": {
+   "d_overall": -1.0013580322265625e-05,
+   "label": "no distinct single-head effect",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.3100000023841858,
+    -0.10000000149011612,
+    0.009999999776482582,
+    0.17000000178813934,
+    0.27000001072883606,
+    0.3199999928474426,
+    0.41999998688697815,
+    -0.07000000029802322,
+    -0.25,
+    -0.20000000298023224,
+    -0.019999999552965164,
+    1.0700000524520874
+   ],
+   "wiring_k": [
+    -0.8100000023841858,
+    0.7599999904632568,
+    0.15000000596046448,
+    -0.2800000011920929,
+    -0.27000001072883606,
+    -0.10999999940395355,
+    -0.38999998569488525,
+    -0.07999999821186066,
+    -0.029999999329447746,
+    -0.1899999976158142,
+    -0.10999999940395355,
+    0.8999999761581421
+   ],
+   "wiring_v": [
+    -1.940000057220459,
+    0.27000001072883606,
+    0.05000000074505806,
+    -0.15000000596046448,
+    0.07000000029802322,
+    0.12999999523162842,
+    0.03999999910593033,
+    0.009999999776482582,
+    0.05999999865889549,
+    0.05999999865889549,
+    0.07999999821186066,
+    0.699999988079071
+   ]
+  },
+  "L11/h15": {
+   "d_overall": 0.0006160736083984375,
+   "label": "nll_class_cap (z=4.5, +0.009)",
+   "wiring_family": 0,
+   "wiring_family_desc": "Q:last+1.0 | K:last+1.0 | V:last+0.8,emb-1.6",
+   "wiring_q": [
+    0.10000000149011612,
+    0.28999999165534973,
+    0.11999999731779099,
+    -0.10000000149011612,
+    -0.09000000357627869,
+    -0.2800000011920929,
+    -0.46000000834465027,
+    -0.7900000214576721,
+    -0.6200000047683716,
+    -0.5799999833106995,
+    -0.5199999809265137,
+    0.49000000953674316
+   ],
+   "wiring_k": [
+    0.9900000095367432,
+    0.10999999940395355,
+    0.18000000715255737,
+    0.33000001311302185,
+    0.3100000023841858,
+    0.20000000298023224,
+    0.6800000071525574,
+    0.6600000262260437,
+    0.30000001192092896,
+    0.1899999976158142,
+    0.25999999046325684,
+    1.2100000381469727
+   ],
+   "wiring_v": [
+    -1.2599999904632568,
+    0.4000000059604645,
+    0.33000001311302185,
+    0.07000000029802322,
+    -0.10000000149011612,
+    -0.07000000029802322,
+    -0.019999999552965164,
+    -0.029999999329447746,
+    -0.0,
+    0.07000000029802322,
+    0.12999999523162842,
+    0.6800000071525574
+   ]
+  }
+ }
+}

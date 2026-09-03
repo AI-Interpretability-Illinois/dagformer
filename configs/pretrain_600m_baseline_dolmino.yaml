@@ -1,0 +1,46 @@
+# Dense OLMo-2 600M baseline trained on Dolmino mix (statistically equivalent
+# to OLMo-2 stage 2 mid-training recipe).
+#
+# Mix proportions match the official 50B-budget Dolmino table:
+#   DCLM 47.2 / FLAN 16.6 / Math 20.8 / Wiki 7.1 / pes2o 5.9 / StackExchange 2.5
+#
+# Comparison target: OLMo-2-0425-1B `stage2-ingredient1-step2000-tokens5B`
+# (apples-to-apples on data; we trade architecture not data quality).
+#
+# Token budget: 12B (~20× Chinchilla for 682M params).
+# Independent shuffle seed (Plan B): statistically equivalent to OLMo-2
+# document ordering at 5B+ token scale, not bit-identical.
+
+hidden_size: 1536
+num_hidden_layers: 14
+num_attention_heads: 16
+intermediate_size: 6144
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolmino-mix-1124"
+dataset_name: "dolmino_mix"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 8
+gradient_accumulation_steps: 8
+total_steps: 22900
+lr: 4.5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 500
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 0
+eval_size: 0
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-600m-dolmino"
+log_every: 10
+save_every: 2000
+save_dir: "/work/hdd/bfqt/dagformer_checkpoints/pretrain_600m_baseline_dolmino"

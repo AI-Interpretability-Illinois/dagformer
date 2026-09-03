@@ -1,0 +1,173 @@
+{
+  "project": {
+    "runs": {
+      "edges": [
+        {
+          "node": {
+            "name": "g90ac7sl",
+            "displayName": "peteish1-eval-20250126_060132",
+            "group": "peteish1",
+            "state": "finished",
+            "createdAt": "2025-01-26T06:02:04Z",
+            "historyLineCount": 1,
+            "summaryMetrics": "{\"_step\":1907359}"
+          }
+        },
+        {
+          "node": {
+            "name": "75xu6sg6",
+            "displayName": "peteish1-20241112_204309",
+            "group": "peteish1",
+            "state": "finished",
+            "createdAt": "2024-11-12T20:43:45Z",
+            "historyLineCount": 31360,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.520322799682617,\"_step\":1907359,\"throughput/total_tokens\":4000021741568}"
+          }
+        },
+        {
+          "node": {
+            "name": "hox4rutn",
+            "displayName": "peteish1-20241111_175619",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-11T17:57:15Z",
+            "historyLineCount": 298090,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.5092201232910156,\"_step\":1876089,\"throughput/total_tokens\":3934443798528}"
+          }
+        },
+        {
+          "node": {
+            "name": "42g62rhk",
+            "displayName": "peteish1-20241110_123807",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-10T12:38:52Z",
+            "historyLineCount": 351000,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.5547542572021484,\"throughput/total_tokens\":3311400910848,\"_step\":1578999}"
+          }
+        },
+        {
+          "node": {
+            "name": "4h0dqqck",
+            "displayName": "peteish1-20241108_215905",
+            "group": "peteish1",
+            "state": "failed",
+            "createdAt": "2024-11-08T21:59:48Z",
+            "historyLineCount": 355001,
+            "summaryMetrics": "{\"_step\":1229000,\"train/CrossEntropyLoss\":2.5446131229400635,\"throughput/total_tokens\":2577399808000}"
+          }
+        },
+        {
+          "node": {
+            "name": "5w3c8grz",
+            "displayName": "peteish1-20241108_083616",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-08T08:37:02Z",
+            "historyLineCount": 94795,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.5757839679718018,\"_step\":874794,\"throughput/total_tokens\":1834575986688}"
+          }
+        },
+        {
+          "node": {
+            "name": "cfc7b5m7",
+            "displayName": "peteish1-20241108_082608",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-08T08:26:53Z",
+            "historyLineCount": 96000,
+            "summaryMetrics": "{\"_step\":874999,\"train/CrossEntropyLoss\":2.607950448989868,\"throughput/total_tokens\":1835005902848}"
+          }
+        },
+        {
+          "node": {
+            "name": "kq3x9sam",
+            "displayName": "peteish1-20241107_023728",
+            "group": "peteish1",
+            "state": "failed",
+            "createdAt": "2024-11-07T02:38:14Z",
+            "historyLineCount": 352001,
+            "summaryMetrics": "{\"_step\":780000,\"throughput/total_tokens\":1635778560000,\"train/CrossEntropyLoss\":2.6213531494140625}"
+          }
+        },
+        {
+          "node": {
+            "name": "jssb8rqa",
+            "displayName": "peteish1-20241107_021422",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-07T02:15:07Z",
+            "historyLineCount": 353000,
+            "summaryMetrics": "{\"_step\":776999,\"throughput/total_tokens\":1629485006848,\"train/CrossEntropyLoss\":2.614243745803833}"
+          }
+        },
+        {
+          "node": {
+            "name": "s19uzq38",
+            "displayName": "peteish1-20241105_195238",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-05T19:53:18Z",
+            "historyLineCount": 353000,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.6216650009155273,\"throughput/total_tokens\":891287502848,\"_step\":424999}"
+          }
+        },
+        {
+          "node": {
+            "name": "s1g2f4o6",
+            "displayName": "peteish1-20241105_191014",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-05T19:10:58Z",
+            "historyLineCount": 5004,
+            "summaryMetrics": "{\"throughput/total_tokens\":150992846848,\"_step\":71999,\"train/CrossEntropyLoss\":2.714724063873291}"
+          }
+        },
+        {
+          "node": {
+            "name": "8uoab4sh",
+            "displayName": "peteish1-20241105_184241",
+            "group": "peteish1",
+            "state": "crashed",
+            "createdAt": "2024-11-05T18:43:25Z",
+            "historyLineCount": 890,
+            "summaryMetrics": "{\"_step\":67069,\"train/CrossEntropyLoss\":2.718209743499756,\"throughput/total_tokens\":140653887488}"
+          }
+        },
+        {
+          "node": {
+            "name": "86ltcj97",
+            "displayName": "peteish1-20241105_002354",
+            "group": "peteish1",
+            "state": "finished",
+            "createdAt": "2024-11-05T00:24:36Z",
+            "historyLineCount": 43111,
+            "summaryMetrics": "{\"train/CrossEntropyLoss\":2.725486516952514,\"_step\":66210,\"throughput/total_tokens\":138852433920}"
+          }
+        },
+        {
+          "node": {
+            "name": "y8brg36d",
+            "displayName": "peteish1-20241104_064220",
+            "group": "peteish1",
+            "state": "finished",
+            "createdAt": "2024-11-04T06:42:41Z",
+            "historyLineCount": 22811,
+            "summaryMetrics": "{\"throughput/total_tokens\":48465182720,\"_step\":23110,\"train/CrossEntropyLoss\":2.814838409423828}"
+          }
+        },
+        {
+          "node": {
+            "name": "gfm5tift",
+            "displayName": "peteish1-20241104_062203",
+            "group": "peteish1",
+            "state": "finished",
+            "createdAt": "2024-11-04T06:22:43Z",
+            "historyLineCount": 311,
+            "summaryMetrics": "{\"throughput/total_tokens\":650117120,\"_step\":310,\"train/CrossEntropyLoss\":6.221045017242432}"
+          }
+        }
+      ]
+    }
+  }
+}

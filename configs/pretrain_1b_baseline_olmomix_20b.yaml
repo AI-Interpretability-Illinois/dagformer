@@ -1,0 +1,52 @@
+# Dense OLMo-2 1B baseline trained on olmo-mix-1124 (OLMo-2 stage-1 mix).
+# Target: head-to-head comparison with allenai/OLMo-2-0425-1B revision
+#   `stage1-step10000-tokens21B` (21B tokens, same data mix).
+#
+# Token budget: 20B. Recipe: natural-proportion sampling across 7 stage-1 sources
+# (dclm 94.9% / starcoder 2.1% / pes2o 1.5% / arxiv 0.5% / open-web-math 0.3%
+#  / algebraic-stack 0.3% / wiki 0.1%) — see src/data/dolma.py::OLMO_MIX.
+#
+# Batch: 16 micro × 4 accum × 8 GPUs × 1024 seq = 524,288 tokens/step
+# Total: 38,160 steps → 20.0B tokens.
+# Est. wall time on 8× H200: ~10h. Save every 1000 steps with rotation
+# (keep_last_n=3) so a 48h-limit preemption only loses ~30 min of compute.
+# Checkpoints go to /work/hdd (the 500G /projects quota fills fast and would
+# silently fail the save).
+
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/olmo-mix-1124"
+dataset_name: "olmo_mix"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/data/pretok/olmo_mix_21b_full"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 16
+gradient_accumulation_steps: 4
+total_steps: 38160              # ≈20B tokens at 524,288 tok/step (Chinchilla-optimal for 1B)
+lr: 4e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 1000
+max_grad_norm: 1.0
+lr_schedule: "linear"
+lr_decay_steps: 38160           # decay to 0 by end of training
+
+eval_skip: 0
+eval_size: 0
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-1b-olmomix-20b"
+log_every: 10
+save_every: 1000                # ~30 min between saves
+keep_last_n: 1                  # tight disk: 1 × ~13GB
+save_dir: "/work/hdd/bfqt/dagformer_checkpoints/pretrain_1b_baseline_olmomix_20b"

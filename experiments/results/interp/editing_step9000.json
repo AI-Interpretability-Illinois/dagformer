@@ -1,0 +1,89 @@
+{
+  "baseline": {
+    "nll": 3.2173217582702636,
+    "repeat_copy_acc": 0.8634905209764838,
+    "repeat_copy_from_ctx_rate": 0.9473973607038123,
+    "random_copy_acc": 0.026367187383584678,
+    "random_copy_from_ctx_rate": 0.8722507331378299
+  },
+  "head_avg_qkv": {
+    "nll": 5.163645248413086,
+    "repeat_copy_acc": 0.03097098220314365,
+    "repeat_copy_from_ctx_rate": 0.7839687194525904
+  },
+  "head_avg_v": {
+    "nll": 4.29661117553711,
+    "repeat_copy_acc": 0.10818917315918952,
+    "repeat_copy_from_ctx_rate": 0.6968475073313783
+  },
+  "head_avg_qk": {
+    "nll": 3.526557655334473,
+    "repeat_copy_acc": 0.04931640677386895,
+    "repeat_copy_from_ctx_rate": 0.9020650048875856
+  },
+  "knockout": {
+    "entries": [
+      {
+        "stream": "v",
+        "layer": 11,
+        "head": 4,
+        "src": 0,
+        "delta": 8.183332443237305
+      },
+      {
+        "stream": "v",
+        "layer": 7,
+        "head": 7,
+        "src": 0,
+        "delta": -7.984294891357422
+      },
+      {
+        "stream": "v",
+        "layer": 7,
+        "head": 1,
+        "src": 0,
+        "delta": -7.7105255126953125
+      },
+      {
+        "stream": "v",
+        "layer": 7,
+        "head": 11,
+        "src": 0,
+        "delta": -7.260290145874023
+      },
+      {
+        "stream": "v",
+        "layer": 7,
+        "head": 14,
+        "src": 0,
+        "delta": 7.103940963745117
+      },
+      {
+        "stream": "v",
+        "layer": 7,
+        "head": 9,
+        "src": 0,
+        "delta": 5.706504821777344
+      }
+    ],
+    "nll": 3.2240097236633303,
+    "repeat_copy_acc": 0.8540039081126451,
+    "repeat_copy_from_ctx_rate": 0.9484970674486803
+  },
+  "steer_x0.5": {
+    "copy_acc": 0.02336774574359879,
+    "copy_from_ctx_rate": 0.8713954056695992
+  },
+  "steer_x1.0": {
+    "copy_acc": 0.022251674148719758,
+    "copy_from_ctx_rate": 0.844574780058651
+  },
+  "steer_x2.0": {
+    "copy_acc": 0.013881138322176412,
+    "copy_from_ctx_rate": 0.5977517106549365
+  },
+  "steer_x0": {
+    "copy_acc": 0.023925781075377017,
+    "copy_from_ctx_rate": 0.8643695014662757
+  }
+}

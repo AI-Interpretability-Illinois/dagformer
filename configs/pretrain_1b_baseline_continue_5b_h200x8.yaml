@@ -1,0 +1,55 @@
+# Continue 1B dense baseline to match the 1B FourWay token budget.
+#
+# Existing checkpoint was trained on world_size=1 through checkpoint_step9500:
+#   actual tokens = (9500 + 1) * 16 * 8 * 1 * 1024 = 1.245B
+# FourWay final W&B run reached 5.238B tokens.
+# With 8 GPUs and grad_accum=8:
+#   tokens/update = 16 * 8 * 8 * 1024 = 1.049M
+#   remaining updates = ceil((5.238B - 1.245B) / 1.049M) = 3808
+#   resume step 9501 + 3808 updates -> total_steps 13309.
+#
+# The script's train/tokens_seen_B column will be based on current world_size
+# and global_step, so postprocess actual tokens as:
+#   1.245315072B + (step - 9500) * 1.048576M for this continuation.
+#
+# Resume skip is per rank. The checkpoint consumed 9501 * 8 * 16 = 1,216,128
+# packed sequences on a single rank; divided across 8 new ranks gives 152,016
+# skipped packed sequences/rank. This is approximate because HF streaming shard
+# layout changes when world_size changes.
+
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 16
+gradient_accumulation_steps: 8
+total_steps: 13309
+lr: 4e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 500
+max_grad_norm: 1.0
+lr_schedule: "linear"
+lr_decay_steps: 50000
+
+eval_skip: 0
+eval_size: 0
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-1b-continue-5b-h200x8"
+log_every: 10
+save_every: 500
+save_dir: "checkpoints/pretrain_1b_baseline_continue_5b_h200x8"
+resume_from: "/projects/bfqt/xiaocong/dagformer_ckpts/pretrain_1b_baseline/checkpoint_step9500.pt"
+resume_skip_samples: 152016

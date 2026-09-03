@@ -10,3 +10,8 @@ logs/
 *.egg-info/
 wandb/
 CLAUDE.md
+*.npz
+experiments/results/interp/token_effects/*.log
+hf_checkpoints/
+ssmfloss/
+.codex/

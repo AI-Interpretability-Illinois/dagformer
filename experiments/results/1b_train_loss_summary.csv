@@ -1,0 +1,5 @@
+series,step,tokens_B,loss
+baseline_final,10000.0,1.310851072,3.658203125
+dagformer_final,9990.0,5.238161408,3.220703125
+dagformer_at_baseline_tokens,2500.0,1.311244288,3.08349609375
+baseline_at_dagformer_final_step,9990.0,1.309540352,3.439453125

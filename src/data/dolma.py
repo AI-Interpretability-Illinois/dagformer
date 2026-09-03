@@ -15,17 +15,139 @@ from datasets import interleave_datasets, load_dataset
 from torch.utils.data import IterableDataset
 from transformers import AutoTokenizer
 
-# Dolmino 50B mix approximate proportions (from OLMo-core dolmino50.txt)
-# dclm:48%, flan:17%, tinygsm/math:21%, pes2o:6%, wiki:7%, stackexchange:2.5%
-# math subset has schema issues, merge its weight into dclm
+# Dolmino 50B mix exact proportions (Mix % column from allenai/dolmino-mix-1124 README)
+# Source: https://huggingface.co/datasets/allenai/dolmino-mix-1124#mix-compositions
 DOLMINO_MIX = {
-    "dclm": 0.685,          # 48% + 21% math (redistributed)
-    "flan": 0.17,
-    "pes2o": 0.06,
-    "wiki": 0.06,
-    "stackexchange": 0.025,
+    "dclm": 0.472,
+    "flan": 0.166,
+    "math": 0.208,          # "Stage 2 Math" — excludes codesearchnet (schema bug)
+    "wiki": 0.071,
+    "pes2o": 0.0585,
+    "stackexchange": 0.0245,
 }
 # Sum = 1.000
+
+# Math subset is loaded via direct file pattern (not config name) because the
+# `math` HF config includes `codesearchnet-owmfilter` which has incompatible
+# struct schema. We include all other math subdirs (gsm8k, synth, etc).
+DOLMINO_MATH_PATTERNS = [
+    "data/math/dolmino_math_synth/**/*.jsonl",
+    "data/math/gsm8k/**/*.jsonl.zst",
+    "data/math/mathcoder2-synthmath/**/*.jsonl",
+    "data/math/metamath-owmfilter/**/*.jsonl.gz",
+    "data/math/tinyGSM-MIND/**/*.jsonl.gz",
+    "data/math/tulu_math/**/*.jsonl",
+]
+
+# OLMo-mix-1124 (stage 1) natural-proportion weights — token counts from the
+# dataset README divided by the 3.90T total. Roughly equivalent to per-token
+# uniform sampling across all stage-1 sources.
+# Source: https://huggingface.co/datasets/allenai/olmo-mix-1124
+OLMO_MIX = {
+    "dclm":            0.9487,   # 3.70T / 3.90T
+    "starcoder":       0.02128,  # 83.0B
+    "pes2o":           0.01503,  # 58.6B
+    "arxiv":           0.00533,  # 20.8B
+    "open-web-math":   0.00313,  # 12.2B
+    "algebraic-stack": 0.00303,  # 11.8B
+    "wiki":            0.00094,  # 3.66B
+}
+
+# olmo-mix-1124 stores files at data/<subset>/**/. Most subdirs are *.json.gz
+# (one JSON per file); dclm uses *.jsonl.zstd (line-delimited, zstd compressed).
+#
+# Loading via HF's `name=...` config triggers schema validation that fails
+# because metadata fields (paloma_paragraphs, tokenizer_repetitions) are
+# inconsistent structs across documents. Loading via the generic `json` builder
+# with `data_files=hf://...` URLs sidesteps schema validation completely.
+#
+# For DCLM (28K files), passing a glob pattern hangs HF's file listing — so we
+# pre-list the files via HfApi and pass concrete URLs.
+OLMO_MIX_SUFFIXES = {
+    "dclm":            ".jsonl.zstd",
+    "starcoder":       ".json.gz",
+    "pes2o":           ".json.gz",
+    "arxiv":           ".json.gz",
+    "open-web-math":   ".json.gz",
+    "algebraic-stack": ".json.gz",
+    "wiki":            ".json.gz",
+}
+
+# Cap files per subset. Sized for a 20B-token training budget at natural mix
+# proportions with 3–10× safety margin (pes2o/arxiv files are huge — a single
+# file already covers the budget for those minority sources).
+#   dclm:      19B tok needed @ ~95% mix → 200 files (~60GB disk)
+#   starcoder: 425M tok                  → 50 files
+#   pes2o:     300M tok @ ~700M tok/file → 2 files (each ~4GB)
+#   arxiv:     107M tok @ ~250M tok/file → 3 files
+#   ow-math:    63M tok                  → 3 files
+#   alg-stack:  61M tok                  → 3 files
+#   wiki:       19M tok (entire subset)  → 2 files
+# Total mirror size: ~99GB.
+OLMO_MIX_MAX_FILES = {
+    "dclm":            200,
+    "starcoder":        50,
+    "pes2o":             2,
+    "arxiv":             3,
+    "open-web-math":     3,
+    "algebraic-stack":   3,
+    "wiki":              2,
+}
+
+_OLMO_MIX_ALL_FILES_CACHE: list[str] | None = None
+
+# Local mirror written by scripts/download_olmo_mix_local.py. If present, the
+# olmo_mix dataloader reads files from here instead of streaming over HTTP —
+# avoids HF's 5000-request/5min resolver rate-limit when running 8 DDP ranks.
+OLMO_MIX_LOCAL_ROOT = "/work/hdd/bfqt/data/olmo-mix-1124"
+
+
+def _list_olmo_mix_files(subset: str, seed: int = 0) -> list[str]:
+    """Resolve file paths for an olmo-mix-1124 subset.
+
+    Files are deterministically shuffled by `seed` (training order ≠ alphabetical)
+    and capped via OLMO_MIX_MAX_FILES. If a local mirror exists at
+    OLMO_MIX_LOCAL_ROOT, returns local filesystem paths; otherwise falls back
+    to hf:// URLs (which hits the resolver rate-limit at 8-rank scale, so the
+    local mirror is strongly preferred for any real training run).
+    """
+    import os as _os
+    import random
+    global _OLMO_MIX_ALL_FILES_CACHE
+    if _OLMO_MIX_ALL_FILES_CACHE is None:
+        from huggingface_hub import HfApi
+        api = HfApi()
+        _OLMO_MIX_ALL_FILES_CACHE = api.list_repo_files(
+            "allenai/olmo-mix-1124", repo_type="dataset",
+        )
+    prefix = f"data/{subset}/"
+    suffix = OLMO_MIX_SUFFIXES[subset]
+    files = sorted(
+        f for f in _OLMO_MIX_ALL_FILES_CACHE
+        if f.startswith(prefix) and f.endswith(suffix)
+    )
+    rng = random.Random(seed)
+    rng.shuffle(files)
+    cap = OLMO_MIX_MAX_FILES.get(subset)
+    if cap is not None:
+        files = files[:cap]
+    # Prefer local mirror if it exists for THIS subset's first file (cheap probe)
+    if files and _os.path.exists(_os.path.join(OLMO_MIX_LOCAL_ROOT, files[0])):
+        local_paths = [
+            _os.path.join(OLMO_MIX_LOCAL_ROOT, p) for p in files
+            if _os.path.exists(_os.path.join(OLMO_MIX_LOCAL_ROOT, p))
+        ]
+        if len(local_paths) == len(files):
+            return local_paths
+        # partial mirror — fall back to HF (warning printed once)
+        print(
+            f"[dolma] WARN olmo-mix/{subset}: only {len(local_paths)}/{len(files)} "
+            f"local files; falling back to hf:// for completeness",
+            flush=True,
+        )
+    return [f"hf://datasets/allenai/olmo-mix-1124/{p}" for p in files]
+
+
 
 MAX_RETRIES = 999999  # never crash from transient HTTP errors
 RETRY_WAIT = 30  # seconds
@@ -106,21 +228,61 @@ class DolmaPackedDataset(IterableDataset):
             return self._load_local_stream(local_dir)
 
         if self.dataset_version == "dolmino_mix":
-            # Interleave Dolmino subsets with approximate 50B mix proportions
+            # Interleave Dolmino subsets with official 50B-budget mix proportions
             # Only keep 'text' column — metadata schemas differ across subsets
             subsets = []
             probs = []
             for name, weight in DOLMINO_MIX.items():
-                ds = load_dataset(
-                    self.dataset_name,
-                    name=name,
-                    split="train",
-                    streaming=True,
-                    trust_remote_code=True,
-                ).select_columns(["text"])
+                if name == "math":
+                    # math via direct file patterns (HF `math` config has a broken subdir)
+                    ds = load_dataset(
+                        self.dataset_name,
+                        data_files=DOLMINO_MATH_PATTERNS,
+                        split="train",
+                        streaming=True,
+                    ).select_columns(["text"])
+                else:
+                    ds = load_dataset(
+                        self.dataset_name,
+                        name=name,
+                        split="train",
+                        streaming=True,
+                        trust_remote_code=True,
+                    ).select_columns(["text"])
                 subsets.append(ds)
                 probs.append(weight)
             dataset = interleave_datasets(subsets, probabilities=probs, stopping_strategy="all_exhausted")
+        elif self.dataset_version == "olmo_mix":
+            # Stage-1 olmo-mix-1124. Natural-proportion sampling across 7 subsets
+            # (dclm dominates at 95%, code/sci/wiki at small fractions).
+            # We use the generic `json` builder with explicit hf:// file URLs
+            # to bypass the broken schema validation in the named configs.
+            # File lists are seeded-shuffled for determinism + non-alphabetical
+            # training order.
+            # OLMO_MIX values come from token-share rounding; renormalize to
+            # exactly 1.0 so interleave_datasets stops complaining.
+            _total = sum(OLMO_MIX.values())
+            subsets = []
+            probs = []
+            for name, weight in OLMO_MIX.items():
+                hf_files = _list_olmo_mix_files(name, seed=0)
+                ds = load_dataset(
+                    "json",
+                    data_files=hf_files,
+                    split="train",
+                    streaming=True,
+                )
+                # Project to text-only so interleave_datasets can align subsets.
+                ds = ds.map(
+                    lambda x: {"text": x.get("text", "") or ""},
+                    remove_columns=[c for c in ds.column_names if c != "text"]
+                    if ds.column_names else None,
+                )
+                subsets.append(ds)
+                probs.append(weight / _total)
+            dataset = interleave_datasets(
+                subsets, probabilities=probs, stopping_strategy="all_exhausted",
+            )
         else:
             try:
                 dataset = load_dataset(
@@ -154,9 +316,11 @@ class DolmaPackedDataset(IterableDataset):
         sample_count = 0  # total samples produced (including skipped)
         yielded_count = 0  # samples actually yielded (after skip)
         retries = 0
-        # For dolmino_mix, HF .shard() doesn't work on interleaved datasets,
-        # so we do manual document-level modulo sharding here instead.
-        manual_shard = (self.dataset_version == "dolmino_mix" and self.world_size > 1)
+        # For dolmino_mix / olmo_mix, HF .shard() doesn't work on interleaved
+        # datasets, so we do manual document-level modulo sharding here instead.
+        manual_shard = (
+            self.dataset_version in ("dolmino_mix", "olmo_mix") and self.world_size > 1
+        )
 
         # Track how many docs we've consumed for HTTP retry fast-forward
         docs_consumed = 0
@@ -294,22 +458,57 @@ def build_eval_dataloader(
     eos_id = olmo_tokenizer.eos_token_id
     eval_samples: list[dict] = []
 
-    for attempt in range(MAX_RETRIES + 1):
+    # Eval-set construction is a fixed, bounded task: unlike the training stream
+    # it must NOT retry forever. A deterministic failure (e.g. olmo_mix's
+    # "Probabilities do not sum to 1") otherwise blocks the whole job before
+    # training starts — this silently held 8xH200 idle for 12 minutes until
+    # noticed. Fail loudly after a few attempts instead.
+    EVAL_MAX_RETRIES = 5
+    for attempt in range(EVAL_MAX_RETRIES + 1):
         try:
             if dataset_version == "dolmino_mix":
                 subsets = []
                 probs = []
                 for name, weight in DOLMINO_MIX.items():
-                    ds = load_dataset(
-                        dataset_name,
-                        name=name,
-                        split="train",
-                        streaming=True,
-                        trust_remote_code=True,
-                    ).select_columns(["text"])
+                    if name == "math":
+                        ds = load_dataset(
+                            dataset_name,
+                            data_files=DOLMINO_MATH_PATTERNS,
+                            split="train",
+                            streaming=True,
+                        ).select_columns(["text"])
+                    else:
+                        ds = load_dataset(
+                            dataset_name,
+                            name=name,
+                            split="train",
+                            streaming=True,
+                            trust_remote_code=True,
+                        ).select_columns(["text"])
                     subsets.append(ds)
                     probs.append(weight)
                 dataset = interleave_datasets(subsets, probabilities=probs, stopping_strategy="all_exhausted")
+            elif dataset_version == "olmo_mix":
+                subsets = []
+                probs = []
+                for name, weight in OLMO_MIX.items():
+                    hf_files = _list_olmo_mix_files(name, seed=0)
+                    ds = load_dataset(
+                        "json",
+                        data_files=hf_files,
+                        split="train",
+                        streaming=True,
+                    )
+                    ds = ds.map(
+                        lambda x: {"text": x.get("text", "") or ""},
+                        remove_columns=[c for c in ds.column_names if c != "text"]
+                        if ds.column_names else None,
+                    )
+                    subsets.append(ds)
+                    probs.append(weight)
+                dataset = interleave_datasets(
+                    subsets, probabilities=probs, stopping_strategy="all_exhausted",
+                )
             else:
                 try:
                     dataset = load_dataset(
@@ -357,9 +556,11 @@ def build_eval_dataloader(
             break  # success
 
         except Exception as e:
-            if attempt >= MAX_RETRIES:
-                raise RuntimeError(f"Eval set build failed after {MAX_RETRIES} retries: {e}") from e
-            print(f"[EvalBuild] Stream error (retry {attempt + 1}/{MAX_RETRIES}): {e}")
+            if attempt >= EVAL_MAX_RETRIES:
+                raise RuntimeError(
+                    f"Eval set build failed after {EVAL_MAX_RETRIES} retries: {e}"
+                ) from e
+            print(f"[EvalBuild] Stream error (retry {attempt + 1}/{EVAL_MAX_RETRIES}): {e}")
             print(f"[EvalBuild] Waiting {RETRY_WAIT}s before reconnecting...")
             time.sleep(RETRY_WAIT)
 

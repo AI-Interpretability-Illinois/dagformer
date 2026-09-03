@@ -1,0 +1,54 @@
+# 8-rank smoke test for 1B DAGFormer on olmo-mix-1124 (LOCAL mirror).
+# 100 steps — verifies FourWay forward + predictor + routing + DDP + ckpt.
+
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway_corrected"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+use_v_norm: true
+
+replace_rmsnorm: true
+use_torch_compile: false
+
+dataset: "allenai/olmo-mix-1124"
+dataset_name: "olmo_mix"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/data/pretok/olmo_mix_21b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 16
+total_steps: 100
+lr: 4e-4
+predictor_lr: 2e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 50
+max_grad_norm: 1.0
+lr_schedule: "linear"
+lr_decay_steps: 100
+
+eval_skip: 0
+eval_size: 0
+
+wandb_project: "dagformer"
+wandb_run_name: "dagformer-1b-olmomix-SMOKE"
+log_every: 5
+save_every: 100
+keep_last_n: 1
+save_dir: "/work/hdd/bfqt/dagformer_checkpoints/smoke_1b_dagformer_olmomix"

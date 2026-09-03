@@ -1,0 +1,35 @@
+{
+  "config": {
+    "ckpt": "checkpoints/fourway_300m_dagformer_mmap/checkpoint_step9000.pt",
+    "config_file": "configs/fourway_300m_dagformer_mmap.yaml",
+    "hf_model": null,
+    "hf_revision": "main",
+    "mode": "fourway",
+    "tasks": [
+      "wikitext"
+    ],
+    "batch_size": 4,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "wikitext": {
+      "alias": "wikitext",
+      "word_perplexity,none": 44.2455545830592,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.0313551079502803,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.022442464004679,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "wikitext": 2.0
+  }
+}

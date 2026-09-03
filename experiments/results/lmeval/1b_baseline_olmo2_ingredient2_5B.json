@@ -1,0 +1,135 @@
+{
+  "config": {
+    "ckpt": null,
+    "config_file": null,
+    "hf_model": "allenai/OLMo-2-0425-1B",
+    "hf_revision": "stage2-ingredient2-step2000-tokens5B",
+    "mode": "dense",
+    "tasks": [
+      "lambada_openai",
+      "hellaswag",
+      "piqa",
+      "arc_easy",
+      "winogrande",
+      "openbookqa",
+      "sciq",
+      "boolq",
+      "wikitext"
+    ],
+    "batch_size": 4,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "arc_easy": {
+      "alias": "arc_easy",
+      "acc,none": 0.7133838383838383,
+      "acc_stderr,none": 0.009278551100969297,
+      "acc_norm,none": 0.7053872053872053,
+      "acc_norm_stderr,none": 0.009354224395837095
+    },
+    "boolq": {
+      "alias": "boolq",
+      "acc,none": 0.6284403669724771,
+      "acc_stderr,none": 0.00845159814507657
+    },
+    "hellaswag": {
+      "alias": "hellaswag",
+      "acc,none": 0.5039832702648874,
+      "acc_stderr,none": 0.004989623068778806,
+      "acc_norm,none": 0.6861183031268672,
+      "acc_norm_stderr,none": 0.004631205099684934
+    },
+    "lambada_openai": {
+      "alias": "lambada_openai",
+      "perplexity,none": 5.206049053690353,
+      "perplexity_stderr,none": 0.12504560566737857,
+      "acc,none": 0.6411798952066757,
+      "acc_stderr,none": 0.00668252212408932
+    },
+    "openbookqa": {
+      "alias": "openbookqa",
+      "acc,none": 0.3,
+      "acc_stderr,none": 0.020514426225628046,
+      "acc_norm,none": 0.41,
+      "acc_norm_stderr,none": 0.02201748257812767
+    },
+    "piqa": {
+      "alias": "piqa",
+      "acc,none": 0.7437431991294886,
+      "acc_stderr,none": 0.010185787831565082,
+      "acc_norm,none": 0.7540805223068553,
+      "acc_norm_stderr,none": 0.010047331865625212
+    },
+    "sciq": {
+      "alias": "sciq",
+      "acc,none": 0.952,
+      "acc_stderr,none": 0.0067632641336667024,
+      "acc_norm,none": 0.947,
+      "acc_norm_stderr,none": 0.007088105617246442
+    },
+    "wikitext": {
+      "alias": "wikitext",
+      "word_perplexity,none": 14.30564589602269,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 1.6446961398625495,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 0.7178210684551128,
+      "bits_per_byte_stderr,none": "N/A"
+    },
+    "winogrande": {
+      "alias": "winogrande",
+      "acc,none": 0.648776637726914,
+      "acc_stderr,none": 0.013415981370545131
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    },
+    "boolq": {
+      "original": 3270,
+      "effective": 3270
+    },
+    "sciq": {
+      "original": 1000,
+      "effective": 1000
+    },
+    "openbookqa": {
+      "original": 500,
+      "effective": 500
+    },
+    "winogrande": {
+      "original": 1267,
+      "effective": 1267
+    },
+    "arc_easy": {
+      "original": 2376,
+      "effective": 2376
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 1838
+    },
+    "hellaswag": {
+      "original": 10042,
+      "effective": 10042
+    },
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 5153
+    }
+  },
+  "versions": {
+    "arc_easy": 1.0,
+    "boolq": 2.0,
+    "hellaswag": 1.0,
+    "lambada_openai": 1.0,
+    "openbookqa": 1.0,
+    "piqa": 1.0,
+    "sciq": 1.0,
+    "wikitext": 2.0,
+    "winogrande": 1.0
+  }
+}

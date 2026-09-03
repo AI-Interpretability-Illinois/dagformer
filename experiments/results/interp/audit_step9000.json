@@ -1,0 +1,70 @@
+{
+  "audit": {
+    "auc_corrections": 0.7758276614569234,
+    "auc_corrections_resid_tokenid": 0.69131892773726,
+    "auc_hidden_states_L3,6,9": 0.7346441966563739,
+    "auc_token_identity": 0.5808850868139265
+  },
+  "stratified": {
+    "lam0.0": {
+      "in_context_rare": {
+        "nll": 2.671314001083374,
+        "frac": 0.02109375037252903
+      },
+      "in_context_frequent": {
+        "nll": 1.5079594850540161,
+        "frac": 0.4779296815395355
+      },
+      "novel_rare": {
+        "nll": 5.317740440368652,
+        "frac": 0.16845703125
+      },
+      "novel_frequent": {
+        "nll": 3.4921813011169434,
+        "frac": 0.33251953125
+      }
+    },
+    "lam0.5": {
+      "in_context_rare": {
+        "nll": 3.0869827270507812,
+        "frac": 0.02109375037252903
+      },
+      "in_context_frequent": {
+        "nll": 1.5558063983917236,
+        "frac": 0.4779296815395355
+      },
+      "novel_rare": {
+        "nll": 5.435764789581299,
+        "frac": 0.16845703125
+      },
+      "novel_frequent": {
+        "nll": 3.5591564178466797,
+        "frac": 0.33251953125
+      }
+    },
+    "lam1.0": {
+      "in_context_rare": {
+        "nll": 3.9498844146728516,
+        "frac": 0.02109375037252903
+      },
+      "in_context_frequent": {
+        "nll": 1.7511693239212036,
+        "frac": 0.4779296815395355
+      },
+      "novel_rare": {
+        "nll": 5.812777519226074,
+        "frac": 0.16845703125
+      },
+      "novel_frequent": {
+        "nll": 3.789855480194092,
+        "frac": 0.33251953125
+      }
+    }
+  },
+  "rare_max_count": 5,
+  "hidden_layers": [
+    3,
+    6,
+    9
+  ]
+}

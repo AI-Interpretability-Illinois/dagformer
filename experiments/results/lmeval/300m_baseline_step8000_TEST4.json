@@ -1,0 +1,44 @@
+{
+  "config": {
+    "ckpt": "checkpoints/pretrain_300m_baseline/checkpoint_step8000.pt",
+    "config_file": "configs/pretrain_300m_baseline_5k.yaml",
+    "mode": "dense",
+    "tasks": [
+      "piqa",
+      "lambada_openai"
+    ],
+    "batch_size": 8,
+    "max_length": 1024,
+    "limit": 50
+  },
+  "results": {
+    "lambada_openai": {
+      "alias": "lambada_openai",
+      "perplexity,none": 113.89459751476669,
+      "perplexity_stderr,none": 62.34870663786904,
+      "acc,none": 0.24,
+      "acc_stderr,none": 0.06101187572589323
+    },
+    "piqa": {
+      "alias": "piqa",
+      "acc,none": 0.54,
+      "acc_stderr,none": 0.07119963311072637,
+      "acc_norm,none": 0.54,
+      "acc_norm_stderr,none": 0.07119963311072637
+    }
+  },
+  "n-samples": {
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 50
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 50
+    }
+  },
+  "versions": {
+    "lambada_openai": 1.0,
+    "piqa": 1.0
+  }
+}

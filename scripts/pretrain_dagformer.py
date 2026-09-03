@@ -27,6 +27,7 @@ import re
 import signal
 import time
 from dataclasses import asdict, dataclass, fields
+from datetime import timedelta
 from typing import Any, Optional
 
 import torch
@@ -37,13 +38,15 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
 
 from src.data.dolma import build_eval_dataloader, build_train_dataloader
+from src.data.mmap_dataset import build_mmap_train_dataloader
 from src.model.olmo_graph import (
     DAGFormerOLMo, DynamicDenseHeadFormer, FourWayDAGFormer,
     LayerDWAGateFormer, create_all_ones_A,
 )
 from src.model.predictor import (
     ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
-    FourWayPredictor, FourWayStaticPredictor, MiniEncoderPredictor,
+    FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor,
+    MiniEncoderPredictor,
     PerTokenSeq2MatrixPredictor, SeqToMatrixPredictor, SelfEmbedPredictor,
     StaticPredictor, StructurePredictor,
 )
@@ -142,6 +145,12 @@ class DAGFormerPretrainConfig:
     dataset_name: str = "v1_7"
     seq_len: int = 1024
     seed: int = 42
+    # Data source: "stream" (HF streaming, legacy/fragile) or "mmap" (pretokenized
+    # shards from scripts/pretokenize.py — zero network, exact resume, no stalls).
+    data_source: str = "stream"
+    mmap_index_path: str = ""            # index.json path (or its dir) for data_source=mmap
+    data_block_size: int = 1024          # block-shuffle granularity for mmap
+    data_num_workers: int = 2            # DataLoader workers for mmap prefetch
 
     # Training
     micro_batch_size: int = 8
@@ -154,6 +163,7 @@ class DAGFormerPretrainConfig:
     warmup_steps: int = 300
     max_grad_norm: float = 1.0
     lr_schedule: str = "linear"
+    lr_decay_steps: int = 0              # steps over which LR decays to 0; 0 => use total_steps
 
     # Eval
     eval_skip: int = 1_000_000
@@ -216,6 +226,9 @@ class DAGFormerPretrainConfig:
     save_every: int = 2000
     save_dir: str = "checkpoints/pretrain_300m_dagformer"
     resume_from: str = ""
+    # Keep at most this many most-recent checkpoints (older deleted after save).
+    # 0 = keep all (legacy). Use 2-3 for long runs to bound disk usage.
+    keep_last_n: int = 0
 
     @classmethod
     def from_yaml(cls, path: str) -> DAGFormerPretrainConfig:
@@ -594,7 +607,8 @@ def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
     if step < config.warmup_steps:
         return config.lr * step / max(1, config.warmup_steps)
 
-    progress = (step - config.warmup_steps) / max(1, config.total_steps - config.warmup_steps)
+    decay_steps = config.lr_decay_steps if config.lr_decay_steps > 0 else config.total_steps
+    progress = (step - config.warmup_steps) / max(1, decay_steps - config.warmup_steps)
     progress = min(progress, 1.0)
 
     if config.lr_schedule == "linear":
@@ -608,7 +622,8 @@ def get_predictor_lr(step: int, config: DAGFormerPretrainConfig) -> float:
     if step < config.warmup_steps:
         return config.predictor_lr * step / max(1, config.warmup_steps)
 
-    progress = (step - config.warmup_steps) / max(1, config.total_steps - config.warmup_steps)
+    decay_steps = config.lr_decay_steps if config.lr_decay_steps > 0 else config.total_steps
+    progress = (step - config.warmup_steps) / max(1, decay_steps - config.warmup_steps)
     progress = min(progress, 1.0)
 
     if config.lr_schedule == "linear":
@@ -633,6 +648,18 @@ def get_lambda(step: int, config: DAGFormerPretrainConfig) -> float:
 
 # ─── Checkpointing ──────────────────────────────────────────────────────────
 
+def _atomic_torch_save(obj, path: str, **kwargs) -> None:
+    """Write a torch checkpoint atomically: serialize to a .tmp file, fsync,
+    then os.replace onto the final path (atomic on POSIX same-filesystem).
+    Prevents a crash mid-save from leaving a truncated/corrupt checkpoint."""
+    tmp = f"{path}.tmp"
+    with open(tmp, "wb") as f:
+        torch.save(obj, f, **kwargs)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+
+
 def save_checkpoint(
     save_dir: str,
     step: int,
@@ -647,7 +674,7 @@ def save_checkpoint(
 
     # Save model state separately (large)
     model_path = path.replace(".pt", "_model.pt")
-    torch.save(model.state_dict(), model_path, _use_new_zipfile_serialization=False)
+    _atomic_torch_save(model.state_dict(), model_path, _use_new_zipfile_serialization=False)
 
     state: dict = {
         "step": step,
@@ -662,7 +689,7 @@ def save_checkpoint(
         routing_state = {k: v for k, v in routing_model.state_dict().items()
                          if not k.startswith("olmo.")}
         state["routing_state_dict"] = routing_state
-    torch.save(state, path)
+    _atomic_torch_save(state, path)
     print(f"Checkpoint saved: {path}")
     return path
 
@@ -686,6 +713,37 @@ def find_latest_checkpoint(save_dir: str) -> Optional[str]:
                 best_step = s
                 best_path = f
     return best_path
+
+
+def cleanup_old_checkpoints(save_dir: str, keep_last_n: int) -> int:
+    """Delete all but the keep_last_n most-recent checkpoint groups.
+
+    Matches both 'checkpoint_step{N}.pt' (main) and '_model.pt' companion.
+    Returns # of step groups deleted.
+    """
+    if keep_last_n <= 0 or not os.path.isdir(save_dir):
+        return 0
+    by_step: dict[int, list[str]] = {}
+    for f in os.listdir(save_dir):
+        m = re.search(r"checkpoint_step(\d+)(?:_model)?\.pt$", f)
+        if not m:
+            continue
+        step = int(m.group(1))
+        by_step.setdefault(step, []).append(os.path.join(save_dir, f))
+    if len(by_step) <= keep_last_n:
+        return 0
+    sorted_steps = sorted(by_step.keys(), reverse=True)
+    deleted = 0
+    for step in sorted_steps[keep_last_n:]:
+        for f in by_step[step]:
+            try:
+                os.remove(f)
+            except OSError as e:
+                print(f"  WARN: could not delete {f}: {e}")
+        deleted += 1
+    if deleted:
+        print(f"Pruned {deleted} old checkpoint group(s); kept last {keep_last_n}")
+    return deleted
 
 
 # ─── Topology metrics ────────────────────────────────────────────────────────
@@ -835,7 +893,9 @@ def main() -> None:
                 _time.sleep(5)
 
     if world_size > 1:
-        dist.init_process_group(backend="nccl")
+        # 30-min PG timeout (vs ~10-min default) so a slow data/eval/save step
+        # on one rank can't SIGABRT all ranks via NCCL collective timeout.
+        dist.init_process_group(backend="nccl", timeout=timedelta(minutes=30))
         torch.cuda.set_device(local_rank)
 
     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
@@ -908,6 +968,12 @@ def main() -> None:
                 num_layers=config.num_hidden_layers,
                 num_heads=config.num_attention_heads,
             ).to(device)
+        elif config.fourway_predictor_variant == "pos_table":
+            fourway_predictor = FourWayPositionalPredictor(
+                max_seq_len=config.seq_len,
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+            ).to(device)
         elif config.fourway_predictor_variant == "encoder":
             fourway_predictor = FourWayPredictor(
                 vocab_size=config.vocab_size,
@@ -924,7 +990,7 @@ def main() -> None:
         else:
             raise ValueError(
                 f"Unknown fourway_predictor_variant: {config.fourway_predictor_variant}. "
-                "Expected 'encoder', 'static', or 'attn_bottleneck'."
+                "Expected 'encoder', 'static', 'pos_table', or 'attn_bottleneck'."
             )
         if config.freeze_predictor:
             # Freeze external predictor at identity. Only corrections learn.
@@ -1096,15 +1162,29 @@ def main() -> None:
     tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_id)
 
     # Data
-    train_loader = build_train_dataloader(
-        olmo_tokenizer=tokenizer,
-        seq_len=config.seq_len,
-        batch_size=config.micro_batch_size,
-        dataset_name=config.dataset,
-        dataset_version=config.dataset_name,
-        rank=local_rank,
-        world_size=world_size,
-    )
+    if config.data_source == "mmap":
+        assert config.mmap_index_path, "data_source=mmap requires mmap_index_path"
+        train_loader = build_mmap_train_dataloader(
+            index_path=config.mmap_index_path,
+            seq_len=config.seq_len,
+            batch_size=config.micro_batch_size,
+            rank=local_rank,
+            world_size=world_size,
+            num_workers=config.data_num_workers,
+            skip_samples=0,
+            seed=config.seed,
+            block_size=config.data_block_size,
+        )
+    else:
+        train_loader = build_train_dataloader(
+            olmo_tokenizer=tokenizer,
+            seq_len=config.seq_len,
+            batch_size=config.micro_batch_size,
+            dataset_name=config.dataset,
+            dataset_version=config.dataset_name,
+            rank=local_rank,
+            world_size=world_size,
+        )
 
     # Eval data (rank 0 only — cache was built before DDP init)
     eval_batches: list[dict] = []
@@ -1216,16 +1296,31 @@ def main() -> None:
         samples_seen = global_step * config.gradient_accumulation_steps * config.micro_batch_size
         if is_main:
             print(f"  Rebuilding dataloader: skipping {samples_seen} samples to avoid data repetition")
-        train_loader = build_train_dataloader(
-            olmo_tokenizer=tokenizer,
-            seq_len=config.seq_len,
-            batch_size=config.micro_batch_size,
-            dataset_name=config.dataset,
-            dataset_version=config.dataset_name,
-            rank=local_rank,
-            world_size=world_size,
-            skip_samples=samples_seen,
-        )
+        if config.data_source == "mmap":
+            # mmap uses a GLOBAL sample offset; samples_seen is per-rank.
+            mmap_skip = samples_seen * world_size
+            train_loader = build_mmap_train_dataloader(
+                index_path=config.mmap_index_path,
+                seq_len=config.seq_len,
+                batch_size=config.micro_batch_size,
+                rank=local_rank,
+                world_size=world_size,
+                num_workers=config.data_num_workers,
+                skip_samples=mmap_skip,
+                seed=config.seed,
+                block_size=config.data_block_size,
+            )
+        else:
+            train_loader = build_train_dataloader(
+                olmo_tokenizer=tokenizer,
+                seq_len=config.seq_len,
+                batch_size=config.micro_batch_size,
+                dataset_name=config.dataset,
+                dataset_version=config.dataset_name,
+                rank=local_rank,
+                world_size=world_size,
+                skip_samples=samples_seen,
+            )
 
     # Wandb
     wandb_run = None
@@ -1265,6 +1360,9 @@ def main() -> None:
         raise SystemExit(0)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
+    # SLURM sends SIGTERM on scancel/timeout by default (SIGUSR1 only if the batch
+    # script configures --signal=USR1@...); trap both so preemption always saves.
+    signal.signal(signal.SIGTERM, save_on_signal)
 
     # ── Training loop ──
     train_iter = iter(train_loader)
@@ -1299,6 +1397,9 @@ def main() -> None:
 
     # Alternating mode: decide which steps use DAGFormer vs standard forward
     alt_n = config.standard_steps_per_dag_step  # 0 = always DAGFormer
+
+    # Consecutive steps with a non-finite gradient norm (see the guard below).
+    nonfinite_steps = 0
 
     while global_step < config.total_steps:
         # Compute schedules
@@ -1496,7 +1597,30 @@ def main() -> None:
             else:
                 all_params = list(combined_raw.base_model.parameters()) + \
                     list(combined_raw.predictor.parameters())
-            torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
+            total_norm = torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
+
+            # NaN/Inf guard. One non-finite grad element is fatal AND permanent:
+            # clip_grad_norm_ turns total_norm=inf into clip_coef=0, so inf*0=NaN
+            # poisons EVERY parameter, and AdamW then writes NaN into its state
+            # (exp_avg/exp_avg_sq) even at lr=0. Skipping the step keeps the
+            # optimizer clean; a persistent problem aborts instead of burning
+            # hours training on NaN (this happened: 13h of nan losses).
+            # total_norm comes from DDP-synced grads → identical on every rank,
+            # so all ranks take the same branch (no collective, no deadlock).
+            if not torch.isfinite(total_norm):
+                nonfinite_steps += 1
+                optimizer.zero_grad(set_to_none=True)
+                if is_main:
+                    print(f"[NONFINITE] step {global_step}: grad norm {total_norm} — "
+                          f"step skipped ({nonfinite_steps} consecutive)", flush=True)
+                if nonfinite_steps >= 5:
+                    raise RuntimeError(
+                        f"Aborting at step {global_step}: {nonfinite_steps} consecutive "
+                        f"non-finite gradient norms (model has diverged)."
+                    )
+                global_step += 1
+                continue
+            nonfinite_steps = 0
 
         # Step
         optimizer.step()
@@ -1514,7 +1638,20 @@ def main() -> None:
                     print(f"[DDP CHECK @ step 10] PASS — params identical across {world_size} GPUs (diff={diff:.2e})")
                 else:
                     print(f"[DDP CHECK @ step 10] FAIL — params DIVERGED! local={local_val:.6f} mean={mean_val:.6f} diff={diff:.2e}")
-                    print(f"  → DDP gradient sync is NOT working. This is the overfit root cause.")
+                    if not math.isfinite(local_val):
+                        # NaN params, not a sync bug — the old message misattributed
+                        # this as "DDP sync is broken", which hid a real divergence
+                        # for two full runs.
+                        print("  → params are NON-FINITE (NaN/Inf): the model has diverged, "
+                              "not a DDP-sync problem.")
+                    else:
+                        print("  → DDP gradient sync is NOT working.")
+            # All ranks abort together (every rank computed the same diff).
+            if not (diff < 1e-6):
+                raise RuntimeError(
+                    f"DDP check failed at step 10: local={local_val} mean={mean_val} "
+                    f"diff={diff:.2e} — aborting instead of training on bad state."
+                )
 
         # Logging
         if is_main and global_step % config.log_every == 0:
@@ -1685,6 +1822,7 @@ def main() -> None:
                     optimizer, best_eval_nll,
                     routing_model=routing_model if use_routing_mode else None,
                 )
+            cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
 
         global_step += 1
 

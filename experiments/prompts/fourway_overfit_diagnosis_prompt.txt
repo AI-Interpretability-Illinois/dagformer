@@ -1,0 +1,139 @@
+I need deep diagnosis help on a routing-based LM architecture that consistently overfits, despite many ablations.
+
+Please do NOT give generic advice like “try more dropout / weight decay / data augmentation / early stopping” unless you can tie it directly to this setup. I have already done a large number of obvious ablations. I want you to reason like a research collaborator trying to identify what I am most likely missing.
+
+Context
+- This is a custom project built on a 300M OLMo-2 style decoder LM trained from scratch.
+- Model size: 12 layers, 16 heads, hidden size 1024.
+- Data/training setup is otherwise close to the dense baseline.
+- I am only talking about the current FourWay soft-routing line. Ignore the old hard-gate / Gumbel / binary A-matrix line; that is no longer the main object.
+
+Current architecture
+- The dense LM is wrapped by a FourWay routing mechanism.
+- For layer 0, the model is standard attention.
+- For layer l > 0, each token predicts routing weights over previous layer outputs:
+  - alpha_q: per-token, per-head, over source layers
+  - alpha_k: per-token, per-head, over source layers
+  - alpha_v: per-token, per-head, over source layers
+  - alpha_r: per-token, shared across heads, over source layers
+- Mechanically, each previous layer output is first projected through normal Q/K/V projections, then mixed using alpha_q / alpha_k / alpha_v. Residual carrier R is mixed separately using alpha_r.
+- The output is roughly R + attention_out + MLP_out.
+- Identity init is exact: routing output heads start at zero weights, with biases initialized so the routing is exactly identity at step 0. So the model is mathematically equivalent to the dense transformer at initialization.
+- There is also a “fourway_corrected” variant that adds local correction MLPs inside the routed model, on top of the external predictor.
+
+Predictor
+- The main external predictor is currently an independent causal encoder:
+  - separate token embedding + position embedding
+  - 2-layer transformer encoder
+  - encoder dim 256
+  - hidden dim 512 trunk
+  - outputs all alpha_q / alpha_k / alpha_v / alpha_r for every token and every layer
+- So this predictor is input-conditioned and outputs a large amount of continuous routing information.
+
+Main empirical facts
+- Dense 300M baseline eval NLL: 3.8459
+- Best fourway_corrected_joint_causal eval NLL: 5.4924
+- Pure FourWay long-train variant reached 5.3702 at step 6000
+- So FourWay is substantially worse than dense on eval, even though it can drive train NLL much lower.
+
+The important phenomenon
+- The model clearly overfits / generalizes badly.
+- It is not an eval bug.
+- It is not just train/eval mode mismatch.
+- It is not that routing does nothing.
+- Forced-identity eval on the same trained checkpoint gave:
+  - full FourWay: 5.4924
+  - identity routing + corrections on: 5.9662
+  - predictor only, no corrections: 6.3161
+  - identity routing, no corrections: 7.0774
+- So routing is genuinely useful, but it learns a solution with poor generalization.
+- Also, local corrections contribute more than the external predictor:
+  - corrections improve more than predictor-only routing does
+  - this suggests local dynamic capacity may be a major source of overfitting
+
+What I have already tried
+I have already done many ablations. Most did not fix the problem:
+- v-norm / stream normalization ideas: little or no real fix
+- local-only / freeze predictor style variants: worse or only partial
+- predictor dropout: no meaningful fix
+- label smoothing: no meaningful fix
+- smaller correction MLPs: no meaningful fix
+- many regularization variants: L1/L2/clamp/top-k/entropy/noise/lower LR/etc. mostly failed
+- softmax/sinkhorn-style normalized routing mostly exploded or were much worse, likely because they destroy the exact identity-init property
+
+Current hypothesis
+My current best guess is:
+- this is not a single-component bug
+- the real issue is something like dynamic conditional degrees of freedom / hypernetwork-like capacity
+- the router and base model may be co-adapting into a train-good / eval-bad solution
+- “it just has more parameters and needs a bigger recipe” may be partly true, but I suspect that is not the full story
+
+New directions I am currently testing
+- head-shared routing diagnostic
+- correction pooled across sequence instead of token-local
+- freezing predictor embeddings
+- layer-level DWA / MUDDFormer-style comparison
+- a new bottleneck predictor:
+  - query = current token layer-0 embedding
+  - key/value = dense scout pass final hidden states
+  - one causal attention read per token
+  - then a small MLP predicts routing
+- The idea is to reduce predictor conditional bandwidth and force it to use more task-aligned summary information
+
+What I want from you
+Please do all of the following:
+
+1. Give me your best diagnosis of why this architecture overfits.
+- I do not want a shallow list.
+- I want a ranked explanation of the 3-5 most plausible root causes.
+- Be explicit about whether you think this is mainly:
+  - excess conditional bandwidth
+  - co-adaptation
+  - missing trust region around identity
+  - wrong predictor input
+  - recipe mismatch
+  - something else
+
+2. Challenge my framing if needed.
+- If you think my “dynamic gating = effectively bigger model” framing is misleading or incomplete, say so precisely.
+
+3. Tell me what I am most likely missing.
+- I know this project deeply; assume I have already considered the obvious.
+- I want the conceptual mistake, hidden confound, or underexplored axis that an experienced researcher would notice.
+
+4. Propose the smallest number of high-information experiments.
+- Not 20 experiments.
+- Give me the 3 most decisive experiments.
+- For each, tell me:
+  - what it tests
+  - what outcome would support which hypothesis
+  - what outcome would falsify which hypothesis
+
+5. Propose 2-3 architecture changes that are actually worth trying.
+- Prioritize ideas that directly attack the likely root cause.
+- Good examples of the kind of answer I want:
+  - residualized routing / identity trust region
+  - bottlenecked routing inputs
+  - delayed unfreezing / anti-coadaptation training
+  - scout-pass teacher or stop-gradient memory read
+  - low-rank or low-bandwidth routing parameterization
+- Bad examples:
+  - generic “try more regularization”
+  - “train longer” without a strong mechanism-based reason
+
+6. Be opinionated.
+- If you think one direction is clearly the right one, say it.
+- If you think some of my existing ablations were low-value and I should stop that style of search, say that too.
+
+Please write your answer in this structure:
+- Ranked root-cause hypotheses
+- What I think you are missing
+- 3 decisive experiments
+- 2-3 architecture recommendations
+- Final opinion: if you were me, what would you do next?
+
+Attached is a plot with:
+- dense baseline in red
+- all FourWay variants in transparent blue
+- mean FourWay in solid blue
+It visually shows that many FourWay variants drive train NLL down while staying much worse than dense on eval.

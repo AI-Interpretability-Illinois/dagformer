@@ -1301,3 +1301,729 @@ Codex 最初把 runaway 归因于 R (因为 R 直接进残差流)，但实际数
   - 说明问题更接近 token-local conditional bandwidth / predictor side-channel，而不只是 attention-logit rewiring
 - 若 `VR-only` 明显更稳:
   - 后续主线应考虑先只保留 `V/R`，把 `Q/K` tie/shared/移除，再重新引入 trust region
+
+## Interpretability Round 1 — 拓扑 predictor 学到了什么 (2026-08-31)
+
+**对象**: `fourway_300m_dagformer_mmap` step9000（headline checkpoint）。
+**方法**: eval-time routing 干预（swap ladder）+ α 方差分解 + 合成 induction
++ 跨 domain 注入。脚本 `scripts/interp_{dump_alpha,swap_eval,swap2}.py`，
+job 21666314 / 21666491。结果 JSON: `experiments/results/interp/`。
+管线校准：identity_no_corr 6.4632 ≈ trainer eval/nll_baseline 6.4856；
+dense/fourway 的 25-条切片偏移一致（0.133/0.131），dense−fourway gap 与
+trainer 完全吻合（0.101 vs 0.102）。
+
+### Swap ladder（后 25 条 held-out，NLL nats）
+
+| mode | NLL | | mode | NLL |
+|---|---|---|---|---|
+| dynamic | **3.2173** | | static_mean | 3.2618 |
+| **pos_table** | **3.2173** | | shuffle_time | 3.2649 |
+| swap_context | 3.2176 | | dense_baseline | 3.3181 |
+| static_q / k / v / r | 3.2182 / 3.2283 / 3.2536 / 3.2172 | | identity (corr ON) | 4.7563 |
+| dynamic_no_corr | 4.5202 | | identity_no_corr | 6.4632 |
+| pos_table_no_corr | 4.5395 | | static_mean_no_corr | 4.5551 |
+
+### 结论
+
+1. **逐 token 路由有真实因果价值**：dynamic − static_mean = 0.045 nats，
+   占对 dense 优势（0.101）的 ~45%。
+2. **但它是位置调度，不是内容自适应**：
+   - `pos_table`（按位置查表的 α，校准集 per-position 均值，不看内容）
+     **完全复现 dynamic**（3.2173 = 3.2173；三个 domain 窗口上同样打平）
+   - `swap_context`（换别的序列的 α）无损；`shuffle_time` 掉回 static 水平
+   - α 方差分解：**86.5% 位置方差**（Q 92% / K 89% / V 83% / R 79%）
+   - 跨 domain 注入（code 窗用 prose/dolma/latex-mean α）差异 < 0.003 —
+     domain 级内容条件化为零
+   - 合成 induction：copy_acc dynamic 0.795 ≤ static 0.809 < dense 0.847 —
+     无"检测重复并改接线"的证据
+   - 去掉 correction 后内容残留仅 ~0.02 nats（4.5202 vs 4.5395），
+     correction 在场时被完全覆盖
+3. **动态收益解剖位置**：V 流（static_v 伤害最大 +0.036）、中层 L6–9、
+   src=0（embedding 源）——内容方差 top-10 条目全部是 V/L6-11/src0。
+4. **位置调度在 OOD 文本上价值更大**（domain 窗口 0.11–0.15 nats）。
+5. correction MLP 深度耦合（去掉后 +1.3 nats），是剩余的
+   content-conditioned 通道，无法用 swap 单独隔离。
+
+### 叙事影响
+
+"context-dependent dynamic topology"（外置 predictor 层面）**不成立**。
+成立的三分解：**静态重连线（~1.5 nats，corr 在场）+ 位置路由调度
+（0.045，可被一张 [1024×3773] 表替代）+ hidden-state 局部修正**。
+候选新叙事：per-token routing 收益的因果分解 + "26M predictor ≈ 位置查表"
+的简化结论。待补链条：pos-table **从头训**是否追平 encoder predictor
+（排除"内容容量是训练脚手架"假说）。
+
+### 新增 ladder runs（4×A40 各 ~12h）
+
+- 21666351 `fourway_150m_static_mmap`（头级×静态）
+- 21666552 `fourway_150m_postable_mmap`（头级×纯位置，新增
+  `FourWayPositionalPredictor`，identity init 验证通过）
+
+从头训 150M conditionality 阶梯：dense < static < pos_table ≈? full-encoder。
+
+### Probes + emergence (job 21666314 完成, 2026-08-31)
+
+| target | α probe | α 残差 | token-id 基线 | 多数类 | 判读 |
+|---|---|---|---|---|---|
+| posbucket | **0.962** | **0.890** | 0.254 | 0.250 | α ≈ 位置编码器，残差化后仍在 |
+| charclass | 0.867 | 0.753 | 0.957 | 0.753 | 词法回声，低于 id 上限，残差=多数类 |
+| freqbucket | 0.643 | 0.237 | 0.920 | 0.162 | 同上 |
+| **isrepeat64** | 0.769 | 0.590 | **0.765** | 0.595 | **α ≈ token-id 基线：无超越当前词的 context 信号** |
+| nllquartile | 0.289 | 0.239 | 0.266 | 0.209 | 几乎无难度感知 |
+| domain | 0.443 | 0.345 | 0.588 | — | α 连词法 domain 信号都没用满 |
+
+- **Emergence: 平坦**（charclass 0.865→0.867，isrepeat 0.768→0.772，
+  step 1500→10500）——predictor 在 1500 步内定型，无结构涌现。
+- Induction Δα: mean|Δ|=0.0011（极小）；top 条目 v/L7/h1/src0 与内容方差
+  hotspot 同族——重复响应存在但微弱且因果为负。
+- **可解码性与因果性一致**：外置 predictor = 位置嵌入 + 惰性词法查表，
+  无 context 计算（尽管它是 2 层因果 transformer）。
+
+图: `experiments/figures/interp_{swap_ladder,probe_acc,emergence,induction_heat}.png`
+
+### Correction MLP 解剖 (job 21666770, 2026-08-31)
+
+Δcorr = correction MLP 的逐 token 输出（hook 抓取），与外置 α 同布局同问题：
+
+**方差分解 — 与外置 predictor 完美镜像**：
+- Δcorr: **98% 内容方差**（pos_share ≈ 2%，四流一致）；量级集中 V(2.18)、R(1.59) ≫ Q(0.44)、K(0.31)
+- 外置 α: 86.5% 位置方差
+
+**Probes（Δcorr 特征）**：
+
+| target | Δcorr | 残差 | token-id 基线 | 判读 |
+|---|---|---|---|---|
+| charclass | 0.993 | 0.706 | 0.957 | 看 hidden state，词法近完美（预期） |
+| posbucket | 0.419 | 0.404 | 0.254 | 弱位置性（与 α 的 0.962 互补） |
+| **isrepeat64** | **0.840** | **0.660** | 0.765 | **超词法基线 +0.075，残差超多数类 +0.065 — 真 context 信号** |
+| **nllquartile** | **0.436** | **0.357** | 0.266 | **感知难度 +0.17，残差化后仍在** |
+| **domain** | **0.808** | 0.476 | 0.588 | **超词法 +0.22** |
+
+**Induction**: mean|Δ|=0.1654（外置 α 的 **150 倍**）。Top 条目全为 V 流
+src=0（embedding 源）的推拉机制：L11/h4 **+8.2**（末层增强 embedding→V
+直读，token 身份变得可直接复制）、L7/h1,h7 **−8.0**（中层抑制）。
+
+**分工结构（decodability 层面）**：外置 predictor 管"你在哪"（位置调度），
+correction MLP 管"你在处理什么"（重复/难度/domain 反应）。路由系统自发
+分解为 前馈位置调度 + 局部内容反应控制器。
+
+**待最终因果验证** (job 21667922): 把 correction 输出换成 per-position
+查表/换 context 的 Δcorr —— live ≪ corr_pos_table 才能说内容反应性是
+因果真实而非 epiphenomenal。
+
+### Correction 因果测试 — 内容反应性是真的 (job 21667922, 2026-08-31)
+
+| 模式 | NLL | |
+|---|---|---|
+| live（真 correction） | **3.2173** | = dynamic ✓（hook 机制校验）|
+| corr_static（常数均值） | 3.7943 | |
+| corr_pos_table（按位置查表） | 3.8129 | **比 static 还差** — correction 无位置结构 |
+| corr_swap（换别序列的 Δcorr） | 4.4162 | ≈ 没有（4.5202）— 精确内容对齐 |
+| corr_zero | 4.5202 | = dynamic_no_corr ✓ |
+
+**live ≪ 任何 content-free 替代（Δ≥0.58 nats）→ correction 的内容反应性
+因果必要。**
+
+### 最终图景 — Double Dissociation（论文核心表）
+
+| | 外置 predictor α | correction MLP Δcorr |
+|---|---|---|
+| 方差 | **86.5% 位置** | **98% 内容** |
+| 换 context | 免费（+0.0003） | 灾难（+1.20） |
+| 换 per-position 表 | 免费（±0.000） | 昂贵（+0.60） |
+| probe 内容信号 | 无（=词法基线） | 重复/难度/domain 全超基线 |
+| induction 响应 | 0.001 | 0.165（V/embedding 推拉 ±8） |
+
+**结论**：学到的路由自发分解为「前馈位置调度（外置 predictor，可换成
+83K 参数查表）」+「内容反应局部控制器（correction MLP，因果价值 ~0.6
+nats）」。context-dependent dynamic routing 存在且因果必要——但住在局部
+反馈里，不在全局 predictor 里。机制样例：重复检测下 V 流 embedding 直读
+的末层增强/中层抑制。
+
+## ssmfloss — Gradient Flossing / Jacobian Conditioning for Selective SSMs (PoC, 2026-09-01)
+
+Side project in `ssmfloss/` (pure-PyTorch Mamba-1 LM, 68K params, 2 layers, d_model 64,
+d_state 16; synthetic tasks; AdamW β2=0.95, wd 0.01, cosine LR, **no grad clipping**,
+3000 steps, batch 64, 2 seeds). Jobs: smoke 21684726, sweep 21684841 (interactive 4×A40, 1 h).
+Full table `ssmfloss/runs/poc/summary.md`, figures `fig_*.png`.
+
+**Theorem check** (`check_lyapunov.py`): QR-based finite-time Lyapunov exponents of the
+autograd state Jacobian == `A·mean(Δ)` to 1.7e-16; Jacobian exactly diagonal; all λ < 0.
+→ naive Gradient Flossing on the recurrence is closed-form timescale control.
+
+**Eval acc (mean of 2 seeds; 0 divergences anywhere; lam=0.1 for all regs)**
+
+| task | lr | none | temporal (λ→0) | selective (floor −0.2) | io (log-gain→0) |
+|---|---|---|---|---|---|
+| selective_copy T=256 | 1e-3 | 0.49 | 0.55 | **0.59** | 0.30 |
+| | 3e-3 | 0.67 | 0.86 | **0.94** | 0.85 |
+| | 1e-2 | 0.74±0.14 | 0.97 | 0.55±0.45 | **0.997±0.002** |
+| | 3e-2 | 0.09 (dead) | 0.55±0.45 | 0.22 | **0.64±0.36** |
+| recall_unique T=97 | 1e-2 | 0.69 | 0.76±0.16 | 0.72 | **0.87±0.07** |
+| | 3e-2 | 0.56±0.27 | 0.42±0.32 | 0.63 | **0.875±0.04** |
+| recall_last T=97 | ≥3e-3 | 1.00 | 1.00 | 1.00 | 0.99–1.00 (task saturated) |
+
+**Mechanistic findings**
+- Baseline "instability" at high LR is NOT temporal explosion: it is (a) Δ runaway
+  (mean Δ 0.02 → 0.5–22, λ → −4…−92 ⇒ Ā→0, state dies, log σ_max of io-Jacobian → −28 =
+  constant function) and (b) residual-stream blow-up (`resid_rms` 1.5 → 7450 at lr 1e-2,
+  io log σ_max 3 → 15). Embedding norm does *not* shrink (0.08→0.2), so the io-gain growth is
+  real amplification, not an RMSNorm artifact.
+- temporal flossing does exactly what the closed form predicts: Δ ↓ 5–50×, λ → −0.01…−0.08
+  ("never forget"). Helps memory-heavy selective_copy at 3e-3–1e-2 (+0.2–0.3), but does
+  nothing for the depth/io explosion (log σ_max still 10–14) and becomes seed-unstable at
+  3e-2 (Δ oscillates 1e-20…1e-4).
+- io flossing is the only reg that controls the depth Jacobian (log σ_max flat ≈ 3, resid_rms
+  0.2–0.4, Δ stays ~0.05–0.1) and is best/tied-best at lr ≥ 1e-2 on every task; it costs at
+  lr 1e-3 on selective_copy (0.30 vs 0.49) — two-sided "gain→1" over-constrains when nothing
+  is wrong. Note the two-sidedness is what also catches the Ā→0 collapse mode.
+- The prediction "temporal flossing hurts overwrite tasks" is untested: recall_last (8 keys,
+  32 pairs) saturates at 1.0 for everything — needs a harder variant.
+
+**Perf**: double-backward jvp through the scan loop = 3.4 s/step; forward-mode AD
+(reverse-over-forward, `torch.autograd.forward_ad`) = 0.21 s/step vs 0.08 plain.
+
+**Next**: one-sided io hinge / floss only early (paper-style) to remove the low-LR cost;
+harder recall_last; 4-layer / T=512 / `--no_conv` to make the baseline fail at lower LR;
+`--reg block`, `--io_mode top`, Mamba-2-like `--a_mode scalar`; λ sweep (`--grid lam`).
+
+### ssmfloss round 2 — one-sided io hinge + harder overwrite task (job 21686677, 64 runs)
+
+New: `--reg io_hinge --io_thr t` (L = mean relu(log-gain − t)², t=1.5 ≈ init level, also 3.0);
+`recall_last_hard` (16 keys × 64 pairs, every key rebound ~4×, T=161). Same protocol as round 1.
+
+**recall_last_hard — eval acc (2 seeds)**
+
+| lr | none | temporal | selective | io | io_hinge@1.5 |
+|---|---|---|---|---|---|
+| 1e-3 | 0.34±0.11 | 0.33±0.12 | 0.35±0.12 | 0.36±0.05 | 0.35±0.04 |
+| 3e-3 | 0.62±0.30 | 0.71±0.25 | 0.60±0.20 | 0.77±0.05 | **0.88±0.08** |
+| 1e-2 | 0.995 | **0.72±0.16** | 0.93±0.02 | 0.993 | **0.996** |
+| 3e-2 | 0.976 | **0.66±0.22** | 0.82±0.01 | **0.995** | 0.985 |
+
+→ **The forgetting trade-off is real.** Where the task is learnable (lr ≥ 1e-2), naive temporal
+flossing caps at 0.66–0.72 (train NLL plateaus ≈ 1 — optimisation failure, not overfitting),
+the floored `selective` variant sits in between (0.82–0.93), baseline/io/hinge ≈ 1.0.
+Accuracy orders inversely with how far the reg suppressed Δ (temporal Δ 0.003–0.007 <
+selective 0.008–0.02 < none/io/hinge 0.01–0.03). Combined with round 1 (temporal was
+best/2nd-best on memory-only selective_copy at the same LRs): **temporal flossing = timescale
+control that helps pure memory and hurts overwriting; io-Jacobian flossing has no such
+trade-off** (≈ best on both task types).
+
+**io_hinge vs two-sided io (selective_copy / recall_unique)**
+
+| task | lr | none | io (→0) | hinge@1.5 | hinge@3.0 |
+|---|---|---|---|---|---|
+| selective_copy | 1e-3 | 0.49 | 0.30 | **0.46** | **0.48** |
+| | 3e-3 | 0.67 | **0.85** | 0.74 | 0.68 |
+| | 1e-2 | 0.74 | **0.997** | 0.78±0.18 | **0.997** |
+| | 3e-2 | 0.09 | 0.64±0.36 | 0.51±0.39 | 0.65±0.34 |
+| recall_unique | 1e-2 | 0.69 | **0.87** | **0.865** | – |
+| | 3e-2 | 0.56±0.27 | **0.875** | 0.53±0.29 | – |
+
+→ Hinge removes the low-LR cost (1e-3: 0.46–0.48 ≈ baseline 0.49 vs io 0.30) and holds the
+gain exactly at the boundary (log-gain flat at 1.5, σ_max ≈ e^4.4). But it keeps only part of
+the high-LR benefit: hinge@1.5 loses at recall_unique 3e-2 (0.53 vs io 0.875) and is
+seed-unstable at selective_copy 1e-2 (0.6 / 0.96); hinge@3.0 recovers 0.997 there (n=2, so
+the thr dependence is not yet trustworthy). Interpretation: at high LR the two-sided pull
+(also penalising gain < 1, i.e. the Δ-runaway / dead-state collapse mode) matters, or the
+one-sided hinge is simply too weak once the boundary is reached.
+
+**Status of the paper claims after 160 runs**
+1. λ = A·E[Δ] theorem + collapse of naive flossing to timescale control: verified. ✔
+2. Naive flossing hurts selective forgetting: verified on recall_last_hard (−0.28…−0.32 acc). ✔
+3. Depth/io Jacobian, not the recurrence, is what blows up in baseline training; io flossing
+   is the only reg that controls it and is best at high LR. ✔ (small model, synthetic)
+4. Open: a version of io flossing with no low-LR cost AND full high-LR benefit (candidates:
+   band hinge |lg| ≤ t, early-only flossing, top-σ mode, block-wise); thr/λ sweeps with ≥3 seeds.
+
+### 通用性验证：同一套手术用于 OLMoE-1B-7B (job 21704844, 2026-09-01)
+
+对开源 MoE（16 层×64 专家 top-8）的每层 router logits 做同构替换手术，
+51 个 dolma held-out 窗口（25 calib / 26 test），OLMoE 自己的 tokenizer：
+
+| 挡位 | NLL | Δ vs live |
+|---|---|---|
+| live | 2.8110 | — |
+| **token_id**（按当前词查表） | 4.6828 | **+1.87（最便宜的替代，仍灾难）** |
+| pos_table（按位置查表） | 7.3556 | +4.54 |
+| swap_context | 7.6967 | +4.89 |
+| shuffle_time | 8.0245 | +5.21 |
+| static_mean | 8.2333 | +5.42 |
+
+方差分解：**pos_share = 2.2%**（≈ 我们 correction 的 2%，与外置 α 的
+86.5% 相反）。Probes：isrepeat64 gate=0.825 > token-id 基线 0.772（残差
+0.667 > 多数类 0.601 — 真 context 信号）；posbucket 仅 0.433。
+
+**Taxonomy（论文方法论卖点）** — 同一套手术区分三种路由本质：
+
+| 路由机制 | 指纹 | 最便宜的无损/低损替代 |
+|---|---|---|
+| OLMoE expert router | 语境型（词法锚定） | 无（token-id 最近但 +1.87） |
+| DAGFormer 外置 predictor | **位置型** | **per-position 查表（±0.000）** |
+| DAGFormer correction MLP | 语境型 | 无（任何查表 ≥ +0.58） |
+
+方法学意义：手术套件不是"什么都判死/判活"的钝器——它给真正
+content-dependent 的 router（MoE）发"不可替代"证书，同时暴露我们
+全局 predictor 的位置本质。跨架构只比较 profile/排序，不比较绝对
+量级（MoE 换 logits 影响离散 top-8 选择，比软 α 替换更脆）。
+
+附注：shard1 校验-重下机制工作正常（12 月遗留的 3.4G 截断分片被检出
+并重下为 5.0G）；OLMoE 为 instruct 版，NLL 偏高但组内比较不受影响。
+
+### 界面编辑实验 v1 (job 21705901, 2026-09-01)
+
+**E4 头级粒度必要性 — 强阳性（vs MUDD 的差异化证据）**：
+把有效路由（α+Δcorr）按头平均，模拟层级路由：
+
+| 模式 | NLL | repeat copy_acc |
+|---|---|---|
+| baseline | 3.2173 | 0.863 |
+| head_avg_qkv | **5.164 (+1.95)** | **0.031（塌方）** |
+| head_avg_v | 4.297 (+1.08) | 0.108 |
+| head_avg_qk | 3.527 (+0.31) | 0.049（NLL 小伤但 copy 塌方）|
+
+判读：LM 质量主要靠 V 的头级分化；copy 机制同时需要 QK 头级分化。
+层级路由界面无法表述该解。（注意措辞：证明的是"我们学到的解是头级
+异质且层级界面不可表述"，不是"层级架构训不出好损失"——MUDD 在
+150M 与我们打平过。）
+
+**E1 v1 外科删除 — 特异性 ✓ 效应弱**：删 top-6 induction 条目后
+NLL +0.007（外科精度好），copy_acc 仅 −0.010 → 电路分布式，须删
+整个 embedding→V 家族（v2 改为 176 条家族删除 + 等量随机对照）。
+
+**E5 v1 steering — 指标失误**：copy_from_ctx_rate 在随机文本基线即
+0.86（天花板），λ=2 反而全面破坏。v2 改用 lag-128 token 的 logprob
+（induction 假设的尖锐指标）。
+
+### 界面编辑实验 v2 (job 21705932, 2026-09-01)
+
+**E4b 组件归因 — 头级多样性分布在两个组件且互锁（超可加）**：
+| 模式 | NLL | copy_acc |
+|---|---|---|
+| 只平均 α（corr 保留） | 3.578 (+0.36) | 0.515 |
+| 只平均 corr（α 保留） | 3.461 (+0.24) | 0.516 |
+| 两者都平均（v1） | 5.164 (+1.95) | 0.031 |
+
+单独平均各损失一半 copy、少量 NLL；同时平均 → 崩溃。+1.95 ≫ 0.36+0.24：
+α 与 corr 的头级结构互相补偿、缺一即塌 — "interlocking head diversity"。
+
+**E1b 家族删除 — 阴性（诚实记录）**：删整个 embedding→V correction
+家族（176 条）copy_acc 仅 −0.006（0.857），对照家族反而 −0.049。
+结论：V/src0 上 ±8 的 induction 大信号是重复处理的**标志物（marker）**，
+不是 copy 的**引擎（lever）**。copy 的因果载体在 per-head QK 结构里
+（v1 中 head_avg_qk 使 copy 塌方至 0.049 而 NLL 仅 +0.31 可证）。
+
+**E5b 尖锐指标 steering — 阴性**：注入重复指纹后 lag-128 logprob
+−8.256→−8.195（λ=0.5，噪声级），λ=1 反而变差且 NLL 漂移 +0.23。
+写入 correction 通道不能在非重复文本上诱发 induction 行为。
+
+**编辑线定论**：组件/流/粒度级干预 = 因果、大效应、可解释（swap 阶梯、
+stream 消融、头平均）；微观单电路编辑 = 未证实。论文可把"signature ≠
+lever"作为 nuance 正面写出。
+
+### Steering v2 (jobs 21706167/21706191, 2026-09-01)
+
+**S1 抑制背诵的旋钮 — 成功（本轮最强正面结果）**：
+真重复文本上按比例减去重复反应信号（correction 通道）：
+
+| 减幅 λ | 背诵正确率 | 普通文本 NLL |
+|---|---|---|
+| 0 | 72.7% | 3.2173 |
+| 0.25 | 68.2% | 3.2344 |
+| 0.5 | 62.9% | 3.2871 |
+| 1.0 | 43.5% | 3.5392 |
+| 2.0 | 12.7% | 4.5583 |
+
+平滑单调可调；轻档几乎免费（−0.25 档：背诵 −4.5 点 / NLL +0.017），
+重档代价显著。单路减弱效果小（qk_only 69.0%、v_only 71.1%）→ 旋钮
+分布于全信号。
+
+**S2 公平目标诱发 — 阴性（两轮独立设计后定论）**：重复刚停止的文本
+注入信号无法维持"仍在重复"押注（尾段 lag-128 logprob 基线 −8.12，
+各档 −8.11~−8.37 噪声级）。
+
+**S3 文风注入 — 阴性 + 完美对照**：散文注入代码指纹，代码词概率质量
+0.96%→1.01%（真代码参考 10.6%）。**α 侧同量注入：+1.0/+2.0 档
+mass=0.0096、NLL=4.921/4.920 —— 与基线逐位一致**（预测零效应，
+实测零效应；correction 侧同幅注入 NLL 4.92→5.13 有扰动）。
+
+**机制定论**：correction 里的内容信号是对"已检测到的模式"的**响应**而
+非检测本身——减掉能打断响应（刹车灵），注入造不出检测（油门不灵）。
+两次失败从两个方向支撑同一句话；抑制旋钮 + 权衡曲线进正文，
+反向阴性进 nuance 段。
+
+### 从头训练的 conditionality 阶梯 — 150M 第一格落地 (2026-09-02)
+
+同数据/步数/评测集（dolma held-out 50 seqs），step 5500 eval NLL：
+- dense: 3.7969
+- **pos-table routing（无 correction）: 3.7813**（job 21712983，final step6000 = 3.7788）
+- full DAGFormer（encoder + corrections）: 3.6875
+
+仅位置路由收益 0.016 nats；完整模型 0.109 nats → 增益大头需要内容
+通路（与 300M 干预分解方向一致）。注意：本格 ≠ "预测器可换位置表"
+的直接检验（那需保留 corrections）；直接检验 = Lite（21712984 在跑，
+预测 ≈3.69）。static（21723942 排队）补零输入依赖格。
+
+### 简化版（Lite）从头训练结果 — 替换主张成立 (job 21712984, 2026-09-02)
+
+150M，同数据/步数/评测集，step 5500 eval NLL：
+
+| 条件 | 预测器参数量 | eval NLL |
+|---|---|---|
+| dense | — | 3.7969 |
+| 位置表，无 correction | 1.33M | 3.7813 |
+| **位置表 + corrections（Lite）** | **1.33M** | **3.6875** |
+| 编码器预测器 + corrections（完整版） | ~27M | 3.6875 |
+
+Lite 与完整版**四位小数相等**（final step6000: Lite 3.6839）。
+结论链闭合：
+1. eval 时替换（300M）：零变化；
+2. **从头训练替换（150M）：最终损失相等，预测器参数缩小 20 倍**；
+3. 全局预测器的内容容量连"训练脚手架"都不是；
+4. 内容依赖增益（0.109 中的 0.094）全部来自 854K 参数的局部修正模块。
+
+### 阶梯补齐：static 格 + 新增 static+corr 格 (2026-09-02)
+
+150M step-5500 对齐表（同数据/步数/评测集）：
+
+| 条件 | eval NLL |
+|---|---|
+| dense | 3.7969 |
+| static routing（无 corr, job 21723942, final 3.7764） | 3.7776 |
+| pos-table routing（无 corr） | 3.7813 |
+| Lite（pos-table + corr） | **3.6875** |
+| full（encoder + corr） | **3.6875** |
+
+新发现：**无 corrections 时，位置依赖相比纯静态无增益**（3.7776 vs
+3.7813，噪声级）。与 300M eval-time 的 0.045 位置收益（corrections 在场）
+对比 → 位置调度的价值可能依赖与内容通路的交互，或随规模变化。
+已提交 static+corr 150M 检验："若 static+corr == Lite == full，全局
+预测器可退化为常量向量"。
+
+### 选择性对照：复现抑制不是一般性破坏 (job 21763777, 2026-09-02)
+
+回应"是否只是破坏模型性能"的质疑。300M step9000，held-out 25 条，
+重复序列 16 条：
+
+| 扰动（作用于 correction 输出） | held-out NLL | 复现准确率 |
+|---|---|---|
+| 无 | 3.2173 | 72.7% |
+| −0.5×签名 | 3.2871 (+0.070) | 62.9% |
+| +0.5×签名（反号） | 3.2712 (+0.054) | **78.7%** |
+| 随机方向、同 L2 范数（5 种子） | 4.32–6.87 (+1.1～+3.7) | 2–8% |
+| −1.0×签名 | 3.5392 | 43.5% |
+| +1.0×签名 | 3.4446 | 75.2% |
+| 随机方向、同范数（1.0） | 6.60–13.33 | 0–4% |
+
+结论：效应方向特异且有符号（反号→复现上升），随机方向的一般性损害
+大 15–50 倍。修正此前表述：签名方向可双向调节**已被激活**的复现过程，
+但不能在无重复输入上启动它。
+
+**自然文本分层**（可复现组 = 目标 token 出现于前 128 token，占 44.7%）：
+−0.5 下可复现组 1.795→1.853 (+3.3%)，新颖组 4.366→4.445 (+1.8%)。
+行为空间选择性成立，token 空间附带代价弥散。待改进：低频词分层。
+
+**审计投影（阴性）**：signature 方向投影对复现事件 AUC=0.47（幅值基线
+0.575）。信息存在于 correction 输出（探针 0.840）但不在单一方向上；
+审计需训练式线性监测器（待补 AUC + 隐状态探针对比）。
+
+### 复述抑制的特异性对照 (job 21763799, 2026-09-02) — 回应"是否只是整体损害"
+
+同一 300M step9000 模型，减去扰动向量后测：重复文本背诵准确率 /
+普通文本 NLL / 普通文本 top-1 准确率（基线 72.7% / 3.217 / 38.6%）：
+
+| 扰动 | 背诵 | NLL | top-1 |
+|---|---|---|---|
+| 签名 ×0.25 | 68.2% | 3.234 | 38.2% |
+| 签名 ×0.5 | 62.9% | 3.287 | 37.5% |
+| 签名 ×1.0 | 43.5% | 3.539 | 34.0% |
+| 随机方向，范数 = ‖0.5×签名‖（3 种子） | 7.4–8.4% | 4.32–6.87 | 6.6–23.3% |
+| 随机方向，2–16 倍范数 | ≈0–2% | 8.6–17.7 | ≈0 |
+| 签名坐标打乱 ×0.5（3 种子） | 1.1–56.1% | 3.58–5.85 | 15.4–34.0% |
+
+**等范数比较**：签名方向对普通能力几乎无损（top-1 −1.1 点），任意
+方向同等大小则摧毁模型（top-1 −15 至 −32 点）；坐标打乱后该性质
+消失 → 签名是特定的低损伤方向，其坐标结构有意义。
+**等代价比较**尚缺随机方向的低范数点（job 21763945 补 1/16–1/2 倍）。
+
+### 特异性对照 — 等代价比较 (job 21763945, 2026-09-02)
+
+随机方向低范数扫描（‖δ‖ = 1/16, 1/8, 1/4, 1/2 × ‖0.5×签名‖，各 3 种子）：
+
+| 代价（NLL 上升） | 签名方向：背诵下降 | 随机方向：背诵下降（3 种子均值±范围） | 随机方向 top-1 下降 | 签名方向 top-1 下降 |
+|---|---|---|---|---|
+| ≈ +0.017 | −4.5 点 | −1.2（−3.1 ~ +1.2） | −0.3 | −0.4 |
+| ≈ +0.07 | **−9.8 点** | **−0.9（−5.0 ~ +1.4）** | −0.7 | −1.1 |
+| ≈ +0.32（插值） | **−29.2 点** | **≈ −10** | ≈ −4 | −4.6 |
+
+**结论**：在相同附带代价下，普通能力（top-1）的下降两者相当，而签名方向
+对背诵的抑制是随机方向的约 3–10 倍。批评"只是整体损害"不成立；扣除
+整体损害后的针对性效应：低代价档 ≈9 点，中代价档 ≈19 点。
+图：`experiments/figures/interp_specificity.png`。
+
+### 审计监测器 + 低频词分层 (job 21763959, 2026-09-02)
+
+**审计**：在自然 held-out 文本上标记"复现事件"（目标 token 出现于前
+128 token 且模型预测正确，占 23.8%），训练式线性监测器的测试 AUC：
+
+| 特征 | AUC |
+|---|---|
+| **correction 模块输出（3773 维）** | **0.776** |
+| 同上，按当前 token 身份残差化 | 0.691 |
+| 隐状态 L3/6/9 拼接（3072 维，即 correction 的输入） | 0.735 |
+| 当前 token 身份 P(event\|id) | 0.581 |
+
+路由信号是比其自身输入（隐状态）更好的线性可读审计信号；去掉词身份
+可解释部分后仍有 0.69。
+
+**低频词分层**（rare = 语料内出现 ≤5 次；test 10 条序列）：
+
+| 组 | λ=0 | λ=0.5 (Δ) | λ=1.0 (Δ) |
+|---|---|---|---|
+| 出现过 & 低频（真需复现） | 2.671 | 3.087 (+0.416, +15.6%) | 3.950 (+1.279) |
+| 出现过 & 高频 | 1.508 | 1.556 (+0.048) | 1.751 (+0.243) |
+| 新颖 & 低频 | 5.318 | 5.436 (+0.118) | 5.813 (+0.495) |
+| 新颖 & 高频 | 3.492 | 3.559 (+0.067) | 3.790 (+0.298) |
+
+干预代价精确集中在需要复现机制的 token 上（λ=0.5 时该组绝对增幅是
+新颖组的 3.5–6 倍、相对增幅 7 倍）。此前"代价弥散"的读数是把由语言
+统计预测的高频复现词混入所致。选择性三重成立：方向特异、符号特异、
+token 特异。
+
+### 记忆化（训练数据逐字复现）审计与控制 — 阴性 (job 21763846, 2026-09-02)
+
+按训练顺序（seed 42 块置换，step 9000 前消费 4,608,000 个位置）精确
+划分见过/未见过的训练窗口，各 600 个，前缀 64 + 续写 32：
+
+| | 见过 | 未见过 | 差 |
+|---|---|---|---|
+| 续写 NLL（教师强制） | 3.497 | 3.584 | 0.087（显著，≈3.5 SE）|
+| 贪心逐 token 匹配率 | 3.8% | 3.7% | — |
+| 32-token 完整抽取率 | 0.0% | 0.0% | — |
+
+存在轻微参数化记忆（见过的损失更低），但**无可测的逐字抽取**（300M、
+单 epoch、4.7B token 的预期结果）。干预（−0.5/−1.0 签名）使两组损失
+等量上升，gap 保持 0.09 → 复现抑制方向不作用于参数化记忆（机制不同）。
+投影审计 AUC 0.525（随机）。
+
+**结论**：control 案例保持为"上下文内逐字复制"；论文需明确边界：该操作
+对象控制的是从上下文复制，而非参数化记忆；后者在本规模不可测。
+
+### 具名头定位与双向 steering (job 21764128, 2026-09-03) — 本轮最强结果
+
+对 Q/K 逐头路由做"替换为层均值"扫描（300M step9000，复述基线 72.7%）：
+
+**逐层**：L4 → 17.2%（−55）、L6 → 53.3%、L3 → 58.3%、L7 → 61.5%，
+其余层 ≈ 无影响；NLL8 代价 L4 仅 +0.10。
+**逐头**：L4/h1 单头 → **12.6%（−60）**；L3/h11 → 54.9；L6/h11 → 55.4；
+L3/h13 → 60.9；L3/h2、L4/h4 ≈ 中位数（71.5/71.6，可忽略）。
+
+**γ 扫描**（6 个具名头的 Q/K 路由相对层均值的偏离 × γ，同时作用于
+预测器与修正模块）：
+
+| γ | 复述准确率 | NLL | 自然文本前文 token 概率质量 |
+|---|---|---|---|
+| 0 | **3.8%** | 3.427 (+0.21) | 36.7% |
+| 0.5 | 35.1% | 3.295 (+0.08) | 37.1% |
+| 1（基线） | 72.7% | 3.217 | 38.5% |
+| 1.5 | **80.2%** | 3.240 (+0.02) | 39.3% |
+| 2 | 82.8% | 3.292 (+0.07) | 40.1% |
+| 3 | 86.6% | 3.499 (+0.28) | 42.3% |
+
+- 关闭（γ=0）：−69 点 / +0.21 NLL（签名方向 −29 / +0.32；随机 ≈−10 / +0.32）
+- **正向 steering 成立**：γ=1.5 复述 +7.5 点仅 +0.02 NLL；自然文本上
+  对前文 token 的概率倾向随 γ 单调上升（36.7% → 42.3%）
+- "重复后接新内容"的 lag-128 logprob 基本不动（−8.46~−8.10）：放大不会
+  凭空诱发重复，只增强对真实重复的利用
+
+**接线读出**（预测器 Q/K 来源层权重，重复与随机文本上逐位一致 →
+学到的固定结构）：具名头的 K 路由对 embedding（源 0）与第 1 层输出赋
+**负权**（−0.3 至 −0.9），对最近层赋 >1 的权重（+1.4 至 +1.5）——
+即 key = 近层表示 − 当前 token 自身身份，符合 induction head "按前文
+而非自身匹配"的要求；L6/h11 的 K 另从源 4（第 3 层输出，即 L3 具名头
+的写入处）读取 +1.09，构成跨层组合。
+图：`interp_named_head_dial.png`、`interp_named_head_wiring.png`。
+
+### 自由生成的重复退化 — 阴性 (job 21764143, 2026-09-02)
+
+40 条 held-out 前缀（128 token），贪心解码 200 token：
+| λ | rep-4 | distinct-2 | 循环序列比例 | dense PPL(生成文本) |
+|---|---|---|---|---|
+| 0 | 0.823 | 0.153 | 100% | 1.51 |
+| 0.25 / 0.5 / 1.0 | 0.856 / 0.835 / 0.841 | 0.123 / 0.138 / 0.128 | 100% | 1.49 / 1.56 / 1.60 |
+
+复现抑制方向不改变贪心解码的循环退化（解码病态，自我强化；与
+教师强制下的上下文复制不同）。control 案例的适用范围止于教师强制
+/评测设定下的复制行为。
+
+**本轮（合作者 audit/control 提议）总结**：正面 = 线性审计监测器
+（AUC 0.776 > 隐状态 0.735 > 词身份 0.581）、抑制的三重选择性、
+代价曲线；阴性 = 参数化记忆不可测且不受影响、不能诱发复制、文风
+不可注入、不能修复生成退化。
+
+### 全头功能图谱 (job 21765227 + 登录节点分析, 2026-09-03)
+
+176 个路由头逐个消融（连接换层均值；另有输出置零版本），每次测
+25 项指标（总 NLL；按目标词类/词频/位置/难度分的 NLL；目标词是否在
+前文出现；周期 32/128/512 复述准确率；code/prose/latex NLL）。
+
+**单头消融能命名的头**：稳健（复述 ≥5 点或某类 NLL 超出 ≥0.02 nats）
+23/176；按相对 z 分数（≥2.5）89/176；87 个头无可辨单头效应（冗余）。
+稳健命名示例：复述回路 L4/h1、L3/h11、L3/h13、L6/h11、L1/h5；
+稀有词头 L1/h7 (+0.049)、L9/h4、L7/h8、L11/h2；大写词头 L7/h11 (+0.054)、
+L9/h13、L9/h2；空白符头 L10/h3（总 +0.002 但空白目标 +0.083）；
+标点头 L10/h4、L7/h13；代码头 L7/h9、L7/h5；LaTeX 结构头 L7/h1 (+0.110)。
+标签修正：领域指标受复述能力牵连（LaTeX/代码重复多），先按复述判定。
+
+**接线签名（全部 176 头，无需消融）**：k-means 6 族，主轴是
+"向 V 注入多少原始词向量"（族均值 −10.7 / −3.2 / −1.65 / +0.35 /
++3.9 / +10.2）。注入为正的两族（22 头）中 15 个是词法头（词类/词频），
+仅 2 个无效应；注入为负的两族（101 头）中词法头仅 13 个、65 个无效应
+→ **接线预测功能**。图：`interp_atlas_families.png`、
+`interp_atlas_wire.png`；卡片：`atlas_cards.json`。
+
+下一步命名剩余头：按接线族整族消融（组消融）+ 更细的行为测试。
+
+### 发现式命名 (jobs 21766163-66 + 登录节点分析, 2026-09-03)
+
+**数据**：1000 条模型未训练过的 mmap 序列（permuted position ≥5.5M，
+超出 10700 步消耗量），每个头做连接消融记录逐 token ΔNLL（176×1000×1024）。
+**协议**：前 500 条发现（取效应最大 200 token 提假设），后 500 条验证
+（规则命中 token 的平均效应 ≥ 未命中的 3 倍且 ≥0.01 nats）。规则来源：
+数据驱动词集（top-200 中计数≥3 且 lift≥5）+ 词类词表（代词分三人称、
+开/闭括号、引号、换行、句末、介词、连词、限定词）+ 结构规则。
+
+**结果：75/176 头通过验证命名**（第一版按 top-3 词覆盖率门槛为 0/176，
+门槛错误已改）。代表性命名（held-out：规则内效应 / 规则外效应）：
+- 代词按人称分工：L9/h3 第三人称 he/she/her（+0.276 / −0.002，覆盖其
+  效应质量 30%）；L8/h8、L9/h8 it/they/them（+0.333、+0.182）；
+  L9/h11 第一人称（+0.140）；L10/h15、L2/h10 第二人称
+- 括号：开括号头 L8/h0（+0.211）、L6/h1、L6/h13、L7/h5、L7/h15、L3/h9、
+  L5/h4；闭括号头 L8/h9（+0.271）、L9/h2、L3/h2、L6/h5、L2/h7、L4/h2、L7/h4
+- 引号/标点 L11/h0、L10/h4、L10/h9、L8/h15；句末标点 L6/h12、L7/h13、
+  L8/h1、L5/h11、L5/h7；换行/缩进 L11/h6、L11/h7、L11/h10、L10/h12、
+  L5/h12、L6/h3
+- 介词 L10/h10（+0.041，覆盖 46%）；限定词 L6/h15；数字 L6/h11（+0.244）、
+  L1/h2；大写词 L8/h3、L9/h13、L7/h9、L11/h2、L6/h6
+- 待人工判读的数据驱动词集：L11/h4 {than, second, old, right…} +0.699；
+  L10/h11 {Canada, colour, honour, humor…}（拼写变体/国别？）；L10/h6
+**限制**：命名描述最具区分度的功能，覆盖率多为 1–30%（头多功能）；
+词表在看过第一轮后设计，验证数据独立；101 个头本轮未命名。
+产物：`token_effects/discovery2_summary.json`、`token_effects/cards/*.md`
+（每头 30 条片段）、`interp_head_atlas_map.png`。
+
+### 阶梯完成：static + corrections (job 21755999, 2026-09-03)
+
+150M step-5500 对齐（同数据/步数/评测集）：dense 3.7969 | static 3.7776 |
+pos-table 3.7813 | **static+corr 3.6863** | pos-table+corr 3.6875 |
+encoder+corr 3.6875（static+corr final step6000 = 3.6851）。
+
+结论：修正模块在场时，全局预测器取常量 / 位置表 / 27M 编码器**从头
+训练结果无差**（三者 0.0012 内）。增益分账：静态重接线 ≈0.02，
+局部修正 ≈0.09（与全局预测器形态无关）。最简架构 = 逐头静态接线 +
+局部修正模块。与 300M eval-time 结果（static_mean 比 dynamic 差 0.045）
+的差别归因于从头训练的共适应；300M 从头训 static+corr 可作最终确认（可选）。
+
+### 阶梯最后一格：static + corrections (job 21755999, 2026-09-03)
+
+150M step-5500 对齐表（同数据/步数/评测集），完整六格：
+
+| 全局路由 | correction | 预测器参数 | eval NLL |
+|---|---|---|---|
+| 无（dense） | 无 | 0 | 3.7969 |
+| 静态常量 | 无 | 1,295 | 3.7776 |
+| 位置表 | 无 | 1.33M | 3.7813 |
+| **静态常量** | **有** | **1,295** | **3.6863** |
+| 位置表 | 有 | 1.33M | 3.6875 |
+| 编码器 | 有 | ~27M | 3.6875 |
+
+三个"有 correction"格在 0.001 内相等（final step6000: 3.6851 / 3.6839 /
+—）。**结论：全局预测器可退化为 1,295 个常量而无损失**；输入依赖的
+全部收益由 854K 参数的 correction 模块承载；编码器的位置调度在从头
+训练条件下也非必要。最小充分路由结构 = 静态 (层,头,流,源) 常量 +
+局部内容反应修正。
+注意：300M 上 eval-time 的 static_mean vs pos_table 差 0.045 是对编码器
+调度的 co-adaptation，非必要成分；规模依赖性可用 300M static+corr 复核。
+
+### 生成示例 round 1 (job 21780660, 2026-09-03)
+
+对 10 个已命名头放大接线偏离 γ∈{0,1,2,4,8}，8 个中性提示各 2 段 80 token：
+- **复述头 L4/h1：重复 token 占比 28.5% → 37.2%(γ2) → 40.8%(γ4) → 71.2%(γ8)**，
+  distinct ratio 0.71 → 0.29，γ=8 样例整句循环——路由放大对"搬运信息"类
+  功能产生 Golden-Gate 式泛滥。
+- 介词头 L10/h10 轻微单调（9.7% → 14.4%）；数字头 γ4 时 4.2%（基线 1–2%）
+- 代词头、括号头、引号头、换行头：**无系统变化**。
+解释：路由放大 = 头更多地从来源读信息，对"决定输出哪类词"的头无效；
+其杠杆应为输出强度（round 2 验证）。
+
+### 生成示例 round 2 (job 21780859, 2026-09-03)
+
+**类别头改用输出放大（κ 0–8）**：代词/括号/引号/换行/数字头仍无系统变化
+→ 单个类别头无论放大路由还是输出都不会让生成泛滥；它们是在该类词
+合理的位置做精细选择，不是概念表征（与 SAE 特征的本质区别）。
+
+**复述回路短语复现（6 个具名头，γ 0–4，提示含独特短语，各 4 样本×100 token）**：
+γ≤1 基本不复现（quantum crystals 0×，Aldermoor 0–0.5×）；γ=2–3 明显复现
+（quantum crystals 1.0→5.75×，Aldermoor 1.5→3.0×）；γ=4 退化为整句循环。
+样例：
+- γ=3 "The Bridge is a suspension bridge in Los Angeles. The Bridge is a
+  suspension bridge in San Francisco. The Br…"
+- γ=4 "It is not a suspension bridge. It is not a suspension bridge. It is not…"
+- γ=4 "He said the image of the theory of quantum crystals to the class. He said
+  the investigation of the theory of quantum crystals to the class."
+- γ=2 "The famous ancient village of Aldermoor is an old town of ancient village
+  of Aldermoor…"
+论文用法：round 1 的 token 重复率曲线（28.5%→71.2%）+ 这些样例。
+`experiments/results/interp/generation/generation_demos{,2}.json`
+
+### 一头多名 + 多义性统计 (discovery pass 3, 2026-09-03)
+
+合并 5000 条数据 + 扩展规则：**88/176 头命名，280 个已验证功能**（每头
+平均 1.6 个，最多 17 个；58 个头 ≥2 个功能）。新命名示例：L11/h1 词内
+续写（+0.182，覆盖 36%）、L7/h7 身份角色名词（student/employee/bride/
+clients，+0.225）、L7/h8 钱与时间量（$/years/cost/price）、L7/h0 时间词、
+L6/h8 代码符号、L1/h7 词片段补全。
+**多义性**：把一个头的全部已验证功能合并，中位数只覆盖其效应质量 13%
+（最高 72%）→ 大部分效应不属于单头单功能，指向回路级（跨头跨层组合）
+单元。已启动连接级扫描（88 头 × Q/K/V × 来源层 ≈1850 条，8 分片）与
+功能×连接归因（`scripts/interp_circuits.py`）。
+
+### 连接级归因 → 回路 (jobs 21782111-18 + 登录节点分析, 2026-09-03)
+
+88 个命名头 × Q/K/V × 来源层 ≈1850 条连接，逐条替换为层均值，1000 条序列
+逐 token 效应；对 280 个已验证功能（去重后 99 个）算每条连接在功能 token
+上的效应。
+- **原始排序**：前 10 条连接平均横跨 5.3 个头，仅 12% 在功能所属头内——
+  但被复述头 L4/h1 的大效应连接混杂（数字、大写词等常出现在重复内容里）。
+- **按连接自身跨功能分布归一化（z 分数）后**：平均 3.9 个头。多数词类
+  功能（第三人称代词、it/they、开括号、引号、句末、大写字母）的专属连接
+  集中在**一个头的多条连接**（Q/K/V × 多个来源层），单条效应小
+  （+0.01~+0.09）而整头效应大（如代词 +0.276）→ 功能由头内多连接共同承载；
+  另一些功能是真跨头回路：月份/单位 6 头、数字续写 7 头、大写前缀 6 头、
+  词片段补全 9 头、身份角色名词 4 头。
+- 结论：单元既不是单头也不是单连接，而是"连接集合"（头内多连接或跨头）。
+  验证中：整组消融 vs 等量随机连接、整组放大（job 见 circuit_verify.json）。
+产物：`circuit_matrix.npz`、`circuits_specific.json`。
+
+### 回路级编辑验证 (job 21786544, 2026-09-03) — 双向、特异
+
+每个功能取归一化排序前 10 条连接（一个头内多条或跨头），200 条 held-out
+序列，报告功能 token 上 / 其他 token 上的 NLL 变化：
+
+| 功能 | 整组消融 on / off / 随机10条 on | 放大×2 on / off | 放大×4 on / off |
+|---|---|---|---|
+| 开括号 | +0.259 / −0.001 / +0.007 | **−0.154** / +0.001 | **−0.231** / +0.004 |
+| 引号 | +0.256 / −0.001 / −0.005 | −0.143 / +0.002 | **−0.312** / +0.007 |
+| 闭括号 | +0.226 / +0.001 / −0.003 | −0.080 / +0.001 | −0.145 / +0.008 |
+| 第三人称代词 | +0.219 / −0.002 / +0.004 | −0.072 / +0.002 | −0.084 / +0.006 |
+| 句末标点 | +0.068 / −0.002 / +0.024 | −0.050 / +0.002 | −0.110 / +0.007 |
+| 空白符 | +0.095 / −0.004 / +0.057 | −0.066 / +0.007 | −0.112 / +0.017 |
+| 数字 | +0.115 / +0.016 / +0.002 | +0.076 / +0.020 | +0.305 / +0.139（与复述回路纠缠，放大反而伤）|
+| 词内续写 | +0.232 / +0.068 / +0.002 | +0.033 / +0.023 | +0.237 / +0.158（宽泛功能）|
+
+6/8 功能得到回路级双向旋钮：消融只伤该功能 token（其他 token ≈0，随机
+对照 ≈0），放大让该功能的预测**变好**（−0.05 至 −0.31 nats）且其他
+token 几乎不变（<0.01）。与生成实验合看：放大并不让该类词在生成中泛滥
+（回路是"条件使能器"——在该类词合理时增强，不是概念注入）。
+图：`interp_circuit_editing.png`；数据：`circuit_verify.json`。

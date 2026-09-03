@@ -1,0 +1,26 @@
+{
+  "lam0.0": {
+    "rep4": 0.8233502538071067,
+    "distinct2": 0.15276381909547737,
+    "frac_seqs_looping": 1.0,
+    "dense_ppl_of_generation": 1.5115424394607544
+  },
+  "lam0.25": {
+    "rep4": 0.8563451776649746,
+    "distinct2": 0.12298994974874371,
+    "frac_seqs_looping": 1.0,
+    "dense_ppl_of_generation": 1.4889615774154663
+  },
+  "lam0.5": {
+    "rep4": 0.8348984771573604,
+    "distinct2": 0.13756281407035176,
+    "frac_seqs_looping": 1.0,
+    "dense_ppl_of_generation": 1.5624271631240845
+  },
+  "lam1.0": {
+    "rep4": 0.8412436548223351,
+    "distinct2": 0.12763819095477386,
+    "frac_seqs_looping": 1.0,
+    "dense_ppl_of_generation": 1.595858097076416
+  }
+}

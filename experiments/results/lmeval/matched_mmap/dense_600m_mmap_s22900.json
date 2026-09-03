@@ -1,0 +1,35 @@
+{
+  "config": {
+    "ckpt": "/work/hdd/bfqt/dagformer_checkpoints/pretrain_600m_baseline_mmap/checkpoint_step22900.pt",
+    "config_file": "configs/pretrain_600m_baseline.yaml",
+    "hf_model": null,
+    "hf_revision": "main",
+    "mode": "dense",
+    "tasks": [
+      "wikitext"
+    ],
+    "batch_size": 4,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "wikitext": {
+      "alias": "wikitext",
+      "word_perplexity,none": 35.90747796201032,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 1.953562682838261,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 0.9661075471873497,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "wikitext": 2.0
+  }
+}

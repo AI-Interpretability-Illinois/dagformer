@@ -1,0 +1,194 @@
+{
+  "target char-class = digit": {
+    "rule": "target char-class = digit",
+    "n_rule_tokens": 4835,
+    "ablate_top3": {
+      "on_rule": 0.05706092715263367,
+      "off_rule": 0.004144782200455666,
+      "random_k_on_rule": -0.00010608566662995145,
+      "random_k_off_rule": 0.00015642683138139546
+    },
+    "ablate_top10": {
+      "on_rule": 0.11503560096025467,
+      "off_rule": 0.01590617187321186,
+      "random_k_on_rule": 0.0017566061578691006,
+      "random_k_off_rule": 0.0028420956805348396
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": 0.07594101130962372,
+      "off_rule": 0.020350903272628784
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": 0.304743230342865,
+      "off_rule": 0.13902083039283752
+    }
+  },
+  "target is a open bracket token": {
+    "rule": "target is a open bracket token",
+    "n_rule_tokens": 1017,
+    "ablate_top3": {
+      "on_rule": 0.04993719607591629,
+      "off_rule": -0.00015358228120021522,
+      "random_k_on_rule": -2.3384875021292828e-05,
+      "random_k_off_rule": -1.3915812814957462e-05
+    },
+    "ablate_top10": {
+      "on_rule": 0.2593133747577667,
+      "off_rule": -0.0006118437740951777,
+      "random_k_on_rule": 0.006728428415954113,
+      "random_k_off_rule": 0.00681273452937603
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.15413106977939606,
+      "off_rule": 0.0012343386188149452
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.2312522828578949,
+      "off_rule": 0.00388879282400012
+    }
+  },
+  "target is a pronoun 3rd token": {
+    "rule": "target is a pronoun 3rd token",
+    "n_rule_tokens": 2915,
+    "ablate_top3": {
+      "on_rule": 0.03309187293052673,
+      "off_rule": -0.000344258442055434,
+      "random_k_on_rule": 0.000664187187794596,
+      "random_k_off_rule": 0.0013322405284270644
+    },
+    "ablate_top10": {
+      "on_rule": 0.21867427229881287,
+      "off_rule": -0.001861236640252173,
+      "random_k_on_rule": 0.0036359417717903852,
+      "random_k_off_rule": 0.0019860758911818266
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.07215563952922821,
+      "off_rule": 0.001910115941427648
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.08434797078371048,
+      "off_rule": 0.00599704310297966
+    }
+  },
+  "target is a close bracket token": {
+    "rule": "target is a close bracket token",
+    "n_rule_tokens": 878,
+    "ablate_top3": {
+      "on_rule": 0.06861266493797302,
+      "off_rule": 5.7960249250754714e-05,
+      "random_k_on_rule": 0.0006046793423593044,
+      "random_k_off_rule": 0.0028882233891636133
+    },
+    "ablate_top10": {
+      "on_rule": 0.22642910480499268,
+      "off_rule": 0.0010500570060685277,
+      "random_k_on_rule": -0.0026413933373987675,
+      "random_k_off_rule": 0.0009363239514641464
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.07985533773899078,
+      "off_rule": 0.0012671261793002486
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.1453561931848526,
+      "off_rule": 0.007968278601765633
+    }
+  },
+  "target is a sentence end token": {
+    "rule": "target is a sentence end token",
+    "n_rule_tokens": 6168,
+    "ablate_top3": {
+      "on_rule": 0.020718256011605263,
+      "off_rule": -0.0006081922329030931,
+      "random_k_on_rule": 0.002312889788299799,
+      "random_k_off_rule": -0.00024205134832300246
+    },
+    "ablate_top10": {
+      "on_rule": 0.06764242798089981,
+      "off_rule": -0.001888043130747974,
+      "random_k_on_rule": 0.023832760751247406,
+      "random_k_off_rule": 0.038514234125614166
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.050092343240976334,
+      "off_rule": 0.002267181873321533
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.11040111631155014,
+      "off_rule": 0.007006216794252396
+    }
+  },
+  "target is a quote token": {
+    "rule": "target is a quote token",
+    "n_rule_tokens": 1175,
+    "ablate_top3": {
+      "on_rule": 0.11524685472249985,
+      "off_rule": -0.0006357841775752604,
+      "random_k_on_rule": -0.010796024464070797,
+      "random_k_off_rule": 0.002669917419552803
+    },
+    "ablate_top10": {
+      "on_rule": 0.256096214056015,
+      "off_rule": -0.0010847959201782942,
+      "random_k_on_rule": -0.005060182884335518,
+      "random_k_off_rule": 0.002102496102452278
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.14343586564064026,
+      "off_rule": 0.0018072410020977259
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.3120310306549072,
+      "off_rule": 0.006724581588059664
+    }
+  },
+  "target continues a word (no leading space)": {
+    "rule": "target continues a word (no leading space)",
+    "n_rule_tokens": 47589,
+    "ablate_top3": {
+      "on_rule": 0.15164491534233093,
+      "off_rule": 0.04453715682029724,
+      "random_k_on_rule": 0.018935903906822205,
+      "random_k_off_rule": 0.016490383073687553
+    },
+    "ablate_top10": {
+      "on_rule": 0.23200789093971252,
+      "off_rule": 0.06775824725627899,
+      "random_k_on_rule": 0.0021592387929558754,
+      "random_k_off_rule": 0.0004892171709798276
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": 0.03328446298837662,
+      "off_rule": 0.02281685173511505
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": 0.23661227524280548,
+      "off_rule": 0.15809690952301025
+    }
+  },
+  "target char-class = whitespace": {
+    "rule": "target char-class = whitespace",
+    "n_rule_tokens": 14072,
+    "ablate_top3": {
+      "on_rule": 0.05576182156801224,
+      "off_rule": -0.0029239810537546873,
+      "random_k_on_rule": 0.0005196399288251996,
+      "random_k_off_rule": 0.0006216509500518441
+    },
+    "ablate_top10": {
+      "on_rule": 0.09474494308233261,
+      "off_rule": -0.004124337807297707,
+      "random_k_on_rule": 0.05732256919145584,
+      "random_k_off_rule": 0.003758577862754464
+    },
+    "amplify_top10_x2.0": {
+      "on_rule": -0.06614581495523453,
+      "off_rule": 0.006697583943605423
+    },
+    "amplify_top10_x4.0": {
+      "on_rule": -0.11229149252176285,
+      "off_rule": 0.017122043296694756
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "config": {
+    "ckpt": "checkpoints/pretrain_75m_hyperconnection/checkpoint_step3000.pt",
+    "config_file": "configs/pretrain_75m_hyperconnection.yaml",
+    "hf_model": null,
+    "hf_revision": "main",
+    "mode": "hyperconnection",
+    "tasks": [
+      "wikitext"
+    ],
+    "batch_size": 8,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "wikitext": {
+      "alias": "wikitext",
+      "word_perplexity,none": 182.1463965262644,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.646731879475551,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.4042120536383584,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "wikitext": 2.0
+  }
+}

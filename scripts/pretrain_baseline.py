@@ -28,6 +28,7 @@ import re
 import signal
 import time
 from dataclasses import asdict, dataclass
+from datetime import timedelta
 from typing import Any, Optional
 
 import torch
@@ -37,6 +38,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
 
 from src.data.dolma import build_eval_dataloader, build_train_dataloader
+from src.data.mmap_dataset import build_mmap_train_dataloader
 from src.utils.logging import finish_wandb, init_wandb, log_metrics
 
 
@@ -113,6 +115,12 @@ class PretrainConfig:
     dataset_name: str = "v1_7"
     seq_len: int = 1024
     seed: int = 42
+    # Data source: "stream" (HF streaming, legacy/fragile) or "mmap" (pretokenized
+    # shards from scripts/pretokenize.py — zero network, exact resume, no stalls).
+    data_source: str = "stream"
+    mmap_index_path: str = ""            # index.json path (or its dir) for data_source=mmap
+    data_block_size: int = 1024          # block-shuffle granularity for mmap
+    data_num_workers: int = 2            # DataLoader workers for mmap prefetch
 
     # Training
     micro_batch_size: int = 32          # per-GPU micro batch
@@ -125,6 +133,7 @@ class PretrainConfig:
     warmup_steps: int = 300
     max_grad_norm: float = 1.0
     lr_schedule: str = "linear"         # "linear" (decay to 0) or "cosine"
+    lr_decay_steps: int = 0             # 0 uses total_steps
 
     # Eval
     eval_skip: int = 1_000_000
@@ -140,6 +149,12 @@ class PretrainConfig:
     save_every: int = 2000
     save_dir: str = "checkpoints/pretrain_300m_baseline"
     resume_from: str = ""
+    # Per-rank packed sequences to skip after resume. -1 infers the same-world-size
+    # value from current batch settings: step * accum * micro_batch_size.
+    resume_skip_samples: int = -1
+    # Keep at most this many most-recent checkpoints (older ones deleted after save).
+    # 0 = keep all (legacy behaviour). Use 2-3 to bound disk usage on long runs.
+    keep_last_n: int = 0
 
     @classmethod
     def from_yaml(cls, path: str) -> PretrainConfig:
@@ -209,13 +224,26 @@ def get_lr(step: int, config: PretrainConfig) -> float:
         return config.lr * step / max(1, config.warmup_steps)
 
     # Decay phase
-    progress = (step - config.warmup_steps) / max(1, config.total_steps - config.warmup_steps)
+    decay_steps = config.lr_decay_steps if config.lr_decay_steps > 0 else config.total_steps
+    progress = (step - config.warmup_steps) / max(1, decay_steps - config.warmup_steps)
     progress = min(progress, 1.0)
 
     if config.lr_schedule == "linear":
         return config.lr * max(0.0, 1.0 - progress)
     else:  # cosine
         return config.lr * 0.5 * (1.0 + math.cos(math.pi * progress))
+
+
+def _atomic_torch_save(obj, path: str, **kwargs) -> None:
+    """Write a torch checkpoint atomically: serialize to a .tmp file, fsync,
+    then os.replace onto the final path (atomic on POSIX same-filesystem).
+    Prevents a crash mid-save from leaving a truncated/corrupt checkpoint."""
+    tmp = f"{path}.tmp"
+    with open(tmp, "wb") as f:
+        torch.save(obj, f, **kwargs)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
 
 
 def save_checkpoint(
@@ -233,7 +261,7 @@ def save_checkpoint(
         "optimizer_state_dict": optimizer.state_dict(),
         "best_eval_nll": best_eval_nll,
     }
-    torch.save(state, path)
+    _atomic_torch_save(state, path)
     print(f"Checkpoint saved: {path}")
     return path
 
@@ -259,6 +287,38 @@ def find_latest_checkpoint(save_dir: str) -> Optional[str]:
     return best_path
 
 
+def cleanup_old_checkpoints(save_dir: str, keep_last_n: int) -> int:
+    """Delete all but the keep_last_n most-recent checkpoints.
+
+    Matches both 'checkpoint_step{N}.pt' and the FourWay companion '_model.pt'.
+    Returns the number of checkpoint groups deleted.
+    """
+    if keep_last_n <= 0 or not os.path.isdir(save_dir):
+        return 0
+    step_re = re.compile(r"checkpoint_step(\d+)\.pt$")
+    by_step: dict[int, list[str]] = {}
+    for f in os.listdir(save_dir):
+        m = re.search(r"checkpoint_step(\d+)(?:_model)?\.pt$", f)
+        if not m:
+            continue
+        step = int(m.group(1))
+        by_step.setdefault(step, []).append(os.path.join(save_dir, f))
+    if len(by_step) <= keep_last_n:
+        return 0
+    sorted_steps = sorted(by_step.keys(), reverse=True)
+    deleted = 0
+    for step in sorted_steps[keep_last_n:]:
+        for f in by_step[step]:
+            try:
+                os.remove(f)
+            except OSError as e:
+                print(f"  WARN: could not delete {f}: {e}")
+        deleted += 1
+    if deleted:
+        print(f"Pruned {deleted} old checkpoint group(s); kept last {keep_last_n}")
+    return deleted
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Baseline OLMo-2 300M pretraining")
     parser.add_argument("--config", type=str, required=True, help="Path to YAML config")
@@ -271,7 +331,9 @@ def main() -> None:
     world_size = int(os.environ.get("WORLD_SIZE", 1))
 
     if world_size > 1:
-        dist.init_process_group(backend="nccl")
+        # 30-min PG timeout (vs ~10-min default) so a slow data/eval/save step
+        # on one rank can't SIGABRT all ranks via NCCL collective timeout.
+        dist.init_process_group(backend="nccl", timeout=timedelta(minutes=30))
         torch.cuda.set_device(local_rank)
 
     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
@@ -325,19 +387,35 @@ def main() -> None:
     tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_id)
 
     # Data
-    train_loader = build_train_dataloader(
-        olmo_tokenizer=tokenizer,
-        seq_len=config.seq_len,
-        batch_size=config.micro_batch_size,
-        dataset_name=config.dataset,
-        dataset_version=config.dataset_name,
-        rank=local_rank,
-        world_size=world_size,
-    )
+    if config.data_source == "mmap":
+        assert config.mmap_index_path, "data_source=mmap requires mmap_index_path"
+        train_loader = build_mmap_train_dataloader(
+            index_path=config.mmap_index_path,
+            seq_len=config.seq_len,
+            batch_size=config.micro_batch_size,
+            rank=local_rank,
+            world_size=world_size,
+            num_workers=config.data_num_workers,
+            skip_samples=0,
+            seed=config.seed,
+            block_size=config.data_block_size,
+        )
+    else:
+        train_loader = build_train_dataloader(
+            olmo_tokenizer=tokenizer,
+            seq_len=config.seq_len,
+            batch_size=config.micro_batch_size,
+            dataset_name=config.dataset,
+            dataset_version=config.dataset_name,
+            rank=local_rank,
+            world_size=world_size,
+        )
 
-    # Eval data (rank 0 only)
+    # Eval data (rank 0 only). eval_size=0 disables eval entirely — without this
+    # guard the run blocks forever in build_eval_dataloader's retry loop even
+    # though the eval batches are never used (this stalled a 1B run on 8xH200).
     eval_batches: list[dict] = []
-    if is_main:
+    if is_main and config.eval_size > 0:
         cache_path = os.path.join(config.save_dir, "eval_cache.pt")
         eval_batches = build_eval_dataloader(
             olmo_tokenizer=tokenizer,
@@ -366,6 +444,50 @@ def main() -> None:
         if is_main:
             print(f"Resumed at step {global_step}")
 
+        # Rebuild dataloader to skip already-seen data. Without this, resume
+        # restores model/optimizer state but starts Dolma streaming at the prefix.
+        inferred_skip_samples = (
+            global_step
+            * config.gradient_accumulation_steps
+            * config.micro_batch_size
+        )
+        skip_samples = (
+            config.resume_skip_samples
+            if config.resume_skip_samples >= 0
+            else inferred_skip_samples
+        )
+        if skip_samples > 0:
+            if is_main:
+                source = "config override" if config.resume_skip_samples >= 0 else "same-world-size inference"
+                print(
+                    f"  Rebuilding dataloader: skipping {skip_samples} packed sequences "
+                    f"per rank ({source}; inferred={inferred_skip_samples})"
+                )
+            if config.data_source == "mmap":
+                # mmap uses a GLOBAL sample offset; skip_samples is per-rank.
+                train_loader = build_mmap_train_dataloader(
+                    index_path=config.mmap_index_path,
+                    seq_len=config.seq_len,
+                    batch_size=config.micro_batch_size,
+                    rank=local_rank,
+                    world_size=world_size,
+                    num_workers=config.data_num_workers,
+                    skip_samples=skip_samples * world_size,
+                    seed=config.seed,
+                    block_size=config.data_block_size,
+                )
+            else:
+                train_loader = build_train_dataloader(
+                    olmo_tokenizer=tokenizer,
+                    seq_len=config.seq_len,
+                    batch_size=config.micro_batch_size,
+                    dataset_name=config.dataset,
+                    dataset_version=config.dataset_name,
+                    rank=local_rank,
+                    world_size=world_size,
+                    skip_samples=skip_samples,
+                )
+
     # Wandb
     wandb_run = None
     if is_main:
@@ -391,6 +513,9 @@ def main() -> None:
         raise SystemExit(0)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
+    # SLURM sends SIGTERM on scancel/timeout by default (SIGUSR1 only if the batch
+    # script configures --signal=USR1@...); trap both so preemption always saves.
+    signal.signal(signal.SIGTERM, save_on_signal)
 
     # ── Training loop ──
     train_iter = iter(train_loader)
@@ -504,6 +629,7 @@ def main() -> None:
         # Checkpoint
         if is_main and global_step > 0 and global_step % config.save_every == 0:
             save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
+            cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
 
         global_step += 1
 

@@ -1,0 +1,31 @@
+{
+  "config": {
+    "ckpt": "hf_checkpoints/dagformer-75m/ckpts/checkpoint_step3000.pt",
+    "config_file": "hf_checkpoints/dagformer-75m/config.yaml",
+    "mode": "fourway",
+    "tasks": [
+      "piqa"
+    ],
+    "batch_size": 8,
+    "max_length": 1024,
+    "limit": 20
+  },
+  "results": {
+    "piqa": {
+      "alias": "piqa",
+      "acc,none": 0.45,
+      "acc_stderr,none": 0.11413288653790232,
+      "acc_norm,none": 0.55,
+      "acc_norm_stderr,none": 0.11413288653790232
+    }
+  },
+  "n-samples": {
+    "piqa": {
+      "original": 1838,
+      "effective": 20
+    }
+  },
+  "versions": {
+    "piqa": 1.0
+  }
+}

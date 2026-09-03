@@ -1,0 +1,44 @@
+{
+  "model": "allenai/OLMoE-1B-7B-0125-Instruct",
+  "modes_nll": {
+    "live": 2.810961989256052,
+    "token_id": 4.682814634763277,
+    "pos_table": 7.3555911504305325,
+    "static_mean": 8.233341162021343,
+    "swap_context": 7.696708312401404,
+    "shuffle_time": 8.024482048474825
+  },
+  "variance_decomposition": {
+    "pos_var": 0.017033755779266357,
+    "content_var": 0.7464910745620728,
+    "pos_share": 0.022309367164459207
+  },
+  "probes": {
+    "posbucket": {
+      "gate": 0.4327947443181818,
+      "gate_resid": 0.4386541193181818,
+      "token_id": 0.2411221590909091,
+      "majority": 0.25
+    },
+    "isrepeat64": {
+      "gate": 0.8250177556818182,
+      "gate_resid": 0.6674360795454546,
+      "token_id": 0.7724609375,
+      "majority": 0.6010298295454546
+    },
+    "charclass": {
+      "gate": 0.9888139204545454,
+      "gate_resid": 0.7505326704545454,
+      "token_id": 0.9567649147727273,
+      "majority": 0.7509765625
+    },
+    "freqbucket": {
+      "gate": 0.8175603693181818,
+      "gate_resid": 0.27290482954545453,
+      "token_id": 0.8678977272727273,
+      "majority": 0.2977627840909091
+    }
+  },
+  "n_calib": 25,
+  "n_test": 26
+}

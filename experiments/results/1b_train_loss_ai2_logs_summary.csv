@@ -1,0 +1,3 @@
+series,tokens_B,step,loss
+AI2 dense OLMo2 Stage1 logs,5.236588544,2497.0,3.63129186630249
+FourWay DAGFormer W&B logs,5.238161408,9990.0,3.220703125

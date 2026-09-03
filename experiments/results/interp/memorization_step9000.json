@@ -1,0 +1,48 @@
+{
+  "audit_auc_seen_vs_unseen_projection": 0.5245527777777778,
+  "lam0.0": {
+    "seen": {
+      "cont_nll": 3.4967052936553955,
+      "greedy_token_match": 0.03828125074505806,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.5633333325386047
+    },
+    "unseen": {
+      "cont_nll": 3.5839200019836426,
+      "greedy_token_match": 0.03687499836087227,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.5483333468437195
+    },
+    "memorization_gap_nll": 0.08721470832824707
+  },
+  "lam0.5": {
+    "seen": {
+      "cont_nll": 3.555994987487793,
+      "greedy_token_match": 0.03802083432674408,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.5333333611488342
+    },
+    "unseen": {
+      "cont_nll": 3.6460824012756348,
+      "greedy_token_match": 0.03453125059604645,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.4933333396911621
+    },
+    "memorization_gap_nll": 0.0900874137878418
+  },
+  "lam1.0": {
+    "seen": {
+      "cont_nll": 3.775393486022949,
+      "greedy_token_match": 0.03437500074505806,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.47333332896232605
+    },
+    "unseen": {
+      "cont_nll": 3.868793487548828,
+      "greedy_token_match": 0.033385418355464935,
+      "full_extraction_rate": 0.0,
+      "mean_matched_prefix": 0.4000000059604645
+    },
+    "memorization_gap_nll": 0.0934000015258789
+  }
+}

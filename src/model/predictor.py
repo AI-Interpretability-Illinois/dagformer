@@ -1137,6 +1137,65 @@ class FourWayStaticPredictor(nn.Module):
         return list(self.parameters())
 
 
+class FourWayPositionalPredictor(nn.Module):
+    """Position-indexed FourWay routing: a learned per-position table with no
+    content pathway at all.
+
+    Motivated by the 2026-08-31 causal analysis of the trained 300M encoder
+    predictor: replacing its per-token output with a per-POSITION mean matched
+    full dynamic routing exactly, and cross-context alpha swaps were free —
+    i.e. the encoder's causal contribution is a positional schedule. This
+    variant tests the remaining hypothesis that content capacity matters as
+    *training scaffolding*: if pos-table-from-scratch matches
+    encoder-from-scratch, the external predictor is fully replaceable.
+    """
+
+    def __init__(
+        self,
+        max_seq_len: int = 1024,
+        num_layers: int = 12,
+        num_heads: int = 16,
+    ):
+        super().__init__()
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+        self.max_seq_len = max_seq_len
+
+        self.q_tables = nn.ParameterList()
+        self.k_tables = nn.ParameterList()
+        self.v_tables = nn.ParameterList()
+        self.r_tables = nn.ParameterList()
+
+        for l in range(1, num_layers):
+            n_src = l + 1
+            for tables, shape in (
+                (self.q_tables, (max_seq_len, num_heads, n_src)),
+                (self.k_tables, (max_seq_len, num_heads, n_src)),
+                (self.v_tables, (max_seq_len, num_heads, n_src)),
+                (self.r_tables, (max_seq_len, n_src)),
+            ):
+                t = torch.zeros(*shape)
+                t[..., -1] = 1.0  # identity init, same as other variants
+                tables.append(nn.Parameter(t))
+
+    def forward(self, input_ids: torch.Tensor) -> dict[str, list[torch.Tensor]]:
+        """Broadcast per-position routing weights over the batch."""
+        B, T = input_ids.shape
+        assert T <= self.max_seq_len, f"T={T} > max_seq_len={self.max_seq_len}"
+        result: dict[str, list[torch.Tensor]] = {'q': [], 'k': [], 'v': [], 'r': []}
+        for i in range(self.num_layers - 1):
+            n_src = i + 2
+            result['q'].append(self.q_tables[i][:T].unsqueeze(0).expand(B, T, self.num_heads, n_src))
+            result['k'].append(self.k_tables[i][:T].unsqueeze(0).expand(B, T, self.num_heads, n_src))
+            result['v'].append(self.v_tables[i][:T].unsqueeze(0).expand(B, T, self.num_heads, n_src))
+            result['r'].append(self.r_tables[i][:T].unsqueeze(0).expand(B, T, n_src))
+        return result
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        """All parameters are trainable."""
+        return list(self.parameters())
+
+
 class FourWayAttentionBottleneckPredictor(nn.Module):
     """FourWay predictor with a single causal memory read per token.
 
