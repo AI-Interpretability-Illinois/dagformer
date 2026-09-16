@@ -1,0 +1,74 @@
+{
+  "model": {
+    "name": "600m-baseline",
+    "family": "baseline",
+    "size": "600m",
+    "kind": "dense",
+    "path": "/work/hdd/bfqt/shared/dagformer-models/600m-baseline",
+    "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/600m-baseline/checkpoint.pt",
+    "step": 22900,
+    "num_parameters": 682710528,
+    "train_seq_len": 1024
+  },
+  "eval": {
+    "date": "2026-09-16T05:24:02+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [
+      "wikitext"
+    ],
+    "generative_tasks": [],
+    "limit": null,
+    "gen_limit": 200,
+    "batch_size": 16,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": true,
+    "tokenizer": "/work/hdd/bfqt/shared/dagformer-models/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "prompts_left_truncated_batches": 0,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "loglikelihood": 11.19571304321289
+    },
+    "peak_gpu_gb": 16.59,
+    "sample_files": []
+  },
+  "results": {
+    "wikitext": {
+      "name": "wikitext",
+      "alias": "wikitext",
+      "sample_len": 62,
+      "word_perplexity,none": 35.90954590719598,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 1.9535837218104608,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 0.9661230842661866,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "wikitext": 2.0
+  },
+  "n-shot": {
+    "wikitext": 0
+  },
+  "higher_is_better": {
+    "wikitext": {
+      "word_perplexity": false,
+      "byte_perplexity": false,
+      "bits_per_byte": false
+    }
+  },
+  "group_subtasks": {}
+}
