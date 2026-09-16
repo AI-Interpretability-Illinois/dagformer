@@ -1,0 +1,26 @@
+# Bits-per-byte of the GSM8K gold chain of thought.
+#
+# Custom task (not upstream lm-eval): at 75M-600M params gsm8k exact-match is
+# pinned at ~0, which tells you nothing about whether a routing change helped.
+# Scoring the *gold* solution under the model instead gives a smooth,
+# floor-free measure of how well it models step-by-step arithmetic reasoning,
+# on exactly the distribution gsm8k tests.
+#
+# Same rolling-loglikelihood machinery as the `wikitext` task, so
+# bits_per_byte here is directly comparable to the wikitext BPB the project
+# already tracks — just on math-reasoning text instead of encyclopedia text.
+# Lower is better.
+task: gsm8k_bpb
+dataset_path: openai/gsm8k
+dataset_name: main
+output_type: loglikelihood_rolling
+training_split: train
+test_split: test
+doc_to_text: ""
+doc_to_target: "Question: {{question}}\nAnswer: {{answer}}"
+metric_list:
+  - metric: word_perplexity
+  - metric: byte_perplexity
+  - metric: bits_per_byte
+metadata:
+  version: 1.0
