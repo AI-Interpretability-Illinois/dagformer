@@ -23,7 +23,7 @@ Question: Uriah's book bag is getting too heavy for him. He needs to remove 15 p
 Gold final answer: `15`. Extracted: `15`.
 
 ```text
- He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 
+ He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove 15 pounds from it. He needs to remove
 ```
 
 ### Document 53 — flexible match
@@ -74,7 +74,7 @@ Question: Josh decides to try flipping a house.  He buys a house for $80,000 and
 Gold final answer: `70000`. Extracted: `8`.
 
 ```text
- 8 boys = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 
+ 8 boys = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls = 8 girls =
 ```
 
 ## 75m-baseline
@@ -116,7 +116,7 @@ Question: Janet’s ducks lay 16 eggs per day. She eats three for breakfast ever
 Gold final answer: `18`. Extracted: `4`.
 
 ```text
- The grill is 16" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 
+ The grill is 16" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x 4" x
 ```
 
 ### Document 1 — flexible nonmatch
@@ -126,7 +126,7 @@ Question: A robe takes 2 bolts of blue fiber and half that much white fiber.  Ho
 Gold final answer: `3`. Extracted: `100`.
 
 ```text
- The total yards he has 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 
+ The total yards he has 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100 - 100
 ```
 
 ### Document 2 — flexible nonmatch

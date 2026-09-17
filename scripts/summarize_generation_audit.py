@@ -84,7 +84,7 @@ def main():
                              f"Question: {row['doc']['question']}", "",
                              f"Gold final answer: `{normalize_gold(row['target'])}`. "
                              f"Extracted: `{row['filtered_resps'][0]}`.", "",
-                             "```text", response_text(row["resps"])[:400], "```", ""]
+                             "```text", response_text(row["resps"])[:400].rstrip(), "```", ""]
     lines += ["", "The constant-answer diagnostic uses gold frequencies from the same evaluated documents.",
               "Repetition is a mechanical text statistic, not a correctness judgment.",
               "[Deterministically selected examples](generation_examples.md) show the continuations behind these metrics.", ""]
