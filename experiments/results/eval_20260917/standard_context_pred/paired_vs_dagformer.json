@@ -1,0 +1,293 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "300m-dagformer__context_pred_gamma1.5": {
+      "reference_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024
+      },
+      "variant_model": {
+        "name": "300m-dagformer__context_pred_gamma1.5",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "context_pred",
+          "gamma": 1.5,
+          "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+          "edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "scope": "fixed head-mean-deviation edit on predictor/corrections"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.0029110802909697595,
+          "paired_bootstrap_95ci": [
+            -0.003283997512985963,
+            -0.0025501915845674125
+          ],
+          "reference": 1.0224808260122566,
+          "variant": 1.0253919063032264,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": 0.012225887832330681,
+          "paired_bootstrap_95ci": [
+            0.008150591888220454,
+            0.01630118377644091
+          ],
+          "reference": 0.3017659615757811,
+          "variant": 0.31399184940811176,
+          "variant_only_correct": 87,
+          "reference_only_correct": 24,
+          "mcnemar_exact_p": 1.4180922486418413e-09
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.0009958175662218682,
+          "paired_bootstrap_95ci": [
+            -0.003186616211909978,
+            0.0011949810794662419
+          ],
+          "reference": 0.31447918741286596,
+          "variant": 0.3134833698466441,
+          "variant_only_correct": 57,
+          "reference_only_correct": 67,
+          "mcnemar_exact_p": 0.41907374251663493
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.002176278563656148,
+          "paired_bootstrap_95ci": [
+            -0.007072905331882481,
+            0.002720348204570185
+          ],
+          "reference": 0.6436343852013058,
+          "variant": 0.6414581066376496,
+          "variant_only_correct": 8,
+          "reference_only_correct": 12,
+          "mcnemar_exact_p": 0.5034446716308594
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.004208754208754209,
+          "paired_bootstrap_95ci": [
+            -0.008838383838383838,
+            1.0521885521732408e-05
+          ],
+          "reference": 0.3846801346801347,
+          "variant": 0.38047138047138046,
+          "variant_only_correct": 10,
+          "reference_only_correct": 20,
+          "mcnemar_exact_p": 0.09873714670538905
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0034129692832764505,
+          "paired_bootstrap_95ci": [
+            -0.0034129692832764505,
+            0.010238907849829351
+          ],
+          "reference": 0.23208191126279865,
+          "variant": 0.2354948805460751,
+          "variant_only_correct": 10,
+          "reference_only_correct": 6,
+          "mcnemar_exact_p": 0.454498291015625
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0015785319652722968,
+          "paired_bootstrap_95ci": [
+            -0.011838989739542225,
+            0.014206787687450671
+          ],
+          "reference": 0.5217048145224941,
+          "variant": 0.5232833464877664,
+          "variant_only_correct": 36,
+          "reference_only_correct": 34,
+          "mcnemar_exact_p": 0.9049745264594622
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.006,
+            0.006
+          ],
+          "reference": 0.276,
+          "variant": 0.276,
+          "variant_only_correct": 1,
+          "reference_only_correct": 1,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.003,
+          "paired_bootstrap_95ci": [
+            -0.004,
+            0.011
+          ],
+          "reference": 0.698,
+          "variant": 0.701,
+          "variant_only_correct": 9,
+          "reference_only_correct": 6,
+          "mcnemar_exact_p": 0.6072387695312499
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0009174311926605505,
+          "paired_bootstrap_95ci": [
+            -0.0027522935779816515,
+            0.004892966360856269
+          ],
+          "reference": 0.6079510703363914,
+          "variant": 0.608868501529052,
+          "variant_only_correct": 22,
+          "reference_only_correct": 19,
+          "mcnemar_exact_p": 0.755228657504631
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0010050251256281408,
+          "paired_bootstrap_95ci": [
+            -0.0036850921273031824,
+            0.005695142378559464
+          ],
+          "reference": 0.22780569514237856,
+          "variant": 0.2288107202680067,
+          "variant_only_correct": 26,
+          "reference_only_correct": 23,
+          "mcnemar_exact_p": 0.7754496546815659
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19574119574119575,
+          "variant": 0.19574119574119575,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0030706243602865915,
+          "paired_bootstrap_95ci": [
+            -0.0015353121801432957,
+            0.008188331627430911
+          ],
+          "reference": 0.36284544524053225,
+          "variant": 0.36591606960081885,
+          "variant_only_correct": 15,
+          "reference_only_correct": 9,
+          "mcnemar_exact_p": 0.30745625495910645
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.005301360854009115,
+          "paired_bootstrap_95ci": [
+            -0.005699987672009699,
+            -0.004911528355479227
+          ],
+          "reference": 1.3313922139688217,
+          "variant": 1.3366935748228308,
+          "bytes": 728241
+        }
+      }
+    }
+  }
+}
