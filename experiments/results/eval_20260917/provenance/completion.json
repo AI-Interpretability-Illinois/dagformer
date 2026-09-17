@@ -1,6 +1,6 @@
 {
   "numerical_results_revision": "8fce6d438fd94eeaa0600dac52d07ae159f86739",
-  "last_checked_utc": "2026-09-17 13:43:22 UTC",
+  "last_checked_utc": "2026-09-17 14:20:41 UTC",
   "requested_review_window_ends_utc": "2026-09-17 14:20:00 UTC",
   "all_evaluations_complete": true,
   "ordinary_harness_runs": 44,
@@ -25,7 +25,10 @@
     "unit_test_warnings": 1,
     "unit_test_seconds": 10.43,
     "compact_json_files_checked_before_this_record": 130,
-    "paired_sae_control_point_estimates_checked": 80
+    "paired_sae_control_point_estimates_checked": 80,
+    "local_markdown_links_checked": 148,
+    "local_markdown_files_checked": 92,
+    "broken_local_markdown_links": 0
   },
   "delta_workspace": "/work/hdd/bfqt/yurenh2/dagformer-eval-20260917",
   "original_delta_project_preserved": true,
@@ -35,6 +38,9 @@
     "The numerical-results revision is distinct from later documentation-only acceptance records.",
     "Saved row counts include repeated model settings and extraction filters, not independent research observations.",
     "All inference jobs and their postprocessing have completed; no new training was started.",
-    "The active task continues through the requested review window for final synchronization checks."
-  ]
+    "The requested eight-hour review window has elapsed. Final fetch found no new upstream changes; all planned evaluation work and postprocessing are complete."
+  ],
+  "review_window_completed_utc": "2026-09-17 14:20:41 UTC",
+  "repository_revision_before_completion_record": "83093b1d9beecf337a80effab7a12f5e5ed3920a",
+  "all_gpu_evaluations_completed_utc": "2026-09-17 13:32:11 UTC"
 }
