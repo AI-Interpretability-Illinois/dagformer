@@ -13,7 +13,7 @@ l in 1..L-1 the routing vector alpha assigns a real weight to every
 One such triple is an **edge** of the routing graph.  s == l is the ordinary
 sequential path (bias-initialised to 1.0, i.e. "read the layer below"); s < l
 is a genuine **hyperconnection** that skips over layers.  A **circuit** is a
-set of edges.  For L=12, H=16 there are 3773 edges in total, 3311 of them
+set of edges.  For L=12, H=16 there are 3773 edges in total, 3234 of them
 hyperconnections.
 
 Two independently editable channels produce the weights actually used:

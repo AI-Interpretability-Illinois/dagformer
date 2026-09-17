@@ -21,7 +21,7 @@ from transformers import AutoTokenizer
 
 from interp_common import flatten_alpha, load_elh, load_eval_ids, unflatten_alpha
 from interp_editing import layer_chunks, stream_slices
-from interp_liar_cloze import build_items, prompt_for
+from interp_liar_cloze import CUES, build_items, prompt_for
 
 
 def apply_edges(chunk, layer, heads, edges, gamma):
@@ -43,6 +43,35 @@ def apply_edges(chunk, layer, heads, edges, gamma):
         mean = original[..., source].mean(dim=2)
         target[..., head, source] = mean + gamma * (original[..., head, source] - mean)
     return out
+
+
+def norm_matched_edit(chunk, layer, heads, edges, reference_edges, gamma):
+    """Match the reference edit's L2 norm separately at each layer and token.
+
+    Both hypothetical edits use the same incoming activations. This removes
+    local edit magnitude as an explanation of a control difference; it does
+    not match downstream hidden states after earlier interventions.
+    """
+    if gamma == 1.0:
+        return chunk
+    change = apply_edges(chunk, layer, heads, edges, gamma) - chunk
+    reference = apply_edges(chunk, layer, heads, reference_edges, gamma) - chunk
+    norm = change.float().norm(dim=-1, keepdim=True)
+    scale = reference.float().norm(dim=-1, keepdim=True) / norm.clamp_min(1e-12)
+    return chunk + (change.float() * scale).to(chunk.dtype)
+
+
+def evaluation_prompt(item, cue, style):
+    if style == "original":
+        return prompt_for(item, cue)
+    cue_text = CUES[cue].format(a=item["a"], b=item["b"])
+    if style == "qa":
+        return (f"Fact: {item['fact']}{cue_text}\n"
+                f"Question: What did {item['a']} see?\nAnswer:")
+    if style == "dialogue":
+        return (f"{item['fact']}{cue_text}\n"
+                f"{item['b']}: What did you see?\n{item['a']}: I saw a")
+    raise ValueError(style)
 
 
 def read_circuit(path, topk):
@@ -110,6 +139,9 @@ def main():
     ap.add_argument("--channels", nargs="+", choices=["pred", "corr", "both"],
                     default=["pred", "corr", "both"])
     ap.add_argument("--controls", type=int, default=5)
+    ap.add_argument("--norm-match-controls", action="store_true")
+    ap.add_argument("--prompt-style", choices=["original", "qa", "dialogue"],
+                    default="original")
     ap.add_argument("--cues", nargs="+", choices=["neutral", "honest", "deceptive"],
                     default=["neutral", "deceptive"])
     ap.add_argument("--device", default="cuda")
@@ -131,7 +163,8 @@ def main():
     for cue in args.cues:
         grouped = defaultdict(list)
         for index, item in enumerate(items):
-            ids = tok(prompt_for(item, cue), add_special_tokens=False)["input_ids"]
+            ids = tok(evaluation_prompt(item, cue, args.prompt_style),
+                      add_special_tokens=False)["input_ids"]
             candidates = [tok(" " + word, add_special_tokens=False)["input_ids"]
                           for word in [item["true"], *item["alts"]]]
             if any(len(c) != 1 for c in candidates):
@@ -142,12 +175,18 @@ def main():
     if not 0 < args.n_nll <= len(ids):
         raise ValueError(f"n-nll must be in [1, {len(ids)}]")
     ids, labels = ids[-args.n_nll:], labels[-args.n_nll:]
-    state = {"channel": "both", "edges": [], "gamma": 1.0}
+    state = {"channel": "both", "edges": [], "gamma": 1.0, "norm_match": False}
+    def edit(chunk, layer):
+        if state["norm_match"]:
+            return norm_matched_edit(chunk, layer, H, state["edges"], edges,
+                                     state["gamma"])
+        return apply_edges(chunk, layer, H, state["edges"], state["gamma"])
+
     hooks = []
     for index, mlp in enumerate(model.correction_mlps):
         def hook(module, inputs, output, layer=index + 1):
             if state["channel"] in ("corr", "both"):
-                return apply_edges(output, layer, H, state["edges"], state["gamma"])
+                return edit(output, layer)
             return output
         hooks.append(mlp.register_forward_hook(hook))
 
@@ -157,8 +196,7 @@ def main():
         routing = predictor(rows)
         if state["channel"] in ("pred", "both") and state["gamma"] != 1.0:
             flat = flatten_alpha(routing)
-            parts = [apply_edges(flat[..., start:end], i + 1, H,
-                                 state["edges"], state["gamma"])
+            parts = [edit(flat[..., start:end], i + 1)
                      for i, (start, end) in enumerate(chunks)]
             routing = unflatten_alpha(torch.cat(parts, dim=-1), L, H)
         return model(rows, routing)
@@ -204,7 +242,10 @@ def main():
                 "selection": "fixed top connections from discovery JSON; no reselection",
                 "holdout": "new item combinations; original 240 seed-0 items excluded",
                 "edit": "simultaneous head-mean deviation scaling; pred/corr/both separated",
-                "controls": "random heads; same layer/stream/source counts; not norm-matched",
+                "controls": ("random heads; same layer/stream/source counts; " +
+                             ("L2 norm matched per layer/token on incoming activations"
+                              if args.norm_match_controls else "not norm-matched")),
+                "prompt_style": args.prompt_style,
                 "intervals": "normal approximation to paired item/sequence mean differences",
                 "damage_threshold_nats": 0.05,
             },
@@ -217,7 +258,8 @@ def main():
         for channel in args.channels:
             for mask_name, mask in masks:
                 for gamma in args.gammas:
-                    state.update(channel=channel, edges=mask, gamma=gamma)
+                    state.update(channel=channel, edges=mask, gamma=gamma,
+                                 norm_match=args.norm_match_controls and mask_name != "circuit")
                     values = reference if gamma == 1 else measure()
                     summary = {cue: paired_summary(values["cloze"][cue]["p_true"],
                                                     reference["cloze"][cue]["p_true"])

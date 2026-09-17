@@ -1,5 +1,10 @@
 # Behavioural circuits in the routing graph
 
+The [September 17 audit](../PROJECT_SYNC_2026-09-17.md) reconciles these results
+with the author's direct head-edit experiments. This suite tests
+instruction-derived editing directions on hyperconnections; its negative
+results do not cover every editing direction, sequential path or behavior.
+
 Finding the set of cross-layer hyperconnections that *causes* a behaviour, by
 contrasting the routing weights the structure predictor emits under opposed
 instructions and then intervening on the edges that differ.
@@ -40,7 +45,7 @@ Everything is addressed in one flat `[D]` vector laid out as
 `for l in 1..L-1: [q(H·n_src), k(H·n_src), v(H·n_src), r(n_src)]`, which is
 both `scripts/interp_common.py`'s canonical order and the output layout of
 `FourWayDAGFormer.correction_mlps[l-1]`. For the 300M model (L=12, H=16),
-D = 3773, of which 3311 are hyperconnections.
+D = 3773, of which 3234 are hyperconnections and 539 are sequential paths.
 
 ### Two editable channels
 
@@ -147,8 +152,9 @@ says the perturbation was small, not that the circuit is inert.
 
 **Activation patching** — run the *neg* prompt but copy the circuit's routing
 values from a rerun of the same tokens under the pos instruction. This is the
-strongest arm: no hand-chosen magnitude, and a full-mask patch gives the
-ceiling. Legitimate only because the prompts are position-aligned, so donor and
+donor-defined arm with no hand-chosen magnitude. A full-mask patch is a
+comparison, not an upper bound on subsets: coordinate effects can cancel.
+The patch is legitimate because the prompts are position-aligned, so donor and
 recipient tensors are index-comparable. Donor recomputation is supported on the
 `pred` channel.
 
@@ -421,7 +427,7 @@ WEAK row is a circuit for *reading* the instruction.
 
 | behaviour / channel | instruction | content | paraphrase | instr/content | edges | null ratio |
 |---|---|---|---|---|---|---|
-| `domain_code` / `pred` | 0.0082 | 0.0075 | 0.0119 | 1.09 | 44 | 26.4× |
+| `domain_code` / `pred` | 0.0082 | 0.0075 | 0.0119 | 1.09 | 513 | 12.0× |
 | `domain_code` / `corr` | 0.2514 | 0.2051 | 0.0988 | 1.23 | 829 | 130.9× |
 | `honesty` / `pred` | 0.0045 | 0.0055 | 0.0101 | 0.81 | 2 | 0.40× |
 | `honesty` / `corr` | 0.0229 | 0.1194 | 0.0542 | 0.19 | 13 | 0.16× |
@@ -444,24 +450,23 @@ small set of hyperconnections is not supported here.
 +3.35)
 
 * `pred`: patching **every** eligible coordinate with the value the other
-  instruction produces — the ceiling on anything this channel can do — moves
-  the behaviour `+0.0021`, **0.1% of headroom**. Steering and knockout arms
+  instruction produces moves the behaviour `+0.000991`, **0.0296% of headroom**
+  in the committed verification JSON. Steering and knockout arms
   show no effect in the intended direction. The predictor reads the instruction
   without re-routing on it.
 * `corr`: `Delta/alpha` is 0.32–0.45, and editing does move the behaviour hard
   (up to −5.5) — but every arm trips the damage gate, up to +6.7 nats of
   held-out NLL. Tightening to 162 edges at `--q 0.0005` and dropping λ to 0.05
   gets under the gate, and there the shift is `+0.033` (1% of headroom, inside
-  noise). There is no λ where the behaviour moves and the model survives.
+  noise). The tested grid did not produce a supported improvement under this
+  corpus's NLL gate.
 
 So for this checkpoint: the structure predictor is a content-driven router that
 the instruction barely perturbs, and the correction MLPs carry a large
-instruction signal that is not separable from general model function. Steering
-via routing topology does not work here. Whether that is a property of 300M
-scale, of this training recipe, or of routing topology in general is the open
-question — the same pipeline on a larger checkpoint answers it, and the
-instruments (`instruction/content`, the null ratio, the patch ceiling) are
-exactly the ones that would show it if the answer changed.
+instruction signal. The tested instruction-contrast directions did not provide
+useful domain-code steering under the reported damage criterion. Direct
+head-specific edits, other behaviors and other checkpoints require separate
+tests; the author's context-fidelity experiments address one such setting.
 
 ### Step 0 — is the channel usable? (`routing_leverage.py`, `domain_code`)
 
@@ -541,13 +546,12 @@ behaviour by 2 se while keeping the NLL rise under the 0.05 gate.** Every arm
 that moves the score at all is already several nats into breaking the model:
 `k=3234 @ 0.5` shifts 8.2 se at `+4.70` nats, `k=256 @ 0.5` shifts 2.5 se at
 `+0.92`. Below the gate the shifts are 0.0-0.4 se regardless of `k`. The
-directions are random, so this bounds the stage from above rather than pinning
-it — but `verify_circuit.py` has already tested the *aligned* direction, and the
-full patch there moves 0.1% of headroom. Random and aligned agree.
+directions are random, so they are sensitivity checks rather than known-causal
+positive controls or upper bounds. `verify_circuit.py` also tested the aligned
+instruction direction, and its full patch moves 0.0296% of headroom.
 
-The conclusion is not that the harness is too blunt. `dbehaviour/dalpha_pred`
-is a property of the checkpoint, and this is what it measures: at any magnitude
-that leaves the model intact, `pred` is causally inert.
+The conclusion is limited to the tested behavior, masks, directions and doses.
+These results do not establish that all edits to `alpha_pred` are causally inert.
 
 ### What alpha_pred does encode (`probe_alpha.py`, 32x256 held-out tokens)
 
@@ -560,8 +564,9 @@ that leaves the model intact, `pred` is causally inert.
 | instruction polarity | acc | **1.000** | 0.495 | 0.500 |
 
 Share of alpha_pred variance left unexplained by absolute position: **0.047**.
-By current token id, after the per-position mean is removed: **0.119**. The
-predicted topology is, to about 88%, a lookup table on (position, token).
+By current token id, after the per-position mean is removed: **0.119 of that
+residual variance**. The two numbers have different denominators; 0.119 is
+not the unexplained fraction of the original total variance.
 `prev_token` at 0.275 against a 0.083 baseline says the remainder is not
 nothing — there is real but weak context sensitivity — and that residual is
 where any train-time story would have to live.
@@ -571,9 +576,10 @@ alpha_pred at 100% on held-out items**, from the content span alone, where the
 tokens are identical across polarities. The predictor knows exactly which
 instruction it was given. It writes that knowledge into the routing weights.
 And moving the routing weights along that same direction does essentially
-nothing to the output. `alpha_pred` is a **readable but not writable** channel:
-richly informative about the input, causally inert on the output. Interpreting
-it would describe what the predictor noticed, not what the model did.
+nothing to the scored domain-code output in the tested intervention. This
+distinguishes decodability from a causal effect of that direction. The probe
+holds out content items while sharing instruction templates, so it also does
+not establish generalization to unseen instructions.
 
 ## What a negative result looks like, and why to publish it
 

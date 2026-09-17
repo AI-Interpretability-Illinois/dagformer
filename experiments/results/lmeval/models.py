@@ -153,9 +153,9 @@ class FourWayCausalLM(nn.Module):
     already-initialised model: ``.config`` (a real ``Olmo2Config``, so pad-token
     and backend detection behave), ``.device``, and ``tie_weights()``.
 
-    Note there is no KV cache: the routed attention recomputes every layer's
-    per-head inputs from all prior layer outputs, so generation has to re-run
-    the whole prefix per step (see ``harness.CheckpointLM._generate_recompute``).
+    This wrapper does not implement a routed KV cache. Its current generation
+    path recomputes the prefix per step (see
+    ``harness.CheckpointLM._generate_recompute``).
     """
 
     def __init__(self, fourway_model: nn.Module, predictor: nn.Module):

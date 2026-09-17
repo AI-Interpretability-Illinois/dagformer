@@ -506,12 +506,10 @@ def main() -> None:
             ["instruction / paraphrase", f"{eff['instruction_over_paraphrase']:.3f}"],
         ], ["quantity", "value"]),
         "",
-        "This is the ceiling on everything below. If the instruction moves "
-        "`alpha` by a fraction of a percent while the content moves it by "
-        "several percent, then the routing map is content-driven and the "
-        "behavioural contrast is a small perturbation riding on it — a circuit "
-        "selected here can be perfectly real and still have nothing to "
-        "intervene on.",
+        "These ratios describe the size of the observed routing response. "
+        "They do not bound the output effect: a small routing change could "
+        "still matter on sensitive coordinates. Causal verification tests "
+        "whether the selected differences change the scored behavior.",
         "",
         "## Sparsity of the difference matrix",
         "",

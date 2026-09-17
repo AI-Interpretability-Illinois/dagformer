@@ -20,3 +20,4 @@ ssmfloss/
 # lm-eval per-document generation dumps (regenerate with run_eval.py --save-samples)
 experiments/results/lmeval/*/samples/
 experiments/results/eval_*/**/samples/
+experiments/results/eval_*/raw/

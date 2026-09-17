@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from eval_context_fidelity import apply_edges, heldout_items, matched_edges
+from eval_context_fidelity import apply_edges, heldout_items, matched_edges, norm_matched_edit
 from interp_liar_cloze import build_items
 
 
@@ -33,3 +33,16 @@ def test_eval_items_are_disjoint_and_random_controls_preserve_coordinates():
     assert not set(edges).intersection(control)
     assert [(l, s, src) for l, s, h, src in edges] == [
         (l, s, src) for l, s, h, src in control]
+
+
+def test_control_norm_matches_circuit_at_each_token_and_layer():
+    torch.manual_seed(17)
+    chunk = torch.randn(2, 4, (3 * 4 + 1) * 3)
+    circuit = [(2, "q", 0, 0), (2, "v", 1, 2)]
+    control = [(2, "q", 2, 0), (2, "v", 3, 2)]
+    direct = apply_edges(chunk, 2, 4, circuit, 1.5) - chunk
+    matched = norm_matched_edit(chunk, 2, 4, control, circuit, 1.5) - chunk
+    assert torch.allclose(direct.norm(dim=-1), matched.norm(dim=-1), atol=1e-6)
+    # A zero deviation has no direction to rescale; it must remain finite.
+    zero = torch.zeros_like(chunk)
+    assert torch.equal(norm_matched_edit(zero, 2, 4, control, circuit, 1.5), zero)

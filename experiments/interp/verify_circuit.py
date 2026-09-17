@@ -13,8 +13,9 @@ that a positive result cannot be explained by the boring alternatives:
 
     patching      Run the *neg* prompt but copy the circuit's routing values
                   from a rerun of the same tokens under the pos instruction.
-                  This is the strongest test: no hand-chosen magnitude, and a
-                  full-mask patch gives the ceiling (the whole instruction).
+                  This uses the donor's observed magnitude. A full-mask patch
+                  tests the whole eligible set; subset effects may be larger
+                  when contributions in the full set cancel.
 
     necessity     Zero the circuit under the pos instruction.
 
@@ -357,7 +358,7 @@ def build_arms(args, layout, chosen, eligible, delta, ps, runner, rng,
                                 Edit(op="patch", mask=t_elig, target=donor,
                                      pos_mask=pos_mask),
                                 0.0, int(eligible.sum()), capability=False, expect=exp,
-                                note="ceiling: every coordinate patched"))
+                                note="every eligible coordinate patched"))
     return arms
 
 
@@ -666,22 +667,18 @@ def main() -> None:
             if pa:
                 parts.append(judge(max(pa, key=toward),
                                    max(ca, key=toward) if ca else None, lab))
-        # The full-mask patch is the ceiling on everything this channel can do:
-        # it replaces *every* routing coordinate with the value the other
-        # instruction produces. If that reaches only a few percent of headroom,
-        # no subset of edges can do better, and the negative result is about
-        # the channel rather than about the selection rule.
+        # Full and subset interventions need not be monotone: coordinate
+        # effects can cancel. Report the measured full patch without treating
+        # it as a mathematical bound on other masks or editing directions.
         ceil = [a for a in arms if a.name.endswith("_all") and a.result]
         if ceil:
             c = max(ceil, key=toward)
             pct = 100 * abs(c.result["shift"]) / abs(headroom) \
                 if abs(headroom) > 1e-9 else float("nan")
             parts.append(
-                f"patch ceiling: `{c.name}` patches every eligible coordinate "
-                f"and moves {c.result['shift']:+.4f} = {pct:.1f}% of headroom — "
-                + ("this bounds every circuit on this channel from above"
-                   if pct < 10 else
-                   "so a subset of edges has room to reproduce the effect"))
+                f"full patch: `{c.name}` patches every eligible coordinate "
+                f"and moves {c.result['shift']:+.4f} = {pct:.1f}% of headroom; "
+                "subset interventions can differ because effects may cancel")
     nec = next((a for a in arms if a.name == "zero_circuit_on_pos" and a.result), None)
     ncl = next((a for a in arms if a.name == "zero_random_on_pos" and a.result), None)
     if nec is not None:
@@ -774,13 +771,13 @@ def main() -> None:
         "- If `dense_add` moves the behaviour as much as `circuit_add`, the "
         "circuit is not localised — the effect is whatever a bulk shift of the "
         "routing weights does.",
-        "- If `dense_add` and every other arm are flat at large λ, the α channel "
-        "has no causal leverage at all in this checkpoint and the discovery "
-        "result is uninterpretable as a causal claim (this is what "
-        "`steering2` found for a dense α-side injection).",
+        "- If `dense_add` and every other tested arm are flat at large λ, these "
+        "directions do not establish useful steering for this behavior. Other "
+        "directions, masks and tasks remain untested.",
         "- `patch_pos_into_neg` reaching `ref_pos` while "
         "`patch_pos_into_neg_random` does not is the cleanest possible positive "
-        "result: no chosen magnitude, and the ceiling arm bounds it.",
+        "result using an observed donor magnitude. The full patch is a "
+        "comparison intervention, not a bound on subset effects.",
         "- q/k stream arms being flat while v/r move is expected, not a bug: "
         "q_norm/k_norm renormalise after mixing, so magnitude changes on those "
         "streams are partly undone.",
