@@ -1,0 +1,93 @@
+{
+  "model": {
+    "name": "75m-baseline",
+    "family": "baseline",
+    "size": "75m",
+    "kind": "dense",
+    "path": "checkpoints/pr_sync_20260917/75m-baseline",
+    "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+    "step": 3000,
+    "num_parameters": 76558848,
+    "train_seq_len": 1024,
+    "routing_intervention": null
+  },
+  "eval": {
+    "date": "2026-09-17T10:44:38+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [
+      "gsm8k_answer_bpb",
+      "gsm8k_question_bpb"
+    ],
+    "generative_tasks": [],
+    "limit": null,
+    "gen_limit": 200,
+    "batch_size": 8,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": true,
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "54f6708daa96b47b2e6b077bada24676c5c635a0",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 0,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "loglikelihood": 14.660934209823608
+    },
+    "peak_gpu_gb": 4.04,
+    "sample_files": [
+      "experiments/results/eval_20260917/gsm8k_components/samples/75m-baseline__gsm8k_answer_bpb.jsonl",
+      "experiments/results/eval_20260917/gsm8k_components/samples/75m-baseline__gsm8k_question_bpb.jsonl"
+    ]
+  },
+  "results": {
+    "gsm8k_answer_bpb": {
+      "name": "gsm8k_answer_bpb",
+      "alias": "gsm8k_answer_bpb",
+      "sample_len": 1319,
+      "bits_per_byte,none": 2.2130493683543846,
+      "bits_per_byte_stderr,none": "N/A"
+    },
+    "gsm8k_question_bpb": {
+      "name": "gsm8k_question_bpb",
+      "alias": "gsm8k_question_bpb",
+      "sample_len": 1319,
+      "bits_per_byte,none": 1.4112988271943334,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "gsm8k_answer_bpb": {
+      "original": 1319,
+      "effective": 1319
+    },
+    "gsm8k_question_bpb": {
+      "original": 1319,
+      "effective": 1319
+    }
+  },
+  "versions": {
+    "gsm8k_answer_bpb": 1.0,
+    "gsm8k_question_bpb": 1.0
+  },
+  "n-shot": {
+    "gsm8k_answer_bpb": 0,
+    "gsm8k_question_bpb": 0
+  },
+  "higher_is_better": {
+    "gsm8k_answer_bpb": {
+      "bits_per_byte": false
+    },
+    "gsm8k_question_bpb": {
+      "bits_per_byte": false
+    }
+  },
+  "group_subtasks": {}
+}

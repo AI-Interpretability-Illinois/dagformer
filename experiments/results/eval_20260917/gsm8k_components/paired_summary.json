@@ -1,0 +1,168 @@
+{
+  "protocol": {
+    "bootstrap": "paired resampling of evaluation documents",
+    "draws": 10000,
+    "seed": 20260917,
+    "metric_override": null,
+    "scope": "evaluation-sample uncertainty for fixed trained checkpoints",
+    "multiplicity": "intervals and p-values are unadjusted"
+  },
+  "pairs": {
+    "75m": {
+      "baseline_model": {
+        "name": "75m-baseline",
+        "family": "baseline",
+        "size": "75m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/75m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 76558848,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "75m-dagformer",
+        "family": "dagformer",
+        "size": "75m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 105657332,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "gsm8k_answer_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.10831226798438504,
+          "paired_bootstrap_95ci": [
+            0.10425096148687378,
+            0.11230064359879215
+          ],
+          "baseline": 2.2130493683543846,
+          "dagformer": 2.1047371003699995,
+          "bytes": 387947
+        },
+        "gsm8k_question_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.04721899995938544,
+          "paired_bootstrap_95ci": [
+            0.045223289922927394,
+            0.049259824894398015
+          ],
+          "baseline": 1.4112988271943334,
+          "dagformer": 1.3640798272349481,
+          "bytes": 340294
+        }
+      }
+    },
+    "150m": {
+      "baseline_model": {
+        "name": "150m-baseline",
+        "family": "baseline",
+        "size": "150m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/150m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 152593152,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "150m-dagformer",
+        "family": "dagformer",
+        "size": "150m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 182561679,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "gsm8k_answer_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.09821221618310895,
+          "paired_bootstrap_95ci": [
+            0.09446686878966847,
+            0.1021323777105664
+          ],
+          "baseline": 1.9205039533128918,
+          "dagformer": 1.8222917371297829,
+          "bytes": 387947
+        },
+        "gsm8k_question_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.049413909296112155,
+          "paired_bootstrap_95ci": [
+            0.04737295789471128,
+            0.05142691388473009
+          ],
+          "baseline": 1.2246068147747975,
+          "dagformer": 1.1751929054786854,
+          "bytes": 340294
+        }
+      }
+    },
+    "300m": {
+      "baseline_model": {
+        "name": "300m-baseline",
+        "family": "baseline",
+        "size": "300m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/300m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 304137216,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "gsm8k_answer_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.11858790967495243,
+          "paired_bootstrap_95ci": [
+            0.11497428126637324,
+            0.12223535567562491
+          ],
+          "baseline": 1.686975510554227,
+          "dagformer": 1.5683876008792743,
+          "bytes": 387947
+        },
+        "gsm8k_question_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_dagformer_better": 0.04080385795556608,
+          "paired_bootstrap_95ci": [
+            0.03887168361043766,
+            0.042731479368570864
+          ],
+          "baseline": 1.0998708254199543,
+          "dagformer": 1.0590669674643882,
+          "bytes": 340294
+        }
+      }
+    }
+  }
+}

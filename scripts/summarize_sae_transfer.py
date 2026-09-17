@@ -64,6 +64,14 @@ def main():
                  "also change which target tokens occur and their contexts.", "",
                  "| Feature | Original target ΔNLL −4 / +4 | New other-token ΔNLL −4 / +4 | Five permuted target-span range |",
                  "|---|---|---|---|"]
+    control_costs = ["", "## Language-model cost of the controls", "",
+                     "The permutations preserve direction norms, not language-model capability.",
+                     "Their other-token NLL costs must be considered alongside target effects.",
+                     "A feature/control contrast at unequal damage does not isolate semantic",
+                     "specificity at a fixed capability cost. Ranges below contain the five",
+                     "measured controls, not confidence intervals.", "",
+                     "| Feature | Control other-token ΔNLL range at −4 | Range at +4 |",
+                     "|---|---|---|"]
     summary = {"source": str(args.input), "old_screen": str(args.old_screen), "features": {}}
     for feature_id, rec in payload["features"].items():
         arms = rec["arms"]
@@ -77,9 +85,15 @@ def main():
             controls.append(value)
         valid = [c["delta"] for c in controls if c["delta"] is not None]
         bounds = [min(valid), max(valid)] if valid else None
+        off_ranges = {}
+        for alpha in (-4, 4):
+            values = [arms[f"random{i}/alpha{alpha}"]["off_rule"]["delta"]
+                      for i in range(payload["args"]["controls"])]
+            off_ranges[str(alpha)] = [min(values), max(values)]
         summary["features"][feature_id] = {"tokens": tokens, "on_minus": minus["on_rule"],
             "on_plus": plus["on_rule"], "off_minus": minus["off_rule"], "off_plus": plus["off_rule"],
             "span": span, "control_spans": controls, "control_span_range": bounds,
+            "control_off_rule_ranges": off_ranges,
             "original_screen": old[feature_id]}
         token_text = ", ".join(tokens).replace("|", "\\|")
         lines.append(f"| {feature_id} | {token_text} | {plus['on_rule']['n_tokens']} / {plus['on_rule']['n_windows']} | "
@@ -88,10 +102,12 @@ def main():
         historical = old[feature_id]
         secondary.append(f"| {feature_id} | {historical['on-4']:+.4f} / {historical['on+4']:+.4f} | "
                          f"{minus['off_rule']['delta']:+.4f} / {plus['off_rule']['delta']:+.4f} | {bound_text} |")
+        control_costs.append(f"| {feature_id} | [{off_ranges['-4'][0]:+.4f}, {off_ranges['-4'][1]:+.4f}] | "
+                             f"[{off_ranges['4'][0]:+.4f}, {off_ranges['4'][1]:+.4f}] |")
     output = args.input.parent
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    (output / "README.md").write_text("\n".join(lines + secondary) + "\n")
-    print("\n".join(lines + secondary))
+    (output / "README.md").write_text("\n".join(lines + secondary + control_costs) + "\n")
+    print("\n".join(lines + secondary + control_costs))
 
 
 if __name__ == "__main__":

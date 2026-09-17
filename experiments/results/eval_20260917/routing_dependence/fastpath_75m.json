@@ -1,0 +1,263 @@
+{
+  "args": {
+    "config": "checkpoints/pr_sync_20260917/75m-dagformer/config.yaml",
+    "ckpt": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+    "eval_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_test.pt",
+    "out": "experiments/results/eval_20260917/routing_dependence/fastpath_75m.json",
+    "n_sequences": 32,
+    "seq_len": 1024,
+    "device": "cuda"
+  },
+  "git_commit": "7f27da9defc4bb70b4b3d080970e5f28f11692c3",
+  "versions": {
+    "torch": "2.10.0",
+    "transformers": "4.57.1"
+  },
+  "n_sequences": 32,
+  "actual_fused_encoder_calls": {
+    "enabled": 64,
+    "disabled": 0
+  },
+  "nll": {
+    "enabled": [
+      4.858325958251953,
+      4.855100631713867,
+      4.824811935424805,
+      4.5320539474487305,
+      4.5004353523254395,
+      4.672469139099121,
+      4.588504314422607,
+      4.484705924987793,
+      4.585562705993652,
+      4.646681785583496,
+      4.9773125648498535,
+      4.868640899658203,
+      4.377065181732178,
+      4.559192657470703,
+      4.5995965003967285,
+      5.297290802001953,
+      4.795665740966797,
+      5.137336730957031,
+      4.688661575317383,
+      4.787124156951904,
+      4.766298294067383,
+      4.971896171569824,
+      4.913154602050781,
+      4.9062724113464355,
+      4.8273234367370605,
+      4.824135780334473,
+      4.539972305297852,
+      4.3849711418151855,
+      4.672703742980957,
+      5.566577911376953,
+      4.941530227661133,
+      4.560320854187012
+    ],
+    "disabled": [
+      4.859587669372559,
+      4.854807376861572,
+      4.8237786293029785,
+      4.531611919403076,
+      4.501008987426758,
+      4.672919750213623,
+      4.588653564453125,
+      4.486400127410889,
+      4.585539817810059,
+      4.646360397338867,
+      4.978205680847168,
+      4.868686199188232,
+      4.37778902053833,
+      4.560605049133301,
+      4.600796699523926,
+      5.297547340393066,
+      4.795662879943848,
+      5.13827657699585,
+      4.688265323638916,
+      4.786681175231934,
+      4.764861106872559,
+      4.971152305603027,
+      4.913600921630859,
+      4.9069414138793945,
+      4.827319145202637,
+      4.824442386627197,
+      4.5405073165893555,
+      4.383888244628906,
+      4.673334121704102,
+      5.567873477935791,
+      4.940814018249512,
+      4.559116363525391
+    ]
+  },
+  "per_sequence_differences": [
+    {
+      "alpha_max_abs": 0.0011844635009765625,
+      "alpha_relative_l2": 2.914997639891226e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0009992122650146484,
+      "alpha_relative_l2": 2.9292632461874746e-05,
+      "logits_max_abs": 0.21875
+    },
+    {
+      "alpha_max_abs": 0.0013232231140136719,
+      "alpha_relative_l2": 2.8791231670766138e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0010465383529663086,
+      "alpha_relative_l2": 2.7175479772267863e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.001077413558959961,
+      "alpha_relative_l2": 2.848378244380001e-05,
+      "logits_max_abs": 0.15625
+    },
+    {
+      "alpha_max_abs": 0.001089334487915039,
+      "alpha_relative_l2": 2.8971735446248204e-05,
+      "logits_max_abs": 0.203125
+    },
+    {
+      "alpha_max_abs": 0.0008859634399414062,
+      "alpha_relative_l2": 2.9552524210885167e-05,
+      "logits_max_abs": 0.171875
+    },
+    {
+      "alpha_max_abs": 0.0012655258178710938,
+      "alpha_relative_l2": 3.1272302294382825e-05,
+      "logits_max_abs": 0.21875
+    },
+    {
+      "alpha_max_abs": 0.0011119842529296875,
+      "alpha_relative_l2": 3.054716216865927e-05,
+      "logits_max_abs": 0.140625
+    },
+    {
+      "alpha_max_abs": 0.00106048583984375,
+      "alpha_relative_l2": 2.765847420960199e-05,
+      "logits_max_abs": 0.15625
+    },
+    {
+      "alpha_max_abs": 0.000972747802734375,
+      "alpha_relative_l2": 2.8328893677098677e-05,
+      "logits_max_abs": 0.140625
+    },
+    {
+      "alpha_max_abs": 0.0010906457901000977,
+      "alpha_relative_l2": 2.812861930578947e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0010465383529663086,
+      "alpha_relative_l2": 2.9319415261852555e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0010533332824707031,
+      "alpha_relative_l2": 2.952411159640178e-05,
+      "logits_max_abs": 0.21875
+    },
+    {
+      "alpha_max_abs": 0.0011229515075683594,
+      "alpha_relative_l2": 2.7886828320333734e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0009877681732177734,
+      "alpha_relative_l2": 2.844408300006762e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0010225772857666016,
+      "alpha_relative_l2": 2.79382129519945e-05,
+      "logits_max_abs": 0.15625
+    },
+    {
+      "alpha_max_abs": 0.0009627342224121094,
+      "alpha_relative_l2": 2.869749914680142e-05,
+      "logits_max_abs": 0.140625
+    },
+    {
+      "alpha_max_abs": 0.0009279251098632812,
+      "alpha_relative_l2": 2.867172224796377e-05,
+      "logits_max_abs": 0.15625
+    },
+    {
+      "alpha_max_abs": 0.0011186599731445312,
+      "alpha_relative_l2": 3.291838584118523e-05,
+      "logits_max_abs": 0.203125
+    },
+    {
+      "alpha_max_abs": 0.0012378692626953125,
+      "alpha_relative_l2": 3.1269511964637786e-05,
+      "logits_max_abs": 0.1328125
+    },
+    {
+      "alpha_max_abs": 0.0010654926300048828,
+      "alpha_relative_l2": 3.141964043607004e-05,
+      "logits_max_abs": 0.25
+    },
+    {
+      "alpha_max_abs": 0.0011892318725585938,
+      "alpha_relative_l2": 3.335085784783587e-05,
+      "logits_max_abs": 0.2001953125
+    },
+    {
+      "alpha_max_abs": 0.0010118484497070312,
+      "alpha_relative_l2": 3.2256750273518264e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.0010967254638671875,
+      "alpha_relative_l2": 3.221934457542375e-05,
+      "logits_max_abs": 0.296875
+    },
+    {
+      "alpha_max_abs": 0.0009801387786865234,
+      "alpha_relative_l2": 3.487690264591947e-05,
+      "logits_max_abs": 0.125
+    },
+    {
+      "alpha_max_abs": 0.001010894775390625,
+      "alpha_relative_l2": 3.1546387617709115e-05,
+      "logits_max_abs": 0.17578125
+    },
+    {
+      "alpha_max_abs": 0.0010814666748046875,
+      "alpha_relative_l2": 3.391288191778585e-05,
+      "logits_max_abs": 0.1640625
+    },
+    {
+      "alpha_max_abs": 0.0009984970092773438,
+      "alpha_relative_l2": 3.140081025776453e-05,
+      "logits_max_abs": 0.1328125
+    },
+    {
+      "alpha_max_abs": 0.0011434555053710938,
+      "alpha_relative_l2": 3.431391451158561e-05,
+      "logits_max_abs": 0.25
+    },
+    {
+      "alpha_max_abs": 0.0010814666748046875,
+      "alpha_relative_l2": 3.527180160745047e-05,
+      "logits_max_abs": 0.1875
+    },
+    {
+      "alpha_max_abs": 0.00096893310546875,
+      "alpha_relative_l2": 2.898482489399612e-05,
+      "logits_max_abs": 0.1875
+    }
+  ],
+  "disable_minus_enable_nll": {
+    "mean": 4.76615734398365,
+    "delta": 0.00016686320304870605,
+    "paired_se": 0.00014374763851165761,
+    "normal_95ci": [
+      -0.00011488216843414284,
+      0.00044860857453155495
+    ]
+  },
+  "protocol": "same weights and token windows; inference mode; only torch.backends.mha fastpath setting changes; no model defaults are changed"
+}

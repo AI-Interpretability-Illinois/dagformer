@@ -45,6 +45,12 @@ accuracy is being evaluated separately on the full 1,319-item test split.
 Two further custom controls score the question prefix and the gold answer
 conditioned on that prefix separately. These remain teacher-forced
 likelihood endpoints; they do not count generated solutions as correct.
+The [completed conditional-answer control](gsm8k_components/README.md)
+improves from 2.2130 to 2.1047 BPB at 75M, 1.9205 to 1.8223 at 150M, and
+1.6870 to 1.5684 at 300M. The gain is therefore present in the gold-answer
+likelihood as well as the question likelihood. All three paired intervals
+exclude zero. The earlier gold solution tokens are supplied in this task;
+free generation below tests whether the model can produce the solution.
 
 Full GSM8K generation is complete for the 75M and 300M pairs, with 1,319
 documents per model, three few-shot examples and a 256-token generation cap.
@@ -147,6 +153,12 @@ interval [0.000322, 0.000779], while removing corrections costs +1.74925.
 This run upcasts the loaded checkpoint weights and disables TF32; it does
 not recover precision lost when the checkpoint was stored in BF16. The weak
 external content dependence persists under this arithmetic change.
+
+The [MHA fastpath check](routing_dependence/fastpath.md) also exercises the
+April stash's proposed numerical change. It confirms 64 fused encoder calls
+when enabled and zero when disabled at each scale. Mean NLL differences on
+32 windows have paired intervals spanning zero for all three models. The
+default remains unchanged in this evaluation environment.
 
 The same position-table substitution was also evaluated on all 14 ordinary
 tasks at all three scales. The table below reports *cost* for BPB and signed
