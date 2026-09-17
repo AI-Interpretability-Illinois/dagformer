@@ -32,6 +32,7 @@ def main():
     output = {"protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
               "draws": args.draws, "seed": args.seed, "variants": {}}
     lines = [f"# Paired comparison against {args.reference_family}", "",
+             f"Reference results: `{args.reference_dir}`.", "",
              "Positive differences favor the variant. Intervals resample documents, "
              "not training seeds. BPB decreases and accuracy increases are positive.", "",
              "| Variant | Task | Reference | Variant | Difference | Paired 95% interval |",
