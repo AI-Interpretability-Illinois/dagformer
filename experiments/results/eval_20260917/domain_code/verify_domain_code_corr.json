@@ -88,7 +88,7 @@
       "metric": "mean logp(code) - logp(prose) per token",
       "nll": 3.3489566707611083,
       "shift": 2.4711770340800285,
-      "t": NaN,
+      "t": null,
       "nll_rise": 0.0,
       "damaged": false
     },
@@ -106,7 +106,7 @@
       "metric": "mean logp(code) - logp(prose) per token",
       "nll": 3.3489566707611083,
       "shift": -0.8835870921611786,
-      "t": NaN,
+      "t": null,
       "nll_rise": 0.0,
       "damaged": false
     },

@@ -35,6 +35,10 @@
 - The MHA fastpath control confirms actual fused encoder execution changes
   from 64 calls to zero on each 32-window run; see
   [the numerical comparison](routing_dependence/fastpath.md).
+- A direct verifier reporting check confirms that reference prompts with
+  unequal counts report an unavailable paired t statistic as JSON `null`
+  and table `n/a`. Four legacy `NaN` placeholders in this campaign's two
+  whole-circuit JSONs were normalized; scores, NLLs and shifts are unchanged.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

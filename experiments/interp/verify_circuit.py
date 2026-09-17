@@ -365,13 +365,13 @@ def build_arms(args, layout, chosen, eligible, delta, ps, runner, rng,
 # Reporting
 # ---------------------------------------------------------------------------
 
-def paired_shift(arm_scores: list, base_scores: list) -> tuple[float, float]:
+def paired_shift(arm_scores: list, base_scores: list) -> tuple[float, Optional[float]]:
     """Mean and t statistic of the per-prompt shift against the baseline arm."""
     a, b = np.asarray(arm_scores, float), np.asarray(base_scores, float)
     if a.shape != b.shape or a.size < 2:
         # Different polarities have different paraphrase counts, so the
         # reference arms are only comparable unpaired.
-        return float(a.mean() - b.mean()), float("nan")
+        return float(a.mean() - b.mean()), None
     d = a - b
     sd = d.std(ddof=1)
     t = float(d.mean() / (sd / np.sqrt(d.size))) if sd > 0 else 0.0
@@ -395,9 +395,10 @@ def fmt_table(arms: list[Arm], headroom: float, nll_ref: Optional[float]) -> lis
                if r.get("nll") is not None and nll_ref is not None else "—")
         if r.get("damaged"):
             nll += " **damaged**"
+        t_text = f"{r['t']:+.2f}" if r.get("t") is not None else "n/a"
         rows.append(f"| `{a.name}` | {a.group} | {a.n_edges} | {a.lam:g} | "
                     f"{r['score']:+.4f} ± {r['sem']:.4f} | {r['shift']:+.4f} | "
-                    f"{r['t']:+.2f} | {rec} | {nll} |")
+                    f"{t_text} | {rec} | {nll} |")
     return rows
 
 
