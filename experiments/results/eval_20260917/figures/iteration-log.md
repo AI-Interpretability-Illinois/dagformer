@@ -13,3 +13,13 @@
 
 Future plots or changed result inputs require a new render and inspection;
 this record applies to the four exports listed above.
+
+## Context generation
+
+Added six panels for explicit target-value inclusion after all ten generation
+arms finished. The plot distinguishes neutral/deceptive cues and three prompt
+forms, labels each channel's gamma, and shows two fixed controls as individual
+gray crosses. Reference rates and run sizes are read from metadata. Inspection
+of the rendered PNG found no clipping or overlapping labels; SVG/PDF exports
+use the same figure. The caption and accompanying diagnostics separate word
+omission from contradictory values.

@@ -18,8 +18,8 @@
 - Future-token prefix checks passed at all three backbone scales. The
   position-table harness hook and direct routing-dependence evaluator agreed
   exactly on the checked NLL. Results are in
-  `routing_dependence/causality_and_hook_checks.json`.
-- Four result figures were rendered and inspected; see
+  [causality_and_hook_checks.json](causality_and_hook_checks.json).
+- Five result figures were rendered and inspected; see
   `figures/qa-ledger.md`. Plotting reads the numeric result files directly.
 - The SAE transfer runner passed a one-window CPU execution check
   plus two focused tests: token-weighted conditional loss aggregation and

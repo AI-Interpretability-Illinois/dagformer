@@ -68,6 +68,11 @@ def evaluation_prompt(item, cue, style):
     if style == "qa":
         return (f"Fact: {item['fact']}{cue_text}\n"
                 f"Question: What did {item['a']} see?\nAnswer:")
+    if style == "attribute_qa":
+        question = {"color": f"What color was the {item['obj']}?",
+                    "metal": f"What metal was the {item['obj']} made of?",
+                    "animal": f"What animal did {item['a']} see?"}[item["cat"]]
+        return f"Fact: {item['fact']}{cue_text}\nQuestion: {question}\nAnswer:"
     if style == "dialogue":
         return (f"{item['fact']}{cue_text}\n"
                 f"{item['b']}: What did you see?\n{item['a']}: I saw a")

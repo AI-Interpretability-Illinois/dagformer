@@ -206,11 +206,57 @@ def trained_ladder(root, out):
     save(fig, out, "trained_ladder")
 
 
+def context_generation(root, out):
+    data = read(root / "context_fidelity/context_generation.summary.json")
+    expected = 1 + 3 * (1 + data["args"]["controls"])
+    if len(data["arms"]) != expected:
+        raise ValueError("The context-generation run has not finished")
+    styles = [("original", "Narrative"), ("dialogue", "Dialogue"), ("qa", "Question–answer")]
+    fig, axes = plt.subplots(2, 3, sharey=True, figsize=(12, 6.6))
+    limits = [0.]
+    labels = [f"{CHANNELS[c]}\nγ={data['args'][c + '_gamma']:g}" for c in CHANNELS]
+    for row, cue in enumerate(("neutral", "deceptive")):
+        for col, (prompt_style, title) in enumerate(styles):
+            ax = axes[row, col]
+            condition = f"{prompt_style}/{cue}"
+            for index, channel in enumerate(CHANNELS):
+                value = data["arms"][f"{channel}/circuit"]["conditions"][condition]["first_value_true"]
+                delta = 100 * value["delta"]
+                lo, hi = 100 * np.array(value["normal_95ci"])
+                ax.errorbar(index, delta, yerr=[[delta - lo], [hi - delta]],
+                            fmt=MARKERS[channel], color=COLORS[channel], capsize=3, markersize=6)
+                limits.extend([lo, hi])
+                for control in range(data["args"]["controls"]):
+                    point = 100 * data["arms"][f"{channel}/random{control}"]["conditions"][condition]["first_value_true"]["delta"]
+                    offset = (control - (data["args"]["controls"] - 1) / 2) * .15
+                    ax.scatter(index + offset, point, marker="x", color="#777777", s=25, linewidth=1)
+                    limits.append(point)
+            reference = 100 * data["arms"]["reference"]["conditions"][condition]["first_value_true"]["mean"]
+            ax.set_title(f"{title} / {cue}\nReference inclusion: {reference:.1f}%", fontsize=10)
+            ax.set_xticks(range(3), labels, fontsize=9)
+            ax.set_xlim(-.4, 2.4)
+            ax.axhline(0, color="#777777", linestyle="--", linewidth=.9)
+            style(ax)
+            if col == 0:
+                ax.set_ylabel("Change in target-value inclusion\n(percentage points)")
+    low, high = min(limits), max(limits)
+    for ax in axes.flat:
+        ax.set_ylim(low - .6, high + .6)
+    fig.suptitle("Fixed head edits and explicit value inclusion in generated text", fontsize=13, y=1.005)
+    fig.text(.03, -.025, f"{data['n_items']:,} new content combinations; greedy generation, at most "
+             f"{data['args']['max_new_tokens']} tokens; paired 95% normal intervals.\n"
+             f"Gray ×: {data['args']['controls']} norm-matched controls per channel. "
+             "Omitted attributes can leave a fact-compatible answer.", fontsize=9)
+    fig.tight_layout(h_pad=2.1, w_pad=1.8)
+    save(fig, out, "context_generation")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, default=Path("experiments/results/eval_20260917"))
     plotters = {"ordinary_paired": ordinary, "routing_dependence": routing,
-                "context_transfer": context, "trained_ladder": trained_ladder}
+                "context_transfer": context, "trained_ladder": trained_ladder,
+                "context_generation": context_generation}
     ap.add_argument("--figures", nargs="+", choices=list(plotters), default=list(plotters))
     args = ap.parse_args()
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,

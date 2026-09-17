@@ -137,6 +137,13 @@ position-table substitution costs +0.000614 NLL; the 16-window-block interval
 is [0.000274, 0.000893]. This supports a small positive cost even when nearby
 windows are resampled together.
 
+The [FP32 arithmetic repeat](routing_dependence/300m_fp32.json) gives the same
+pattern at 300M: the position table costs +0.000550 NLL, with paired normal
+interval [0.000322, 0.000779], while removing corrections costs +1.74925.
+This run upcasts the loaded checkpoint weights and disables TF32; it does
+not recover precision lost when the checkpoint was stored in BF16. The weak
+external content dependence persists under this arithmetic change.
+
 The same position-table substitution was also evaluated on all 14 ordinary
 tasks at all three scales. The table below reports *cost* for BPB and signed
 accuracy change for LAMBADA; the full
@@ -211,15 +218,45 @@ criterion. The original natural-text cache had understated this cost.
 The gray range shows five norm-matched random-head controls for both-channel
 edits; it is not a confidence interval. Colored intervals are paired normal
 intervals across the 1,024 content combinations or 50 language-model windows.
-The [metric diagnostics](context_fidelity/metric_diagnostics.md) show why the
-QA result needs a generation check: the unchanged model assigns the true value
+The [metric diagnostics](context_fidelity/metric_diagnostics.md) motivate the
+generation check below: the unchanged model assigns the true value
 only 0.0000149 mean whole-vocabulary probability at the first answer position
 under the deceptive cue, where an article or another opening word may come
 first. In narrative and dialogue, the mean probabilities are 0.16665 and
 0.30551, increasing by 0.02187 and 0.05512 with the edit. Thus the cloze gains
 also exist in whole-vocabulary probability, while the QA candidate ratio is
-an incomplete answer metric. Unconstrained generation on a third disjoint
-item set is queued to check generated answers directly.
+an incomplete answer metric.
+
+Unconstrained greedy generation on a third disjoint set of 1,024 content
+combinations is now complete. With a 16-token cap, the both-channel edit at
+gamma 1.25 increases explicit target-value inclusion under the deceptive cue:
+
+| Prompt | Unedited inclusion | Edited inclusion | Difference | Paired 95% interval |
+|---|---:|---:|---:|---|
+| Narrative | 45.90% | 49.12% | +3.22 percentage points | [2.14, 4.30] |
+| Dialogue | 87.01% | 89.75% | +2.73 percentage points | [1.74, 3.73] |
+| Question–answer | 90.33% | 91.11% | +0.78 percentage points | [0.24, 1.32] |
+
+![Target-value inclusion in unconstrained generation](figures/context_generation.png)
+
+Neutral cues also show gains. The both-channel circuit exceeds each of the
+two fixed controls in all six conditions under the unadjusted
+[paired comparisons](context_fidelity/context_generation_control_pairs.md).
+This compares the measured controls; two draws do not characterize every
+possible random circuit.
+
+The [generation diagnostics](context_fidelity/context_generation_diagnostics.md)
+substantially narrow the interpretation. Across all 61,440 continuations,
+none mentions a listed alternative candidate value. Most narrative misses
+omit an attribute while naming the object, such as saying "ring" for "iron
+ring". The observed gain is therefore about **explicit target-word inclusion**;
+these counts do not measure lying or semantic factual-error rates. The QA
+prompt asks about the observed fact, while narrative/dialogue prompts continue
+a character's utterance, changing the query as well as its presentation.
+The QA generation gain also reverses its first-token candidate-ratio decline,
+confirming that the latter was an inadequate answer endpoint here. A further
+test explicitly asks for the color, metal or animal on 1,024 additional
+content combinations so that the target property is required by the question.
 
 The [seven hyperconnection edges](context_fidelity/context_validation_hyper.md)
 and [three sequential-path edges](context_fidelity/context_validation_sequential.md)

@@ -1,7 +1,8 @@
 """Test fixed context-fidelity edits with unconstrained greedy generation.
 
 Count the first candidate value mentioned in the generated continuation. A
-continuation mentioning no value counts as incorrect. Also retain whole-vocab
+continuation mentioning no value scores zero on this inclusion endpoint; it
+can still name the correct object while omitting an attribute. Retain whole-vocab
 first-token accuracy and true-token probability, avoiding candidate-only
 normalization as the sole endpoint.
 """
@@ -160,7 +161,7 @@ def main():
            "items": items, "circuit": edges, "arms": {}}
     summary = {k: v for k, v in raw.items() if k not in ("items", "arms")}
     summary.update(n_items=len(items), raw_artifact=str(args.out), arms={},
-                   protocol="greedy unconstrained continuations; first candidate value mentioned; no value counts incorrect; random controls norm matched per layer/token")
+                   protocol="greedy unconstrained continuations; first candidate value mentioned; omission scores zero on the explicit-inclusion endpoint; random controls norm matched per layer/token")
     arms = [("reference", "both", edges, 1., False)]
     for channel in ("pred", "corr", "both"):
         gamma = getattr(args, channel + "_gamma")

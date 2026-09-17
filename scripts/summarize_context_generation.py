@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import re
 
-from eval_context_fidelity import evaluation_prompt
+from eval_context_fidelity import evaluation_prompt, paired_summary
 
 
 def mentioned(text, word):
@@ -93,10 +93,28 @@ def main():
                     examples += ["Both-channel edit:", "```text", edited[condition]["generations"][index].rstrip(), "```", ""]
     lines += ["", "[Deterministically selected examples](context_generation_examples.md) retain the full short continuations.", "",
               "Counts by category and all edit/control arms are retained in the companion JSON.", ""]
+    comparisons = {}
+    control_lines = ["# Direct comparison with the fixed random controls", "",
+                     "Differences compare the circuit and control on the same content items.",
+                     "Intervals are unadjusted paired normal intervals over items. They do not",
+                     "estimate variation across the population of possible random circuits.", "",
+                     "| Channel | Condition | Control | Inclusion difference (points) | Paired 95% interval |",
+                     "|---|---|---|---:|---|"]
+    for channel in ("pred", "corr", "both"):
+        for control in range(raw["args"]["controls"]):
+            name = f"{channel}/random{control}"
+            comparisons[name] = {}
+            for condition, values in raw["arms"][f"{channel}/circuit"]["values"].items():
+                stats = paired_summary(values["first_value_true"], raw["arms"][name]["values"][condition]["first_value_true"])
+                comparisons[name][condition] = stats
+                lo, hi = stats["normal_95ci"]
+                control_lines.append(f"| {channel} | {condition} | {control} | {100*stats['delta']:+.2f} | [{100*lo:+.2f}, {100*hi:+.2f}] |")
+    result["paired_circuit_minus_control"] = comparisons
     args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / "context_generation_diagnostics.json").write_text(json.dumps(result, indent=2) + "\n")
     (args.out_dir / "context_generation_diagnostics.md").write_text("\n".join(lines))
     (args.out_dir / "context_generation_examples.md").write_text("\n".join(examples))
+    (args.out_dir / "context_generation_control_pairs.md").write_text("\n".join(control_lines) + "\n")
     print("\n".join(lines))
 
 
