@@ -87,6 +87,13 @@ and causes substantial damage. Freezing the local corrections also hurts
 performance. These inference edits do not establish what a retrained model
 needs; the separately trained 150M ablation ladder below tests that question.
 
+The predictor retains useful **position dependence**. At 300M, substituting
+another sequence's predictor output at the same positions costs +0.00094 NLL.
+A single mean over all positions costs +0.06746, and shuffling positions costs
++0.07240. Replacing its learned source/head pattern with identity wiring costs
++1.79541. Position-specific wiring and sensitivity to the current text are
+therefore distinct contributions in the fixed checkpoint.
+
 The [routing results](routing_dependence/300m.json) retain all per-sequence
 losses, intervals, constant/global and cross-sequence substitutions, plus
 synthetic repetition tests at periods 64, 128 and 256.
