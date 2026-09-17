@@ -6,6 +6,7 @@ uses the last matched number; it does not validate the derivation or answer unit
 | Model | Documents | Strict match | Flexible match | Best constant answer | Mean repeated 4-gram fraction |
 |---|---:|---:|---:|---|---:|
 | 300m-baseline | 1319 | 0.00% | 1.59% | 5: 3.03% | 0.837 |
+| 75m-baseline | 1319 | 0.00% | 1.82% | 5: 3.03% | 0.815 |
 
 The constant-answer diagnostic uses gold frequencies from the same evaluated documents.
 Repetition is a mechanical text statistic, not a correctness judgment.

@@ -1,0 +1,325 @@
+{
+  "selection": "32 manually specified new content stubs and candidate pairs, fixed before evaluating the stream follow-up; original instruction pools are reused.",
+  "items": [
+    {
+      "content": " The counter",
+      "candidates": {
+        "code": " += 1",
+        "prose": " on the wall had stopped working."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The length",
+      "candidates": {
+        "code": " = len(sequence)",
+        "prose": " of the journey surprised everyone."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The size",
+      "candidates": {
+        "code": " = image.shape[0]",
+        "prose": " of the room was difficult to judge."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The offset",
+      "candidates": {
+        "code": " = start + index",
+        "prose": " was too small to see from here."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The position",
+      "candidates": {
+        "code": " = points.argmax()",
+        "prose": " of the ship was still unknown."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The token",
+      "candidates": {
+        "code": " = next(tokens)",
+        "prose": " was passed quietly across the table."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The score",
+      "candidates": {
+        "code": " = evaluate(prediction)",
+        "prose": " at the end was closer than expected."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The weight",
+      "candidates": {
+        "code": " = torch.ones(10)",
+        "prose": " of the package made it hard to carry."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The bias",
+      "candidates": {
+        "code": " = np.zeros(3)",
+        "prose": " in the report was plain to everyone."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The matrix",
+      "candidates": {
+        "code": " = np.eye(n)",
+        "prose": " of relationships was complex and fragile."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The vector",
+      "candidates": {
+        "code": " = embedding[word]",
+        "prose": " was shown as an arrow on the page."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The array",
+      "candidates": {
+        "code": " = np.asarray(values)",
+        "prose": " of flowers brightened the entrance."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The key",
+      "candidates": {
+        "code": " = sorted(mapping)[0]",
+        "prose": " had been left beneath the mat."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The record",
+      "candidates": {
+        "code": " = database.fetch(uid)",
+        "prose": " of the meeting was never published."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The row",
+      "candidates": {
+        "code": " = table.iloc[0]",
+        "prose": " of houses stretched along the hill."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The column",
+      "candidates": {
+        "code": " = frame[\"price\"]",
+        "prose": " beside the door was cracked."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The group",
+      "candidates": {
+        "code": " = users.groupby(\"team\")",
+        "prose": " waited outside until the rain stopped."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The label",
+      "candidates": {
+        "code": " = labels[index]",
+        "prose": " on the bottle had faded with age."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The sample",
+      "candidates": {
+        "code": " = random.choice(items)",
+        "prose": " was placed in a small glass jar."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The batch",
+      "candidates": {
+        "code": " = next(loader)",
+        "prose": " of bread was ready before dawn."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The epoch",
+      "candidates": {
+        "code": " += 1",
+        "prose": " ended after many years of conflict."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The loss",
+      "candidates": {
+        "code": " = criterion(logits, labels)",
+        "prose": " was felt throughout the community."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The rate",
+      "candidates": {
+        "code": " = count / duration",
+        "prose": " of change had slowed over the winter."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The threshold",
+      "candidates": {
+        "code": " = np.median(scores)",
+        "prose": " of the house was worn by generations."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The queue",
+      "candidates": {
+        "code": " = deque(tasks)",
+        "prose": " outside the station grew longer."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The cache",
+      "candidates": {
+        "code": " = dict()",
+        "prose": " had remained hidden for a hundred years."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The stream",
+      "candidates": {
+        "code": " = open(filename)",
+        "prose": " ran clear beneath the bridge."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The source",
+      "candidates": {
+        "code": " = inspect.getsource(fn)",
+        "prose": " of the noise was finally discovered."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The target",
+      "candidates": {
+        "code": " = labels.to(device)",
+        "prose": " was visible at the far end of the field."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The window",
+      "candidates": {
+        "code": " = signal[start:stop]",
+        "prose": " overlooked a quiet courtyard."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The layer",
+      "candidates": {
+        "code": " = nn.Linear(32, 16)",
+        "prose": " of dust covered every surface."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    },
+    {
+      "content": " The head",
+      "candidates": {
+        "code": " = nodes[0]",
+        "prose": " of the family returned in the evening."
+      },
+      "meta": {
+        "split": "new_content"
+      }
+    }
+  ]
+}
