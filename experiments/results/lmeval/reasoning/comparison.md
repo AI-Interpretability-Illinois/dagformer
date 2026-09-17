@@ -15,7 +15,7 @@
 | 75m-baseline | 76,558,848 | 3000 | 571 | 6.4 |
 | 75m-dagformer | 105,657,332 | 3000 | 606 | 6.51 |
 
-> **Not step-matched:** 300m: baseline 12000 steps, dagformer 9000 steps. The shorter-trained model saw proportionally fewer tokens, so a win there is a lower bound and a loss is not conclusive.
+> **Not step-matched:** 300m: baseline 12000 steps, dagformer 9000 steps. Token counts also depend on the effective batch size. This comparison does not establish the effect at a matched training budget.
 
 ### 75m
 
@@ -75,6 +75,8 @@ _only `600m-baseline` evaluated at this size_
 | winogrande | `acc,none` | 0.5114 ± 0.0140 |
 | gsm8k | `exact_match,flexible-extract` | 0.0200 ± 0.0099 |
 
-**Head-to-head:** DAGFormer better on 18 of 27 paired task-size cells, baseline on 7, 2 tied (sign test over the 25 non-tied cells, p = 0.043).
+**All task types combined:** DAGFormer better on 18 of 27 paired task-size cells, baseline on 7, 2 tied (sign test over the 25 non-tied cells, descriptive p = 0.043). This includes BPB and generation tasks.
 
-Individual multiple-choice deltas at this scale are inside their own error bars; the sign agreement across tasks is what carries the information. Note the cells are not fully independent — the same model pair is scored on every task.
+Task-size cells reuse model pairs and are not independent; the sign test is a descriptive summary, not a calibrated significance claim.
+
+**Reasoning multiple choice only:** 14 wins, 5 losses, 2 ties (descriptive sign-test p = 0.064); excludes GSM8K exact-match and BPB.

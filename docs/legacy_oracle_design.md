@@ -61,7 +61,7 @@ are the diagonal-block entries; hyperconnection gates are off-diagonal.
 ### Oracle Topology Statistics (reference targets)
 
 - Sequential gates: ~91% ON
-- Hyperconnection gates: ~70% ON  
+- Hyperconnection gates: ~70% ON
 - Jaccard similarity between windows: < 0.8 (topologies are context-dependent)
 
 ---

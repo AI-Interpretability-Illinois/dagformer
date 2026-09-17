@@ -30,8 +30,48 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from models import checkpoint_step  # noqa: E402
 from suites import higher_is_better, primary_metric  # noqa: E402
+
+REASONING_MULTIPLE_CHOICE = frozenset({
+    "arc_challenge", "arc_easy", "mathqa", "commonsense_qa",
+    "social_iqa", "openbookqa", "winogrande",
+})
+
+
+def recorded_step(payload: dict) -> int | None:
+    """Read recorded metadata before trying an optional local checkpoint.
+
+    The original reasoning JSONs omit steps, while the accompanying wikitext
+    controls record them for the same checkpoint paths. This also lets tables
+    be regenerated away from Delta, without importing torch or loading weights.
+    """
+    model = payload["model"]
+    if model.get("step") is not None:
+        return int(model["step"])
+    if payload.get("_path"):
+        control = (Path(payload["_path"]).parent.parent / "wikitext_control"
+                   / f"{model['name']}__custom.json")
+        if control.is_file():
+            other = json.loads(control.read_text()).get("model", {})
+            if (other.get("checkpoint") == model.get("checkpoint")
+                    and other.get("step") is not None):
+                return int(other["step"])
+    path = model.get("checkpoint")
+    if path and Path(path).is_file():
+        from models import checkpoint_step
+        return checkpoint_step(path)
+    return None
+
+
+def multiple_choice_wins(rows: list[dict]) -> dict[str, int]:
+    """Count only the seven reasoning multiple-choice tasks, excluding BPB/EM."""
+    wins = {"dagformer": 0, "baseline": 0, "tie": 0}
+    for row in rows:
+        delta = row.get("delta_dagformer_better")
+        if row["task"] not in REASONING_MULTIPLE_CHOICE or delta is None:
+            continue
+        wins["dagformer" if delta > 0 else "baseline" if delta < 0 else "tie"] += 1
+    return wins
 
 
 def sign_test_p(wins: int, losses: int) -> float:
@@ -188,7 +228,7 @@ def render(payloads: list[dict]) -> tuple[str, list[dict]]:
     for payload in payloads:
         model = payload["model"]
         # Older result files predate the `step` field; read it off the checkpoint.
-        step = model.get("step") or checkpoint_step(model["checkpoint"])
+        step = recorded_step(payload)
         steps[model["name"]] = step
         seconds = sum((payload["eval"].get("seconds") or {}).values())
         lines.append(
@@ -213,8 +253,8 @@ def render(payloads: list[dict]) -> tuple[str, list[dict]]:
         lines += [
             "",
             "> **Not step-matched:** " + "; ".join(mismatched) + ". "
-            "The shorter-trained model saw proportionally fewer tokens, so a win there "
-            "is a lower bound and a loss is not conclusive.",
+            "Token counts also depend on the effective batch size. This comparison "
+            "does not establish the effect at a matched training budget.",
         ]
 
     lines += body
@@ -222,16 +262,24 @@ def render(payloads: list[dict]) -> tuple[str, list[dict]]:
     p_value = sign_test_p(wins["dagformer"], wins["baseline"])
     lines += [
         "",
-        f"**Head-to-head:** DAGFormer better on {wins['dagformer']} of "
+        f"**All task types combined:** DAGFormer better on {wins['dagformer']} of "
         f"{sum(wins.values())} paired task-size cells, baseline on {wins['baseline']}"
         + (f", {wins['tie']} tied" if wins["tie"] else "")
         + f" (sign test over the {wins['dagformer'] + wins['baseline']} non-tied cells, "
-        f"p = {p_value:.3f}).",
+        f"descriptive p = {p_value:.3f}). This includes BPB and generation tasks.",
         "",
-        "Individual multiple-choice deltas at this scale are inside their own error bars; "
-        "the sign agreement across tasks is what carries the information. Note the cells "
-        "are not fully independent — the same model pair is scored on every task.",
+        "Task-size cells reuse model pairs and are not independent; the sign test "
+        "is a descriptive summary, not a calibrated significance claim.",
     ]
+    mc = multiple_choice_wins(meta["rows"])
+    if sum(mc.values()):
+        p_mc = sign_test_p(mc["dagformer"], mc["baseline"])
+        lines += [
+            "",
+            f"**Reasoning multiple choice only:** {mc['dagformer']} wins, "
+            f"{mc['baseline']} losses, {mc['tie']} ties "
+            f"(descriptive sign-test p = {p_mc:.3f}); excludes GSM8K exact-match and BPB.",
+        ]
     return "\n".join(lines), meta["rows"]
 
 

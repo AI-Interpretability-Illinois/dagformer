@@ -28,6 +28,8 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import importlib.metadata
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -159,9 +161,10 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
         if not tasks:
             continue
         lm.batch_size_per_gpu = int(batch_size)
-        # Per-doc samples are only worth keeping for the generative pass — the
-        # log-likelihood pass logs ~47k rows per model and none are readable.
-        save_samples = args.save_samples and label == "generative"
+        # Likelihood samples retain paired document scores for uncertainty
+        # estimates, even when there is no readable generation to inspect.
+        save_samples = args.save_samples and (
+            label == "generative" or args.save_likelihood_samples)
         print(
             f"[{spec.name}] {label} pass: tasks={tasks} limit={limit} "
             f"batch_size={batch_size} num_fewshot={num_fewshot}",
@@ -217,6 +220,10 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
             "kv_cache": lm.uses_kv_cache,
             "tokenizer": str(args.tokenizer),
             "lm_eval_version": lm_eval.__version__,
+            "torch_version": torch.__version__,
+            "transformers_version": importlib.metadata.version("transformers"),
+            "git_commit": subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=HERE, text=True).strip(),
             "prompts_left_truncated_batches": counter.truncated,
             "generations_hitting_context_limit": lm.truncated_generations,
             "seconds": timings,
@@ -297,8 +304,10 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument(
         "--save-samples",
         action="store_true",
-        help="write per-doc generations (generative tasks only) to samples/",
+        help="write per-doc generations to samples/",
     )
+    p.add_argument("--save-likelihood-samples", action="store_true",
+                   help="also save likelihood task document scores (requires --save-samples)")
     p.add_argument("--overwrite", action="store_true", help="re-run models that already have a JSON")
     p.add_argument("--dry-run", action="store_true", help="print the plan and exit")
     return p.parse_args(argv)

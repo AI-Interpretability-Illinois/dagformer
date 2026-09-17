@@ -17,12 +17,14 @@ zero and from each other, in both directions — chain-of-thought arithmetic doe
 not exist at 75M-600M / 12B tokens. The generations are fluent and unrelated to
 the question (`samples/*.jsonl`). **Do not report these as a comparison.**
 
-## 2. The reasoning signal is in GSM8K chain-of-thought bits-per-byte
+## 2. Likelihood of GSM8K question-and-solution text
 
-`gsm8k_bpb` (custom task, `../tasks/gsm8k_bpb.yaml`) scores the *gold* solution
-text under the model, so it has no floor. DAGFormer wins at every size — and by
-**~1.7× the margin it wins on wikitext**, which is the interesting part: the
-routing advantage is larger on math-reasoning text than on general text.
+`gsm8k_bpb` (custom task, `../tasks/gsm8k_bpb.yaml`) scores the full string
+`Question: {question}\nAnswer: {answer}` with rolling likelihood. It includes
+the question and gold solution; it is not answer-only conditional likelihood
+or a measure of generated reasoning correctness. DAGFormer has lower BPB at
+each size. The absolute BPB reduction is 1.66–1.76 times the Wikitext reduction;
+the relative percentage reduction is 1.26–1.33 times as large.
 
 | size | Δ wikitext BPB | Δ GSM8K-CoT BPB | ratio |
 |---|---|---|---|
@@ -31,22 +33,29 @@ routing advantage is larger on math-reasoning text than on general text.
 | 300M | 0.0424 (4.0%) | 0.0705 (5.0%) | 1.66× |
 
 (Δ = baseline − dagformer, lower BPB is better.) The wikitext column is a
-control run through this same harness (`../wikitext_control/`), not the number
-from the shared README — though it reproduces it to four decimals for six of
-seven checkpoints. The exception is `300m-baseline`: 1.0649 here vs 1.0715 in
-`/work/hdd/bfqt/shared/dagformer-models/README.md`. Worth chasing before the
-wikitext number is quoted anywhere, since the checkpoints and task are the same.
+control run through this same harness (`../wikitext_control/`). The apparent
+300M-baseline discrepancy is a checkpoint-label error in the shared README:
+`matched_mmap/dense_300m_mmap_s9000.json` records 1.0714925 at **step 9000**;
+the new control records 1.0648552 at **step 12000**. Those are different
+checkpoints, not conflicting measurements of the same checkpoint. Small
+differences also exist at other sizes, so the claim of six exact four-decimal
+matches should not be used.
 
 The 300M pair is also **not step-matched** — DAGFormer stopped at 9000 steps vs
-the baseline's 12000 (25% fewer tokens) — so the 300M gap is a lower bound.
+the baseline's 12000. With the recorded training batch sizes this is 25% fewer
+tokens. This is a budget mismatch; calling its gap a lower bound would require
+an unverified monotonicity assumption about further training.
 
 ## 3. Multiple-choice reasoning: consistent direction, no single significant task
 
-DAGFormer is ahead on 18 of 25 non-tied task-size cells (2 tied), sign test
-p = 0.043. No individual delta clears twice its combined standard error; the
+DAGFormer is ahead on **14 of 19 non-tied multiple-choice task-size cells**
+(5 losses, 2 ties; 21 cells total), descriptive sign-test p = **0.064**.
+The previously reported 18/25 and p = 0.043 combine all task types, including
+three GSM8K BPB comparisons and three GSM8K generation comparisons.
+No individual multiple-choice delta clears twice its combined standard error; the
 per-task effects (~+0.01 to +0.025 accuracy) are smaller than what ~1-3k
 evaluation documents can resolve. The cells are not independent (same model
-pair across tasks), so read p = 0.043 as "the direction is consistent", not as
+pair across tasks), so read p = 0.064 as a descriptive count, not as
 a per-task result.
 
 Largest consistent movers: winogrande (+0.007/+0.025/+0.009 across sizes),
@@ -59,6 +68,7 @@ scale and could be dropped from the suite.
 
 - Train a 600M DAGFormer: the 600M baseline is the only unpaired point, and the
   BPB trend would be much stronger with a fourth size.
-- Re-run 300M DAGFormer at 12000 steps to make that pair iso-token.
+- Evaluate the retained 300M baseline step-9000 checkpoint against DAGFormer
+  step 9000 for a comparison at the same token budget.
 - If gsm8k EM is needed for a paper, it needs a model an order of magnitude
   larger; at this scale report `gsm8k_bpb` and say why.

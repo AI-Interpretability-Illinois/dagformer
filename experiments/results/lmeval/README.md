@@ -2,8 +2,10 @@
 
 Evaluation harness for the pretrained checkpoints in
 `/work/hdd/bfqt/shared/dagformer-models` — baseline OLMo-2 and DAGFormer at
-75M / 150M / 300M (plus a 600M baseline), all trained on the same 12B-token
-Dolma v1.7 slice, so the pairs are directly comparable.
+75M / 150M / 300M (plus a 600M baseline), using the same 12B-token Dolma v1.7
+data source. Training budgets differ by size; the shared 300M pair uses
+baseline step 12000 and DAGFormer step 9000. A matched step-9000 baseline is
+retained in the project checkpoint directory.
 
 ```
 prefetch_data.py   download every task's dataset (run on a login node)
