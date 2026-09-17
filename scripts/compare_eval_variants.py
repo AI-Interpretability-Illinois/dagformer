@@ -23,6 +23,7 @@ def main():
     ap.add_argument("--reference-dir", required=True, type=Path)
     ap.add_argument("--variant-dir", required=True, type=Path)
     ap.add_argument("--reference-family", default="dagformer")
+    ap.add_argument("--out-stem", help="output filename stem, useful for several references in one variant directory")
     ap.add_argument("--draws", type=int, default=10000)
     ap.add_argument("--seed", type=int, default=20260917)
     args = ap.parse_args()
@@ -64,7 +65,7 @@ def main():
                          f"{stats['variant']:.4f} | {stats['delta_variant_better']:+.4f} | "
                          f"[{lo:+.4f}, {hi:+.4f}] |")
         output["variants"][model["name"]] = rec
-    stem = "paired_vs_" + args.reference_family
+    stem = args.out_stem or "paired_vs_" + args.reference_family
     (args.variant_dir / (stem + ".json")).write_text(json.dumps(output, indent=2) + "\n")
     (args.variant_dir / (stem + ".md")).write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

@@ -1,0 +1,357 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "300m-dagformer__context_both_gamma1.25": {
+      "reference_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024
+      },
+      "variant_model": {
+        "name": "300m-dagformer__context_both_gamma1.25",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "context_both",
+          "gamma": 1.25,
+          "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+          "edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "reference_edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "control_seed": null,
+          "control_norm_matching": null,
+          "scope": "fixed head-mean-deviation edit on predictor/corrections"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.004318572871408324,
+          "paired_bootstrap_95ci": [
+            -0.004750911594475544,
+            -0.003915069815173868
+          ],
+          "reference": 1.0224808260122566,
+          "variant": 1.0267993988836648,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": 0.023287405394915583,
+          "paired_bootstrap_95ci": [
+            0.018047739181059577,
+            0.02852707160877159
+          ],
+          "reference": 0.3017659615757811,
+          "variant": 0.3250533669706967,
+          "variant_only_correct": 156,
+          "reference_only_correct": 36,
+          "mcnemar_exact_p": 5.265339191747883e-19
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.00029874526986656047,
+          "paired_bootstrap_95ci": [
+            -0.001994124676359289,
+            0.002589125672176857
+          ],
+          "reference": 0.31447918741286596,
+          "variant": 0.3147779326827325,
+          "variant_only_correct": 70,
+          "reference_only_correct": 67,
+          "mcnemar_exact_p": 0.8644049750099481
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.002176278563656148,
+          "paired_bootstrap_95ci": [
+            -0.007616974972796518,
+            0.003264417845484222
+          ],
+          "reference": 0.6436343852013058,
+          "variant": 0.6414581066376496,
+          "variant_only_correct": 12,
+          "reference_only_correct": 16,
+          "mcnemar_exact_p": 0.5715881884098053
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.005471380471380472,
+          "paired_bootstrap_95ci": [
+            -0.010942760942760943,
+            -0.00042087542087542086
+          ],
+          "reference": 0.3846801346801347,
+          "variant": 0.3792087542087542,
+          "variant_only_correct": 14,
+          "reference_only_correct": 27,
+          "mcnemar_exact_p": 0.05958388801809633
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0017064846416382253,
+          "paired_bootstrap_95ci": [
+            -0.005119453924914676,
+            0.008532423208191127
+          ],
+          "reference": 0.23208191126279865,
+          "variant": 0.23378839590443687,
+          "variant_only_correct": 10,
+          "reference_only_correct": 8,
+          "mcnemar_exact_p": 0.8145294189453125
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": -0.006314127861089187,
+          "paired_bootstrap_95ci": [
+            -0.020520915548539857,
+            0.007892659826361484
+          ],
+          "reference": 0.5217048145224941,
+          "variant": 0.5153906866614049,
+          "variant_only_correct": 36,
+          "reference_only_correct": 44,
+          "mcnemar_exact_p": 0.43404225534547874
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.006,
+            0.006
+          ],
+          "reference": 0.276,
+          "variant": 0.276,
+          "variant_only_correct": 1,
+          "reference_only_correct": 1,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.008,
+          "paired_bootstrap_95ci": [
+            -0.001,
+            0.018
+          ],
+          "reference": 0.698,
+          "variant": 0.706,
+          "variant_only_correct": 16,
+          "reference_only_correct": 8,
+          "mcnemar_exact_p": 0.15158963203430176
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": 0.001834862385321101,
+          "paired_bootstrap_95ci": [
+            -0.0021406727828746177,
+            0.005810397553516819
+          ],
+          "reference": 0.6079510703363914,
+          "variant": 0.6097859327217126,
+          "variant_only_correct": 26,
+          "reference_only_correct": 20,
+          "mcnemar_exact_p": 0.4613911821367651
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0033500837520938024,
+          "paired_bootstrap_95ci": [
+            -0.0016750418760469012,
+            0.008375209380234505
+          ],
+          "reference": 0.22780569514237856,
+          "variant": 0.23115577889447236,
+          "variant_only_correct": 35,
+          "reference_only_correct": 25,
+          "mcnemar_exact_p": 0.2450608330229457
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19574119574119575,
+          "variant": 0.19574119574119575,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0005117707267144319,
+          "paired_bootstrap_95ci": [
+            -0.004605936540429887,
+            0.005629477993858751
+          ],
+          "reference": 0.36284544524053225,
+          "variant": 0.3633572159672467,
+          "variant_only_correct": 15,
+          "reference_only_correct": 14,
+          "mcnemar_exact_p": 1.0
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.008474968589079136,
+          "paired_bootstrap_95ci": [
+            -0.008967746273868805,
+            -0.008001314638129973
+          ],
+          "reference": 1.3313922139688217,
+          "variant": 1.3398671825579007,
+          "bytes": 728241
+        }
+      }
+    }
+  }
+}

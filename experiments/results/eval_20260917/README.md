@@ -271,6 +271,31 @@ linearly. The unchanged ten-edge selection also transfers to the
 +3.79 points and +0.02037 WikiText NLL at gamma 1.25. These are content-item
 and nearby-checkpoint replications, not evidence of a general honesty circuit.
 
+All three fixed edits were also evaluated on the 14 ordinary tasks:
+
+| Edit | Gamma | LAMBADA accuracy change | WikiText BPB cost | GSM8K joint BPB cost |
+|---|---:|---:|---:|---:|
+| Predictor | 1.5 | +1.22 points [0.82, 1.63] | +0.0029 | +0.0053 |
+| Correction | 1.25 | +1.79 points [1.32, 2.25] | +0.0018 | +0.0045 |
+| Both | 1.25 | +2.33 points [1.80, 2.85] | +0.0043 | +0.0085 |
+
+LAMBADA rises from 30.18% to 32.51% with the both-channel edit. Its ARC-easy
+accuracy falls by 0.55 points, with paired interval [-1.09, -0.04]. The
+[predictor](standard_context_pred/paired_vs_dagformer.md),
+[correction](standard_context_corr/paired_vs_dagformer.md) and
+[both-channel](standard_context_both/paired_vs_dagformer.md) tables retain every
+endpoint. The edits have task-dependent benefits and costs. Two matched
+random-head ordinary-task controls are queued at the both-channel dose.
+
+A [posthoc LAMBADA stratification](context_fidelity/lambada_answer_occurrence.md)
+finds that 114 of the both-channel edit's 120 net additional correct predictions
+come from the 3,791 prompts whose exact answer-token sequence already appears
+in context. Accuracy in that group rises by 3.01 points [2.32, 3.67], versus
+0.44 points [-0.00, 0.95] on the other 1,362 prompts. This association supports
+context reuse as a working interpretation; it does not identify a causal
+mediation mechanism. Exact token occurrence also misses paraphrases and
+capitalization changes.
+
 PR #2's domain-code experiment was rerun with the same 50 natural-text windows
 used for the first context-fidelity test and a denser small-dose grid. The
 [predictor](domain_code/verify_domain_code_pred.md) and
