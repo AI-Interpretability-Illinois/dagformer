@@ -5,14 +5,15 @@ with the author's direct head-edit experiments. This suite tests
 instruction-derived editing directions on hyperconnections; its negative
 results do not cover every editing direction, sequential path or behavior.
 
-Finding the set of cross-layer hyperconnections that *causes* a behaviour, by
-contrasting the routing weights the structure predictor emits under opposed
-instructions and then intervening on the edges that differ.
+This suite asks whether instruction contrasts identify useful editing
+directions in cross-layer hyperconnections. It first measures routing-weight
+differences under opposed instructions, then tests interventions on the
+selected coordinates. A measured contrast alone does not establish causality.
 
 The premise is that DAGFormer exposes something a deployed transformer does
 not: an explicit, editable topology. If a behaviour lives in a small set of
 routing edges, you can read it off the predictor and steer it there — before
-any hidden state exists.
+the backbone forward pass.
 
 ```
 extract_contrast.py   run the same content under pos / neg / neutral

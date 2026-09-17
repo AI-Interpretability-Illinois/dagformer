@@ -2,6 +2,11 @@
 
 Produced by `run_eval.py --model all --suite reasoning --gen-limit 200 --save-samples`
 on one A100; full per-task numbers in `comparison.md` / `comparison.csv`.
+The [September 17 campaign](../../eval_20260917/README.md) adds a step-matched
+300M pair, full-test generation, answer-conditional likelihood and paired
+document uncertainty. The [PR audit](../../../PROJECT_SYNC_2026-09-17.md)
+records corrections to the earlier interpretation; the numbers below remain
+the historical 200-item run.
 
 ## 1. GSM8K exact-match is at the floor for every model — as expected
 
@@ -12,10 +17,13 @@ on one A100; full per-task numbers in `comparison.md` / `comparison.csv`.
 | 300M | 0.025 | 0.015 |
 | 600M baseline | 0.020 | — |
 
-n=200, so one correct answer is 0.005. These are all indistinguishable from
-zero and from each other, in both directions — chain-of-thought arithmetic does
-not exist at 75M-600M / 12B tokens. The generations are fluent and unrelated to
-the question (`samples/*.jsonl`). **Do not report these as a comparison.**
+n=200, so one matching extracted answer is 0.005. These scores are low, and
+numeric extraction does not validate the generated reasoning. They do not
+establish an absence of arithmetic ability at these scales or a minimum model
+size needed to learn it. Training-token budgets also differ by checkpoint;
+12B is the source corpus size, not the budget of every model. Compare paired
+uncertainty and inspect outputs; the new campaign expands this check to the
+full 1,319-item split and retains repeated or irrelevant numeric matches.
 
 ## 2. Likelihood of GSM8K question-and-solution text
 
@@ -46,29 +54,33 @@ the baseline's 12000. With the recorded training batch sizes this is 25% fewer
 tokens. This is a budget mismatch; calling its gap a lower bound would require
 an unverified monotonicity assumption about further training.
 
-## 3. Multiple-choice reasoning: consistent direction, no single significant task
+## 3. Multiple-choice reasoning: descriptive direction of the old results
 
 DAGFormer is ahead on **14 of 19 non-tied multiple-choice task-size cells**
 (5 losses, 2 ties; 21 cells total), descriptive sign-test p = **0.064**.
 The previously reported 18/25 and p = 0.043 combine all task types, including
 three GSM8K BPB comparisons and three GSM8K generation comparisons.
-No individual multiple-choice delta clears twice its combined standard error; the
-per-task effects (~+0.01 to +0.025 accuracy) are smaller than what ~1-3k
-evaluation documents can resolve. The cells are not independent (same model
-pair across tasks), so read p = 0.064 as a descriptive count, not as
-a per-task result.
+The original comparison used combined marginal standard errors. That does
+not account for within-document pairing, so it does not establish that
+these sample sizes cannot resolve the observed effects. The new campaign
+retains per-document outputs and reports paired intervals. The cells are
+also not independent (the same model pair across tasks), so read p = 0.064
+as a descriptive count, not as a per-task result.
 
 Largest consistent movers: winogrande (+0.007/+0.025/+0.009 across sizes),
 arc_easy (+0.000/+0.011/+0.015), mathqa (+0.007/+0.021/+0.010).
-commonsense_qa is flat everywhere and sits at chance (~0.20 on 5 choices) for
-every model including the 600M baseline — it carries no information at this
-scale and could be dropped from the suite.
+commonsense_qa is flat near 0.20 in this format. The new campaign traces this
+to almost constant A predictions and separately scores answer text without
+option letters. The failure is therefore reported with its prompt/scoring
+convention rather than interpreted as a scale-wide absence of task information.
 
 ## Suggested next steps
 
 - Train a 600M DAGFormer: the 600M baseline is the only unpaired point, and the
   BPB trend would be much stronger with a fourth size.
-- Evaluate the retained 300M baseline step-9000 checkpoint against DAGFormer
-  step 9000 for a comparison at the same token budget.
-- If gsm8k EM is needed for a paper, it needs a model an order of magnitude
-  larger; at this scale report `gsm8k_bpb` and say why.
+- The retained 300M baseline step-9000 checkpoint has now been evaluated
+  against DAGFormer step 9000 at the same processed-token budget; see the
+  September 17 campaign.
+- Keep generated GSM8K accuracy separate from joint or conditional-answer
+  BPB. These runs do not determine how much additional scale, training or
+  data specialization would be needed to improve generated solutions.

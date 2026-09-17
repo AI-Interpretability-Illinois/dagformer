@@ -127,6 +127,12 @@ A single mean over all positions costs +0.06746, and shuffling positions costs
 +1.79541. Position-specific wiring and sensitivity to the current text are
 therefore distinct contributions in the fixed checkpoint.
 
+The two routing channels also interact. At 300M, the predictor's position-table
+cost rises from +0.00061 NLL with dynamic corrections to +0.00525 with frozen
+position-table corrections and +0.01318 with corrections disabled. Thus the
+small predictor effect above is conditional on the rest of the trained model
+remaining active; it is not a statement that the channels act independently.
+
 The [routing results](routing_dependence/300m.json) retain all per-sequence
 losses, intervals, constant/global and cross-sequence substitutions, plus
 synthetic repetition tests at periods 64, 128 and 256.
