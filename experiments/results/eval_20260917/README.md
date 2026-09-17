@@ -122,6 +122,9 @@ windows and was reused unchanged on the other tasks.
 
 The [complete 150M ladder](standard_ladder/README.md) holds the backbone,
 training updates and processed-token budget fixed across seven models.
+"Static", "position table" and "identity" describe the external predictor.
+In corrected variants, the local MLPs still read backbone hidden states and
+make the effective per-head routing depend on the current input.
 Static + correction has **153.45M total parameters**, 15.95% fewer than the
 full encoder model's 182.56M, and improves WikiText BPB from 1.15211 to 1.14890.
 The paired BPB reduction is 0.00320, with interval [0.00214, 0.00431]. LAMBADA
@@ -199,6 +202,14 @@ The default eight null draws select 1,598 correction edges; reproducing the
 PR's six-draw setting selects 813 (original: 829). The selection count is
 sensitive to this Monte Carlo setting even though the measured channel-level
 instruction effect is nearly unchanged.
+
+The archived verifier's automatic NULL label uses the raw-score SEM rather
+than paired-change uncertainty. Its per-stream arms also omitted NLL. These
+labels alone do not establish an absence of small effects. An exploratory
+follow-up now evaluates all four streams and the joint direction at six
+doses, with fixed norm-preserving controls, natural-text NLL, and 32 new
+content pairs. It averages prompt paraphrases within content items before
+calculating paired bootstrap intervals.
 
 ## Reproduction and artifacts
 

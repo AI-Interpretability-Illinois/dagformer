@@ -1,6 +1,6 @@
 # Validation record
 
-- Full unit suite: **56 passed**, one PyTorch nested-tensor warning, in 11.39
+- Full unit suite: **60 passed**, one PyTorch nested-tensor warning, in 10.37
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
@@ -21,11 +21,11 @@
   `routing_dependence/causality_and_hook_checks.json`.
 - Four result figures were rendered and inspected; see
   `figures/qa-ledger.md`. Plotting reads the numeric result files directly.
-- The subsequent SAE transfer runner passed a one-window CPU execution check
+- The SAE transfer runner passed a one-window CPU execution check
   plus two focused tests: token-weighted conditional loss aggregation and
   exact preservation of each layer/stream's coefficient multiset in controls.
   The CPU execution check is an implementation check, not a scientific result.
-- Two domain-stream tests subsequently passed: paraphrases are averaged within
+- Two domain-stream tests passed: paraphrases are averaged within
   content items, and permuted controls preserve each layer/stream's coefficient
   multiset while remaining on eligible hyperconnections.
 
