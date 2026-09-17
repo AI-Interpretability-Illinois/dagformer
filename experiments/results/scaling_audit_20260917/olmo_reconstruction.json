@@ -1,0 +1,27 @@
+{
+  "original_job": "20794424",
+  "source_log": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/logs/pretok_20794424.out",
+  "repository_revision": "99ee6aaace88779d1ef099d36251b91101c1679b",
+  "excluded_files": [
+    "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_03_of_10/local-shard_5_of_10/shard_00000092_processed.jsonl.zstd",
+    "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_09_of_10/local-shard_1_of_10/shard_00000145_processed.jsonl.zstd",
+    "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_02_of_10/local-shard_8_of_10/shard_00000252_processed.jsonl.zstd"
+  ],
+  "original_errors": [
+    {
+      "file": "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_03_of_10/local-shard_5_of_10/shard_00000092_processed.jsonl.zstd",
+      "error": "zstd decompress error: Unknown frame descriptor"
+    },
+    {
+      "file": "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_09_of_10/local-shard_1_of_10/shard_00000145_processed.jsonl.zstd",
+      "error": "zstd decompress error: Unknown frame descriptor"
+    },
+    {
+      "file": "data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_02_of_10/local-shard_8_of_10/shard_00000252_processed.jsonl.zstd",
+      "error": "zstd decompress error: Unknown frame descriptor"
+    }
+  ],
+  "reconstruction": "Recreate original seeded file selection and ordered packing, excluding the three files with decompression errors in the historical log.",
+  "limitation": "The deleted historical cache is unavailable for byte comparison. The log does not record partial document counts from damaged files; these files are omitted completely. The reconstructed corpus is not claimed to be token-identical to the historical cache.",
+  "document_selection": "The original packed_token_stream increments docs_consumed while comparing docs_skipped_for_retry inside the same pass; this processes alternating yielded documents. The reconstruction preserves this behavior, including parity across files and blank-document handling."
+}

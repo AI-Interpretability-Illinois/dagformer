@@ -527,6 +527,7 @@ def main() -> None:
         print()
 
     t0 = time.time()
+    invocation_start_step = global_step
     model.train()
 
     while global_step < config.total_steps:
@@ -576,7 +577,8 @@ def main() -> None:
         if is_main and global_step % config.log_every == 0:
             elapsed = time.time() - t0
             tokens_seen = (global_step + 1) * tokens_per_step
-            tok_per_sec = tokens_seen / elapsed if elapsed > 0 else 0
+            invocation_tokens = (global_step + 1 - invocation_start_step) * tokens_per_step
+            tok_per_sec = invocation_tokens / elapsed if elapsed > 0 else 0
 
             # Gradient norm
             grad_norm = 0.0

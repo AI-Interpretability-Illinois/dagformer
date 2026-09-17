@@ -226,6 +226,8 @@ class DAGFormerPretrainConfig:
     save_every: int = 2000
     save_dir: str = "checkpoints/pretrain_300m_dagformer"
     resume_from: str = ""
+    resume_require_optimizer: bool = False  # fail instead of resetting momentum on resume
+    resume_skip_samples: int = -1  # per-rank offset override for a frozen continuation corpus
     # Keep at most this many most-recent checkpoints (older deleted after save).
     # 0 = keep all (legacy). Use 2-3 for long runs to bound disk usage.
     keep_last_n: int = 0
@@ -1281,6 +1283,8 @@ def main() -> None:
             if is_main:
                 print("  Optimizer state restored")
         except (ValueError, RuntimeError) as e:
+            if config.resume_require_optimizer:
+                raise RuntimeError("Exact optimizer restoration was requested") from e
             if is_main:
                 print(f"  WARNING: could not restore optimizer state ({e})")
                 print("  Continuing with fresh optimizer momentum (model weights OK)")
@@ -1294,6 +1298,8 @@ def main() -> None:
         # Without this, the stream restarts from the beginning of Dolma
         # on every resume, causing the model to retrain on the same prefix.
         samples_seen = global_step * config.gradient_accumulation_steps * config.micro_batch_size
+        if config.resume_skip_samples >= 0:
+            samples_seen = config.resume_skip_samples
         if is_main:
             print(f"  Rebuilding dataloader: skipping {samples_seen} samples to avoid data repetition")
         if config.data_source == "mmap":
@@ -1393,6 +1399,7 @@ def main() -> None:
         print()
 
     t0 = time.time()
+    invocation_start_step = global_step
     combined.train()
 
     # Alternating mode: decide which steps use DAGFormer vs standard forward
@@ -1657,7 +1664,8 @@ def main() -> None:
         if is_main and global_step % config.log_every == 0:
             elapsed = time.time() - t0
             tokens_seen = (global_step + 1) * tokens_per_step
-            tok_per_sec = tokens_seen / elapsed if elapsed > 0 else 0
+            invocation_tokens = (global_step + 1 - invocation_start_step) * tokens_per_step
+            tok_per_sec = invocation_tokens / elapsed if elapsed > 0 else 0
 
             # Gradient norms
             base_grad_norm = 0.0

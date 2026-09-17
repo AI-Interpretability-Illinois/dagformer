@@ -21,3 +21,4 @@ ssmfloss/
 experiments/results/lmeval/*/samples/
 experiments/results/eval_*/**/samples/
 experiments/results/eval_*/raw/
+experiments/results/scaling_eval_*/**/samples/
