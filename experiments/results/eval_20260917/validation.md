@@ -25,6 +25,9 @@
   plus two focused tests: token-weighted conditional loss aggregation and
   exact preservation of each layer/stream's coefficient multiset in controls.
   The CPU execution check is an implementation check, not a scientific result.
+- Two domain-stream tests subsequently passed: paraphrases are averaged within
+  content items, and permuted controls preserve each layer/stream's coefficient
+  multiset while remaining on eligible hyperconnections.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

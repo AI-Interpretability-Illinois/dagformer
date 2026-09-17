@@ -39,8 +39,8 @@ Controls, all scored on the same prompts with the same metric:
 By default every control is renormalised to the circuit's ||Delta[M]||_2, so
 "the circuit wins" cannot just mean "the circuit has bigger numbers in it".
 
-Every arm also reports NLL on held-out text, because a behaviour shift bought
-by breaking the language model is not steering.
+Additive, scaling and knockout arms also report natural-text NLL.
+Instruction-patching arms are evaluated only on the contrast prompts.
 
 Selection used the train-item half; scoring here defaults to the held-out half.
 
@@ -313,7 +313,6 @@ def build_arms(args, layout, chosen, eligible, delta, ps, runner, rng,
                 continue
             arms.append(Arm(f"circuit_add_{s}@{lam:g}", "stream", "neutral",
                             "ref_neutral", add_edit(m, lam, False), lam, int(m.sum()),
-                            capability=False,
                             note="q/k are RMSNorm-ed after mixing; v/r are not"))
 
     # -- necessity ----------------------------------------------------------
@@ -491,6 +490,7 @@ def main() -> None:
                      dtype=torch.long))[:, lo:hi].mean((0, 1)).numpy()
     ac, ae = np.abs(a0[chosen]), np.abs(a0[eligible])
     alpha_stats = {
+        "magnitude_reference_channel": "pred",
         "mean_abs_alpha_circuit": float(ac.mean()),
         "max_abs_alpha_circuit": float(ac.max()),
         "mean_abs_alpha_eligible": float(ae.mean()),
@@ -625,8 +625,8 @@ def main() -> None:
                         f"{len(ran)} arms raised held-out NLL by more than "
                         f"{args.max_nll_rise:g} nats (largest shift "
                         f"{worst.result['shift']:+.4f} by `{worst.name}` at "
-                        f"{worst.result['nll_rise']:+.2f} nats); this channel "
-                        f"moves the behaviour only by breaking the model")
+                        f"{worst.result['nll_rise']:+.2f} nats); none of these "
+                        f"tested arms meets the NLL criterion")
             return f"{label}: not run"
         s, tw = circuit_arm.result["shift"], toward(circuit_arm)
         if circuit_arm.result.get("damaged"):
@@ -642,16 +642,17 @@ def main() -> None:
                     f"which is the opposite way from what the intervention "
                     f"should do")
         if tw < 2 * abs(circuit_arm.result["sem"]):
-            return (f"{label}: NULL — the best arm `{circuit_arm.name}` shifts "
-                    f"{s:+.4f}, inside its own noise")
+            return (f"{label}: SMALL RELATIVE TO RAW SCORE SPREAD — the best "
+                    f"arm `{circuit_arm.name}` shifts {s:+.4f}, below twice "
+                    "the arm's cross-prompt SEM; this is not a paired null test")
         if control_arm is None:
             return (f"{label}: MOVED but UNCONTROLLED — `{circuit_arm.name}` "
                     f"shifts {s:+.4f} ({frac}); no control arm was run")
         k = control_arm.result["shift"]
         if tw <= toward(control_arm):
-            return (f"{label}: NOT SPECIFIC — control `{control_arm.name}` "
+            return (f"{label}: MATCHED BY A TESTED CONTROL (descriptive) — `{control_arm.name}` "
                     f"matches the circuit ({k:+.4f} vs {s:+.4f})")
-        return (f"{label}: CAUSAL — `{circuit_arm.name}` shifts {s:+.4f} "
+        return (f"{label}: LARGER THAN TESTED CONTROL (descriptive) — `{circuit_arm.name}` shifts {s:+.4f} "
                 f"({frac}) vs {k:+.4f} for the best control "
                 f"`{control_arm.name}`")
 
@@ -759,6 +760,10 @@ def main() -> None:
         "the instruction, and a knockout reads positive when it does suppress "
         "the behaviour. `t` is a paired test over prompts against the arm's "
         "own baseline.",
+        "The automatic size label compares the shift with the arm's raw-score "
+        "SEM, not the SEM of paired differences. It is descriptive rather than "
+        "a significance test. Prompt paraphrases also share content items; "
+        "item-clustered uncertainty is needed for inferential claims.",
         "",
         "## Arms",
         "",

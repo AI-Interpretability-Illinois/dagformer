@@ -85,6 +85,23 @@ pred/corr/both channels.
    means after each prior edge edit. The new evaluation computes every mean
    from the unedited input. Original scripts and raw results are preserved;
    a regression test covers simultaneous editing of heads sharing a source.
+8. **PR #2's automatic NULL label is not a paired null test.** Its condition
+   compares the mean change with twice the edited arm's *raw-score* SEM,
+   rather than the SEM of paired changes. The displayed paired t statistic
+   also treats instruction paraphrases as independent prompts. This can hide
+   small consistent effects behind large between-item score differences.
+   The current reporter labels that rule descriptive; archived outputs are
+   retained. The new stream follow-up averages paraphrases within each item
+   and reports paired item-bootstrap intervals, with 32 additional fixed
+   content pairs. This is an exploratory follow-up, not a preregistered test.
+9. **The stream arms lacked capability checks.** In the archived verifier,
+   q/k/v/r restrictions ran only at the largest additive dose and omitted NLL.
+   A large stream score shift therefore could not establish useful steering.
+   Future verifier runs include their NLL, and the follow-up measures all
+   four streams and the joint direction across six doses with controls.
+   Also, the verifier's reported magnitude ratio uses predictor alpha in its
+   denominator even for correction edits; it is not a measurement of the
+   correction channel's own relative amplitude.
 
 For 12 layers and 16 heads, the canonical layout has 3,773 coordinates:
 **3,234 hyperconnections and 539 sequential paths**. These are signed mixing
