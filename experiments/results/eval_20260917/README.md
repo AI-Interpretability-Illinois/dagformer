@@ -70,8 +70,10 @@ Strict-format accuracy is 0% for all six. The
 alongside deterministic output examples. A matching extracted number can
 occur in repeated or irrelevant text: document 52, for example, generates
 "15 pounds" where the requested answer is 15 toys. The best constant-number
-diagnostic on this test split is 3.03% (always 5). The 600M baseline generation
-run is still pending.
+diagnostic on this test split is 3.03% (always 5). The unpaired 600M baseline
+also completed all 1,319 questions: 25 flexible matches (1.90%) and one strict
+match (0.08%). Its parameter count and training budget differ from the matched
+pairs, so it is a separate reference.
 Dense baselines use KV caching; DAGFormer recomputes the prefix. In the
 [200-item cache check](gsm8k_no_cache/README.md), the 300M baseline has the
 same five flexible matches with caching enabled or disabled. Text changes
@@ -355,8 +357,16 @@ accuracy falls by 0.55 points, with paired interval [-1.09, -0.04]. The
 [predictor](standard_context_pred/paired_vs_dagformer.md),
 [correction](standard_context_corr/paired_vs_dagformer.md) and
 [both-channel](standard_context_both/paired_vs_dagformer.md) tables retain every
-endpoint. The edits have task-dependent benefits and costs. Two matched
-random-head ordinary-task controls are queued at the both-channel dose.
+endpoint. The edits have task-dependent benefits and costs.
+
+Both [random-head ordinary-task controls](context_fidelity/ordinary_head_controls.md)
+are complete. Their LAMBADA accuracies are 29.52% and 31.11%, versus 32.51%
+for the named edit. Direct named-minus-control advantages are +2.99 points
+[2.39, 3.59] and +1.40 [0.87, 1.92]. One control also improves LAMBADA relative
+to the unedited model. The named edit costs +0.00432 WikiText BPB, while the
+controls cost +0.00040 and +0.00020. The measured advantage therefore comes
+with greater likelihood damage; two controls at matched local edit norm do
+not establish a population-wide or matched-NLL optimum.
 
 A [posthoc LAMBADA stratification](context_fidelity/lambada_answer_occurrence.md)
 finds that 114 of the both-channel edit's 120 net additional correct predictions

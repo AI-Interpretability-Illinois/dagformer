@@ -5312,6 +5312,101 @@
           4934
         ]
       }
+    },
+    "300m-dagformer__context_both_gamma1.25_random1000_normmatched": {
+      "answer_seen": {
+        "n_docs": 3791,
+        "metric": "acc,none",
+        "delta_variant_better": -0.007649696649960433,
+        "paired_bootstrap_95ci": [
+          -0.01292534951200211,
+          -0.0021102611448166712
+        ],
+        "reference": 0.3914534423634925,
+        "variant": 0.38380374571353204,
+        "variant_only_correct": 41,
+        "reference_only_correct": 70,
+        "mcnemar_exact_p": 0.0075848117754316186,
+        "first_gain_doc_ids": [
+          26,
+          59,
+          218
+        ],
+        "first_loss_doc_ids": [
+          29,
+          41,
+          97
+        ]
+      },
+      "answer_not_seen": {
+        "n_docs": 1362,
+        "metric": "acc,none",
+        "delta_variant_better": -0.003671071953010279,
+        "paired_bootstrap_95ci": [
+          -0.008076358296622614,
+          0.0007342143906020558
+        ],
+        "reference": 0.052129221732745964,
+        "variant": 0.048458149779735685,
+        "variant_only_correct": 2,
+        "reference_only_correct": 7,
+        "mcnemar_exact_p": 0.1796875,
+        "first_gain_doc_ids": [
+          1967,
+          3138
+        ],
+        "first_loss_doc_ids": [
+          2032,
+          2302,
+          2933
+        ]
+      }
+    },
+    "300m-dagformer__context_both_gamma1.25_random1001_normmatched": {
+      "answer_seen": {
+        "n_docs": 3791,
+        "metric": "acc,none",
+        "delta_variant_better": 0.011342653653389607,
+        "paired_bootstrap_95ci": [
+          0.006330783434450013,
+          0.016090741229227115
+        ],
+        "reference": 0.3914534423634925,
+        "variant": 0.4027960960168821,
+        "variant_only_correct": 67,
+        "reference_only_correct": 24,
+        "mcnemar_exact_p": 7.348549184628524e-06,
+        "first_gain_doc_ids": [
+          26,
+          49,
+          59
+        ],
+        "first_loss_doc_ids": [
+          41,
+          173,
+          466
+        ]
+      },
+      "answer_not_seen": {
+        "n_docs": 1362,
+        "metric": "acc,none",
+        "delta_variant_better": 0.003671071953010279,
+        "paired_bootstrap_95ci": [
+          0.0007342143906020558,
+          0.007342143906020558
+        ],
+        "reference": 0.052129221732745964,
+        "variant": 0.055800293685756244,
+        "variant_only_correct": 5,
+        "reference_only_correct": 0,
+        "mcnemar_exact_p": 0.0625,
+        "first_gain_doc_ids": [
+          2255,
+          3138,
+          3181
+        ],
+        "first_loss_doc_ids": []
+      }
     }
   }
 }

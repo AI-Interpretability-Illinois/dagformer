@@ -1,0 +1,489 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "300m-dagformer__context_both_gamma1.25": {
+      "reference_model": {
+        "name": "300m-dagformer__context_both_gamma1.25_random1000_normmatched",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "context_both",
+          "gamma": 1.25,
+          "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+          "edges": [
+            [
+              4,
+              "v",
+              13,
+              4
+            ],
+            [
+              4,
+              "q",
+              7,
+              1
+            ],
+            [
+              7,
+              "v",
+              12,
+              0
+            ],
+            [
+              7,
+              "v",
+              13,
+              1
+            ],
+            [
+              7,
+              "k",
+              2,
+              7
+            ],
+            [
+              9,
+              "v",
+              7,
+              2
+            ],
+            [
+              7,
+              "v",
+              6,
+              0
+            ],
+            [
+              4,
+              "k",
+              2,
+              4
+            ],
+            [
+              7,
+              "k",
+              8,
+              4
+            ],
+            [
+              7,
+              "k",
+              3,
+              4
+            ]
+          ],
+          "reference_edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "control_seed": 1000,
+          "control_norm_matching": "per layer/token on incoming activations",
+          "scope": "fixed head-mean-deviation edit on predictor/corrections"
+        }
+      },
+      "variant_model": {
+        "name": "300m-dagformer__context_both_gamma1.25",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "context_both",
+          "gamma": 1.25,
+          "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+          "edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "reference_edges": [
+            [
+              4,
+              "v",
+              1,
+              4
+            ],
+            [
+              4,
+              "q",
+              1,
+              1
+            ],
+            [
+              7,
+              "v",
+              9,
+              0
+            ],
+            [
+              7,
+              "v",
+              1,
+              1
+            ],
+            [
+              7,
+              "k",
+              1,
+              7
+            ],
+            [
+              9,
+              "v",
+              2,
+              2
+            ],
+            [
+              7,
+              "v",
+              1,
+              0
+            ],
+            [
+              4,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              1,
+              4
+            ],
+            [
+              7,
+              "k",
+              9,
+              4
+            ]
+          ],
+          "control_seed": null,
+          "control_norm_matching": null,
+          "scope": "fixed head-mean-deviation edit on predictor/corrections"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.003916752437858082,
+          "paired_bootstrap_95ci": [
+            -0.004326584987155186,
+            -0.0035131379705889304
+          ],
+          "reference": 1.0228826464458067,
+          "variant": 1.0267993988836648,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": 0.029885503590141665,
+          "paired_bootstrap_95ci": [
+            0.023869590529788473,
+            0.03590141665049486
+          ],
+          "reference": 0.295167863380555,
+          "variant": 0.3250533669706967,
+          "variant_only_correct": 207,
+          "reference_only_correct": 53,
+          "mcnemar_exact_p": 1.1167071840999228e-22
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.00219079864568811,
+          "paired_bootstrap_95ci": [
+            -0.00019916351324437363,
+            0.004580760804620594
+          ],
+          "reference": 0.3125871340370444,
+          "variant": 0.3147779326827325,
+          "variant_only_correct": 85,
+          "reference_only_correct": 63,
+          "mcnemar_exact_p": 0.0839666172439304
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.001088139281828074,
+          "paired_bootstrap_95ci": [
+            -0.007072905331882481,
+            0.004896626768226333
+          ],
+          "reference": 0.6425462459194777,
+          "variant": 0.6414581066376496,
+          "variant_only_correct": 14,
+          "reference_only_correct": 16,
+          "mcnemar_exact_p": 0.8555355519056321
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.004629629629629629,
+          "paired_bootstrap_95ci": [
+            -0.010101010101010102,
+            0.0008417508417508417
+          ],
+          "reference": 0.3838383838383838,
+          "variant": 0.3792087542087542,
+          "variant_only_correct": 18,
+          "reference_only_correct": 29,
+          "mcnemar_exact_p": 0.14386508844054896
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0017064846416382253,
+          "paired_bootstrap_95ci": [
+            -0.005972696245733789,
+            0.00938566552901024
+          ],
+          "reference": 0.23208191126279865,
+          "variant": 0.23378839590443687,
+          "variant_only_correct": 12,
+          "reference_only_correct": 10,
+          "mcnemar_exact_p": 0.8318119049072266
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": -0.0007892659826361484,
+          "paired_bootstrap_95ci": [
+            -0.01499605367008682,
+            0.013417521704814523
+          ],
+          "reference": 0.516179952644041,
+          "variant": 0.5153906866614049,
+          "variant_only_correct": 41,
+          "reference_only_correct": 42,
+          "mcnemar_exact_p": 1.0
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.002,
+          "paired_bootstrap_95ci": [
+            -0.004,
+            0.01
+          ],
+          "reference": 0.274,
+          "variant": 0.276,
+          "variant_only_correct": 2,
+          "reference_only_correct": 1,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.013,
+          "paired_bootstrap_95ci": [
+            0.002,
+            0.024
+          ],
+          "reference": 0.693,
+          "variant": 0.706,
+          "variant_only_correct": 23,
+          "reference_only_correct": 10,
+          "mcnemar_exact_p": 0.03508203336969018
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0027522935779816515,
+          "paired_bootstrap_95ci": [
+            -0.0015290519877675841,
+            0.007033639143730887
+          ],
+          "reference": 0.6070336391437309,
+          "variant": 0.6097859327217126,
+          "variant_only_correct": 30,
+          "reference_only_correct": 21,
+          "mcnemar_exact_p": 0.2624375357110438
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0016750418760469012,
+          "paired_bootstrap_95ci": [
+            -0.0036850921273031824,
+            0.007370184254606365
+          ],
+          "reference": 0.22948073701842547,
+          "variant": 0.23115577889447236,
+          "variant_only_correct": 37,
+          "reference_only_correct": 32,
+          "mcnemar_exact_p": 0.6304564917867981
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19574119574119575,
+          "variant": 0.19574119574119575,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.006141248720573183,
+            0.006141248720573183
+          ],
+          "reference": 0.3633572159672467,
+          "variant": 0.3633572159672467,
+          "variant_only_correct": 19,
+          "reference_only_correct": 19,
+          "mcnemar_exact_p": 1.0
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.007965361814971896,
+          "paired_bootstrap_95ci": [
+            -0.00849584948497792,
+            -0.007455187062644371
+          ],
+          "reference": 1.331901820742929,
+          "variant": 1.3398671825579007,
+          "bytes": 728241
+        }
+      }
+    }
+  }
+}

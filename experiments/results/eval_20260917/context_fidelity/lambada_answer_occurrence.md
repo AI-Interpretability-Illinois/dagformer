@@ -15,6 +15,10 @@ match the evaluation harness. Intervals are unadjusted paired document bootstrap
 | 300m-dagformer__context_corr_gamma1.25 | answer_not_seen | 1362 | 5.21% | 5.73% | +0.51 | [+0.07, +1.03] |
 | 300m-dagformer__context_both_gamma1.25 | answer_seen | 3791 | 39.15% | 42.15% | +3.01 | [+2.32, +3.67] |
 | 300m-dagformer__context_both_gamma1.25 | answer_not_seen | 1362 | 5.21% | 5.65% | +0.44 | [-0.00, +0.95] |
+| 300m-dagformer__context_both_gamma1.25_random1000_normmatched | answer_seen | 3791 | 39.15% | 38.38% | -0.76 | [-1.29, -0.21] |
+| 300m-dagformer__context_both_gamma1.25_random1000_normmatched | answer_not_seen | 1362 | 5.21% | 4.85% | -0.37 | [-0.81, +0.07] |
+| 300m-dagformer__context_both_gamma1.25_random1001_normmatched | answer_seen | 3791 | 39.15% | 40.28% | +1.13 | [+0.63, +1.61] |
+| 300m-dagformer__context_both_gamma1.25_random1001_normmatched | answer_not_seen | 1362 | 5.21% | 5.58% | +0.37 | [+0.07, +0.73] |
 
 The JSON retains group membership and the first gain/loss document IDs.
 An association with repeated answers does not identify which computation

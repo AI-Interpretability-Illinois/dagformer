@@ -9,6 +9,7 @@ uses the last matched number; it does not validate the derivation or answer unit
 | 150m-dagformer | 1319 | 0.00% | 1.21% | 5: 3.03% | 0.865 |
 | 300m-baseline | 1319 | 0.00% | 1.59% | 5: 3.03% | 0.837 |
 | 300m-dagformer | 1319 | 0.00% | 1.52% | 5: 3.03% | 0.804 |
+| 600m-baseline | 1319 | 0.08% | 1.90% | 5: 3.03% | 0.812 |
 | 75m-baseline | 1319 | 0.00% | 1.82% | 5: 3.03% | 0.815 |
 | 75m-dagformer | 1319 | 0.00% | 1.67% | 5: 3.03% | 0.830 |
 
