@@ -207,6 +207,15 @@ percentage points. Even frozen identity routing plus correction reaches
 1.15252 BPB. The static and position-table models without corrections are
 substantially worse on WikiText, LAMBADA and SciQ.
 
+The [dense-baseline comparison](standard_ladder/paired_vs_baseline.md) also
+reduces the parameter-count concern in the full-model comparison. Static +
+correction adds 855,183 parameters, or 0.56%, over dense. Its WikiText BPB
+reduction is 0.04699 [0.04455, 0.04974] and its LAMBADA improvement is 5.86
+percentage points [4.97, 6.77]. Identity + correction similarly improves BPB
+by 0.04338 and LAMBADA by 5.07 points. These trained variants show that the
+large external encoder is not required for the observed gains in this 150M
+configuration; they do not establish the same tradeoff at every scale.
+
 ![Trained routing ladder](figures/trained_ladder.png)
 
 These results support local corrections as the main contributor to the
