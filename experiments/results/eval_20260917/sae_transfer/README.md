@@ -29,7 +29,7 @@ The signed dose span is ΔNLL(+4) − ΔNLL(−4), calculated from paired window
 
 ## Original screen, other tokens and permuted controls
 
-Controls permute each direction within every layer and Q/K/V/R stream.
+5 coordinate permutations within each layer and Q/K/V/R stream; each preserves the coefficient multiset and direction norm.
 They preserve coefficient values and norms. The five-control span range
 is descriptive and is not a confidence interval. Cross-corpus differences
 also change which target tokens occur and their contexts.
@@ -63,3 +63,6 @@ measured controls, not confidence intervals.
 | 7068 | [+0.0765, +0.2064] | [+0.0804, +0.8223] |
 | 452 | [+0.4359, +1.2744] | [+0.2425, +4.3568] |
 | 4222 | [+0.0480, +0.1095] | [+0.0469, +0.1175] |
+
+[Direct paired span contrasts](control_comparisons.md) compare the feature
+with each control while retaining the pairing of all four dose arms.

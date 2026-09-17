@@ -79,7 +79,7 @@ def main():
     lines += copy_lines + ["", "Static and identity labels describe the external predictor. Variants with",
                            "corrections still have input-dependent routing through the local hidden states.", ""]
     (root / "copy_ladder.json").write_text(json.dumps(output, indent=2) + "\n")
-    (root / "copy_ladder.md").write_text("\n".join(lines) + "\n")
+    (root / "copy_ladder.md").write_text("\n".join(lines).rstrip() + "\n")
     print("\n".join(lines))
 
 

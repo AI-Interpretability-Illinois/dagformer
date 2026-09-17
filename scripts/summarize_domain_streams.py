@@ -140,7 +140,7 @@ def main():
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     for name, content in (("README.md", lines), ("candidate_components.md", candidates),
                           ("control_comparisons.md", controls_table)):
-        (output / name).write_text("\n".join(content) + "\n")
+        (output / name).write_text("\n".join(content).rstrip() + "\n")
     print("\n".join(lines[-20:]))
 
 

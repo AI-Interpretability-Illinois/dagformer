@@ -1162,6 +1162,58 @@
         -3.021463818983598,
         -0.06172737646847963
       ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": 3.0170695004773074,
+          "n_tokens": 55,
+          "n_windows": 29,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            2.0670065226877123,
+            4.151744955602068
+          ]
+        },
+        {
+          "delta": 1.2923911141358655,
+          "n_tokens": 55,
+          "n_windows": 29,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.4622023815674256,
+            2.2616926547740186
+          ]
+        },
+        {
+          "delta": 3.081750310885466,
+          "n_tokens": 55,
+          "n_windows": 29,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            1.6714657370518977,
+            4.218444192861784
+          ]
+        },
+        {
+          "delta": 2.6577041239181365,
+          "n_tokens": 55,
+          "n_windows": 29,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.9540302651303743,
+            4.14884040912895
+          ]
+        },
+        {
+          "delta": 0.1220138683703474,
+          "n_tokens": 55,
+          "n_windows": 29,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.3849096315147982,
+            0.7008846555652223
+          ]
+        }
+      ],
       "control_off_rule_ranges": {
         "-4": [
           0.5090119894285268,
@@ -2354,6 +2406,58 @@
       "control_span_range": [
         -0.12628193092738907,
         0.4735765624217909
+      ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": 0.1193114194630191,
+          "n_tokens": 406,
+          "n_windows": 67,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.015998169682453985,
+            0.22481070956584984
+          ]
+        },
+        {
+          "delta": -0.4805470738861609,
+          "n_tokens": 406,
+          "n_windows": 67,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.58463343012197,
+            -0.38405300507015255
+          ]
+        },
+        {
+          "delta": 0.09583782119357619,
+          "n_tokens": 406,
+          "n_windows": 67,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.04768889444637816,
+            0.13994492625764282
+          ]
+        },
+        {
+          "delta": -0.2485137371514956,
+          "n_tokens": 406,
+          "n_windows": 67,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.3593241067115591,
+            -0.13949784912685934
+          ]
+        },
+        {
+          "delta": -0.013447310935517801,
+          "n_tokens": 406,
+          "n_windows": 67,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.13250516776064986,
+            0.10984525356775827
+          ]
+        }
       ],
       "control_off_rule_ranges": {
         "-4": [
@@ -3551,6 +3655,58 @@
         -0.6571328222024732,
         -0.014214689336050816
       ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": 0.6258082949382261,
+          "n_tokens": 246,
+          "n_windows": 100,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.48286153036756846,
+            0.7594015659601149
+          ]
+        },
+        {
+          "delta": 0.6177432468781868,
+          "n_tokens": 246,
+          "n_windows": 100,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.49720901781990223,
+            0.7450225880448681
+          ]
+        },
+        {
+          "delta": 0.5818959722159113,
+          "n_tokens": 246,
+          "n_windows": 100,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.44501418364494,
+            0.7276850521697946
+          ]
+        },
+        {
+          "delta": -0.01710983792819628,
+          "n_tokens": 246,
+          "n_windows": 100,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.12126199815058811,
+            0.08347082734906969
+          ]
+        },
+        {
+          "delta": 0.04662548040410852,
+          "n_tokens": 246,
+          "n_windows": 100,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.06076844549272209,
+            0.14732142058673864
+          ]
+        }
+      ],
       "control_off_rule_ranges": {
         "-4": [
           0.07122185740723519,
@@ -4744,6 +4900,58 @@
         0.017562184339721176,
         0.38262420277584663
       ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": -0.2411105805824824,
+          "n_tokens": 1139,
+          "n_windows": 94,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.3055408861120176,
+            -0.17660867065902722
+          ]
+        },
+        {
+          "delta": 0.07753962370762446,
+          "n_tokens": 1139,
+          "n_windows": 94,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.002518321696186437,
+            0.14795228363685003
+          ]
+        },
+        {
+          "delta": 0.12395143785364304,
+          "n_tokens": 1139,
+          "n_windows": 94,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.06361645726529977,
+            0.1774260465438246
+          ]
+        },
+        {
+          "delta": 0.11689401521405518,
+          "n_tokens": 1139,
+          "n_windows": 94,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.030050847926081703,
+            0.1886635946444515
+          ]
+        },
+        {
+          "delta": -0.22144838354016366,
+          "n_tokens": 1139,
+          "n_windows": 94,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.3088505778251041,
+            -0.12323106115579277
+          ]
+        }
+      ],
       "control_off_rule_ranges": {
         "-4": [
           0.06409579985244591,
@@ -5886,6 +6094,28 @@
         }
       ],
       "control_span_range": null,
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": null,
+          "paired_bootstrap_95ci": null
+        },
+        {
+          "delta": null,
+          "paired_bootstrap_95ci": null
+        },
+        {
+          "delta": null,
+          "paired_bootstrap_95ci": null
+        },
+        {
+          "delta": null,
+          "paired_bootstrap_95ci": null
+        },
+        {
+          "delta": null,
+          "paired_bootstrap_95ci": null
+        }
+      ],
       "control_off_rule_ranges": {
         "-4": [
           0.15125137343459716,
@@ -7080,6 +7310,58 @@
         -0.08601430170363614,
         0.2933360604161215
       ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": 0.1633671370298765,
+          "n_tokens": 4134,
+          "n_windows": 127,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.13591191102146016,
+            0.19258076802546012
+          ]
+        },
+        {
+          "delta": -0.05519394473966624,
+          "n_tokens": 4134,
+          "n_windows": 127,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.0894644263534191,
+            -0.019427232844367964
+          ]
+        },
+        {
+          "delta": -0.039045079450896185,
+          "n_tokens": 4134,
+          "n_windows": 127,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.06764861488277016,
+            -0.009210324098088574
+          ]
+        },
+        {
+          "delta": -0.16394813076796189,
+          "n_tokens": 4134,
+          "n_windows": 127,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.20215083995106525,
+            -0.12649299514274984
+          ]
+        },
+        {
+          "delta": 0.21540223135179573,
+          "n_tokens": 4134,
+          "n_windows": 127,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.18675092460366893,
+            0.24565252599151552
+          ]
+        }
+      ],
       "control_off_rule_ranges": {
         "-4": [
           0.07646672811814482,
@@ -8272,6 +8554,58 @@
       "control_span_range": [
         -1.8890136508012398,
         7.03700369099776
+      ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": -6.988498230904548,
+          "n_tokens": 36,
+          "n_windows": 22,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -8.617907539135805,
+            -5.565376739519052
+          ]
+        },
+        {
+          "delta": 1.9375191108944516,
+          "n_tokens": 36,
+          "n_windows": 22,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            1.0521702348013475,
+            3.1283853386104763
+          ]
+        },
+        {
+          "delta": 0.9480735555342916,
+          "n_tokens": 36,
+          "n_windows": 22,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.30071890685634367,
+            1.8453916015738105
+          ]
+        },
+        {
+          "delta": 1.7876110071471583,
+          "n_tokens": 36,
+          "n_windows": 22,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.9079649580216002,
+            3.0385948975095523
+          ]
+        },
+        {
+          "delta": -0.5113285654741857,
+          "n_tokens": 36,
+          "n_windows": 22,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -1.2307667163908584,
+            0.33636059952593367
+          ]
+        }
       ],
       "control_off_rule_ranges": {
         "-4": [
@@ -9466,6 +9800,58 @@
       "control_span_range": [
         -0.17456636613323576,
         0.17247838491485232
+      ],
+      "paired_feature_minus_control_spans": [
+        {
+          "delta": -0.034346374727430795,
+          "n_tokens": 84,
+          "n_windows": 38,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.16390376768500242,
+            0.11219946868806217
+          ]
+        },
+        {
+          "delta": 0.11886013121831984,
+          "n_tokens": 84,
+          "n_windows": 38,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.027425209853749768,
+            0.2637299587693298
+          ]
+        },
+        {
+          "delta": 0.04033309788930984,
+          "n_tokens": 84,
+          "n_windows": 38,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            -0.10541470983677054,
+            0.18966789485167293
+          ]
+        },
+        {
+          "delta": 0.20105972460338048,
+          "n_tokens": 84,
+          "n_windows": 38,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.07325668042439545,
+            0.3417608101755622
+          ]
+        },
+        {
+          "delta": 0.3126983763206573,
+          "n_tokens": 84,
+          "n_windows": 38,
+          "valid_bootstrap_draws": 10000,
+          "paired_bootstrap_95ci": [
+            0.16921551827150458,
+            0.448768964128255
+          ]
+        }
       ],
       "control_off_rule_ranges": {
         "-4": [

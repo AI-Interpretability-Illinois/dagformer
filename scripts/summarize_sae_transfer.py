@@ -25,6 +25,20 @@ def span_summary(minus, plus, draws, seed):
             "paired_bootstrap_95ci": np.quantile(values, [.025, .975]).tolist()}
 
 
+def paired_span_contrast(minus, plus, control_minus, control_plus, draws, seed):
+    """Compare two signed dose spans while retaining all four arms' pairing."""
+    contrasts = []
+    counts = np.asarray(plus["window_token_count"])
+    for arm, control in ((minus, control_minus), (plus, control_plus)):
+        if not all(np.array_equal(counts, value["window_token_count"])
+                   for value in (arm, control)):
+            raise ValueError("Feature and control arms must score the same target tokens")
+        contrasts.append({"window_token_count": counts,
+                          "window_delta_sum": np.asarray(arm["window_delta_sum"])
+                          - np.asarray(control["window_delta_sum"])})
+    return span_summary(*contrasts, draws, seed)
+
+
 def effect(value):
     if value["delta"] is None:
         return "no target tokens"
@@ -88,16 +102,32 @@ def main():
                    "| Feature | Component | Token | Occurrences | ΔNLL at −4 | ΔNLL at +4 |",
                    "|---|---|---|---:|---|---|"]
     has_token_details = False
+    control_comparisons = ["# Paired feature-minus-control dose spans", "",
+                           "Each contrast is (feature +4 minus feature -4) minus",
+                           "(control +4 minus control -4), paired across the same windows.",
+                           "A positive value means a larger signed dose response, not higher",
+                           "language-model accuracy. Intervals are unadjusted window bootstrap",
+                           "intervals; control NLL costs are reported in the main table.", "",
+                           "| Feature | Control | Signed span difference [95% CI] |",
+                           "|---|---|---|"]
     for feature_id, rec in payload["features"].items():
         arms = rec["arms"]
         minus, plus = arms["feature/alpha-4"], arms["feature/alpha4"]
         span = span_summary(minus["on_rule"], plus["on_rule"], 10000, payload["args"]["seed"])
         tokens = tokenizer.convert_ids_to_tokens(rec["rule"][1])
         controls = []
+        span_contrasts = []
         for index in range(payload["args"]["controls"]):
             value = span_summary(arms[f"random{index}/alpha-4"]["on_rule"],
                                  arms[f"random{index}/alpha4"]["on_rule"], 10000, payload["args"]["seed"])
             controls.append(value)
+            contrast = paired_span_contrast(
+                minus["on_rule"], plus["on_rule"],
+                arms[f"random{index}/alpha-4"]["on_rule"],
+                arms[f"random{index}/alpha4"]["on_rule"],
+                10000, payload["args"]["seed"])
+            span_contrasts.append(contrast)
+            control_comparisons.append(f"| {feature_id} | random{index} | {effect(contrast)} |")
         valid = [c["delta"] for c in controls if c["delta"] is not None]
         bounds = [min(valid), max(valid)] if valid else None
         off_ranges = {}
@@ -108,6 +138,7 @@ def main():
         summary["features"][feature_id] = {"tokens": tokens, "on_minus": minus["on_rule"],
             "on_plus": plus["on_rule"], "off_minus": minus["off_rule"], "off_plus": plus["off_rule"],
             "span": span, "control_spans": controls, "control_span_range": bounds,
+            "paired_feature_minus_control_spans": span_contrasts,
             "control_off_rule_ranges": off_ranges,
             "original_screen": old[feature_id]}
         token_text = ", ".join(tokens).replace("|", "\\|")
@@ -138,10 +169,17 @@ def main():
     output = args.input.parent
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     sections = lines + secondary + control_costs + (decomposition if payload["args"].get("stream_decomposition") else [])
+    sections += ["", "[Direct paired span contrasts](control_comparisons.md) compare the feature",
+                 "with each control while retaining the pairing of all four dose arms."]
+    if payload["args"].get("stream_decomposition"):
+        sections[2:2] = ["This mechanism follow-up reuses the same 128 WikiText test windows as",
+                         "the initial transfer run. Whole-head controls and the R/Q/K/V split",
+                         "were added after inspecting that run; this is not a second corpus replication.", ""]
     if has_token_details:
         sections += ["", "[Individual-token diagnostics](individual_tokens.md) retain occurrence counts",
                      "and paired intervals within each fixed target set."]
     (output / "README.md").write_text("\n".join(sections) + "\n")
+    (output / "control_comparisons.md").write_text("\n".join(control_comparisons) + "\n")
     if has_token_details:
         (output / "individual_tokens.md").write_text("\n".join(token_lines) + "\n")
     print("\n".join(sections))

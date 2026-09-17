@@ -104,6 +104,10 @@ pred/corr/both channels.
    The [completed stream results](results/eval_20260917/domain_streams/README.md)
    detect small correction Q/V effects on new content, alongside their
    natural-text NLL costs and separate code/prose likelihood changes.
+   The [large-dose completion](results/eval_20260917/domain_streams_large/README.md)
+   reproduces the original R-only dose-64 shift of +8.1373, but measures
+   +13.2181 natural-text NLL. Both code and prose likelihoods worsen, with
+   a larger prose decrease. This fills the missing capability measurement.
    Also, the verifier's reported magnitude ratio uses predictor alpha in its
    denominator even for correction edits; it is not a measurement of the
    correction channel's own relative amplitude.

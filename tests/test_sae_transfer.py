@@ -9,7 +9,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from eval_sae_transfer import permute_whole_heads, permute_within_streams, ratio_summary
 from interp_editing import layer_chunks, stream_slices
-from summarize_sae_transfer import span_summary
+from summarize_sae_transfer import paired_span_contrast, span_summary
 
 
 def test_masked_loss_is_weighted_by_tokens_not_windows():
@@ -44,6 +44,17 @@ def test_dose_span_keeps_pairing_and_target_token_weights():
     result = span_summary(minus, plus, draws=100, seed=42)
     assert result["delta"] == 2.
     assert result["paired_bootstrap_95ci"] == [2., 2.]
+
+
+def test_feature_control_span_contrast_cancels_shared_window_variation():
+    # Dose responses vary strongly between windows for both directions.
+    # Their difference is nevertheless exactly three nats per target token.
+    def arm(values):
+        return {"window_token_count": [1, 3], "window_delta_sum": values}
+    result = paired_span_contrast(arm([-5., 12.]), arm([8., 6.]),
+                                  arm([3., -9.]), arm([13., -24.]), 100, 42)
+    assert result["delta"] == 3.
+    assert result["paired_bootstrap_95ci"] == [3., 3.]
 
 
 def test_whole_head_control_preserves_sources_qkv_alignment_and_residual():

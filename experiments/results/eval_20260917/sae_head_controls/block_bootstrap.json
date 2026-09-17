@@ -1,0 +1,812 @@
+{
+  "source": "experiments/results/eval_20260917/sae_head_controls/300m.json",
+  "draws": 10000,
+  "seed": 20260917,
+  "protocol": "circular moving-block bootstrap of token-weighted paired target NLL changes; zero-target draws omitted; block-length sensitivity for a fixed corpus and checkpoint; unadjusted intervals",
+  "features": {
+    "7326": {
+      "target_tokens": 55,
+      "target_windows": 29,
+      "contrasts": {
+        "alpha-4": {
+          "delta": 0.008586288196966052,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.07200023360770581,
+                0.0811267102303621
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.05922611825062994,
+                0.08804624794541067
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.05607204898720225,
+                0.09290569459346801
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.05999766337669367,
+                0.09948535997459498
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.06887278009883382,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.0065185883596050685,
+                0.1582275134154066
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.013438429430652033,
+                0.1576714432716781
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.017687508720428805,
+                0.15380973854281296
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.00607027392096019,
+                0.1461702829202284
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": 0.060286491901867766,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.07819651626025825,
+                0.217938588708835
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.09342242465172602,
+                0.2049083197930448
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.09928497041489166,
+                0.1949950151985837
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.0961417039909796,
+                0.187766301832691
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "1986": {
+      "target_tokens": 406,
+      "target_windows": 67,
+      "contrasts": {
+        "alpha-4": {
+          "delta": 0.03151614484583656,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.010972386863555533,
+                0.054423835414083764
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.00618920392101523,
+                0.06063234406230375
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.0021821853823783244,
+                0.06636085710951144
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.002790497108648574,
+                0.06726323529025656
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.024545633381466595,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.0014164592415815897,
+                0.05114400435770387
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.01495084970322037,
+                0.06419999800159146
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.02178483719170557,
+                0.07220170503756834
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.025754400053920917,
+                0.07321511054568176
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": -0.006970511464369965,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.05387915023078801,
+                0.039243892645381355
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.07435176327481889,
+                0.05636107985003141
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.08668034285142333,
+                0.06742957263768265
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.09160906302105307,
+                0.0676349314209677
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "3583": {
+      "target_tokens": 246,
+      "target_windows": 100,
+      "contrasts": {
+        "alpha-4": {
+          "delta": 0.04390114927437247,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.01722256659244556,
+                0.07165697826980957
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.013981985777360718,
+                0.07438504385005675
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.013236690578583758,
+                0.07577177885230686
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.015380492884259436,
+                0.07184760228300575
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.012576622010125377,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.015590937956756375,
+                0.040375260844740746
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.017927228039110097,
+                0.040660357943685776
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.01753938979877866,
+                0.040395702653644595
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.014510673494895166,
+                0.03931865192419025
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": -0.031324527264247094,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.08305220397998372,
+                0.01905303770603353
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.08951433139716518,
+                0.021738863681674547
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.08910549783545173,
+                0.02073382868963001
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.08047051559414906,
+                0.017818313293856285
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "3560": {
+      "target_tokens": 1139,
+      "target_windows": 94,
+      "contrasts": {
+        "alpha-4": {
+          "delta": -0.058246837513516406,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.08021009293411199,
+                -0.03738156853436671
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.08069902952791684,
+                -0.038150240934666166
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.08014443372187018,
+                -0.038738037388773384
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.0745238217588398,
+                -0.04155280815328266
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.08326678467984781,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.06632029777104194,
+                0.10129783827042906
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.06623671173659525,
+                0.10224710679040523
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.06675843151907183,
+                0.10218254942875582
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.06861356449305275,
+                0.09865064051662366
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": 0.14151362219336422,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.10414996296137642,
+                0.18117015527702673
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.10465756300571787,
+                0.18231685694804373
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.10538368741312315,
+                0.1817836761486258
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.11029158222406266,
+                0.1730223086802323
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "7019": {
+      "target_tokens": 0,
+      "target_windows": 0,
+      "contrasts": {
+        "alpha-4": {
+          "delta": null,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "4": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "8": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "16": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            }
+          }
+        },
+        "alpha4": {
+          "delta": null,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "4": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "8": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "16": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            }
+          }
+        },
+        "dose_span": {
+          "delta": null,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "4": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "8": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            },
+            "16": {
+              "paired_bootstrap_95ci": null,
+              "valid_draws": 0
+            }
+          }
+        }
+      }
+    },
+    "7068": {
+      "target_tokens": 4134,
+      "target_windows": 127,
+      "contrasts": {
+        "alpha-4": {
+          "delta": -0.05208755173556188,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.05777485290440601,
+                -0.04657583389259435
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.06055932593110678,
+                -0.044135969982649154
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.06216925449092661,
+                -0.04306941652397783
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.06290798235878561,
+                -0.04257850835054866
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.07730037791259771,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.07003829282236153,
+                0.08478533421306729
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.06706539918122,
+                0.08821839176811197
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.06558410621854711,
+                0.08988538549518839
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.06489275306538828,
+                0.09022468458743477
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": 0.1293879296481596,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.11670130664733151,
+                0.1424666347002509
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.1112823181648015,
+                0.14870638320327725
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.1086568172828366,
+                0.15194612336419486
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.10735172566343079,
+                0.1529113589550402
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "452": {
+      "target_tokens": 36,
+      "target_windows": 22,
+      "contrasts": {
+        "alpha-4": {
+          "delta": 0.004141335401477085,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.07980944206408987,
+                0.08071520946160977
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.07641092640002288,
+                0.08609025889611338
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.06906961609141514,
+                0.10786088780603469
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.054661498029978446,
+                0.14876912269430853
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.05264679549468888,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.04635160833505714,
+                0.18245183727827094
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.06334245531664541,
+                0.2076194979956684
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.08403754210123768,
+                0.20041112728043525
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.12613987306196411,
+                0.16241860201638222
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": 0.0485054600932118,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.11892614983244297,
+                0.24795963088261402
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.14350044931800804,
+                0.27632822045685584
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.18679760442552804,
+                0.26203604064098895
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.2730638123815879,
+                0.21137496073638973
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    },
+    "4222": {
+      "target_tokens": 84,
+      "target_windows": 38,
+      "contrasts": {
+        "alpha-4": {
+          "delta": -0.056316878114427836,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                -0.08762618053639144,
+                -0.02975049630317828
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                -0.0833410598108988,
+                -0.033414036551588464
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                -0.08150715778400372,
+                -0.034221565779503235
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                -0.07953796631399777,
+                -0.03667563590787205
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "alpha4": {
+          "delta": 0.0818151320729937,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.05510746065207314,
+                0.11241605451354732
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.05913354532099826,
+                0.10917169555457197
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.05968247127898953,
+                0.10877044196011587
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.061373070328307334,
+                0.10601415337660372
+              ],
+              "valid_draws": 10000
+            }
+          }
+        },
+        "dose_span": {
+          "delta": 0.13813201018742152,
+          "blocks": {
+            "1": {
+              "paired_bootstrap_95ci": [
+                0.08630223998544263,
+                0.19921491910057804
+              ],
+              "valid_draws": 10000
+            },
+            "4": {
+              "paired_bootstrap_95ci": [
+                0.09411970075975726,
+                0.19130439031802438
+              ],
+              "valid_draws": 10000
+            },
+            "8": {
+              "paired_bootstrap_95ci": [
+                0.09500572101655526,
+                0.189553125805798
+              ],
+              "valid_draws": 10000
+            },
+            "16": {
+              "paired_bootstrap_95ci": [
+                0.09964031410473649,
+                0.1845850448103605
+              ],
+              "valid_draws": 10000
+            }
+          }
+        }
+      }
+    }
+  }
+}

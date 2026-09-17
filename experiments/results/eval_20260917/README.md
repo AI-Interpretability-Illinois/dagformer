@@ -237,6 +237,41 @@ points lower on MathQA than the full encoder. The
 endpoints and their unadjusted intervals. Each configuration has one training
 run, so these intervals do not measure training-seed variation.
 
+The [same trained ladder on synthetic repetition](routing_dependence/copy_ladder.md)
+also retains most of the full model's copy behavior when local corrections
+remain. At period 256, full DAGFormer scores 89.89%, dense 78.31%, static
+82.67%, position table 82.96%, identity + correction 91.16%, static + correction
+92.28%, and lite 91.29%. Static + correction exceeds full by 2.40 points
+[0.71, 4.08] on the 16 paired sequences. On the 128 natural-text test windows,
+however, static + correction costs +0.00941 NLL [0.00374, 0.01508] versus full,
+while lite improves by 0.01293. This subset differs from the complete rolling
+WikiText BPB task above; the results do not establish uniform dominance.
+
+## Historical copy-head transfer
+
+The [six heads fixed by the original localization](copy_head_transfer/README.md)
+were tested on 32 fresh sequences per repetition period, with three fixed
+random-head controls. The new token marginal comes from WikiText training
+tokens, while the original used Dolma; absolute accuracies across those two
+corpora are not a paired comparison. No heads were reselected.
+
+At period 512, both-channel gamma 1.5 raises accuracy from 75.13% to 80.10%,
+a +4.97-point change [2.59, 7.35], at +0.0388 natural-text NLL. The three
+controls instead change accuracy by -4.16 to -1.26 points, at smaller NLL
+costs of +0.0030 to +0.0163. Direct paired contrasts favor the named set for
+all four periods at this dose. At gamma 0, flattening the named Q/K
+deviations to the original per-source head means severely impairs repetition,
+especially when both channels are edited; this also causes larger natural-text
+damage than the controls. It does not delete the attention heads.
+
+The same edit has a cost when repetition stops. After three 128-token copies
+followed by independent marginal tokens, both-channel gamma 1.5 increases
+tail NLL by 0.0568 [0.0489, 0.0647] and false-lag token probability by 0.039
+percentage points. The false-lag argmax-rate change is uncertain. These
+results support copy-related wiring with a transfer/adaptation tradeoff,
+not a general improvement in contextual reasoning. Only L4/h1 overlaps the
+six-copy-head set and the separate ten-edge context-fidelity circuit below.
+
 ## Direct head edits and the PR #2 contrast
 
 The fixed ten-edge circuit selected in the author's earlier experiment was
@@ -410,8 +445,20 @@ comes from lowering prose likelihood: code/prose log-probability changes are
 changes which candidate wins. Q does not consistently beat the three fixed
 controls; V's comparison depends on dose and control. The controls often
 damage natural-text likelihood much more, so the comparison does not isolate
-semantic selectivity at matched capability cost. The larger-dose follow-up,
-including the PR's dose 64, is still pending.
+semantic selectivity at matched capability cost.
+
+The [large-dose follow-up](domain_streams_large/README.md) is also complete:
+160 arms cover doses 8, 16, 32 and 64. The original correction-R shift at
+dose 64 is reproduced at +8.1373; new content gives +8.9585 [7.8020, 10.1255].
+Its natural-text NLL cost is **+13.2181**, raising NLL from 3.5719 to 16.7900.
+Code/prose log probabilities on new content change by -3.7241/-12.6826.
+Thus even its 100-point increase in two-candidate code preference occurs
+while both candidate likelihoods worsen substantially. All tested large
+correction doses exceed the +0.05 NLL criterion. Predictor K at dose 64
+produces a smaller +0.0381 shift (1.02% of the instruction gap), at +0.0046
+NLL; its three controls have shifts of +0.0451 to +0.0715. It changes no
+candidate winners. The large score changes do not establish useful code
+generation or capability-preserving steering.
 
 ## SAE direction transfer
 
@@ -450,6 +497,35 @@ but often cause much larger other-token NLL increases. The full report shows
 their costs alongside target effects. Those controls test the importance of
 coordinate alignment; they do not isolate semantic specificity at equal
 language-model damage.
+
+The [whole-head controls and R/Q/K/V split](sae_head_controls/README.md) reuse
+the same 128 test windows as a mechanism follow-up. Unlike the first controls,
+they preserve source positions, Q/K/V head alignment, head means and shared R;
+their NLL costs are much closer to the original directions. They were added
+after inspecting the transfer run, so this is not a second corpus replication.
+
+| Feature | Full target ΔNLL, -4 / +4 | Shared R only | Q/K/V only |
+|---|---:|---:|---:|
+| 3560 | -0.0582 / +0.0833 | -0.0750 / +0.0805 | +0.0186 / +0.0043 |
+| 7068 | -0.0521 / +0.0773 | -0.0195 / +0.0311 | -0.0335 / +0.0439 |
+| 4222 | -0.0563 / +0.0818 | +0.0066 / +0.0040 | -0.0663 / +0.0799 |
+
+Feature 3560's quote-heavy effect is largely retained by shared R, and two
+whole-head permutations have larger mean dose spans than the original.
+It is not evidence for an exclusively per-head mechanism. Feature 7068 has
+effects in both components and a larger signed span than each of the five
+whole-head controls under direct paired intervals. Feature 4222's effect
+is largely retained in Q/K/V, with paired span contrasts above zero for four
+of five controls; the fifth interval includes zero. These are measured
+control comparisons, not a population-level selectivity guarantee.
+
+The [individual-token results](sae_head_controls/individual_tokens.md) further
+limit the semantic interpretation. Feature 4222's aggregate is driven most
+clearly by `Ġmay` (41 occurrences); `Ġcan` and `Ġmust` have uncertain full-feature
+dose effects. Feature 1986 gives opposite-sign changes for `201` but different
+responses for other year fragments. Component effects need not add in this
+nonlinear network, and rare-token intervals do not establish general semantic
+control.
 
 ## Reproduction and artifacts
 

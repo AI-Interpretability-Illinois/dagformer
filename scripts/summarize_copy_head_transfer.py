@@ -52,7 +52,7 @@ def main():
               "|---|---:|" + "---|" * (len(settings["periods"]) + 1)]
     control_lines = ["# Named heads and fixed random controls", "",
                      "The range describes the measured random-head effects, not uncertainty",
-                     "over all possible control circuits. The final column gives the smallest",
+                     "over all possible control circuits. The interval envelope gives the smallest",
                      "and largest lower/upper bounds among direct paired named-minus-control",
                      "intervals. Individual comparisons are retained in summary.json. The NLL",
                      "columns show whether norm matching also gives similar capability costs.", "",
