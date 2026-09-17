@@ -43,6 +43,8 @@ preserved in [the historical specification](docs/legacy_oracle_design.md).
   and [merged-PR evidence audit](experiments/PROJECT_SYNC_2026-09-17.md);
   [中文验收说明](experiments/results/eval_20260917/验收说明.md) and
   [reproduction commands](experiments/results/eval_20260917/REPRODUCE.md).
+- Larger scales: [600M / 1B checkpoint and continuation audit](experiments/SCALING_COMPLETION_2026-09-17.md),
+  including confirmation of the 1B per-head FourWay architecture and remaining training budgets.
 
 ## Data and checkpoints on Delta
 
