@@ -572,6 +572,9 @@ than demonstrating a general per-head semantic interface.
 
 ## Reproduction and artifacts
 
+- The [completion record](provenance/completion.json) identifies the final
+  numerical-results revision and the Delta readback checks. All inference
+  jobs, including the additional-article SAE check, have completed.
 - The [completed harness inventory](provenance/eval_inventory.md) contains
   44 runs and 324 task endpoints, including 21 ordinary model/intervention
   settings with 14 tasks each. Every saved task/filter has the reported

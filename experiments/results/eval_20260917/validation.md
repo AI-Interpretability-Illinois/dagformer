@@ -54,6 +54,10 @@
   earlier test documents, with matching dataset fingerprints. Raw records
   confirm the same 128 intervention names, doses, direction norms and control
   seeds across the two samples.
+- Delta readback verified all 324 harness endpoints and 765,856 saved rows,
+  plus the completed 49/128/160/128-arm follow-ups and all 13 checkpoint bundles.
+  The additional cache loads on Delta with shape 64 × 1,024, correct next-token
+  label shifts, and zero overlap with the earlier article set.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

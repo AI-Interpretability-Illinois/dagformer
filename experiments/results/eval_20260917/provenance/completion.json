@@ -1,0 +1,40 @@
+{
+  "numerical_results_revision": "8fce6d438fd94eeaa0600dac52d07ae159f86739",
+  "last_checked_utc": "2026-09-17 13:43:22 UTC",
+  "requested_review_window_ends_utc": "2026-09-17 14:20:00 UTC",
+  "all_evaluations_complete": true,
+  "ordinary_harness_runs": 44,
+  "ordinary_task_endpoints": 324,
+  "saved_harness_rows_read_back_on_delta": 765856,
+  "checkpoint_bundles_present_on_delta": 13,
+  "final_mechanism_arm_counts": {
+    "copy_head_transfer_including_reference": 49,
+    "sae_whole_head_controls_and_components": 128,
+    "domain_stream_large_doses": 160,
+    "sae_additional_articles": 128
+  },
+  "additional_sae_sample": {
+    "windows": 64,
+    "documents": 14,
+    "excluded_previous_test_documents": 31,
+    "document_overlap": 0,
+    "cache_read_back_on_delta": true
+  },
+  "validation": {
+    "unit_tests_passed": 68,
+    "unit_test_warnings": 1,
+    "unit_test_seconds": 10.43,
+    "compact_json_files_checked_before_this_record": 130,
+    "paired_sae_control_point_estimates_checked": 80
+  },
+  "delta_workspace": "/work/hdd/bfqt/yurenh2/dagformer-eval-20260917",
+  "original_delta_project_preserved": true,
+  "raw_result_files_backed_up": 347,
+  "raw_result_bytes_backed_up": 2154793776,
+  "notes": [
+    "The numerical-results revision is distinct from later documentation-only acceptance records.",
+    "Saved row counts include repeated model settings and extraction filters, not independent research observations.",
+    "All inference jobs and their postprocessing have completed; no new training was started.",
+    "The active task continues through the requested review window for final synchronization checks."
+  ]
+}
