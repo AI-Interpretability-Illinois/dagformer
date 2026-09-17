@@ -54,8 +54,11 @@ tokenizer. The 300M shared pair is **not step-matched**: DAGFormer step 9000
 and baseline step 12000. The project checkpoint directory also retains a
 step-9000 baseline for a matched comparison and a step-10500 DAGFormer.
 
-The mmap runs use `/work/hdd/bfqt/data/pretok/dolma_v1_7_12b`. This is the
-available training slice, not the number of tokens every checkpoint consumed.
+The mmap training configs point to `/work/hdd/bfqt/data/pretok/dolma_v1_7_12b`,
+a historical 12B-token slice. That path was absent when checked on September
+17; the checkpoints and evaluation caches used in the current campaign are
+available separately. The slice size is not the number of tokens every
+checkpoint consumed.
 Older streamed-data runs, including the exports under
 `/work/hdd/bfqt/dagformer_checkpoints/hf`, are a separate comparison.
 

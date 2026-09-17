@@ -71,6 +71,8 @@ SUITES["all"] = SUITES["reasoning"] + [t for t in SUITES["core"] if t not in SUI
 PRIMARY_METRIC: dict[str, str] = {
     "gsm8k": "exact_match,flexible-extract",
     "gsm8k_bpb": "bits_per_byte,none",
+    "gsm8k_answer_bpb": "bits_per_byte,none",
+    "gsm8k_question_bpb": "bits_per_byte,none",
     "wikitext": "bits_per_byte,none",
     "lambada_openai": "acc,none",
     "winogrande": "acc,none",

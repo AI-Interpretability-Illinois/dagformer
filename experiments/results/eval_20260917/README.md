@@ -13,6 +13,20 @@ pair uses **step 9000 for both models**, resolving PR #1's 9000-versus-12000
 training-step mismatch. The nominal sizes refer to backbone scales;
 DAGFormer includes additional predictor and correction parameters.
 
+The [training-budget audit](provenance/training_budgets.json) reads optimizer
+update counters from the original Delta checkpoints and tokens per update
+from training logs. Both models consumed 1.573B tokens at 75M, 3.146B at 150M,
+and 4.719B at 300M. All five trained 150M routing variants also consumed
+3.146B tokens. The step-9000 periodic checkpoints contain 9,001 optimizer
+updates in both families because that training-loop label is zero-based;
+the final step-3000/6000 labels equal completed updates.
+
+| Backbone scale | Baseline parameters | Full DAGFormer parameters |
+|---|---:|---:|
+| 75M | 76,558,848 | 105,657,332 |
+| 150M | 152,593,152 | 182,561,679 |
+| 300M | 304,137,216 | 336,447,805 |
+
 Selected 300M results, with paired document-bootstrap intervals:
 
 | Task / metric | Baseline | DAGFormer | Difference favoring DAGFormer | 95% interval |
@@ -28,6 +42,9 @@ uncertain differences. Intervals describe document sampling for these trained
 checkpoints, without multiple-testing adjustment or training-seed uncertainty.
 GSM8K BPB scores the question and gold answer jointly; generated-answer
 accuracy is being evaluated separately on the full 1,319-item test split.
+Two further custom controls score the question prefix and the gold answer
+conditioned on that prefix separately. These remain teacher-forced
+likelihood endpoints; they do not count generated solutions as correct.
 
 The [explicit-label audit](standard_matched/label_bias.md) shows two limitations:
 all models choose A on at least 98.94% of standard CommonsenseQA questions,
@@ -140,6 +157,10 @@ instruction effect is nearly unchanged.
 - JSONs record arguments, checkpoint steps and code versions. The
   [checkpoint manifest](provenance/checkpoint_locations.json) and
   [corpus metadata](provenance/wikitext_cache_metadata.json) identify inputs.
+  Early benchmark JSONs record the Git commit at result-write time; later
+  runs explicitly mark `git_commit_recorded_at: process_start`. Commits were
+  made during this campaign, so the earlier field is not a process-start
+  timestamp. Evaluation settings and samples are retained in either case.
 - Per-document benchmark samples and raw context-fidelity arrays remain under
   this directory's ignored `samples/` and `raw/` paths. Compact summaries are
   checked into Git. Logs are under `logs/eval_20260917`.

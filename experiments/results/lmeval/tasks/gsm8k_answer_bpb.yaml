@@ -1,0 +1,19 @@
+# Custom teacher-forced solution likelihood; not generated reasoning accuracy.
+# The question supplies context, while only the gold solution contributes
+# likelihood and byte count. Compare models within this task, not BPB levels
+# across question and answer components with different text distributions.
+task: gsm8k_answer_bpb
+dataset_path: openai/gsm8k
+dataset_name: main
+output_type: loglikelihood
+training_split: train
+test_split: test
+doc_to_text: "Question: {{question}}\nAnswer:"
+doc_to_target: !function gsm8k_answer_utils.answer_target
+process_results: !function gsm8k_answer_utils.process_results
+metric_list:
+  - metric: bits_per_byte
+    aggregation: bits_per_byte
+    higher_is_better: false
+metadata:
+  version: 1.0

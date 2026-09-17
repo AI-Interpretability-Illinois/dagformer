@@ -1,0 +1,238 @@
+{
+  "records": [
+    {
+      "model": "75m-baseline",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_75m_baseline_mmap/checkpoint_step3000.pt",
+      "checkpoint_step": 3000,
+      "optimizer_updates_min": 3000,
+      "optimizer_updates_max": 3000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "2980",
+          "train/tokens_seen_B": "1.562902528"
+        },
+        {
+          "step": "2990",
+          "train/tokens_seen_B": "1.568145408"
+        }
+      ],
+      "tokens_consumed_from_updates": 1572864000
+    },
+    {
+      "model": "75m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_75m_dagformer_mmap/checkpoint_step3000.pt",
+      "checkpoint_step": 3000,
+      "optimizer_updates_min": 3000,
+      "optimizer_updates_max": 3000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "2980",
+          "train/tokens_seen_B": "1.562902528"
+        },
+        {
+          "step": "2990",
+          "train/tokens_seen_B": "1.568145408"
+        }
+      ],
+      "tokens_consumed_from_updates": 1572864000
+    },
+    {
+      "model": "150m-baseline",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_150m_baseline_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "150m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_150m_dagformer_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "300m-baseline",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_300m_baseline_mmap/checkpoint_step9000.pt",
+      "checkpoint_step": 9000,
+      "optimizer_updates_min": 9001,
+      "optimizer_updates_max": 9001,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "11980",
+          "train/tokens_seen_B": "6.281494528"
+        },
+        {
+          "step": "11990",
+          "train/tokens_seen_B": "6.286737408"
+        }
+      ],
+      "tokens_consumed_from_updates": 4719116288
+    },
+    {
+      "model": "300m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_300m_dagformer_mmap/checkpoint_step9000.pt",
+      "checkpoint_step": 9000,
+      "optimizer_updates_min": 9001,
+      "optimizer_updates_max": 9001,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "10690",
+          "train/tokens_seen_B": "5.605163008"
+        },
+        {
+          "step": "10700",
+          "train/tokens_seen_B": "5.610405888"
+        }
+      ],
+      "tokens_consumed_from_updates": 4719116288
+    },
+    {
+      "model": "300m-dagformer-step10500",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_300m_dagformer_mmap/checkpoint_step10500.pt",
+      "checkpoint_step": 10500,
+      "optimizer_updates_min": 10501,
+      "optimizer_updates_max": 10501,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "10690",
+          "train/tokens_seen_B": "5.605163008"
+        },
+        {
+          "step": "10700",
+          "train/tokens_seen_B": "5.610405888"
+        }
+      ],
+      "tokens_consumed_from_updates": 5505548288
+    },
+    {
+      "model": "150m-static",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_150m_static_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "150m-postable",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_150m_postable_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "150m-identcorr",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_150m_identcorr_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "150m-staticcorr",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_150m_staticcorr_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    },
+    {
+      "model": "150m-lite",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_150m_lite_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "optimizer_updates_min": 6000,
+      "optimizer_updates_max": 6000,
+      "global_tokens_per_update_from_log": 524288,
+      "budget_log_rows": [
+        {
+          "step": "5980",
+          "train/tokens_seen_B": "3.135766528"
+        },
+        {
+          "step": "5990",
+          "train/tokens_seen_B": "3.141009408"
+        }
+      ],
+      "tokens_consumed_from_updates": 3145728000
+    }
+  ],
+  "notes": [
+    "Optimizer update counts are read from original checkpoint state; no weights are modified.",
+    "Global tokens per update is inferred from consecutive training log entries.",
+    "Periodic checkpoints use a zero-based training-step label; final checkpoints may use the completed-update count.",
+    "Token budgets count processed tokens, not unique or decontaminated training tokens."
+  ]
+}

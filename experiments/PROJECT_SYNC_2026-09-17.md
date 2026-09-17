@@ -11,7 +11,10 @@
   59 changed/new files (5.9 MB): September 3–13 analyses, result JSONs, figures,
   scripts and the appended experiment log. Recovered in commit `f6110e9`.
 
-Training data, tensor dumps and optimizer checkpoints stay on Delta. The local
+Tensor dumps and optimizer checkpoints stay on Delta. The configured historical
+training path `/work/hdd/bfqt/data/pretok/dolma_v1_7_12b` was absent when checked
+on September 17; current evaluation uses the available checkpoints, cached
+natural-text windows, and benchmark datasets. The local
 evaluation copy under `checkpoints/pr_sync_20260917` omits optimizer state and
 duplicate backbone entries, preserving evaluation tensors. The April stash
 `9901429` is retained, not blindly applied over the current data-resume and

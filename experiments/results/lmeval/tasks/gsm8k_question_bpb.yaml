@@ -1,0 +1,13 @@
+# Prefix-only control for gsm8k_bpb's joint question + solution score.
+task: gsm8k_question_bpb
+dataset_path: openai/gsm8k
+dataset_name: main
+output_type: loglikelihood_rolling
+training_split: train
+test_split: test
+doc_to_text: ""
+doc_to_target: "Question: {{question}}\nAnswer:"
+metric_list:
+  - metric: bits_per_byte
+metadata:
+  version: 1.0

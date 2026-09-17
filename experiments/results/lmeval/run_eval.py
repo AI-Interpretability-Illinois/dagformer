@@ -38,6 +38,8 @@ from pathlib import Path
 import torch
 
 HERE = Path(__file__).resolve().parent
+RUN_GIT_COMMIT = subprocess.check_output(
+    ["git", "rev-parse", "HEAD"], cwd=HERE, text=True).strip()
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
@@ -230,8 +232,8 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
             "lm_eval_version": lm_eval.__version__,
             "torch_version": torch.__version__,
             "transformers_version": importlib.metadata.version("transformers"),
-            "git_commit": subprocess.check_output(
-                ["git", "rev-parse", "HEAD"], cwd=HERE, text=True).strip(),
+            "git_commit": RUN_GIT_COMMIT,
+            "git_commit_recorded_at": "process_start",
             "prompts_left_truncated_batches": counter.truncated,
             "generations_hitting_context_limit": lm.truncated_generations,
             "seconds": timings,
