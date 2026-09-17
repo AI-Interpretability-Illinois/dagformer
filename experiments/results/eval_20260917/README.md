@@ -5,7 +5,7 @@ tests what the external predictor and local corrections contribute. The
 [code/PR audit](../../PROJECT_SYNC_2026-09-17.md) records recovered Delta work,
 the merged PRs and corrections to their interpretations.
 
-## Results available at 07:00 UTC
+## Ordinary evaluation
 
 The full 14-task likelihood suite is complete for the 75M, 150M and 300M
 baseline/DAGFormer pairs. The 600M baseline is an unpaired reference. The 300M
@@ -36,6 +36,12 @@ relative BoolQ gain above therefore does not establish successful reading
 comprehension. A separately named, answer-text CommonsenseQA control is queued;
 it will not replace the upstream task's results.
 
+![All paired ordinary-task effects](figures/ordinary_paired.png)
+
+All 14 endpoints at all three matched backbone scales. Positive values favor
+DAGFormer; intervals are paired document-bootstrap 95% intervals. The
+asterisked tasks have strong label biases, described above.
+
 ## Routing dependence
 
 Position means were calibrated on 64 WikiText training windows, then evaluated
@@ -59,6 +65,15 @@ The [routing results](routing_dependence/300m.json) retain all per-sequence
 losses, intervals, constant/global and cross-sequence substitutions, plus
 synthetic repetition tests at periods 64, 128 and 256.
 
+![Routing substitutions and removals](figures/routing_dependence.png)
+
+Tables use 64 WikiText training windows and evaluation uses 128 test windows.
+Intervals are paired normal intervals across windows. The two panels use
+different vertical ranges to show the small external-predictor effect and
+the larger correction effects. Substitution hooks still execute the original
+predictor before replacing its output; these runs measure dependence, not
+an inference-speed improvement.
+
 ## Direct head edits and the PR #2 contrast
 
 The fixed ten-edge circuit selected in the author's earlier experiment was
@@ -72,9 +87,36 @@ context retrieval, not intent to deceive.
 The original gamma 4 edit raises NLL by +1.05066 when applied to both channels,
 so its large fidelity gain comes with a substantial language-model cost.
 [The full dose table](context_fidelity/context_fidelity_full.md) records this
-alongside random-head controls. A disjoint second item set, alternate prompt
-templates, a second natural-text corpus, norm-matched controls and
-hyperconnection/sequential-path subsets are now running.
+alongside random-head controls.
+
+A second set of 1,024 content combinations excludes both the 240 original
+discovery items and the first 1,024 evaluation items. The same second set was
+tested in three prompt formats, with five random-head controls whose edit
+norms match the circuit per layer and token. Language-model cost now uses 50
+WikiText validation windows. At gamma 1.25, the both-channel edit changes
+candidate-normalized fidelity under the deceptive cue by **+3.84 points in
+the narrative format, +3.65 in dialogue, and -1.61 in question–answer format**.
+Its WikiText NLL cost is +0.01806. At gamma 1.5 the narrative gain is +6.33
+points, but the NLL cost rises to +0.07179, exceeding the project's +0.05
+criterion. The original natural-text cache had understated this cost.
+
+![Prompt-format transfer and language-model cost](figures/context_transfer.png)
+
+The gray range shows five norm-matched random-head controls for both-channel
+edits; it is not a confidence interval. Colored intervals are paired normal
+intervals across the 1,024 content combinations or 50 language-model windows.
+The QA reversal limits the claim to the measured prompt formats. An
+unconstrained generation evaluation on a third disjoint item set is queued to
+test whether the candidate-based result transfers to generated answers.
+
+The [seven hyperconnection edges](context_fidelity/context_validation_hyper.md)
+and [three sequential-path edges](context_fidelity/context_validation_sequential.md)
+each contribute: at gamma 1.25, both-channel edits give +2.26 and +1.80 points
+respectively in the narrative/deceptive condition. These effects need not add
+linearly. The unchanged ten-edge selection also transfers to the
+[step-10500 checkpoint](context_fidelity/context_validation_step10500.md), with
++3.79 points and +0.02037 WikiText NLL at gamma 1.25. These are content-item
+and nearby-checkpoint replications, not evidence of a general honesty circuit.
 
 PR #2's domain-code experiment was rerun with the same 50 natural-text windows
 used for the first context-fidelity test and a denser small-dose grid. The
