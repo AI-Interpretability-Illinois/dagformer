@@ -60,6 +60,7 @@ def main():
     cfg = elh.load_config(args.config)
     model, predictor = elh.load_fourway(args.ckpt, cfg, device)
     if args.upcast_fp32:
+        torch.set_float32_matmul_precision("highest")
         model.float()
         predictor.float()
     L, H = cfg["num_hidden_layers"], cfg["num_attention_heads"]
@@ -131,7 +132,9 @@ def main():
         table_metadata = {"checkpoint": args.ckpt, "config": args.config,
                           "calibration_cache": args.calibration_cache,
                           "n_calibration": len(calibration), "L": L, "H": H,
-                          "upcast_fp32": args.upcast_fp32}
+                          "upcast_fp32": args.upcast_fp32,
+                          "float32_matmul_precision": torch.get_float32_matmul_precision(),
+                          "cuda_matmul_allow_tf32": torch.backends.cuda.matmul.allow_tf32}
         torch.save({**table_metadata, "tables": {k: v.cpu() for k, v in tables.items()}}, args.table_out)
         generator = torch.Generator().manual_seed(args.seed)
         permutations = [torch.randperm(length, generator=generator).to(device) for _ in evaluation]

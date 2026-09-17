@@ -21,6 +21,10 @@
   `routing_dependence/causality_and_hook_checks.json`.
 - Four result figures were rendered and inspected; see
   `figures/qa-ledger.md`. Plotting reads the numeric result files directly.
+- The subsequent SAE transfer runner passed a one-window CPU execution check
+  plus two focused tests: token-weighted conditional loss aggregation and
+  exact preservation of each layer/stream's coefficient multiset in controls.
+  The CPU execution check is an implementation check, not a scientific result.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.
