@@ -1,0 +1,4269 @@
+{
+  "generated_utc": "2026-09-17T12:59:22.244973+00:00",
+  "git_commit_at_inventory": "f39bec22eab294b8075539f4f74d6582afb2390a",
+  "scope": "completed harness result files; a setting can reuse a checkpoint with a different intervention or task",
+  "groups": {
+    "standard_matched": [
+      {
+        "source": "standard_matched/150m-baseline__custom.json",
+        "model": {
+          "name": "150m-baseline",
+          "family": "baseline",
+          "size": "150m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/150m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 152593152,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/150m-baseline__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/150m-baseline__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/150m-baseline__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/150m-baseline__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/150m-baseline__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/150m-baseline__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/150m-baseline__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/150m-baseline__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/150m-baseline__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/150m-baseline__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/150m-baseline__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/150m-baseline__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/150m-baseline__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/150m-baseline__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/150m-dagformer__custom.json",
+        "model": {
+          "name": "150m-dagformer",
+          "family": "dagformer",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 182561679,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/150m-dagformer__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/150m-dagformer__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/150m-dagformer__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/150m-dagformer__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/150m-dagformer__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/150m-dagformer__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/150m-dagformer__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/150m-dagformer__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/150m-dagformer__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/150m-dagformer__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/150m-dagformer__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/150m-dagformer__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/150m-dagformer__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/150m-dagformer__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/300m-baseline__custom.json",
+        "model": {
+          "name": "300m-baseline",
+          "family": "baseline",
+          "size": "300m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/300m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 304137216,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/300m-baseline__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/300m-baseline__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/300m-baseline__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/300m-baseline__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/300m-baseline__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/300m-baseline__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/300m-baseline__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/300m-baseline__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/300m-baseline__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/300m-baseline__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/300m-baseline__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/300m-baseline__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/300m-baseline__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/300m-baseline__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/300m-dagformer__custom.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/300m-dagformer__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/300m-dagformer__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/300m-dagformer__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/300m-dagformer__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/300m-dagformer__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/300m-dagformer__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/300m-dagformer__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/300m-dagformer__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/300m-dagformer__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/300m-dagformer__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/300m-dagformer__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/300m-dagformer__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/300m-dagformer__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/300m-dagformer__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/600m-baseline__custom.json",
+        "model": {
+          "name": "600m-baseline",
+          "family": "baseline",
+          "size": "600m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/600m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/600m-baseline/checkpoint.pt",
+          "step": 22900,
+          "num_parameters": 682710528,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/600m-baseline__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/600m-baseline__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/600m-baseline__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/600m-baseline__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/600m-baseline__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/600m-baseline__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/600m-baseline__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/600m-baseline__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/600m-baseline__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/600m-baseline__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/600m-baseline__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/600m-baseline__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/600m-baseline__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/600m-baseline__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/75m-baseline__custom.json",
+        "model": {
+          "name": "75m-baseline",
+          "family": "baseline",
+          "size": "75m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/75m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 76558848,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/75m-baseline__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/75m-baseline__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/75m-baseline__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/75m-baseline__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/75m-baseline__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/75m-baseline__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/75m-baseline__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/75m-baseline__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/75m-baseline__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/75m-baseline__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/75m-baseline__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/75m-baseline__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/75m-baseline__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/75m-baseline__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_matched/75m-dagformer__custom.json",
+        "model": {
+          "name": "75m-dagformer",
+          "family": "dagformer",
+          "size": "75m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 105657332,
+          "train_seq_len": 1024
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_matched/samples/75m-dagformer__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_matched/samples/75m-dagformer__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_matched/samples/75m-dagformer__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_matched/samples/75m-dagformer__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_matched/samples/75m-dagformer__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_matched/samples/75m-dagformer__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_matched/samples/75m-dagformer__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_matched/samples/75m-dagformer__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_matched/samples/75m-dagformer__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_matched/samples/75m-dagformer__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_matched/samples/75m-dagformer__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_matched/samples/75m-dagformer__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_matched/samples/75m-dagformer__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_matched/samples/75m-dagformer__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_latest": [
+      {
+        "source": "standard_latest/300m-dagformer__custom.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/latest/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/latest/300m-dagformer/checkpoint.pt",
+          "step": 10500,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_latest/samples/300m-dagformer__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_latest/samples/300m-dagformer__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_latest/samples/300m-dagformer__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_latest/samples/300m-dagformer__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_latest/samples/300m-dagformer__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_latest/samples/300m-dagformer__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_latest/samples/300m-dagformer__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_latest/samples/300m-dagformer__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_latest/samples/300m-dagformer__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_latest/samples/300m-dagformer__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_latest/samples/300m-dagformer__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_latest/samples/300m-dagformer__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_latest/samples/300m-dagformer__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_latest/samples/300m-dagformer__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_ladder": [
+      {
+        "source": "standard_ladder/150m-identcorr__custom.json",
+        "model": {
+          "name": "150m-identcorr",
+          "family": "identcorr",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/ladder/150m-identcorr",
+          "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-identcorr/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 153448335,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_ladder/samples/150m-identcorr__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_ladder/samples/150m-identcorr__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_ladder/samples/150m-identcorr__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_ladder/samples/150m-identcorr__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_ladder/samples/150m-identcorr__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_ladder/samples/150m-identcorr__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_ladder/samples/150m-identcorr__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_ladder/samples/150m-identcorr__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_ladder/samples/150m-identcorr__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_ladder/samples/150m-identcorr__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_ladder/samples/150m-identcorr__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_ladder/samples/150m-identcorr__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_ladder/samples/150m-identcorr__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_ladder/samples/150m-identcorr__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_ladder/150m-lite__custom.json",
+        "model": {
+          "name": "150m-lite",
+          "family": "lite",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/ladder/150m-lite",
+          "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-lite/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 154773120,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_ladder/samples/150m-lite__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_ladder/samples/150m-lite__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_ladder/samples/150m-lite__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_ladder/samples/150m-lite__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_ladder/samples/150m-lite__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_ladder/samples/150m-lite__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_ladder/samples/150m-lite__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_ladder/samples/150m-lite__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_ladder/samples/150m-lite__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_ladder/samples/150m-lite__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_ladder/samples/150m-lite__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_ladder/samples/150m-lite__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_ladder/samples/150m-lite__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_ladder/samples/150m-lite__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_ladder/150m-postable__custom.json",
+        "model": {
+          "name": "150m-postable",
+          "family": "postable",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/ladder/150m-postable",
+          "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-postable/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 153919232,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_ladder/samples/150m-postable__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_ladder/samples/150m-postable__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_ladder/samples/150m-postable__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_ladder/samples/150m-postable__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_ladder/samples/150m-postable__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_ladder/samples/150m-postable__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_ladder/samples/150m-postable__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_ladder/samples/150m-postable__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_ladder/samples/150m-postable__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_ladder/samples/150m-postable__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_ladder/samples/150m-postable__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_ladder/samples/150m-postable__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_ladder/samples/150m-postable__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_ladder/samples/150m-postable__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_ladder/150m-static__custom.json",
+        "model": {
+          "name": "150m-static",
+          "family": "static",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/ladder/150m-static",
+          "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-static/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 152594447,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_ladder/samples/150m-static__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_ladder/samples/150m-static__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_ladder/samples/150m-static__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_ladder/samples/150m-static__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_ladder/samples/150m-static__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_ladder/samples/150m-static__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_ladder/samples/150m-static__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_ladder/samples/150m-static__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_ladder/samples/150m-static__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_ladder/samples/150m-static__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_ladder/samples/150m-static__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_ladder/samples/150m-static__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_ladder/samples/150m-static__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_ladder/samples/150m-static__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_ladder/150m-staticcorr__custom.json",
+        "model": {
+          "name": "150m-staticcorr",
+          "family": "staticcorr",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/ladder/150m-staticcorr",
+          "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-staticcorr/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 153448335,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_ladder/samples/150m-staticcorr__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_frozen_predictor": [
+      {
+        "source": "standard_frozen_predictor/150m-dagformer__custom__pred_position.json",
+        "model": {
+          "name": "150m-dagformer__pred_position",
+          "family": "dagformer",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 182561679,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "pred_position",
+            "table": "checkpoints/pr_sync_20260917/routing_tables/150m.pt",
+            "calibration": {
+              "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+              "config": "checkpoints/pr_sync_20260917/150m-dagformer/config.yaml",
+              "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+              "n_calibration": 64,
+              "L": 8,
+              "H": 12
+            },
+            "scope": "post-training inference substitution; predictor still executes before hook",
+            "parameter_count": "original trained checkpoint, including the substituted predictor"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_frozen_predictor/samples/150m-dagformer__pred_position__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_frozen_predictor/300m-dagformer__custom__pred_position.json",
+        "model": {
+          "name": "300m-dagformer__pred_position",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "pred_position",
+            "table": "checkpoints/pr_sync_20260917/routing_tables/300m.pt",
+            "calibration": {
+              "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+              "config": "checkpoints/pr_sync_20260917/300m-dagformer/config.yaml",
+              "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+              "n_calibration": 64,
+              "L": 12,
+              "H": 16
+            },
+            "scope": "post-training inference substitution; predictor still executes before hook",
+            "parameter_count": "original trained checkpoint, including the substituted predictor"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_frozen_predictor/samples/300m-dagformer__pred_position__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "standard_frozen_predictor/75m-dagformer__custom__pred_position.json",
+        "model": {
+          "name": "75m-dagformer__pred_position",
+          "family": "dagformer",
+          "size": "75m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 105657332,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "pred_position",
+            "table": "checkpoints/pr_sync_20260917/routing_tables/75m.pt",
+            "calibration": {
+              "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+              "config": "checkpoints/pr_sync_20260917/75m-dagformer/config.yaml",
+              "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+              "n_calibration": 64,
+              "L": 6,
+              "H": 8
+            },
+            "scope": "post-training inference substitution; predictor still executes before hook",
+            "parameter_count": "original trained checkpoint, including the substituted predictor"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_frozen_predictor/samples/75m-dagformer__pred_position__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_context_pred": [
+      {
+        "source": "standard_context_pred/300m-dagformer__custom__context_pred_gamma1.5.json",
+        "model": {
+          "name": "300m-dagformer__context_pred_gamma1.5",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "context_pred",
+            "gamma": 1.5,
+            "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+            "edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "scope": "fixed head-mean-deviation edit on predictor/corrections"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_context_pred/samples/300m-dagformer__context_pred_gamma1.5__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_context_corr": [
+      {
+        "source": "standard_context_corr/300m-dagformer__custom__context_corr_gamma1.25.json",
+        "model": {
+          "name": "300m-dagformer__context_corr_gamma1.25",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "context_corr",
+            "gamma": 1.25,
+            "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+            "edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "scope": "fixed head-mean-deviation edit on predictor/corrections"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_context_corr/samples/300m-dagformer__context_corr_gamma1.25__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_context_both": [
+      {
+        "source": "standard_context_both/300m-dagformer__custom__context_both_gamma1.25.json",
+        "model": {
+          "name": "300m-dagformer__context_both_gamma1.25",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "context_both",
+            "gamma": 1.25,
+            "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+            "edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "reference_edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "control_seed": null,
+            "control_norm_matching": null,
+            "scope": "fixed head-mean-deviation edit on predictor/corrections"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_context_both/samples/300m-dagformer__context_both_gamma1.25__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_context_random1000": [
+      {
+        "source": "standard_context_random1000/300m-dagformer__custom__context_both_gamma1.25_random1000_normmatched.json",
+        "model": {
+          "name": "300m-dagformer__context_both_gamma1.25_random1000_normmatched",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "context_both",
+            "gamma": 1.25,
+            "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+            "edges": [
+              [
+                4,
+                "v",
+                13,
+                4
+              ],
+              [
+                4,
+                "q",
+                7,
+                1
+              ],
+              [
+                7,
+                "v",
+                12,
+                0
+              ],
+              [
+                7,
+                "v",
+                13,
+                1
+              ],
+              [
+                7,
+                "k",
+                2,
+                7
+              ],
+              [
+                9,
+                "v",
+                7,
+                2
+              ],
+              [
+                7,
+                "v",
+                6,
+                0
+              ],
+              [
+                4,
+                "k",
+                2,
+                4
+              ],
+              [
+                7,
+                "k",
+                8,
+                4
+              ],
+              [
+                7,
+                "k",
+                3,
+                4
+              ]
+            ],
+            "reference_edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "control_seed": 1000,
+            "control_norm_matching": "per layer/token on incoming activations",
+            "scope": "fixed head-mean-deviation edit on predictor/corrections"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_context_random1000/samples/300m-dagformer__context_both_gamma1.25_random1000_normmatched__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "standard_context_random1001": [
+      {
+        "source": "standard_context_random1001/300m-dagformer__custom__context_both_gamma1.25_random1001_normmatched.json",
+        "model": {
+          "name": "300m-dagformer__context_both_gamma1.25_random1001_normmatched",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": {
+            "mode": "context_both",
+            "gamma": 1.25,
+            "circuit_source": "experiments/results/interp/liar_cloze/deception_conns.json",
+            "edges": [
+              [
+                4,
+                "v",
+                13,
+                4
+              ],
+              [
+                4,
+                "q",
+                15,
+                1
+              ],
+              [
+                7,
+                "v",
+                0,
+                0
+              ],
+              [
+                7,
+                "v",
+                13,
+                1
+              ],
+              [
+                7,
+                "k",
+                13,
+                7
+              ],
+              [
+                9,
+                "v",
+                4,
+                2
+              ],
+              [
+                7,
+                "v",
+                3,
+                0
+              ],
+              [
+                4,
+                "k",
+                9,
+                4
+              ],
+              [
+                7,
+                "k",
+                7,
+                4
+              ],
+              [
+                7,
+                "k",
+                15,
+                4
+              ]
+            ],
+            "reference_edges": [
+              [
+                4,
+                "v",
+                1,
+                4
+              ],
+              [
+                4,
+                "q",
+                1,
+                1
+              ],
+              [
+                7,
+                "v",
+                9,
+                0
+              ],
+              [
+                7,
+                "v",
+                1,
+                1
+              ],
+              [
+                7,
+                "k",
+                1,
+                7
+              ],
+              [
+                9,
+                "v",
+                2,
+                2
+              ],
+              [
+                7,
+                "v",
+                1,
+                0
+              ],
+              [
+                4,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                1,
+                4
+              ],
+              [
+                7,
+                "k",
+                9,
+                4
+              ]
+            ],
+            "control_seed": 1001,
+            "control_norm_matching": "per layer/token on incoming activations",
+            "scope": "fixed head-mean-deviation edit on predictor/corrections"
+          }
+        },
+        "tasks": [
+          {
+            "task": "wikitext",
+            "effective_samples": 62,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__wikitext.jsonl",
+            "rows": 62,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "lambada_openai",
+            "effective_samples": 5153,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__lambada_openai.jsonl",
+            "rows": 5153,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "hellaswag",
+            "effective_samples": 10042,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__hellaswag.jsonl",
+            "rows": 10042,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "piqa",
+            "effective_samples": 1838,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__piqa.jsonl",
+            "rows": 1838,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_easy",
+            "effective_samples": 2376,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__arc_easy.jsonl",
+            "rows": 2376,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "arc_challenge",
+            "effective_samples": 1172,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__arc_challenge.jsonl",
+            "rows": 1172,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "winogrande",
+            "effective_samples": 1267,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__winogrande.jsonl",
+            "rows": 1267,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "openbookqa",
+            "effective_samples": 500,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__openbookqa.jsonl",
+            "rows": 500,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "sciq",
+            "effective_samples": 1000,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__sciq.jsonl",
+            "rows": 1000,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "boolq",
+            "effective_samples": 3270,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__boolq.jsonl",
+            "rows": 3270,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "mathqa",
+            "effective_samples": 2985,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__mathqa.jsonl",
+            "rows": 2985,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "commonsense_qa",
+            "effective_samples": 1221,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__commonsense_qa.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "social_iqa",
+            "effective_samples": 1954,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__social_iqa.jsonl",
+            "rows": 1954,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_bpb",
+            "effective_samples": 1319,
+            "sample_file": "standard_context_random1001/samples/300m-dagformer__context_both_gamma1.25_random1001_normmatched__gsm8k_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "commonsense_content": [
+      {
+        "source": "commonsense_content/150m-baseline__custom.json",
+        "model": {
+          "name": "150m-baseline",
+          "family": "baseline",
+          "size": "150m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/150m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 152593152,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/150m-baseline__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/150m-dagformer__custom.json",
+        "model": {
+          "name": "150m-dagformer",
+          "family": "dagformer",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 182561679,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/150m-dagformer__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/300m-baseline__custom.json",
+        "model": {
+          "name": "300m-baseline",
+          "family": "baseline",
+          "size": "300m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/300m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 304137216,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/300m-baseline__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/300m-dagformer__custom.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/300m-dagformer__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/600m-baseline__custom.json",
+        "model": {
+          "name": "600m-baseline",
+          "family": "baseline",
+          "size": "600m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/600m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/600m-baseline/checkpoint.pt",
+          "step": 22900,
+          "num_parameters": 682710528,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/600m-baseline__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/75m-baseline__custom.json",
+        "model": {
+          "name": "75m-baseline",
+          "family": "baseline",
+          "size": "75m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/75m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 76558848,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/75m-baseline__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "commonsense_content/75m-dagformer__custom.json",
+        "model": {
+          "name": "75m-dagformer",
+          "family": "dagformer",
+          "size": "75m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 105657332,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "commonsense_qa_content",
+            "effective_samples": 1221,
+            "sample_file": "commonsense_content/samples/75m-dagformer__commonsense_qa_content.jsonl",
+            "rows": 1221,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "gsm8k_components": [
+      {
+        "source": "gsm8k_components/150m-baseline__custom.json",
+        "model": {
+          "name": "150m-baseline",
+          "family": "baseline",
+          "size": "150m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/150m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 152593152,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/150m-baseline__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/150m-baseline__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/150m-dagformer__custom.json",
+        "model": {
+          "name": "150m-dagformer",
+          "family": "dagformer",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 182561679,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/150m-dagformer__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/150m-dagformer__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/300m-baseline__custom.json",
+        "model": {
+          "name": "300m-baseline",
+          "family": "baseline",
+          "size": "300m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/300m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 304137216,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/300m-baseline__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/300m-baseline__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/300m-dagformer__custom.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/300m-dagformer__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/300m-dagformer__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/600m-baseline__custom.json",
+        "model": {
+          "name": "600m-baseline",
+          "family": "baseline",
+          "size": "600m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/600m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/600m-baseline/checkpoint.pt",
+          "step": 22900,
+          "num_parameters": 682710528,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/600m-baseline__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/600m-baseline__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/75m-baseline__custom.json",
+        "model": {
+          "name": "75m-baseline",
+          "family": "baseline",
+          "size": "75m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/75m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 76558848,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/75m-baseline__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/75m-baseline__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_components/75m-dagformer__custom.json",
+        "model": {
+          "name": "75m-dagformer",
+          "family": "dagformer",
+          "size": "75m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 105657332,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k_answer_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/75m-dagformer__gsm8k_answer_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          },
+          {
+            "task": "gsm8k_question_bpb",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_components/samples/75m-dagformer__gsm8k_question_bpb.jsonl",
+            "rows": 1319,
+            "filters": [
+              "none"
+            ]
+          }
+        ]
+      }
+    ],
+    "gsm8k_full": [
+      {
+        "source": "gsm8k_full/150m-baseline__gen.json",
+        "model": {
+          "name": "150m-baseline",
+          "family": "baseline",
+          "size": "150m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/150m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 152593152,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/150m-baseline__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/150m-dagformer__gen.json",
+        "model": {
+          "name": "150m-dagformer",
+          "family": "dagformer",
+          "size": "150m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+          "step": 6000,
+          "num_parameters": 182561679,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/150m-dagformer__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/300m-baseline__gen.json",
+        "model": {
+          "name": "300m-baseline",
+          "family": "baseline",
+          "size": "300m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/300m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 304137216,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/300m-baseline__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/300m-dagformer__gen.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/300m-dagformer__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/600m-baseline__gen.json",
+        "model": {
+          "name": "600m-baseline",
+          "family": "baseline",
+          "size": "600m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/600m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/600m-baseline/checkpoint.pt",
+          "step": 22900,
+          "num_parameters": 682710528,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/600m-baseline__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/75m-baseline__gen.json",
+        "model": {
+          "name": "75m-baseline",
+          "family": "baseline",
+          "size": "75m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/75m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 76558848,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/75m-baseline__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "gsm8k_full/75m-dagformer__gen.json",
+        "model": {
+          "name": "75m-dagformer",
+          "family": "dagformer",
+          "size": "75m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+          "step": 3000,
+          "num_parameters": 105657332,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_full/samples/75m-dagformer__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      }
+    ],
+    "gsm8k_latest": [
+      {
+        "source": "gsm8k_latest/300m-dagformer__gen.json",
+        "model": {
+          "name": "300m-dagformer",
+          "family": "dagformer",
+          "size": "300m",
+          "kind": "fourway",
+          "path": "checkpoints/pr_sync_20260917/latest/300m-dagformer",
+          "checkpoint": "checkpoints/pr_sync_20260917/latest/300m-dagformer/checkpoint.pt",
+          "step": 10500,
+          "num_parameters": 336447805,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 1319,
+            "sample_file": "gsm8k_latest/samples/300m-dagformer__gsm8k.jsonl",
+            "rows": 2638,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      }
+    ],
+    "gsm8k_no_cache": [
+      {
+        "source": "gsm8k_no_cache/300m-baseline__gen.json",
+        "model": {
+          "name": "300m-baseline",
+          "family": "baseline",
+          "size": "300m",
+          "kind": "dense",
+          "path": "checkpoints/pr_sync_20260917/300m-baseline",
+          "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+          "step": 9000,
+          "num_parameters": 304137216,
+          "train_seq_len": 1024,
+          "routing_intervention": null
+        },
+        "tasks": [
+          {
+            "task": "gsm8k",
+            "effective_samples": 200,
+            "sample_file": "gsm8k_no_cache/samples/300m-baseline__gsm8k.jsonl",
+            "rows": 400,
+            "filters": [
+              "flexible-extract",
+              "strict-match"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "completed_harness_settings": 44,
+  "completed_task_endpoints": 324
+}

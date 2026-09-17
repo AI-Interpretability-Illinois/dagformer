@@ -453,6 +453,11 @@ language-model damage.
 
 ## Reproduction and artifacts
 
+- The [completed harness inventory](provenance/eval_inventory.md) contains
+  44 runs and 324 task endpoints, including 21 ordinary model/intervention
+  settings with 14 tasks each. Every saved task/filter has the reported
+  number of unique document IDs. Settings reuse checkpoints and documents;
+  the counts do not represent independent training replications.
 - Evaluation environment: `lm_eval==0.4.13`, Transformers 4.57.1, PyTorch
   2.10.0+cu128; timan1 GPUs 2 and 3.
 - Ordinary entry point: `experiments/results/lmeval/run_eval.py`; use
