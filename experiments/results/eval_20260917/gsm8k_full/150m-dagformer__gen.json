@@ -1,0 +1,77 @@
+{
+  "model": {
+    "name": "150m-dagformer",
+    "family": "dagformer",
+    "size": "150m",
+    "kind": "fourway",
+    "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+    "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+    "step": 6000,
+    "num_parameters": 182561679,
+    "train_seq_len": 1024,
+    "routing_intervention": null
+  },
+  "eval": {
+    "date": "2026-09-17T11:26:54+00:00",
+    "suite": "gen",
+    "loglikelihood_tasks": [],
+    "generative_tasks": [
+      "gsm8k"
+    ],
+    "limit": null,
+    "gen_limit": 1319,
+    "batch_size": 16,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": false,
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "7d441d5d6fbc99c352c5102f2bd52f3c1a16736c",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 34,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "generative": 3939.239019393921
+    },
+    "peak_gpu_gb": 0.7,
+    "sample_files": [
+      "experiments/results/eval_20260917/gsm8k_full/samples/150m-dagformer__gsm8k.jsonl"
+    ]
+  },
+  "results": {
+    "gsm8k": {
+      "name": "gsm8k",
+      "alias": "gsm8k",
+      "sample_len": 1319,
+      "exact_match,strict-match": 0.0,
+      "exact_match_stderr,strict-match": 0.0,
+      "exact_match,flexible-extract": 0.012130401819560273,
+      "exact_match_stderr,flexible-extract": 0.0030152942428909395
+    }
+  },
+  "n-samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 1319
+    }
+  },
+  "versions": {
+    "gsm8k": 3.0
+  },
+  "n-shot": {
+    "gsm8k": 3
+  },
+  "higher_is_better": {
+    "gsm8k": {
+      "exact_match": true
+    }
+  },
+  "group_subtasks": {}
+}

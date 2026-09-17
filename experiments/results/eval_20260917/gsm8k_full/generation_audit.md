@@ -5,6 +5,8 @@ uses the last matched number; it does not validate the derivation or answer unit
 
 | Model | Documents | Strict match | Flexible match | Best constant answer | Mean repeated 4-gram fraction |
 |---|---:|---:|---:|---|---:|
+| 150m-baseline | 1319 | 0.00% | 1.59% | 5: 3.03% | 0.809 |
+| 150m-dagformer | 1319 | 0.00% | 1.21% | 5: 3.03% | 0.865 |
 | 300m-baseline | 1319 | 0.00% | 1.59% | 5: 3.03% | 0.837 |
 | 300m-dagformer | 1319 | 0.00% | 1.52% | 5: 3.03% | 0.804 |
 | 75m-baseline | 1319 | 0.00% | 1.82% | 5: 3.03% | 0.815 |

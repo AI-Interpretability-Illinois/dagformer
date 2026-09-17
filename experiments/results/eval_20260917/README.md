@@ -52,22 +52,23 @@ likelihood as well as the question likelihood. All three paired intervals
 exclude zero. The earlier gold solution tokens are supplied in this task;
 free generation below tests whether the model can produce the solution.
 
-Full GSM8K generation is complete for the 75M and 300M pairs, with 1,319
+Full GSM8K generation is complete for the 75M, 150M and 300M pairs, with 1,319
 documents per model, three few-shot examples and a 256-token generation cap.
-Both pairs show no detected improvement in flexible numeric extraction:
+All three pairs show no detected improvement in flexible numeric extraction:
 
 | Scale | Baseline | DAGFormer | Difference | Paired 95% interval |
 |---|---:|---:|---:|---|
 | 75M | 1.82% | 1.67% | -0.15 percentage points | [-1.06, +0.76] |
+| 150M | 1.59% | 1.21% | -0.38 percentage points | [-1.21, +0.45] |
 | 300M | 1.59% | 1.52% | -0.08 percentage points | [-0.91, +0.76] |
 
-Strict-format accuracy is 0% for all four. The
+Strict-format accuracy is 0% for all six. The
 [paired results](gsm8k_full/paired_summary.md) and
 [generation audit](gsm8k_full/generation_audit.md) retain the official scores
 alongside deterministic output examples. A matching extracted number can
 occur in repeated or irrelevant text: document 52, for example, generates
 "15 pounds" where the requested answer is 15 toys. The best constant-number
-diagnostic on this test split is 3.03% (always 5). Generation runs for 150M,
+diagnostic on this test split is 3.03% (always 5). Generation runs for
 the 600M baseline and the later 300M DAGFormer checkpoint are still pending.
 Dense baselines use KV caching; DAGFormer recomputes the prefix. In the
 [200-item cache check](gsm8k_no_cache/README.md), the 300M baseline has the
