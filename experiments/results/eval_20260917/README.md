@@ -75,14 +75,15 @@ is now complete. Its length-normalized accuracies are 24.73% → 25.23% at 75M,
 26.04% → 27.44% at 150M, and 28.99% → 29.65% at 300M. Only the 150M paired
 interval excludes zero, narrowly; using raw answer likelihood, that pair
 changes from 23.91% to 23.42% with an interval spanning zero. This custom
-control provides no scoring-convention-independent gain across the pairs.
+control's small 150M gain therefore depends on the scoring convention;
+neither other pair has a detected gain with either score.
 
 The [step-10500 checkpoint comparison](standard_latest/README.md) is also
 complete for all 14 endpoints. With 5.506B processed tokens, its WikiText BPB
 improves from step 9000's 1.02248 to 1.01830. Its twelve accuracy differences
 all have paired intervals including zero, and GSM8K joint BPB is slightly
-worse. It is a continuation-of-training comparison; the budget-matched
-baseline comparison above continues to use step 9000.
+worse. This measures continued training of the same model. The comparison
+at equal baseline/DAGFormer training budgets continues to use step 9000.
 
 ![All paired ordinary-task effects](figures/ordinary_paired.png)
 
