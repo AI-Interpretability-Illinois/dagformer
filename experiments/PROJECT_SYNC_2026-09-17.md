@@ -28,7 +28,7 @@ training implementations. Raw logs and machine-specific links remain local.
 | Author's named copy heads | Scale Q/K head deviations, in both predictor and corrections | Copy accuracy 72.7% to 80.2% at gamma 1.5 with about +0.02 natural-text NLL. Tests head-specific wiring. |
 | Author's context-fidelity circuit | Directly edit ten chosen Q/K/V coefficients in both channels | Original cloze p_true 0.719 to 0.522 at gamma 0 and 0.935 at gamma 4. Discovery and verification reused seed-0 items; this needs a new-item evaluation and NLL measurement. |
 | Author's correction-space SAE | Add a learned feature direction; measure selected-token loss and free-generation token counts | The old screen has 34 of 187 directions with opposite-sign loss effects exceeding a 0.04-nat span and off-rule cost below 0.03. Large-sample generation was much less stable. These are conditional-token effects, not an instruction-contrast steering result. |
-| PR #2 | Discover instruction-contrast differences, then edit pred or corr separately | No useful domain-code steering in the tested directions under its +0.05 NLL threshold; honesty prompts have weak baseline instruction effects. Tests a different behavior and intervention. |
+| PR #2 | Discover instruction-contrast differences, then edit pred or corr separately | Reports no useful domain-code steering in the tested directions under its +0.05 NLL threshold; honesty prompts have weak baseline instruction effects. Tests a different behavior and intervention; see the statistical-label audit below. |
 
 Sources: `results/interp/swap2_step9000.json`, `localize_step9000.json`,
 `liar_cloze/deception_{conns,steer,steer_neutral}.json`, and

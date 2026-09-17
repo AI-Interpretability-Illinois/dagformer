@@ -221,8 +221,13 @@ and nearby-checkpoint replications, not evidence of a general honesty circuit.
 PR #2's domain-code experiment was rerun with the same 50 natural-text windows
 used for the first context-fidelity test and a denser small-dose grid. The
 [predictor](domain_code/verify_domain_code_pred.md) and
-[correction](domain_code/verify_domain_code_corr.md) discovery directions still
-do not give a supported useful steering result under the +0.05-NLL criterion.
+[correction](domain_code/verify_domain_code_corr.md) whole-circuit edits give
+small shifts at acceptable NLL cost. Among the tested additive/scaling arms
+below +0.05 NLL, the largest neutral-prompt shifts are +0.05257 for predictor
+edits and +0.02823 for correction edits: 1.57% and 0.84% of the instruction
+gap. These are descriptive maxima over the tested grid, not confirmed
+optima or adjusted significance tests. Large whole-circuit changes incur
+substantial NLL costs.
 The default eight null draws select 1,598 correction edges; reproducing the
 PR's six-draw setting selects 813 (original: 829). The selection count is
 sensitive to this Monte Carlo setting even though the measured channel-level
