@@ -1,0 +1,21 @@
+{
+  "baseline_p_true": 0.6682954947852219,
+  "cue": "neutral",
+  "gamma-2.0": 0.3204228791447046,
+  "gamma-1.0": 0.4156141407021399,
+  "gamma0.0": 0.5114022154613242,
+  "gamma0.5": 0.578179381795538,
+  "gamma1.0": 0.6682954947852219,
+  "gamma2.0": 0.762989652187874,
+  "gamma4.0": 0.9177473646899065,
+  "random10_tophead_seed0": 0.6869032325223088,
+  "random10_tophead_seed1": 0.6612013363434622,
+  "random10_tophead_seed2": 0.6302178895256172,
+  "random10_tophead_seed3": 0.6641882507169309,
+  "random10_tophead_seed4": 0.6548022054717876,
+  "random10_wholemodel_seed0": 0.6730121663732764,
+  "random10_wholemodel_seed1": 0.6768605317105539,
+  "random10_wholemodel_seed2": 0.672954503869793,
+  "random10_wholemodel_seed3": 0.6678912794062247,
+  "random10_wholemodel_seed4": 0.6722518349143987
+}

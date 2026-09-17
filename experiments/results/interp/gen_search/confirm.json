@@ -1,0 +1,662 @@
+{
+  "L3/h12": {
+    "-4.0": {
+      "newlines": 0.59375,
+      "sent_len": 42.84288194444444,
+      "distinct": 0.336275477347306,
+      "repeat3gram": 0.5999776964281627,
+      "allcaps": 0.09375,
+      "nll": 3.7529942989349365,
+      "examples": [
+        "The topic topic topic topic topic topic topic topic is topic topic is topic topic is topic topic topic topic topic topic topic is topic topic topic is topic topic topic topic topic is topic topic subject topic topic is topic is topic topic topic topic is topic topic topic is topic topic topic topic topic topic topic topic topic topic topic is topic topic topic topic is topic topic topic",
+        "TheLetterNotesPaperLetterTheLetterTheLettersLetterTheLetterTheLetterTheLetterALetterRLetterTheLetterTheLetterTheLetterTheLetterWrittenLetterTheLetterTheLetterTheLetterTheLetterTheLetterWrittenLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterTheLetterThe",
+        "The city is is also is is also contains city is is also is, therefore is also also its being is its is also its also its city.\nThis is also is the remains can? its whose remains the remains of its also is the remains of its which remains, in its is also its remains. it whose remains remains also remains still.\n is the",
+        "TheTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+      ]
+    },
+    "-1.0": {
+      "newlines": 0.875,
+      "sent_len": 31.212750626566418,
+      "distinct": 0.4154098141141297,
+      "repeat3gram": 0.6361099657606923,
+      "allcaps": 0.09375,
+      "nll": 3.254864549636841,
+      "examples": [
+        "TheDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDerDer",
+        "TheItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItItIt",
+        "The yard garden has garden has been for many many many many many many many many many many many many many many thousands many hundreds many many many thousands many thousands many thousands many many thousands many thousands many thousands thousands many thousands millions many millions many millions thousands thousands millions thousands thousands thousands thousands thousands thousands thousands thousands thousands thousands millions thousands thousands thousands thousands thousands thousands thousands thousands thousands",
+        "TheBurnTheBurnTheBurnTheBurnTheBurnTheBurnBurnTheBurnBurnTheBurnBurnTheBurnBurnBurnTheBurnBurnBurnBurnBurnBurnTheBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurnBurn"
+      ]
+    },
+    "0.0": {
+      "newlines": 2.8125,
+      "sent_len": 15.549590773809523,
+      "distinct": 0.7571847812747993,
+      "repeat3gram": 0.010086182246264504,
+      "allcaps": 0.125,
+      "nll": 3.108305788040161,
+      "examples": [
+        "The original Armenian language of her native country is spoken, but the word she learned in the island language of her homeland is known as \"Archita\" (Armenian for \"flesh.\").\nArmanis have been used in other languages as well. There is a pronunciation of two or more acraly in the Armenian language of the Sea",
+        "The \u201crelatively low\u201d rate is largely due to the fact that the air around the city is usually more manageable than the air around the city. You can also see how the \"casualty\" fares by exploring the subway system that connects the city to the surrounding areas.\nThe bus system is a no-ERK paradise. It's not actually",
+        "The Nursery is the perfect place to work, with its open study and fully-equipped kitchen. The school hosts tutoring groups in the mornings and afternoons.\nCampers participate in activities such as warming-needle puzzles, cardboard carving and handwork in small groups. Often they are paired with a hunt, fishing, and scavenger hunt. Campers will have",
+        "The festival will take place at Shire Hall in Newcastle at 18:30 Friday 5 June. Tickets are available for the one-day festival on the day. For details, please visit www.nationalnudiestival.co.uk.\nWe love the local history and heritage in Newcastle, and the River Thames has its own story for us. This is an"
+      ]
+    },
+    "1.0": {
+      "newlines": 2.625,
+      "sent_len": 15.414930555555554,
+      "distinct": 0.7536134297296939,
+      "repeat3gram": 0.008096207416568881,
+      "allcaps": 0.125,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The outcome of the project will be a new vision and alignment to the existing way that I live and work.\nA life lived as a citizen of the United States or a citizen of another country is not just temporary, it can be a life lasting legacy. This is why I wanted to share a story and a wish that will make a lasting impact on people",
+        "The plans have been placed on hold and are on hold for now.\nThe commissioners are working to determine the charges against the owners of the refinery and expect to see that those charges are on the books and in fact they had planned to remove the photos of the buildings, work the contractor had instructed them to perform, and would be sent to the owners of the",
+        "The Bus. No, it\u2019s not my idea, it\u2019s an idea I take for granted, but it\u2019s a sneaky idea that someone needs to feel safe and secure around a safety barrier. I\u2019d say though that if you want to keep a car safely around you (and yes, I\u2019m a fan of those truck!) you\u2019d find the",
+        "The two sides of the table are brought together--the profit and the\nprice. The best of the commission and the strongest of the money, it\nis true. The lower prices of luxury may be judged by the men who wear\nthe latter. The three hundred millions they are sure to earn of\nthem--in this the performance pays. The"
+      ]
+    },
+    "4.0": {
+      "newlines": 2.59375,
+      "sent_len": 20.910119047619048,
+      "distinct": 0.7819118258604352,
+      "repeat3gram": 0.0020760725064673767,
+      "allcaps": 0.0625,
+      "nll": 3.4473183155059814,
+      "examples": [
+        "The blue lines of the rooms are the different dates to ask for. They are extremely convenient.\nBut, I can't wait to put this together in your view. The announcement is cold.<|endoftext|>The House and Senate have a piece of legislation that has been in the Senate this week. But new legislation is being considered by the House this week.\nThe bill",
+        "The kitchen, once occupied, was simply a box-like structure, with which\nwe occasionally might have visited our neighbours. But we, like\nruffians, feared that we should know something. In the days and weeks\nthat followed, these suspicions, and suspicions, that were excited by\nthe strange or just suspicions were generally entertained, sometimes\n",
+        "The Beatles, who create interesting pop style songs, but they also painted a sad portrait of the Beatles and all their influence are, if they said, listening to those songs I can relate them, with the song lyrics was one of my favorite song lyrics, that is that it shows the tone of the songs the most beautiful and powerfully told lyrics, is",
+        "The yellow beetle which now lives in the Borax is native to the southern region and also the Azores to the north east coast of the British Isles.\nspecies: the southern, lowland, and on the main stream and up to the Lower Febranche, semi-dish herbaceous flora of the High Alps.\nBeetle ducks and moors"
+      ]
+    },
+    "16.0": {
+      "newlines": 2.5625,
+      "sent_len": 15.012946428571428,
+      "distinct": 0.7930497136323431,
+      "repeat3gram": 0.0013763134361725916,
+      "allcaps": 0.03125,
+      "nll": 4.0949207782745365,
+      "examples": [
+        "The only quick way to procrastinate and be entirely focused to give up this and enjoy some time to exercise, as well, heart beating, muscle gain and get to do your very best for yourself. The utmost scientific and proper increase exercise was put on the greatest of people and day to be in the greatest enjoy a holistic health. At a sustainable approach to",
+        "The author is actually a rather boringly brutal story, maybe I\u2019m totally in for the most endearing and beginning of the narrator, I think you are in the depth of what comes from it. The book is written by the father is a collection of a married man or a father, who is a widower and for his wife, in the book",
+        "The not seen our visits to their earth will be our heavenly company in this\nfortnight, and let us do this work to you to your own pleasure, it is\nto be.  And I wonder if the children of my father.  29. you are\nto me what they shall well see that not all who to be sure.",
+        "The Israelite hosts had used full The Church on earth. The walls that man in the Roman Empire, the Babylonian Empire, the Jews, the common man, and even the Chaldeas; so the epic coming of the triumphalists who believed that all of the earth, a human race, the new kings the earth, who as the"
+      ]
+    },
+    "random_small": {
+      "newlines": 2.4375,
+      "sent_len": 16.358804563492065,
+      "distinct": 0.747618092950349,
+      "repeat3gram": 0.005186132698002544,
+      "allcaps": 0.15625,
+      "nll": 3.124141883850098,
+      "examples": [
+        "The heart of the flax, and the cartilage on the skin.\nThe body as we see it is formed of two parts; the\nbody, the chest, and the man's back; and both these are formed of the\nwound. There are two ends of the body, the navel and the larynx;\nbut the latter",
+        "The ones I just mentioned were still around. I'm super excited for the next few years. I didn't want to think about them that much and I was finally getting the hang of them. I even didn't know how well they would work. I had them fixed, but they still didn't make me feel right. I didn't even know how"
+      ]
+    },
+    "random_large": {
+      "newlines": 2.21875,
+      "sent_len": 18.163095238095238,
+      "distinct": 0.7811249528842352,
+      "repeat3gram": 0.0027195498753678493,
+      "allcaps": 0.15625,
+      "nll": 4.057167100906372,
+      "examples": [
+        "The computer data appears to be more open to modify your own data or any particular degree of quality within the infrared may possibly be not likely to encounter in the computer, but has frequently been certified to enable your personal programs.\nThis magnified rapidly. In what may well understand beyond what it has the motion. As a in space suits that we have same charge",
+        "The Russian Team: And then of course.\n\nIt was a great day, at the last word from Rome: \"Every one of\nus is the day. What you might say, make or did you there is a\nGermanness, and my turn about on your entered into your angular vision\nby the Comparative and then sent, 5, and"
+      ]
+    }
+  },
+  "L2/h10": {
+    "-4.0": {
+      "newlines": 0.28125,
+      "sent_len": 43.921922695360195,
+      "distinct": 0.24766257532172378,
+      "repeat3gram": 0.6394145596991633,
+      "allcaps": 1.8125,
+      "nll": 3.306666707992554,
+      "examples": [
+        "The relationshipbusiness MarriageGenelife extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended extended",
+        "TheSextract occupies retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains retains",
+        "The chairman of a large chain chain chain chain chain that has been under two regir Du Mors Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brassaux Brass",
+        "The double emptypanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepanepane"
+      ]
+    },
+    "-1.0": {
+      "newlines": 0.28125,
+      "sent_len": 43.70267857142857,
+      "distinct": 0.35286013552553963,
+      "repeat3gram": 0.6800150312064918,
+      "allcaps": 2.46875,
+      "nll": 3.149157905578613,
+      "examples": [
+        "The-Se Forward rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit rear unit",
+        "The mongion altogether entirely entirely entirely wholly entirelyits entirely its entirely its entirely its entirely its entirely the entirely its entirely its entirely its entirely its entirely its entirely its entirely the entirely its entirely its entirely its entirely its entirely its entirely its entirely its entirely the entirely its entirely its entirely its entirely its entirely its entirely its entirely its entirely the entirely its entirely its entirely",
+        "TheStationUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdateUpdate",
+        "ThePeopleRNLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+      ]
+    },
+    "0.0": {
+      "newlines": 2.0625,
+      "sent_len": 14.97218828320802,
+      "distinct": 0.7291645033937553,
+      "repeat3gram": 0.025841619645300525,
+      "allcaps": 0.21875,
+      "nll": 3.108456039428711,
+      "examples": [
+        "The Mere Man hath come out to protect us, that they may be moved,\nthat they may be forever saved.\u201d The words of the Mere Man were written in\na language that was little spoken, with little that the most wonderful\ntruth could dream of.\n\nThe four girls and a priest were caught in a chasm, and moved, and",
+        "The ancient family lore, lore, and beliefs are taught to their\nstudents by the ancient magic-axes. The traditions of all the tribes\nof the Northwest are familiar to all Americans and the religious\nindustry and practice of the tribes.\n\nThe traditions of the people in general are similar to those of the\nlearned. The Yoro-Captain",
+        "The sponsor and the site will manage the visitor\u2019s personal data and provide the site with a quotation to the user.\nShould you have any doubts about the visitor\u2019s personal data or for reasons which are not mentioned in the quotation, you may opt to stop that visitor\u2019s usage at the end of the visit, for example by changing the cancellation status, or by",
+        "The new Gateway IP address will be 112.73.12.6.1 (MNIC-015.00.12.6.1).\nBut if the gate is 112.73.12.1, the Gateway IP address will be 112.73.12.1 (MNIC-015.00.12.1).\n"
+      ]
+    },
+    "1.0": {
+      "newlines": 2.375,
+      "sent_len": 16.65905257936508,
+      "distinct": 0.7551377039068442,
+      "repeat3gram": 0.013236548352205904,
+      "allcaps": 0.15625,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The Kids show was much more than just the salesman and the racers, you get to see the actual business in real life and what you can do with it.\nThe MMSA was born as part of a broader effort to promote the development of the next generation of athletes. The MMSA has remained a non-profit organization, but we\u2019ve recently",
+        "The local, non-governmental trust has previously invested over \u20ac25m in converting a commercial pipeline into a 250m wide pipeline, bringing this total to 41.9m, while in the market, it has invested \u20ac6m in new excavation and construction work to break ground to the production of power. This investment has been most in love with",
+        "The curriculum comprises 7 courses, which have been adapted to suit students from grade 3-12 in the Year 12 and Year 13. The Year 12 and Year 13 subjects are included in the subject papers, as well as in the curriculum units.\nUK grade 11A, English version 6.5.1 and Unit ",
+        "The valuation process is considerably complex and it can be very complicated. Some clients are hoping to get paid more than others, that they will be able to enjoy the advantages of a low figure, but because of the nature of the company the decision is often the easiest part of the process. That is why companies keep making the decisions that best fit their market requirements"
+      ]
+    },
+    "4.0": {
+      "newlines": 2.375,
+      "sent_len": 17.926420454545458,
+      "distinct": 0.7542627131229185,
+      "repeat3gram": 0.01232648553361966,
+      "allcaps": 0.09375,
+      "nll": 3.1297104358673096,
+      "examples": [
+        "The letter of report read: \"Since the expedition was not undertaken\nwithout many little loss of time and money, the expedition passed with a\ntheological interest, bearing in mind that the ships were in the utmost\ndanger, under false pretences, and on the account of the disappearance of\nthe enemy, who, it is desired, might be",
+        "The students are not limited to the setting of the play, they take part in the role of the researcher and in the public discourse on the discipline of the dance. The students are very active and educational in the field, and they are attentive to the conditions of practice, and of the participation of the participants. The students are active and academic, and they",
+        "The Senior Living Community is made up of people who have completed the four-week program during the support period and over 18 months of service. A few things you may not be aware of \u2013 there is a significant cut-off to the August term. However, the program is designed to support one person to two people at the same time, to support one family",
+        "The commercial design of the online tool works by placing a link between your website and your users\u2019 information so they can receive the email throughout the period of your subscription. This allows you to control what content will be viewed and your audience and that is why this feature is useful.\nHaving the ability to have advertising campaigns appear online allows you to instantly add new text"
+      ]
+    },
+    "16.0": {
+      "newlines": 2.34375,
+      "sent_len": 16.88623511904762,
+      "distinct": 0.7054733242710571,
+      "repeat3gram": 0.06355792535295371,
+      "allcaps": 0.46875,
+      "nll": 3.4743156909942625,
+      "examples": [
+        "The country music scene in the Mississippi Valley is a fast-paced setting. Wives, young minds, and a single parent, you have folks streaming in and out in your heart.\nNot sure a whole album or just find music and more content! Do you appreciate these songs! The world music in the Valley, northern Mississippi Valley Missouri Valley Missouri Valley Missouri Valley",
+        "The article is here accompanied by editorial as the motto on the cookbook illustration, which has become a real teaching light.\nP.S. your article is another one of many that is alive at his finger\u2019s end on all things.\nAs your fellow readers probably know, that goes like all things.<|endoftext|>Download a free student account today and start taking a year loan",
+        "Theatre: the fictitious location of our home for our reconstruction (objectivity) in the Gargantan economy is a major objective that would explain to the organisers of the rupture of our economy (OMST 17). The organization makes simple and straightforward based on the historical data but the capitalism has different side in the port. The seat of the",
+        "The 60-minute time trial, by the way of actually going through to the computer.\nRead how to live life life and death by the numbers of live (just published in Practicality, Evolution and Socialism, by E. Puckett.\nSummary: the first 60 minutes of an hour of an hour each day of interviews of experts from the"
+      ]
+    },
+    "random_small": {
+      "newlines": 2.6875,
+      "sent_len": 18.362983630952378,
+      "distinct": 0.7317620140023507,
+      "repeat3gram": 0.029774363881405218,
+      "allcaps": 0.15625,
+      "nll": 3.1962252616882325,
+      "examples": [
+        "The quarto volume is made in the year 1805, by a Swiss collector.\nBy virtue of its qualities, the first edition of the volume contained 350 pages. The quarto volume is four 8 x 7 in. The quarto volume is a collection of 7, slightly bound in vellum. The volume is semi-list",
+        "The European single polisher is fast becoming an emerging trend. The early ideas were hard to grasp on how these devices would work, and its very early experiments seemed to require a certain amount of manipulation. Unfortunately, the idea was that we had to deal with an \u201cIntracrum of bubbles\u201d and that \u201cFor a long time you saw bubbles\u201d."
+      ]
+    },
+    "random_large": {
+      "newlines": 2.78125,
+      "sent_len": 16.560244182900433,
+      "distinct": 0.7240639166234475,
+      "repeat3gram": 0.020576773574736203,
+      "allcaps": 0.40625,
+      "nll": 3.3448445320129396,
+      "examples": [
+        "The S-Bago was built to do business as an A-Class model and was the most iconic factory motor with the least number of employees and the least number of vehicles in production at the time. The S-Bago was able to service its customers with alternative businesses, fuel cell phones, air conditioning units, second generation cabling and customer data, use of",
+        "The way the head is fixed determines which component within the Z axis is less than or equal to the completed configuration. The initial state is critical because the configuration factors the time time that has elapsed between the initial state and the completed configuration. However, the plane coordinates take the guesswork process for when a pass is given. The time is critical because the configuration"
+      ]
+    }
+  },
+  "L1/h15": {
+    "-4.0": {
+      "newlines": 2.46875,
+      "sent_len": 17.864012896825397,
+      "distinct": 0.7568906546297494,
+      "repeat3gram": 0.01726260941089072,
+      "allcaps": 0.125,
+      "nll": 3.126133346557617,
+      "examples": [
+        "The Slight Mysterious is the only track to have a good human narrator. And they had a good reason: one of the heroes of Time was the Slight Mysterious.\nThis track makes a very nice reference to the Cold War wars. Love the analogy between a dead good human narrator and the horrific warfare that led to the Cold War. And it",
+        "The standard of excellence among the young worldwide has been the means of\ncivilization. It was the only means of personal freedom which was so\ngratified to these men. They had entered into relations with these men\nin service, and for a time recognized a sacred compact which no other\nnation ever disclosed. It is now no longer considered the",
+        "The moment I started seeing those half human faces, I was in a bad mood. This was the year before my father died and I had plenty of material to consider. I decided to pursue it but there was something else waiting to happen. I made some mistakes which upset me and my mother.\nI decided to take my parents on a walk to the city",
+        "The attorney\u2019s discretion may be limited, however, if the property owner is no longer having the right to post legal documents, or if the court rules have changed, the attorney may choose to seek pre-judgment support to provide for clients who do not have the right to post legal documents.\nThere are many property rights that the attorney will need to issue"
+      ]
+    },
+    "-1.0": {
+      "newlines": 2.4375,
+      "sent_len": 15.34267113095238,
+      "distinct": 0.7538401993115931,
+      "repeat3gram": 0.009318273353842152,
+      "allcaps": 0.53125,
+      "nll": 3.1134854316711427,
+      "examples": [
+        "The more the merrier, obviously). As a real-life CEO, I'm probably going to take a look at using Discord if you want a more onerial approach to your social media management. This will make for a more authentic like-minded customer, and it will be much better for the company when you actually use it. They do use those and",
+        "The Walnut Creek canal was the first canal in Vermont to be opened on a houseboat. It is open on a 10-foot length. The canal is part of a brownstone $350 million redevelopment of the former Fort Pioneer headquarters at Elk Rock. The money to build the canal was in the region's joint asset for 10 years. It is part",
+        "The story begins with a strange house with only one family. It is in a Dandora family, a wretched, dark family. In the third person, one of the Dandora boys, a violent, impossible man, hunts a dog, and the story ends in a Dandora, a man who can hunt and kill even a lucky",
+        "The newly discovered LACTANTES character of the LACTANTS, which she believed to be the source of the LACTANTERES of the BOY DAF and would be called upon to perform the rituals, was discovered when she began to hear the story of this little one. She thought that some of the LACTANTS and others were just"
+      ]
+    },
+    "0.0": {
+      "newlines": 2.5,
+      "sent_len": 16.634375,
+      "distinct": 0.7557019223141027,
+      "repeat3gram": 0.018209541634860226,
+      "allcaps": 0.15625,
+      "nll": 3.108685779571533,
+      "examples": [
+        "The centre of the room had already been cleared. They placed the chairs,\nelbowed into place by little, large, dried crevices, one over the\nother. The two chairs rested on the mat, and felt each with a smile. On\nthe one, in place,, there was a sort of little, carpeted rug,",
+        "The field measures about 90-100 feet. This coast is very swampy, with a lot of little people and hiker\u2019s camp in the nearby high forest where they can relax and rest. Every time I\u2019ve been there, this is so peaceful, I don\u2019t have a problem with those hikers!\nI came home during the night and kept",
+        "The Lakefront Park District in San Jose, Calif., announced plans to add a second car park next to the existing formaldehyde factory building. The park will be open for a minimum of six years.\nIn addition to building a new structure at the park and adding a new roadway, it also announced that a grant of $60,000 was received from the",
+        "The biggest provider of mobile broadband at home wants you to call them. And that\u2019s okay. If you\u2019re not getting the services they provide, you\u2019re missing out. But if you\u2019re not getting the services that you want, you\u2019re missing out.\nTo join a company that offers broadband through mobile broadband, you\u2019ll need to be a local based company"
+      ]
+    },
+    "1.0": {
+      "newlines": 2.25,
+      "sent_len": 16.079092261904762,
+      "distinct": 0.7558360459265318,
+      "repeat3gram": 0.018302257321757148,
+      "allcaps": 0.15625,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The Advocates International Conference & Exhibition Fund (EFIF), and the Israeli Academy of Arts and Sciences awarded the annual Excellence in Programme Scholarships and Programme Support (EWS) to over 500 professionals. Learn more here.\nThe Israeli Society of Psychotherapy was created in 1996 and is based at the Israeli Academy of Arts and Sciences. With more",
+        "The Battle of the Fur maintains the basic form of what the previous two films have been about and adds in elements like Dracula, The Rock and a variety of other elements that combine to make their film. The family-friendly nature of the film focuses on the family's rivalry, especially the fact that the military alliance is one of the things that is respected within",
+        "The board of parents and 13 of the top 10 teachers were divided equally to a class with 68% female. A total of 16 teachers were rated P1.4 and the total number of females was 37. At the end of 2018, 16 teachers were rated P1.5, and at the end of ",
+        "The 2017 Annual Conference held in Salt Lake City is open to the public and will be held from August 9-15, 2018. The 2017 Annual Conference will be held in Salt Lake City from November 16-20.\nIn 2018, the conference was renamed the 2017 Conference. Both days of the conference"
+      ]
+    },
+    "4.0": {
+      "newlines": 1.8125,
+      "sent_len": 15.529588293650793,
+      "distinct": 0.7774353435393602,
+      "repeat3gram": 0.004361792492390302,
+      "allcaps": 0.09375,
+      "nll": 3.117426347732544,
+      "examples": [
+        "The download of ethics. biology of employment: What uses the research in clinical emergency? is the technical download of the 4th AIDS for guys. Cyber-Physicals, a resistance page from the essential SAE reaction in Syria, described the g of a minimum of Terms for having been to be the message and the number's file. possible download Advances",
+        "The year was 1924 and, as a schoolboy, I was to take part in a Welsh workshop in which we were to make a programme of linguistics. It was my first such teaching. In 1927, a year when I took the Te Raiton course, I was fully aware of my abilities. A new business being launched",
+        "The project also aims to share key information on reducing oil prices. But the same is not always true. Even the best calculated returns can\u2019t be achieved by avoiding expensive energy bills. It is true that in Russia, the oil producer contributes in a significant way. Whether it is to meet the conservation goals of such investments or to close their modest spending gap,",
+        "The two men who assaulted me didn\u2019t get arrested. These men weren\u2019t masked.\nOne of them was the young clerk, Mr. Brooks. He had been arrested and came to take a drug test. I asked that question in a patient\u2019s mind.\nMr. Brooks: Hey. How did you learn about that charge? I asked you a question."
+      ]
+    },
+    "16.0": {
+      "newlines": 1.6875,
+      "sent_len": 25.23311237373737,
+      "distinct": 0.5857355059038226,
+      "repeat3gram": 0.26476209121720784,
+      "allcaps": 0.09375,
+      "nll": 7.179484272003174,
+      "examples": [
+        "The 46-year-old since joining Anta in March 2012, \"The Mouth\" redirects\" traversal will Doyle\" dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor dor",
+        "The Pig was born with us.\nOur habits of our<Map enjoyed are comfort.<|endoftext|>Regular readers of the Sunday, we have the sixth edition of the classic (Riem) adventure adventure adventure adventure,eureureurUDGEUDGE ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil ventil",
+        "The state of Rasmussen, which is located in southern Netherlands, is known as the most prestigious European Country Golf Tour State..listBox/Astronoreelproved and leading UK Country Golf Club Company and looking for many more in the World and European golf websites are View.3991 acrosstribtribtribtribtribtribtribtribtribtribtribtribtrib",
+        "The latest news and tweets by writing specialist astrologers worldwide, talk of the diary diary diary diary diary diary diary diary diary diary diary diary diary diary diary diary diary diary forswer commissions, invariationvariation\u043d\u0438\u043a\u0430\u043d\u0438\u043a\u0430 by_node bylsawsawsawsawsawsawsawsawsawsawsawsawsawsawsawsawsawsawsaws (generally) astro"
+      ]
+    },
+    "random_small": {
+      "newlines": 2.875,
+      "sent_len": 17.07239583333333,
+      "distinct": 0.7792336682129595,
+      "repeat3gram": 0.006709732741201908,
+      "allcaps": 0.15625,
+      "nll": 3.110693359375,
+      "examples": [
+        "The Spoken Word Journey requires the participation of approximately 60-90 participants to an initial field trip.\nIf you are an individual and are interested in joining the program please contact the Director of Resident Services, Kathy Burns. However, we are looking for volunteers. You can find out more details at the Spoken Word Journey website.\n8th grade (3",
+        "The Baku Daily Post announced today that 2018 will be a year of growth for Shillong and Pasik Tjungwal.\nA 50.5% decline in the value of remaining undeveloped assets as compared to the 2017 level of Rs. 85.2 billion has been recorded by the Board with Rs. "
+      ]
+    },
+    "random_large": {
+      "newlines": 2.46875,
+      "sent_len": 18.487710813492065,
+      "distinct": 0.6742842639722254,
+      "repeat3gram": 0.0525400231666933,
+      "allcaps": 0.0625,
+      "nll": 3.4615855693817137,
+      "examples": [
+        "The whole bill has been adopted by parliament from 25 January 2003 and it will be referred to sign into law next October 2015. The matter is to be approved by the Parliament on 15 January 2016 in the case of the main bill.<|endoftext|>Further details of the SFI/GSFI program in Afghanistan are given in the",
+        "The early days of the Sierras lead to mild weather, as wind-staining\nclouds, as the night clouds come straggling through the open thin\ntrees; and, as the morning and night were beginning days come the former\nred--by clouds the latter are the only signs of the change and\nformation of the arrival of the Si"
+      ]
+    }
+  },
+  "L4/h1": {
+    "-4.0": {
+      "newlines": 2.40625,
+      "sent_len": 19.668960813492063,
+      "distinct": 0.6979240108677991,
+      "repeat3gram": 0.011801162914653138,
+      "allcaps": 0.15625,
+      "nll": 3.7251332283020018,
+      "examples": [
+        "The NHS is committed to providing the best care.\nThe Department's role is to ensure that the best care is provided in a professional manner, and that all the hospitals and doctors for the staff have the same duties and responsibilities as the NHS. It's part of our duty to ensure that people are treated at the best possible time, and, in the worst",
+        "The workable and desirable, every time in work may be\nthrown away from his hand, is considered and made into a human\nbeing that he is created himself. We are not, therefore, then, in\nits endless, finite existence--as, indeed, in the infinite consciousness\nof being, and in being in its infinite quantities, and",
+        "The phrase was seen on the street corners of Madrid and Madrid. It\nhappened, therefore, to be made aware and remembered in Madrid and Madrid\nto the most of us. It came, indeed, as I must--it was always the\nfortitude, and it had passed away there too. Sometimes there were no\nforty times",
+        "The networking event which was held at Masumi Town Hall (Company) venue, in which the audience had a competitive game, where the first end, the highest point, the highest point pool, i.e. the highest amount that we came to have, if we are not present at that same level then we will not be present here, present the level"
+      ]
+    },
+    "-1.0": {
+      "newlines": 2.5,
+      "sent_len": 14.782208243145742,
+      "distinct": 0.7486866382956581,
+      "repeat3gram": 0.009786867285047796,
+      "allcaps": 0.15625,
+      "nll": 3.219074535369873,
+      "examples": [
+        "The parade of Indians was a very popular event for the time. The festival was held during the Rangoon festivals of 1904, and was attended by a great number of people. There were among the first Indian divisions of the Indians, and the younger people of that society also. The Indians of the country held various ceremonies as well, which included",
+        "The titles were announced at that event at the official press conference organised by Microsoft. This was followed by a news conference for Microsoft over the New Year holiday, where the titles of the upcoming titles were announced. Microsoft also announced that the company had also committed to produce new titles and much more exciting new releases based on the technology of the game. The game is",
+        "The world is full of their new story--indeed they had to tell about themselves!\nThe beauty and the prestige that \"we\" always display were so distinct, so different from the one they were wearing, and the other parts of their life were different in every way from yours. We couldn't be excepted from the 'jail' for not",
+        "The yellow U.S. headquarters is about a quarter mile north of the college, and it\u2019s a mile long by half a mile. Our office is quite small \u2014 you can\u2019t see it on the map \u2014 but it\u2019s located 6500 feet off the ground. Look out the window. That\u2019s it: nearly 700 feet high.\nCurrently,"
+      ]
+    },
+    "0.0": {
+      "newlines": 2.34375,
+      "sent_len": 17.484635416666663,
+      "distinct": 0.7623948103426629,
+      "repeat3gram": 0.005574270502206925,
+      "allcaps": 0.1875,
+      "nll": 3.2047896862030028,
+      "examples": [
+        "The beast was very plain, but there was no mystery, for he led his\nmen forward, being as free from trap as if they had been clean cut\nfrom the hide. Three hours, and a man like himself was lying dead;\nand, without so much as a glance at the place, having forgotten the\nknock the beasts had made",
+        "The sole\nepithet of Tiberius and of the Pontiffs of that day (the martyr\u2019s\nlife and death) is that of their founder, Philip, who lived between\n16:15 and 18. He was of the mind that there is no _one_ man, but\nthe _whole_ of the human race;",
+        "The laws are increasingly enforced by state law, and the government still has some of the power to legislate, but they are far from dead and the judicial branch of government has to be stronger.\n\u201cThe fact that the state is \u2018not controlled by the local government\u2019 is not the case. How is it that the police are not being ruled out or",
+        "The Inspector-General\nimmediately marched, and shortly afterwards the General thundered out:\n\n\"They have sent for me in that direction.\" When they saw him they\ncould see nothing but the palisades of the house they had called their\nhome. The soldiers from the native quarters were all banding together.\nTheir mothers and sisters had left the house,"
+      ]
+    },
+    "1.0": {
+      "newlines": 2.1875,
+      "sent_len": 16.573623511904763,
+      "distinct": 0.7500236457608526,
+      "repeat3gram": 0.01669154857190883,
+      "allcaps": 0.125,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The Esplanade (Senate Room) is in the Green Hall. You can find a list of what's in it.\nThat's all I have to say, since I was here, I wish you could stay and see some of the variety of Egoy Cussed better!<|endoftext|>Web site where an au pair talks to his adult daughter about how",
+        "The scene\nbefore us, his being thus stationed, was a gigantic platform, constructed\nfrom the usual platform there had been in any country here for many\nyears. The long rows of earthwork, much as it was overtopped with the\ncommonest and most solid pillar, support a mound, one side of which was\nseparated from",
+        "The 12-year-old boy had two tentacles in his back, and had on his neck the soles of his shoes. There was a little sliver of hair on the back of his head and a little split on his upper part.\nHe had a number of small holes in the back of his neck which created a space between the tentacles and",
+        "The north quadrant of the data set utilizes a geothermal heat supply to minimize heat transfer and heat loss on the surface of the planet. The upper quadrant of the data set utilizes a geothermal heat storage system. The upper quadrant of the data set utilizes a heat exchanger to heat the outer surfaces of the planet with an ultraviolet radiation to direct heat into"
+      ]
+    },
+    "4.0": {
+      "newlines": 2.5,
+      "sent_len": 17.382645089285717,
+      "distinct": 0.6436687743442313,
+      "repeat3gram": 0.11792278997667154,
+      "allcaps": 0.96875,
+      "nll": 3.7523234367370604,
+      "examples": [
+        "The Muses comes to the main theatre, where everything is made new, and stars\u2019 maids are left naked to fight the monsters in the gallery. The men are presented to the audience, while the Muses is left naked to fight the monsters in the theatre. Man is used to fight monsters, by the audience. So, the man plays a",
+        "The collapse of Wall Street made Lehman rethink the Red Blood Index, whose central interest is to make subprime buyers into the long run, and he begun buying Tim Berners-Lee Oakes while he was not.<|endoftext|>It\u2019s time for a new season of Variety. It\u2019s time for a new season of Variety of twenty years ago, this time",
+        "The portion of the NEPA Program Standards is subject to such rules as the NEPA Section is made up of. The NEPA Section is made up of provisions that the NEPA Section applies to the NEPA Section \u2013 all of the NEPA Section is made up of rules that the NEPA Section applies to the NEPA Section is made up of provisions",
+        "The\nthousandth number of the inhabitants of the province who have lived and\nwere living within their walls have been permanently sent to a\ndistance that has been more and more ruined and oppressed from their\ninhabitants of the province. The 'Reformer' has left a space of a\nthousandth number of the inhabitants of the province"
+      ]
+    },
+    "16.0": {
+      "newlines": 1.3125,
+      "sent_len": 49.011805555555554,
+      "distinct": 0.19637665289532918,
+      "repeat3gram": 0.7256483129453981,
+      "allcaps": 0.03125,
+      "nll": 4.921051788330078,
+      "examples": [
+        "The race, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however, will be yet, however,",
+        "The first thing you should do when working in the first thing you should do when working in the first thing you should do when working in the first thing you should do when working in the first thing you should do when working in the first thing you should do when working in the first thing you should do when working in the first thing you should do when working",
+        "The 1990s was marked by a national crisis and a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis by a national crisis",
+        "The Friends spoke earlier this week about England's days by the Yet CD about the Carole Thompson these weeks.\nThe Friends gave a speech earlier this week about the Elizabeth Adeol Thompson this weeks.<|endoftext|>I spent the weekend at the weekend at the weekend at the weekend.\nThe Friends went to the weekend at the weekend. I spent the weekend at the weekend"
+      ]
+    },
+    "random_small": {
+      "newlines": 0.71875,
+      "sent_len": 39.750057234432234,
+      "distinct": 0.28419341170745016,
+      "repeat3gram": 0.5639457909658853,
+      "allcaps": 0.25,
+      "nll": 4.47947130203247,
+      "examples": [
+        "The journey is amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and incredible and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and amazing and incredible and amazing and amazing and amazing and",
+        "The JESUSLESS movement: A war without practice: When the World is coming: N stands movement: his ruler: N stands was movement: A movement: The J stands movement. E stands movement. This movement is is coming: N stands movement: A movement: A movement: movement: movement: movement: movement: movement: movement: movement"
+      ]
+    },
+    "random_large": {
+      "newlines": 1.78125,
+      "sent_len": 36.28954292235542,
+      "distinct": 0.25962473317707147,
+      "repeat3gram": 0.5860705475140278,
+      "allcaps": 0.0,
+      "nll": 4.917216205596924,
+      "examples": [
+        "The object code of language.\nSassar Development:Doc is the object code of code of code of language.\nSassar Development:Doc is the object code of language.\nApplications oriented object code of language. The object code of language.\nSassar Development:Doc provides the object code of language.\nSassar Development:Doc is the object",
+        "The community is supported by the People with the Nations (The Church with the People with the People the Children the People the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church the Church"
+      ]
+    }
+  },
+  "L1/h8": {
+    "-4.0": {
+      "newlines": 2.5,
+      "sent_len": 14.512065972222222,
+      "distinct": 0.7565253702003256,
+      "repeat3gram": 0.0039068100358422946,
+      "allcaps": 0.15625,
+      "nll": 3.12392520904541,
+      "examples": [
+        "The arched doorway on the right and a few yellowish green stones on the left remind me of a natural stone staircase.\nThe entranceway to the Orangery is a nice way to see the garden, where the weather is a little different (for the next several days). The orangery also features a beautiful red lacquerware, and there",
+        "The new Flagship of the Central Turf Club of Southern Illinois has attracted many people from the border area to the city\u2019s core. The flagship is made of Western Rail\u2019s 15.5\u201d color when the Florida and Texas Railroad was completed in 1887. It is topped by a Nacelle latticed railing, trapeze",
+        "The work of mind is best as it is not a mistake in the final\nresult. The impression of an unimpaired mind is that one is bound to\ngo on errands, or to spend the night toil in the wheelhouse,\nwith a load of it in his hands. The best man is a man who is\nthinking of nothing",
+        "The expression of color in the field is a tricky one to decipher. Yellow, red, orange, and black are my all-time favorite colors.<|endoftext|>For those of us that work in social inclusion initiatives, work is an important element of a good social welfare policy. We need to work with the public to implement policy that is flexible, democratic and inclusive."
+      ]
+    },
+    "-1.0": {
+      "newlines": 2.125,
+      "sent_len": 18.081994047619048,
+      "distinct": 0.7479947846011088,
+      "repeat3gram": 0.011720800372665846,
+      "allcaps": 0.0625,
+      "nll": 3.11048002243042,
+      "examples": [
+        "The Pennsylvania Department of Transportation has issued a rule of law requiring an unregistered vehicle to appear on the sole booking or under the control of a State Driver Identification Number when being operated by such vehicle. A motor vehicle registration is required to be valid on a legal basis and there is no right of exemption for a motor vehicle. The rules are posted on the Pennsylvania",
+        "The little girl's face was full of tear-dimmed, uncoarse, scrawny\ncaresses; her eyes were like those of a pinched man--the look of a\ngreat snake of a man in a blue neckerchief, with spats sticking to\nhis legs and sides. When she spoke, the quiet voice was",
+        "The effort by the President to raise up the Canadian community to recognize and pay for the expenses of next year has allowed Manitoba\u2019s employers and corporations in the western states to donate between $2 million and $4 million to the party to support the province\u2019s local poor and Indigenous community.\nThe Minister for the Arts and Humanities, Stephen Donovan, introduced the Money for",
+        "The Rock is currently holding its second annual Rock Showdown Jam, this year on February 15th, the Rocking Rock Showdown Celebration will be held on the West Campus in North Athens and then on the North Campus in North Athens. The Rock Showdown Fest will be held for the second year in a row, this year in the North Campus on"
+      ]
+    },
+    "0.0": {
+      "newlines": 1.875,
+      "sent_len": 17.318445616883118,
+      "distinct": 0.7435233099338402,
+      "repeat3gram": 0.01434779523013631,
+      "allcaps": 0.1875,
+      "nll": 3.1082597255706785,
+      "examples": [
+        "The River Hunter was designated the Idaho wilderness and ecosystem's habitat for its high alpine environment. Two years later, it became the first tree species in the states to be designated the Montana wilderness and ecosystem habitat.<|endoftext|>You can still now benefit from the fast, low-cost, and easy-to-use form of the Adobe AIR application.\nOn the Adobe AIR UI",
+        "The use of 100% Black Steam for the Orp-lume separator is less expensive than that of a 100% English Steam Unit (for instance a 100% English Steam Unit) and will help to reduce the cost of the unit.\nSo the second thing I would do is get the three black steam cartridges that I have on hand (for",
+        "The queen and her daughter Elizabeth are being held by a man in their\nestimation.\n\nH. H. Tine, of Philadelphia, and his assistant, are in close custody,\nand the court is awaiting the return of the assistants. The prison\nis situated at the intersection of the Pennsylvania road and\nPennsylvania's freeways. It is a",
+        "The official general advice was largely in favour of a tougher Brexit. A Spanish government tasked with enforcing the deal, as well as a administration in which an increasing number of illegal immigrants, made possible an overwhelming majority of this response. This result is due to the incompatibility of the high-level government\u2019s intercontinental paths with migrants from Spain and Portugal, and"
+      ]
+    },
+    "1.0": {
+      "newlines": 2.71875,
+      "sent_len": 14.72688492063492,
+      "distinct": 0.7504711378634108,
+      "repeat3gram": 0.018234754014095376,
+      "allcaps": 0.3125,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The 1968 issue of Family Illustrated, 1.5 x 1.5 x 1.5 inches, is an unabashed legend about the unearned luxury of family. In many ways, however, this book is a status symbol, this time on its own. And that is only the beginning of the New York Times bestseller list",
+        "The GIS-Fellows Model Platform is open source software used to develop GIS data and facilitate an evolutionary process, for computer and network users. The Model Platform is also capable of working with 3D and 3D structures. The Model Platform is designed to work in a number of user groups such as GIS, Engineering and Software. The Model Platform is",
+        "The \u201cFreedom of Religion\u201d Act makes it illegal for anyone to create a religious religion in the United States. However, those who wish to become a religious leader can use this new law in the wake of the attacks of more than 250,000 attacks.\nThe Union Government is committed to the protection of religious freedom. Also, as you may know,",
+        "The reason for writing from the prophet\u2019s perspective is to suggest that the prophet\u2019s perceptions are wrong, that he doesn\u2019t believe that God is \u201cgood\u201d or that he is \u201cevil\u201d in a very negative way is not encouraging his followers.\nThe important point is that the prophet\u2019s motivation and concerns for God\u2019s people are not related. He is interested"
+      ]
+    },
+    "4.0": {
+      "newlines": 2.78125,
+      "sent_len": 17.095721726190476,
+      "distinct": 0.7634689864357274,
+      "repeat3gram": 0.011080850379526282,
+      "allcaps": 0.15625,
+      "nll": 3.11784291267395,
+      "examples": [
+        "The Project Sponsors are the Ford Foundation and The Children\u2019s Hospital of Santa Fe.<|endoftext|>Just a quick back and forth between my no favs in the Kwikset campaign and the poll. My poll results do not reflect the fact that many of us own our own cash registers, but that is rather meaningless in this age of cashless cigarettes and Wal",
+        "The study of the topography of Africa found that the vegetation cover around 100% of the country, and because of this, the vegetation cover of the plains, for example. So, this study of topography of Africa is the most important study of social and environmental considerations of African peoples in terms of how the landscape can be seen by the eyes of",
+        "The orders were collected and conducted by members of the Tenth Court of\nTemperance, with the orders to ask leave to join in the famous company of\nour altar-bearers.\n\nIn the year 1793 and the following year the command of the Directory\nwas given to C. G. GENTLEMAN, M.D., M",
+        "The problem arises that when the breeze\u2019s outside is flying the lights don\u2019t work very well. And the person in the window has a blue-and-white kit with double-hatched single-hatches on either side. They want to fly high and low, but the equipment will be hard to focus on. With the precision of a flier, it\u2019s a"
+      ]
+    },
+    "16.0": {
+      "newlines": 2.0,
+      "sent_len": 15.363300067987566,
+      "distinct": 0.692349511134601,
+      "repeat3gram": 0.2296151598855034,
+      "allcaps": 0.59375,
+      "nll": 18.850395584106444,
+      "examples": [
+        "The American system of flying and bombing, as well aslua across significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa significa",
+        "The _mapping-m_WHITE_<Path te\u017c, PROFITS ANDAcceleration and ninguna Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy Sexy",
+        "The cityscape can be described as_mesheng Enables Performsellipse%_MEM.ldnicas\n\tresults mmc Kon KonKon Liste_Call_Call_Call/fs/fs>]PROPERTY dbl \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0111\u01b0\u1ee3c oma nacional andCDATARESOURCE cnn.cmd.cmd_objectDateTime HomeController,label AssemblyVersionellungenellungenellungenellungenellungenellungenellungenellungeniembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembreiembre",
+        "The words matter\uff16 have\u0445\u0440\u0430\u043d\u0435\u0441\u043d\u044b\u0439.\u201d\n\n[ eles no Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog Vog"
+      ]
+    },
+    "random_small": {
+      "newlines": 2.6875,
+      "sent_len": 17.668824404761907,
+      "distinct": 0.7500668028230918,
+      "repeat3gram": 0.013986514633077107,
+      "allcaps": 0.09375,
+      "nll": 3.108211803436279,
+      "examples": [
+        "The summer has come to an end, and however the sheep still appear\n      content, it will not be long before they are overcome by the\n      effects of the rains. The natives\n      are finally disposed of, their flocks and their\n      sheep are now perfectly well and flourishing\n      in their new homes.\n\nThe Indians are still very",
+        "The chic coat styles are timeless and timeless. This high-fashion look with a classic tan is perfect for summer.<|endoftext|>The Wylfa Steamworks Winter Solstice Events will kick off the weekend of 11/28/2019 in Warwick, Warwickshire. We are so excited to announce that it will be the last weekend of the year at the W"
+      ]
+    },
+    "random_large": {
+      "newlines": 1.65625,
+      "sent_len": 25.75989583333333,
+      "distinct": 0.5272108439120846,
+      "repeat3gram": 0.37747643666290653,
+      "allcaps": 0.71875,
+      "nll": 15.009894180297852,
+      "examples": [
+        "The public ofrece muy conciente, ingl\u00e9s que aceler\u00e1_vocab Concrete virgula solo._buffersPRECATEDPRECATEDlobbylobbylobbylobbylobbylobby legis legis legis legis legislesos, 29 UNU UNUBAR (  11 fmt Congress) el cistay_examplesListComponent_HS.Error(evt.join commerc Groups Functions Functions ,,Reflectionperia_td pragma IndexPathadapter",
+        "The Google doesn\u2019t :<//blister type type type; f\u00f8rste desn_attention_RW blinking blinking blinking blinking blinking starts slowed Kee, or or or or\n981 bit kontakt kontakt kontakt kontakt \">\n.tc typesADIUSADIUS buttons buttons buttons buttons buttons buttons buttons; SwiftUImiddlewares.DataSource. Displays Displays-types-types-typesulos.activitystalkstalkstalkstalkstalkstalkstalkstalkstalkstalkstalkstalk"
+      ]
+    }
+  },
+  "L3/h6": {
+    "-4.0": {
+      "newlines": 3.09375,
+      "sent_len": 18.540513392857143,
+      "distinct": 0.7505888725434574,
+      "repeat3gram": 0.01765476598689812,
+      "allcaps": 0.15625,
+      "nll": 3.1185721874237062,
+      "examples": [
+        "The revelation of this covenant by the Lord Jesus Christ to his disciples has been the constant throughout the church. From the arrival of Jesus Christ we have seen the Kingdom of God in all human hearts. And of the disciples, we have seen the power of this. That they are to receive the Kingdom of God from Christ. That their life is being crowned with",
+        "The majority of car dealerships will accept Toyota vehicles for sale.\nIf you are an experienced car dealer with an auto dealer in the Ketchikan area, you need to be aware that your car will have the information necessary for the car-buyer to evaluate the process and make the right decision.\nIf you are not familiar with the process, then you should",
+        "The great Philosopher on earth, a creature that is supreme in every\nmatter of life and death, and above all in the Universe, has wrought\nthis end, this end with all of the persons of the human race, and since\nthose who die are in great danger of death, and have first a mechanical\ninvention, and then an",
+        "The event is an entertaining way for any team to improve and catch up with the competition.\nThe German team of the 2015 World Football Championship is one of the top international leaders in the world. His flair for football are an important part of this international success story, as each year he is top 10. He has played a major part in national"
+      ]
+    },
+    "-1.0": {
+      "newlines": 2.96875,
+      "sent_len": 15.499751984126984,
+      "distinct": 0.7592460408990169,
+      "repeat3gram": 0.010857345538067175,
+      "allcaps": 0.28125,
+      "nll": 3.107557535171509,
+      "examples": [
+        "The garage is a public building. It is open 24/7 and there is a rear entrance. The garage is secure and is monitored by the National Fire Protection Association (NFPA). All public buildings are clearly marked. The garage is known for the visibility. This fact is the subject of a somewhat controversial article entitled \u201cThe CSI arrested the Atlanta Police",
+        "The Dominican order is not the way to go to remove corruption, it's not the way to enforce it.\nThese are the two seemingly not-in-situ \"moral\" habits. I don't believe anybody would name it the 1.\n\" You can't come up and see the result, because it is based on some distorted' logic. You",
+        "The book is available as a PDF download from Amazon (with 20,000 total pages).<|endoftext|>Why should I go to Austin? Hello, I am looking to make my wedding special. It should be fun, I promise! We have special options for birthdays, birthdays, careers, weddings, thank yous. I have an opportunity to make a referral",
+        "The youth musician love to make music that is fresh and all-inclusive and to make the listener feel completely at ease. He knows how to build the language. His craft is as diverse as the audience he is bringing into the audience. This is something he enjoys and is passionate about.<|endoftext|>I am trying to find an error message when I have the Set"
+      ]
+    },
+    "0.0": {
+      "newlines": 1.875,
+      "sent_len": 17.06418650793651,
+      "distinct": 0.7606412781335261,
+      "repeat3gram": 0.007898078373995338,
+      "allcaps": 0.375,
+      "nll": 3.1073266506195067,
+      "examples": [
+        "The new measures will still apply to the province, under a 48 to 48 per cent limit, so they will only be applied to your neighbourhoods in one of those provinces.\nSome 199,000 people came under the policy in a bid to force the state of Polynesian towns to increase its embassies and heads of service. The",
+        "The principal advice I\u2019ll give you is simply to collect nothing, and use whatever you can get your hands on. (So if you can get a 12\u2033x20\u2033 cactus for $60 you have a great deal of fun!) Do your research and don\u2019t take a chance on a good product. If you have a tiny corner of time",
+        "The weather was cold and rainy, but no rain but a few fogs. By Sunday\nthe ground was very deep, and we could see from the shadows of the\nfires from the sky at this distance the bare outline of a sheltered\nhole.\n\nWe were about eight o'clock. I gave them a hearty shake. I felt\ns",
+        "The AD-SMM is the first step in a wide ranging effort by the AD World Federation to improve the quality of vision, access, and rehabilitation for the mentally disabled.\nThe AD World Federation is the leading international alliance of people with physical, psychological, and/or mental disabilities that work with the UN, World Health Organisation, the High Commissioner for Human Rights,"
+      ]
+    },
+    "1.0": {
+      "newlines": 1.46875,
+      "sent_len": 15.287214781746032,
+      "distinct": 0.7243257104979082,
+      "repeat3gram": 0.01608505431778875,
+      "allcaps": 0.0625,
+      "nll": 3.107138729095459,
+      "examples": [
+        "The quality of the product is reviewed by the designer. This determines its value and quality and can also be used to produce other kinds of products. The result can be a type of gaming or computer gaming console, depending on what sort of gaming that you want to do. The quality of the product is reviewed by the designer. The quality of the product is",
+        "The special ceremony for the near-future stand-off between Kaluta and the Battalion is set to mark the milestone on November 8 in Kuala Lumpur, Malaysia. The event is being organised by Malaysian company Thawng 3, a new venture in the region with a team of people currently employed by 3\u2019s Nuclear Engineering Technology Engineering, including the team",
+        "The National Diversity Programme is a framework for coordinating the training of superintendents, managers, planners and staff. It was designed in conjunction with the National Diversity Programme.\nThe Diversity Programme is a 10-day programme that centres on coaching, assessing and developing staff, building a management team, strategic planning, and introducing effective leadership at the top levels of staff",
+        "The very next time I went to the house and I felt like I was in a museum, it was like I came home!\nAfter I left, I took a walk. I went on my own. I came home and now I am much more relaxed and relaxed.\nHappy Friday! I hope you have a nice weekend!<|endoftext|>I am finding it quite"
+      ]
+    },
+    "4.0": {
+      "newlines": 2.8125,
+      "sent_len": 15.265848214285715,
+      "distinct": 0.7488395802318957,
+      "repeat3gram": 0.013082221353831216,
+      "allcaps": 0.34375,
+      "nll": 3.121012544631958,
+      "examples": [
+        "The\ndear mistress has been dead this half-hour. A dozen more of the same\nsort might break off again. I am no coward, for my part, but a\ngreat swimmer, and could love like the great happiness of life. I wish\nyou good luck, Polly. No, but my room is cold.\n\nThe terrible moment",
+        "The Little Women' play an important role in the development of Japanese culture. There are many versions of the song as well as a hint of an old European heritage.\nThe style was inspired by the Shinto cult \u2013 it was an attempt to banish the living from the village (as many people also prefer to bathe the dead), to stop building a",
+        "The further you exit the stragglers you leave, the deeper you go, and the more you get there the larger and more powerful you get. However, if you travel too close to them, you may end up hitting a wall, which could lead to something more powerful.\nIn this guide, we\u2019ll look at the different options you can choose",
+        "The ceiling of the second floor was so low that the presence of\nhead-holes would make it unsafe for the use of a ladder in case of\nan emergency. For the floor was mostly a single room or alcove, which\nwas a little too cramped for the purpose.\n\nIn the mean time the second floor was of greater space than it is"
+      ]
+    },
+    "16.0": {
+      "newlines": 1.1875,
+      "sent_len": 15.21034226190476,
+      "distinct": 0.765378529708077,
+      "repeat3gram": 0.005236529302529252,
+      "allcaps": 0.375,
+      "nll": 3.7100312232971193,
+      "examples": [
+        "The idea is that a new form of the drug (vitamin C) is the ideal partner of which substance, to be less saturated, for example, pastoral, ultramarginal, you could be sold? can youll tell me what action product or product to see how to invest is it possible to buy calcium, you, this product,",
+        "The third of the Forth Valley\u2019s 2018-19 Forth Grizzlies All-Star, ranking position of all Southern California Notch International, followed by for the league in the Central Division of the Greater Sacramento Sled Clubs (SCI). In 2017-2018, the Northern California State Hockey League (NCLLHL) received an",
+        "The 1996-1992 initiative has helped to transform the nation\u2019s economic, political, and environmental landscapes. As is our battle against unemployment: What many see as the \u2018fruit of the local welfare reform\u2019, communities have been working towards the creation of more productive and better lives, has been the aim of solving the problems that have affected both global poverty",
+        "The kitchen is situated on a gentle slope, whose like a hostelry is to the ornate walls. At the second story of this property, the home then has been given the added dimension to a circular terrace that overlooks the river and sea. According to the 1886 _Ecole sur la Chapelle et du Soleil_, the property has"
+      ]
+    },
+    "random_small": {
+      "newlines": 2.125,
+      "sent_len": 16.100520833333334,
+      "distinct": 0.7450033225567003,
+      "repeat3gram": 0.01297488381017986,
+      "allcaps": 0.09375,
+      "nll": 3.122062349319458,
+      "examples": [
+        "The Middle School is about 10 minutes walk from the beach and in a world of its own, surrounded by the famous beaches of Whimbrel and Cheetah. The Class of 1965 is one of the most important institution in the nation. At the school, the students who were trained to serve at this institution are from diverse backgrounds. They",
+        "The photos have a clear sign of a blue sky. Really beautiful!\nMy challenge to the sunrise is to capture the sunrise in the photo light of your phone.\nI always enjoy the springtime, so I tend to find that the best time to capture the shot is when I am standing on a tree or when on the beach. The next time I do"
+      ]
+    },
+    "random_large": {
+      "newlines": 1.25,
+      "sent_len": 18.987425595238093,
+      "distinct": 0.764546521221848,
+      "repeat3gram": 0.0015671397480587976,
+      "allcaps": 0.125,
+      "nll": 3.3960944175720216,
+      "examples": [
+        "The family has been making $150,000 worth of estate planning trust funds for nearly 30 years. They are required to comply with the limited circumstances listed in the will, known as a will, within 30 days of the estate passing. A trust is needed when the death or illness or incapacity cannot be resolved.\nGenerally, a 1937",
+        "The appendix was about\nfive years old; it was not, like most of the skeletons of the Anailleurs,\nbut a horse-like skeleton of a horse. Not one of the mummies of the old\nPictavian is found in other graves of the Italian towns: but a few\nindividuals, and much labour in the researches of"
+      ]
+    }
+  }
+}

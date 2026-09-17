@@ -1,0 +1,806 @@
+{
+  "target is a open bracket token": {
+    "connections": [
+      {
+        "conn": "L8/h0/q<-src7",
+        "layer": 8,
+        "head": 0,
+        "stream": "q",
+        "src": 7,
+        "z": 7.160235143251177,
+        "effect_on_rule": 0.007189941154786766,
+        "effect_off_rule": -2.4355267034196726e-05
+      },
+      {
+        "conn": "L8/h0/q<-src6",
+        "layer": 8,
+        "head": 0,
+        "stream": "q",
+        "src": 6,
+        "z": 7.144433728734185,
+        "effect_on_rule": 0.016153442443163676,
+        "effect_off_rule": -4.3462033127313824e-05
+      },
+      {
+        "conn": "L8/h0/k<-src8",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 8,
+        "z": 7.122759793314854,
+        "effect_on_rule": 0.025322850629068475,
+        "effect_off_rule": -6.721939370668242e-05
+      },
+      {
+        "conn": "L8/h0/k<-src7",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 7,
+        "z": 6.821730452228635,
+        "effect_on_rule": 0.03441254748430547,
+        "effect_off_rule": -9.773462773237155e-05
+      },
+      {
+        "conn": "L8/h0/k<-src5",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 5,
+        "z": 6.730741130521794,
+        "effect_on_rule": 0.021035338359674343,
+        "effect_off_rule": -7.695691862120204e-05
+      },
+      {
+        "conn": "L8/h0/k<-src6",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 6,
+        "z": 6.684920903412768,
+        "effect_on_rule": 0.05256405392208615,
+        "effect_off_rule": -0.00013006447671990874
+      },
+      {
+        "conn": "L8/h0/q<-src5",
+        "layer": 8,
+        "head": 0,
+        "stream": "q",
+        "src": 5,
+        "z": 6.5852397075375535,
+        "effect_on_rule": 0.016168897373548995,
+        "effect_off_rule": -3.907610095086265e-05
+      },
+      {
+        "conn": "L8/h0/k<-src4",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 4,
+        "z": 6.426889706344704,
+        "effect_on_rule": 0.03317275327055094,
+        "effect_off_rule": -7.548321108023209e-05
+      },
+      {
+        "conn": "L8/h0/k<-src3",
+        "layer": 8,
+        "head": 0,
+        "stream": "k",
+        "src": 3,
+        "z": 6.414636187261754,
+        "effect_on_rule": 0.018041958994353062,
+        "effect_off_rule": -3.0205692886065976e-05
+      },
+      {
+        "conn": "L8/h0/v<-src5",
+        "layer": 8,
+        "head": 0,
+        "stream": "v",
+        "src": 5,
+        "z": 6.3403675385529175,
+        "effect_on_rule": 0.00827226657653688,
+        "effect_off_rule": -4.0273103891410346e-05
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.2583697736263275,
+      "suppress_off": -0.0006582469795830548,
+      "amplify_on": -0.15507468581199646,
+      "amplify_off": 0.0011879353551194072,
+      "n_rule_tokens": 1017
+    },
+    "examples": [
+      {
+        "context": ". Pop. (1901) 2447 (town), 11,721",
+        "target": "\u2423(",
+        "p_suppressed": 0.12093395739793777,
+        "p_unchanged": 0.2973654270172119,
+        "p_activated": 0.3999757468700409
+      },
+      {
+        "context": " king was\u23cesucceeded by his only surviving son, Manuel, duke of Beja",
+        "target": "\u2423(",
+        "p_suppressed": 0.12050272524356842,
+        "p_unchanged": 0.27848872542381287,
+        "p_activated": 0.30995768308639526
+      },
+      {
+        "context": "-1866).\u23ce    \"Gedeon\"               = Gedeon Baril",
+        "target": "\u2423(",
+        "p_suppressed": 0.19508633017539978,
+        "p_unchanged": 0.44984474778175354,
+        "p_activated": 0.4994004964828491
+      }
+    ]
+  },
+  "target is a close bracket token": {
+    "connections": [
+      {
+        "conn": "L8/h9/v<-src2",
+        "layer": 8,
+        "head": 9,
+        "stream": "v",
+        "src": 2,
+        "z": 6.604316227053596,
+        "effect_on_rule": 0.024836207577246874,
+        "effect_off_rule": 1.5951771369062744e-05
+      },
+      {
+        "conn": "L8/h9/v<-src1",
+        "layer": 8,
+        "head": 9,
+        "stream": "v",
+        "src": 1,
+        "z": 6.3570252512549335,
+        "effect_on_rule": 0.02331564822345648,
+        "effect_off_rule": -4.738369056506092e-05
+      },
+      {
+        "conn": "L8/h9/v<-src6",
+        "layer": 8,
+        "head": 9,
+        "stream": "v",
+        "src": 6,
+        "z": 6.337933387304371,
+        "effect_on_rule": 0.014948214889869386,
+        "effect_off_rule": -4.336847919400752e-05
+      },
+      {
+        "conn": "L8/h9/q<-src6",
+        "layer": 8,
+        "head": 9,
+        "stream": "q",
+        "src": 6,
+        "z": 6.013600909639287,
+        "effect_on_rule": 0.014470438580308987,
+        "effect_off_rule": -1.9094464059009306e-05
+      },
+      {
+        "conn": "L6/h5/v<-src1",
+        "layer": 6,
+        "head": 5,
+        "stream": "v",
+        "src": 1,
+        "z": 5.979264214903705,
+        "effect_on_rule": 0.016082546519057488,
+        "effect_off_rule": 5.579582228295798e-05
+      },
+      {
+        "conn": "L8/h9/q<-src7",
+        "layer": 8,
+        "head": 9,
+        "stream": "q",
+        "src": 7,
+        "z": 5.94588985383627,
+        "effect_on_rule": 0.015602837964362905,
+        "effect_off_rule": -2.5762803220393763e-05
+      },
+      {
+        "conn": "L9/h2/v<-src6",
+        "layer": 9,
+        "head": 2,
+        "stream": "v",
+        "src": 6,
+        "z": 5.929557692456245,
+        "effect_on_rule": 0.005218470589331391,
+        "effect_off_rule": -1.1486496434594258e-05
+      },
+      {
+        "conn": "L8/h9/v<-src8",
+        "layer": 8,
+        "head": 9,
+        "stream": "v",
+        "src": 8,
+        "z": 5.213998065570194,
+        "effect_on_rule": 0.034152705225069684,
+        "effect_off_rule": 0.000309579595653924
+      },
+      {
+        "conn": "L8/h9/v<-src4",
+        "layer": 8,
+        "head": 9,
+        "stream": "v",
+        "src": 4,
+        "z": 5.204798143456589,
+        "effect_on_rule": 0.00275648738094825,
+        "effect_off_rule": -1.3226311776192501e-05
+      },
+      {
+        "conn": "L9/h2/k<-src3",
+        "layer": 9,
+        "head": 2,
+        "stream": "k",
+        "src": 3,
+        "z": 5.0882846495195375,
+        "effect_on_rule": 0.01254434149882515,
+        "effect_off_rule": 3.0389317379741025e-05
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.22726792097091675,
+      "suppress_off": 0.0009953679982572794,
+      "amplify_on": -0.07901650667190552,
+      "amplify_off": 0.0012124370550736785,
+      "n_rule_tokens": 878
+    },
+    "examples": [
+      {
+        "context": "much of the town wall extant. The parish church (Llanbeblig",
+        "target": ")",
+        "p_suppressed": 0.02602066472172737,
+        "p_unchanged": 0.25460103154182434,
+        "p_activated": 0.30090880393981934
+      },
+      {
+        "context": " successful in several engagements, and\u23ceat the battle on the Margus (Morava",
+        "target": "),",
+        "p_suppressed": 0.033145684748888016,
+        "p_unchanged": 0.2451421469449997,
+        "p_activated": 0.24785616993904114
+      },
+      {
+        "context": ". The county is\u23cedivided into two parliamentary divisions, south (Eifion",
+        "target": ")",
+        "p_suppressed": 0.03168247640132904,
+        "p_unchanged": 0.23363986611366272,
+        "p_activated": 0.27918046712875366
+      }
+    ]
+  },
+  "target is a quote token": {
+    "connections": [
+      {
+        "conn": "L11/h0/v<-src0",
+        "layer": 11,
+        "head": 0,
+        "stream": "v",
+        "src": 0,
+        "z": 5.9729885651233605,
+        "effect_on_rule": 0.026900277592829154,
+        "effect_off_rule": -0.00021052095674140435
+      },
+      {
+        "conn": "L11/h0/v<-src1",
+        "layer": 11,
+        "head": 0,
+        "stream": "v",
+        "src": 1,
+        "z": 5.327506418016348,
+        "effect_on_rule": 0.06351018248751945,
+        "effect_off_rule": -0.00044157815529825015
+      },
+      {
+        "conn": "L11/h0/k<-src4",
+        "layer": 11,
+        "head": 0,
+        "stream": "k",
+        "src": 4,
+        "z": 5.161483398434375,
+        "effect_on_rule": 0.01810430590047876,
+        "effect_off_rule": -0.00015892855312321348
+      },
+      {
+        "conn": "L11/h0/k<-src3",
+        "layer": 11,
+        "head": 0,
+        "stream": "k",
+        "src": 3,
+        "z": 5.121333677303343,
+        "effect_on_rule": 0.015232376043232645,
+        "effect_off_rule": -0.00011895043518730997
+      },
+      {
+        "conn": "L11/h0/q<-src8",
+        "layer": 11,
+        "head": 0,
+        "stream": "q",
+        "src": 8,
+        "z": 4.861303701946395,
+        "effect_on_rule": 0.011400693679746256,
+        "effect_off_rule": -0.00010928644214049857
+      },
+      {
+        "conn": "L11/h0/k<-src6",
+        "layer": 11,
+        "head": 0,
+        "stream": "k",
+        "src": 6,
+        "z": 4.8582985544910775,
+        "effect_on_rule": 0.010902184173773928,
+        "effect_off_rule": -9.019638009454063e-05
+      },
+      {
+        "conn": "L11/h0/q<-src6",
+        "layer": 11,
+        "head": 0,
+        "stream": "q",
+        "src": 6,
+        "z": 4.792201596885662,
+        "effect_on_rule": 0.009052836548737965,
+        "effect_off_rule": -9.501896621020413e-05
+      },
+      {
+        "conn": "L11/h0/q<-src11",
+        "layer": 11,
+        "head": 0,
+        "stream": "q",
+        "src": 11,
+        "z": 4.744934381018793,
+        "effect_on_rule": 0.025452592066214787,
+        "effect_off_rule": -0.00022372775047941492
+      },
+      {
+        "conn": "L11/h0/q<-src9",
+        "layer": 11,
+        "head": 0,
+        "stream": "q",
+        "src": 9,
+        "z": 4.670442741927615,
+        "effect_on_rule": 0.01561907613920473,
+        "effect_off_rule": -0.0001417648890234743
+      },
+      {
+        "conn": "L11/h0/v<-src10",
+        "layer": 11,
+        "head": 0,
+        "stream": "v",
+        "src": 10,
+        "z": 4.645230041408976,
+        "effect_on_rule": 0.004191162180603787,
+        "effect_off_rule": -3.2821042802352675e-05
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.25619497895240784,
+      "suppress_off": -0.0011365178506821394,
+      "amplify_on": -0.14333708584308624,
+      "amplify_off": 0.001755518838763237,
+      "n_rule_tokens": 1175
+    },
+    "examples": [
+      {
+        "context": " (good cousins), God\u23cewas the \"Grand Master of the Universe,\" Christ the",
+        "target": "\u2423\"",
+        "p_suppressed": 0.08059165626764297,
+        "p_unchanged": 0.24253886938095093,
+        "p_activated": 0.3802878260612488
+      },
+      {
+        "context": "PT, ARABIA PETRAEA, AND THE\u23ce       HOLY LAND,\"",
+        "target": "\u2423\"",
+        "p_suppressed": 0.0922500342130661,
+        "p_unchanged": 0.2366335093975067,
+        "p_activated": 0.2956908643245697
+      },
+      {
+        "context": " purely\u23cesensuous order. They open to us, in his own phrase,",
+        "target": "\u2423\"",
+        "p_suppressed": 0.09417393803596497,
+        "p_unchanged": 0.23597490787506104,
+        "p_activated": 0.3631038963794708
+      }
+    ]
+  },
+  "target is a pronoun 3rd token": {
+    "connections": [
+      {
+        "conn": "L9/h3/q<-src4",
+        "layer": 9,
+        "head": 3,
+        "stream": "q",
+        "src": 4,
+        "z": 6.929000527103288,
+        "effect_on_rule": 0.007028072666930036,
+        "effect_off_rule": -0.0001304175269369754
+      },
+      {
+        "conn": "L9/h3/v<-src5",
+        "layer": 9,
+        "head": 3,
+        "stream": "v",
+        "src": 5,
+        "z": 6.910062065766704,
+        "effect_on_rule": 0.016977559377786097,
+        "effect_off_rule": -0.00022760592121169086
+      },
+      {
+        "conn": "L9/h3/k<-src8",
+        "layer": 9,
+        "head": 3,
+        "stream": "k",
+        "src": 8,
+        "z": 6.8288099136996765,
+        "effect_on_rule": 0.013905156992959035,
+        "effect_off_rule": -0.00017435653648162382
+      },
+      {
+        "conn": "L9/h3/k<-src1",
+        "layer": 9,
+        "head": 3,
+        "stream": "k",
+        "src": 1,
+        "z": 6.648479299863447,
+        "effect_on_rule": 0.011306354157141551,
+        "effect_off_rule": -0.000152663234133654
+      },
+      {
+        "conn": "L9/h3/k<-src5",
+        "layer": 9,
+        "head": 3,
+        "stream": "k",
+        "src": 5,
+        "z": 6.607000060129517,
+        "effect_on_rule": 0.01577273008155404,
+        "effect_off_rule": -0.00020543392831155725
+      },
+      {
+        "conn": "L9/h3/q<-src9",
+        "layer": 9,
+        "head": 3,
+        "stream": "q",
+        "src": 9,
+        "z": 6.590078496019337,
+        "effect_on_rule": 0.04532727434762482,
+        "effect_off_rule": -0.0005216629037230952
+      },
+      {
+        "conn": "L9/h3/q<-src6",
+        "layer": 9,
+        "head": 3,
+        "stream": "q",
+        "src": 6,
+        "z": 6.505429837572793,
+        "effect_on_rule": 0.020694402821672685,
+        "effect_off_rule": -0.0002635023950304536
+      },
+      {
+        "conn": "L9/h3/q<-src7",
+        "layer": 9,
+        "head": 3,
+        "stream": "q",
+        "src": 7,
+        "z": 6.448197299013733,
+        "effect_on_rule": 0.037845538459560166,
+        "effect_off_rule": -0.00045321853633315505
+      },
+      {
+        "conn": "L9/h3/k<-src7",
+        "layer": 9,
+        "head": 3,
+        "stream": "k",
+        "src": 7,
+        "z": 6.377342264669315,
+        "effect_on_rule": 0.02078747362138236,
+        "effect_off_rule": -0.0002504761702573113
+      },
+      {
+        "conn": "L9/h3/k<-src3",
+        "layer": 9,
+        "head": 3,
+        "stream": "k",
+        "src": 3,
+        "z": 6.266393665368871,
+        "effect_on_rule": 0.013092207333077107,
+        "effect_off_rule": -0.000174226806455767
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.21818873286247253,
+      "suppress_off": -0.001905819051899016,
+      "amplify_on": -0.07264117151498795,
+      "amplify_off": 0.0018655335297808051,
+      "n_rule_tokens": 2915
+    },
+    "examples": [
+      {
+        "context": " in a public gambling-house! a beautiful spectacle\u23cefor a stranger the first night of",
+        "target": "\u2423his",
+        "p_suppressed": 0.050142012536525726,
+        "p_unchanged": 0.20539464056491852,
+        "p_activated": 0.3293747007846832
+      },
+      {
+        "context": " due consideration. She answered by\u23cecoming at once to his father's house, where",
+        "target": "\u2423he",
+        "p_suppressed": 0.07313323765993118,
+        "p_unchanged": 0.2588023245334625,
+        "p_activated": 0.31473249197006226
+      },
+      {
+        "context": " it was over. With his eyes all right and both\u23cebandaged, we carried",
+        "target": "\u2423him",
+        "p_suppressed": 0.07155507802963257,
+        "p_unchanged": 0.2073916792869568,
+        "p_activated": 0.2551661431789398
+      }
+    ]
+  },
+  "target is a sentence end token": {
+    "connections": [
+      {
+        "conn": "L10/h4/q<-src8",
+        "layer": 10,
+        "head": 4,
+        "stream": "q",
+        "src": 8,
+        "z": 6.011341900415554,
+        "effect_on_rule": 0.008809412666475511,
+        "effect_off_rule": -0.0003236692216502542
+      },
+      {
+        "conn": "L10/h4/k<-src5",
+        "layer": 10,
+        "head": 4,
+        "stream": "k",
+        "src": 5,
+        "z": 5.891146506625621,
+        "effect_on_rule": 0.0035352958899544282,
+        "effect_off_rule": -0.00012252048542236665
+      },
+      {
+        "conn": "L10/h4/k<-src7",
+        "layer": 10,
+        "head": 4,
+        "stream": "k",
+        "src": 7,
+        "z": 5.378948637427154,
+        "effect_on_rule": 0.007255153998030836,
+        "effect_off_rule": -0.00027458032825044236
+      },
+      {
+        "conn": "L10/h4/k<-src3",
+        "layer": 10,
+        "head": 4,
+        "stream": "k",
+        "src": 3,
+        "z": 4.3944302491499,
+        "effect_on_rule": 0.0036281787924950073,
+        "effect_off_rule": -0.00019000048431821854
+      },
+      {
+        "conn": "L6/h12/v<-src2",
+        "layer": 6,
+        "head": 12,
+        "stream": "v",
+        "src": 2,
+        "z": 4.376240992559898,
+        "effect_on_rule": 0.004558176456513428,
+        "effect_off_rule": -0.00020920946563218995
+      },
+      {
+        "conn": "L10/h4/k<-src6",
+        "layer": 10,
+        "head": 4,
+        "stream": "k",
+        "src": 6,
+        "z": 4.339148038242909,
+        "effect_on_rule": 0.007491585529221482,
+        "effect_off_rule": -0.0002942781858960388
+      },
+      {
+        "conn": "L10/h4/q<-src6",
+        "layer": 10,
+        "head": 4,
+        "stream": "q",
+        "src": 6,
+        "z": 4.227700509699026,
+        "effect_on_rule": 0.004147561513726974,
+        "effect_off_rule": -0.0001619404648352236
+      },
+      {
+        "conn": "L6/h12/v<-src1",
+        "layer": 6,
+        "head": 12,
+        "stream": "v",
+        "src": 1,
+        "z": 4.20442505077817,
+        "effect_on_rule": 0.009805902543197657,
+        "effect_off_rule": -0.00043192934861720444
+      },
+      {
+        "conn": "L7/h13/k<-src7",
+        "layer": 7,
+        "head": 13,
+        "stream": "k",
+        "src": 7,
+        "z": 3.8658890401177604,
+        "effect_on_rule": 0.0044179180868310864,
+        "effect_off_rule": -0.00013265433539825497
+      },
+      {
+        "conn": "L6/h13/v<-src6",
+        "layer": 6,
+        "head": 13,
+        "stream": "v",
+        "src": 6,
+        "z": 3.772172519559415,
+        "effect_on_rule": 0.00920393773147057,
+        "effect_off_rule": -0.00021044135438940613
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.06775811314582825,
+      "suppress_off": -0.0019440734758973122,
+      "amplify_on": -0.049976646900177,
+      "amplify_off": 0.002211151411756873,
+      "n_rule_tokens": 6168
+    },
+    "examples": [
+      {
+        "context": " character of the inhabitants, to avoid as much as possible all\u23ceconflict with them",
+        "target": ".",
+        "p_suppressed": 0.20824061334133148,
+        "p_unchanged": 0.3356466591358185,
+        "p_activated": 0.47598716616630554
+      },
+      {
+        "context": " \"Dryasdust\" rubbish heaps of which he here and\u23ceever afterwards bitterly complained",
+        "target": ".",
+        "p_suppressed": 0.2202277034521103,
+        "p_unchanged": 0.34137585759162903,
+        "p_activated": 0.43132805824279785
+      },
+      {
+        "context": "4 Rosalind,\u23cedaughter of the 2nd Lord Stanley of Alderley",
+        "target": ".",
+        "p_suppressed": 0.16135677695274353,
+        "p_unchanged": 0.22736792266368866,
+        "p_activated": 0.26679471135139465
+      }
+    ]
+  },
+  "target char-class = whitespace": {
+    "connections": [
+      {
+        "conn": "L11/h10/v<-src9",
+        "layer": 11,
+        "head": 10,
+        "stream": "v",
+        "src": 9,
+        "z": 2.4275309761364428,
+        "effect_on_rule": 0.01490808826379586,
+        "effect_off_rule": -0.0008197043607793127
+      },
+      {
+        "conn": "L11/h10/v<-src10",
+        "layer": 11,
+        "head": 10,
+        "stream": "v",
+        "src": 10,
+        "z": 2.380643846256657,
+        "effect_on_rule": 0.0074493796692041625,
+        "effect_off_rule": -0.0005024380331008881
+      },
+      {
+        "conn": "L11/h10/v<-src11",
+        "layer": 11,
+        "head": 10,
+        "stream": "v",
+        "src": 11,
+        "z": 2.3634927355479634,
+        "effect_on_rule": 0.018942475579154086,
+        "effect_off_rule": -0.0013709964751677148
+      },
+      {
+        "conn": "L11/h6/v<-src6",
+        "layer": 11,
+        "head": 6,
+        "stream": "v",
+        "src": 6,
+        "z": 2.3504444192364304,
+        "effect_on_rule": 0.002380641262267182,
+        "effect_off_rule": -8.189539985790128e-05
+      },
+      {
+        "conn": "L10/h13/q<-src8",
+        "layer": 10,
+        "head": 13,
+        "stream": "q",
+        "src": 8,
+        "z": 2.3180927261577047,
+        "effect_on_rule": 0.004425982412848905,
+        "effect_off_rule": -0.0003176100696474188
+      },
+      {
+        "conn": "L11/h10/v<-src8",
+        "layer": 11,
+        "head": 10,
+        "stream": "v",
+        "src": 8,
+        "z": 2.3171537666252644,
+        "effect_on_rule": 0.007862069974436772,
+        "effect_off_rule": -0.0005307298983803704
+      },
+      {
+        "conn": "L10/h12/q<-src10",
+        "layer": 10,
+        "head": 12,
+        "stream": "q",
+        "src": 10,
+        "z": 2.3011144505561103,
+        "effect_on_rule": 0.0031366450201680603,
+        "effect_off_rule": -0.0002051029843186949
+      },
+      {
+        "conn": "L10/h12/q<-src9",
+        "layer": 10,
+        "head": 12,
+        "stream": "q",
+        "src": 9,
+        "z": 2.286044738834651,
+        "effect_on_rule": 0.0014831509657339554,
+        "effect_off_rule": -0.00011144170955072394
+      },
+      {
+        "conn": "L10/h12/q<-src8",
+        "layer": 10,
+        "head": 12,
+        "stream": "q",
+        "src": 8,
+        "z": 2.255942765444618,
+        "effect_on_rule": 0.0038200824661084,
+        "effect_off_rule": -0.00025880274272300553
+      },
+      {
+        "conn": "L10/h12/k<-src4",
+        "layer": 10,
+        "head": 12,
+        "stream": "k",
+        "src": 4,
+        "z": 2.2349981625305406,
+        "effect_on_rule": 0.0025108233358263074,
+        "effect_off_rule": -0.00022877097879241763
+      }
+    ],
+    "aggregate": {
+      "suppress_on": 0.09473885595798492,
+      "suppress_off": -0.004178500268608332,
+      "amplify_on": -0.06615190207958221,
+      "amplify_off": 0.0066434224136173725,
+      "n_rule_tokens": 14072
+    },
+    "examples": [
+      {
+        "context": "ur at high\u23cetemperatures. The crude product can therefore be treated with hot",
+        "target": "\u23ce",
+        "p_suppressed": 0.022616466507315636,
+        "p_unchanged": 0.212798073887825,
+        "p_activated": 0.5800763368606567
+      },
+      {
+        "context": " and armed\u23cewith a musket. The sight of this stranger throws them all into",
+        "target": "\u23ce",
+        "p_suppressed": 0.04710064455866814,
+        "p_unchanged": 0.21581237018108368,
+        "p_activated": 0.417255163192749
+      },
+      {
+        "context": "Tower\" (also called \"Duke Robert's Tower\"), that Robert, duke of",
+        "target": "\u23ce",
+        "p_suppressed": 0.09180848300457001,
+        "p_unchanged": 0.4046717882156372,
+        "p_activated": 0.675507128238678
+      }
+    ]
+  }
+}

@@ -1,0 +1,398 @@
+{
+  "f2859": {
+    "rule": "('tokset', [581, 17356, 34097])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.1667008399963379,
+      "off_rule_dnll": 0.004247456323355436,
+      "example": "The busiest parts of the route are the historic towns of the Valparaiso and San Pedro; and the beautiful Col du Monde town, with its castle and chapels; the town of Managua and its snow-vessel; and th"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.06407167762517929,
+      "off_rule_dnll": 0.0003273534821346402,
+      "example": "The number of people affected by AIDS has also been rising significantly. Some of these people have not lost their capacities to deal with the issue.\nEphraim Young began the AIDS Action Plan as a Chri"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The 4th of July, when she was old enough to go to the penitentiary, was the best day of her life.\nShe went straight to see her little sister, who was crying, begging her to go back to her sick-bed. A "
+    },
+    "1.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": -0.0421871542930603,
+      "off_rule_dnll": 0.0012279916554689407,
+      "example": "The final results will be announced on the 17th of May 2019.<|endoftext|>Citation: Weibler, Caroline, C: Kompany & Gaddo, Lee; Louis, David; Fischer, Mark (2009). Production of images in a stacked sil"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.12711890041828156,
+      "off_rule_dnll": 0.009172613732516766,
+      "example": "The architect of the county of Kent, Dr. William Clitley, may be\nfound at the end of the line. It is probable that his father, by his\nnephew John, did not live in Kent, or in any other part of England"
+    }
+  },
+  "f5782": {
+    "rule": "('tokset', [16523, 91404, 16356])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": NaN,
+      "off_rule_dnll": 0.012284720316529274,
+      "example": "The best way to reduce the stress is to go out and build your own, rather than trying to find a new one. As you will discover, today\u2019s job market is shifting rapidly. The survey found that 40% of peop"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": NaN,
+      "off_rule_dnll": 0.0006079931044951081,
+      "example": "The world's greatest defense against global warming.\nLearn, share and learn about the latest scientific research for carbon-deficit and healthy lives.<|endoftext|>We\u2019ve been handed the commission of t"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": NaN,
+      "off_rule_dnll": 0.0,
+      "example": "The party agrees to pay taxes and any costs incurred in the performance of the contract, provided that the party in default may continue to pay taxes and any costs incurred in the performance of the c"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": NaN,
+      "off_rule_dnll": 0.002601015381515026,
+      "example": "The beginning of the fourth century Ptolemaic traditions developed in Europe. This stems from the emergence of a new Christian nation as the windmill. From these winds flows a sacred material, sun, mo"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": NaN,
+      "off_rule_dnll": 0.017883425578475,
+      "example": "The show is in its infancy, and shows us how the businesses we\u2019re using have evolved over time. In the spring of 2017, we\u2019ve had a mix of new products, while we added new brands, mainly printed at SMC"
+    }
+  },
+  "f2985": {
+    "rule": "('tokset', [1768, 87, 4253, 52801, 16519])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.09836215525865555,
+      "off_rule_dnll": 0.016920894384384155,
+      "example": "The museum and gardens all thrive on a rich plant-based nutrition rich in phytates (a digestive hormone found in most plants). The rich diversity of this plant makes it a home to this powerful plant-b"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.030412329360842705,
+      "off_rule_dnll": 0.00224201288074255,
+      "example": "The changes to the U.S. Department of Energy\u2019s plan to use nuclear materials for power plants (SMPA) and the Federal Energy Regulatory Commission\u2019s Clean Air Act (CRA) can be seen as slowing progress "
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The Summer collection from Berghen and Eden Publishing (now a very impressive list) was an instant hit. More recently, Robin and I had a massive go on the cover of 1995\u2019s Over the Sea, with continued "
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.04193491488695145,
+      "off_rule_dnll": 0.0008487984305247664,
+      "example": "The\n   Romagans ran to the edge of the sea, and employed a wall of the\n   14th century in this work, but this time the Romans were great\n   opponents of the whole work, and it is still thought that th"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.1343051791191101,
+      "off_rule_dnll": 0.011309345252811909,
+      "example": "The Submarine Club is located in the same building as the Piscatacon Club. The name of the club is \"the club of the lower New York States\" and does not differ in any particular. The club is a beautifu"
+    }
+  },
+  "f1609": {
+    "rule": "('tokset', [6266, 75303, 25390, 36434])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.09982769936323166,
+      "off_rule_dnll": 0.038527242839336395,
+      "example": "The Joe Novello or Joseph A. Burton photo gallery. Photo credit and copyright to Edmunds.<|endoftext|>The Hope Center for Emerging Health and Wellness at Springdale is where you can discover everythin"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.019347306340932846,
+      "off_rule_dnll": 0.0030183638446033,
+      "example": "The Children\u2019s Minister for Children\u2019s Services is a retired nurse with 25 years\u2019 experience in children\u2019s health services. She is Director of Children\u2019s Services at the Children\u2019s Hospital of Birming"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The lead trappers from northern and southern Europe have found something very similar\nin this field. The missing fish are living in the middle of the crevice\nof the large lake, and especially the nort"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.01078318152576685,
+      "off_rule_dnll": 0.003361399983987212,
+      "example": "The results of this study suggest that using a vaccine that attacks the infected animal significantly leads to a higher prognosis of a shorter and more effective life expectancy. In some such studies,"
+    },
+    "3.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": -0.017073798924684525,
+      "off_rule_dnll": 0.026970429345965385,
+      "example": "The third and fourth babies' deaths have not been reported.<|endoftext|>In a move to lead the ADEA between Fed Chairman David Chadwick (R-N.Y.) and President Donald Trump, several organizations are in"
+    }
+  },
+  "f1865": {
+    "rule": "('tokset', [10333, 87227, 268, 61969])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0213802270591259,
+      "off_rule_dnll": 0.013949464075267315,
+      "example": "The Facilities Manager, based at Freeride\u2019s Restaurant and Bar, soon came to life, securing a spot for his company\u2019s joint venture, Altimeter Brewing Company.\nThe Altimeter\u2019s competitors in the brewin"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.005690095480531454,
+      "off_rule_dnll": 0.0016838018782436848,
+      "example": "The trustees of the West Bluegrass Association have chosen by unanimous vote to support a bill that would put an end to the selection of a public broadcaster and allow the Bluegrass Association to mak"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The sheer variety of available options will give you the most out of your trip. Here are some of our top picks of the best of what we have to offer.\nIncludes lift ticket on an escalator (no children w"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0038031339645385742,
+      "off_rule_dnll": 0.0017522231210023165,
+      "example": "The role that the pathologists and the pathologists play is to guide a specific path to understand the whole disease.\nWhether any type of clinical treatment (e.g. chemotherapy, anti-cancer therapy) is"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.02811635658144951,
+      "off_rule_dnll": 0.018077585846185684,
+      "example": "The 2016 season will return for the 2019 season with the first two annual events having a total of 64 events. These events are closed due to strong snowfall and heavy snow.\nHeld each weekend in the U."
+    }
+  },
+  "f452": {
+    "rule": "('tokset', [365, 408, 64639, 321, 8477])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0509287528693676,
+      "off_rule_dnll": 0.0060022189281880856,
+      "example": "The only other time I have missed a visit to the Eagles was last March and the Eagles went on to beat the Bulldogs in their three area games. For me though I thought the Eagles beat the FBS who were t"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.012489021755754948,
+      "off_rule_dnll": 0.0005517048994079232,
+      "example": "The high speed, 350 horsepower 4-cylinder engine is available in the available options. There are many options available for an electric motorcycle engine: Buick\u2019s central 2.5-litre 5-cylinder engine "
+    },
+    "0.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The reason we do this is to improve our people. We want to make people feel welcome, fit and loved. To help them feel comfortable and fully supported and be part of the team that cares for their needs"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.01604575291275978,
+      "off_rule_dnll": 0.0009288442670367658,
+      "example": "The petition said: \"Any person who engages in fraud, defrauding or abusing child support has the burden of maintaining the integrity of the system.\n\"Any person who engages in fraudulent or unfair cond"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.02973185107111931,
+      "off_rule_dnll": 0.007635208312422037,
+      "example": "The Yearly Impact of Food Hunger Prevention on the Nation at Nation.\nNYMOPS 2002: Their Social Policy Report.\nPolar news: a Twitter timeline, with Apple's recent decision to use national advertising a"
+    }
+  },
+  "f8081": {
+    "rule": "('tokset', [1565, 2933, 2779, 3536, 3852])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.03941879794001579,
+      "off_rule_dnll": 0.03233149275183678,
+      "example": "The First Pharaoh\u201d is similar, too. It is not a book of biblical law or what we believe. (Interesting that the author uses the term \u201cgospel knowledge\u201d). The chapter covers that part.\n\u201cThe Scriptures a"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.0022691055200994015,
+      "off_rule_dnll": 0.003308252664282918,
+      "example": "The people are real, with their health care, education, and jobs. Our military families, with military uniforms, weaponry, and equipment, are exposed to and benefited from the \"luxury\" that the U.S. m"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The solar-power industry has gone big in recent years and there is no place to put the engine unless you can reach out and talk to a deep local man.\nWhether a new model or not is something that every "
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0171414315700531,
+      "off_rule_dnll": 0.0040223440155386925,
+      "example": "The novel also served as an important inspiration to the historians of World War I. By the end of the Second World War, C.S. Lewis also planned to have the \u201cMighty Ob-scholar and I\u201d body of the Wester"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.15487442910671234,
+      "off_rule_dnll": 0.03579239174723625,
+      "example": "The new Lutens Law will help to protect the integrity of the nation's water, while also preserving the lives of the people who sustain our rivers, fresh fish, and wildlife.\nForty-eight years after the"
+    }
+  },
+  "f5406": {
+    "rule": "('tokset', [582, 370, 511, 5776, 20926])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.020875969901680946,
+      "off_rule_dnll": 0.005291723646223545,
+      "example": "The Master, Mariborji, \"Peter,\" 1724.\n\n  [_W._] Kingsley, \"Acts,\" 124.\n\n  Fulke, Cyril, 182.\n\n  Fulmer, Robert, 171, 173, 174.\n\n  Fulah, 155.\n\n "
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.010990521870553493,
+      "off_rule_dnll": -0.00012181266356492415,
+      "example": "The Corvette lineup is designed to pack a new engine with much more power and power. The Corvette 3400 has two-wheel-drive on a large, direct-block chassis. This allows for much lighter torque and muc"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The\nsunshine was gone. There, where lay the glittering page of \"Morgantown\"\nonly five feet high, still faint with the pale of the evening moon, was\nthe clear, bright fountain of the cloud. He knew, no"
+    },
+    "1.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": -0.0022011518012732267,
+      "off_rule_dnll": 0.00199730577878654,
+      "example": "The chief process for clearing up the water in its own tank is through the use of a firm working the pipes that are connected to each other. If the water is too deep it does not open up to the bottom "
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.002811832120642066,
+      "off_rule_dnll": 0.011486444622278214,
+      "example": "The rooms were clean and modern, and had great views of the Grand Canyon, but not many people were in it. They had a bar and a lot of restaurants and bars.\nAt the early hours of the morning, you can s"
+    }
+  },
+  "f2895": {
+    "rule": "('tokset', [8334, 12637, 893])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.015448682010173798,
+      "off_rule_dnll": 0.007616870105266571,
+      "example": "The method to process a surgical mask is to apply a broad spectrum of the medical devices to the mask, with a small amount of micro-chips when the mask is exposed to the atmosphere.\nDr. Gerke noted th"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.00684026163071394,
+      "off_rule_dnll": 0.0004908895352855325,
+      "example": "The country\u2019s first summit was held in 1989, during which a, Frans?n, Chairman of the United States National Board, discussed the need for a collective resolution, which would help rebuild the country"
+    },
+    "0.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The composers, like the above-mentioned composers, sought\nin the same manner to compose the vast text in harmony with the\ngreater and more beautiful composition in English, the one composed by\na man o"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.0006646913825534284,
+      "off_rule_dnll": 0.0014279686147347093,
+      "example": "The Ministry of Justice has been legally obligated to adhere to the South African Charter for the Freedom of Information and Protection of Privacy (LoCOP) Act 1998. The certification of information as"
+    },
+    "3.0": {
+      "class_rate": 0.0020833333333333333,
+      "on_rule_dnll": 0.015669802203774452,
+      "off_rule_dnll": 0.010431447997689247,
+      "example": "The President also states that many people on the Muslim right do not want any one to be part of an organisation in general, who wants to be a part of an organisation even though the violence and viol"
+    }
+  },
+  "f6677": {
+    "rule": "('tokset', [654, 42503, 1543, 2641, 6798])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.01406750176101923,
+      "off_rule_dnll": 0.012059606611728668,
+      "example": "The second thing you need to understand is the content that you are providing. You can\u2019t just leave that out or delete your content. You must make sure that you\u2019re sending it to the right person. Ever"
+    },
+    "-1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.002870305674150586,
+      "off_rule_dnll": 0.0012377208331599832,
+      "example": "The Laotian account of Gemin\u00e9on being the 1st. of the Huns may have been\ntraced down to other points, but it was not so far as ancient inscriptions\nof the time, where the usual sign was the numeral 9 "
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The scabbing is a common recurring recurring ailment in wildlife. This tangle of skin is found on many of the animals\u2019 body parts. The scabbing is often painful, and can lead to permanent results, suc"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0036076344549655914,
+      "off_rule_dnll": 0.001399261294864118,
+      "example": "The entire Jewish nation, including the Yiddish Jews, was introduced in a final decree signed by the then President of the National Zionist Council; Rabbi Isaac Yosef Yosef, the first elected Rabbi of"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.00936829298734665,
+      "off_rule_dnll": 0.011806155554950237,
+      "example": "The U.S. Department of Agriculture has expanded a ban on the sale of commercial agriculture products to farm workers, resulting in many farms having problems that can be remedied quickly. According to"
+    }
+  },
+  "f2801": {
+    "rule": "('tokset', [508, 1691, 777, 1419, 1313, 1114, 605])",
+    "-3.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": -0.012244980782270432,
+      "off_rule_dnll": 0.017222458496689796,
+      "example": "The European Union has announced that it will be setting up a final bid for a new trade agreement with Japan by October 2017.\nThe two sides are expected to draw up a draft strategic plan that identifi"
+    },
+    "-1.0": {
+      "class_rate": 0.0020833333333333333,
+      "on_rule_dnll": -0.0022737535182386637,
+      "off_rule_dnll": 0.0023516202345490456,
+      "example": "The workshop is aimed at individuals who face unexpected challenges in managing a property.\nThe workshop is an introduction to the local sector and is designed to complement the work of The New South "
+    },
+    "0.0": {
+      "class_rate": 0.003125,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The social prosperity of the East is to be judged not merely by the large numbers that survive the economic problem, but by the increasingly large numbers that fall into the category of the peasants a"
+    },
+    "1.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.007635856047272682,
+      "off_rule_dnll": 0.0013760593719780445,
+      "example": "The student who wants to gain access to the immersive and physical opportunities of USID is eligible. The student must also have a minimum of 3+2+2+2+2 and one+2+2+2+2 grade point average and a GPA of"
+    },
+    "3.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": 0.025511084124445915,
+      "off_rule_dnll": 0.016109837219119072,
+      "example": "The plan to further enhance their business and add new services to the complex is one of the latest developments of their administration in southern Pennsylvania. The Moranda Marketing Association has"
+    }
+  },
+  "f3817": {
+    "rule": "('tokset', [388, 24624, 448, 8614])",
+    "-3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": -0.02920415997505188,
+      "off_rule_dnll": 0.009462933987379074,
+      "example": "The Gospel, 363;\n    the Pagan, 364;\n    the Lateran, 369.\n\n                 , 364.\n\n                 , 365.\n\n                 , 373, 378, 403, 408, 409.\n\n                 , 374.\n\n                 , 3"
+    },
+    "-1.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": -0.010693199932575226,
+      "off_rule_dnll": 0.0010424760403111577,
+      "example": "The finger tips are made from rubber and \u201ctobacco-like\u201d materials, that is good for you. We do need a little ink to get a nice consistency as it is one of the most common ways of adding a finger on ce"
+    },
+    "0.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.0,
+      "off_rule_dnll": 0.0,
+      "example": "The former president of the Texas Federal Deposit Insurance Company of Maryland will receive the company\u2019s $7.7 million in settlement money during the legal proceedings.\nThe settlement adds to the com"
+    },
+    "1.0": {
+      "class_rate": 0.0010416666666666667,
+      "on_rule_dnll": 0.0027819026727229357,
+      "off_rule_dnll": 0.0009201228967867792,
+      "example": "The cottages were mostly built in 1903 and 1911, with some 80 built in the 1900s. A new roof added to the 1900s is what was taking place in the cottages.\nThe old wooden buildings were complete, at the"
+    },
+    "3.0": {
+      "class_rate": 0.0,
+      "on_rule_dnll": 0.02968764305114746,
+      "off_rule_dnll": 0.00833212397992611,
+      "example": "The information they had brought was accurate and recorded in a lower level.\nThere were some smaller but still intriguing shadows that we could find. The United States is the Caribbean and they had al"
+    }
+  }
+}

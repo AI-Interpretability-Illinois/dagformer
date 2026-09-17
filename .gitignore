@@ -12,9 +12,10 @@ wandb/
 CLAUDE.md
 *.npz
 experiments/results/interp/token_effects/*.log
-hf_checkpoints/
+hf_checkpoints
 ssmfloss/
-.codex/
+.codex
+*.log
 
 # lm-eval per-document generation dumps (regenerate with run_eval.py --save-samples)
 experiments/results/lmeval/*/samples/
