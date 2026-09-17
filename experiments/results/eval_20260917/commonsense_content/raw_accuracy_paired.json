@@ -1,0 +1,138 @@
+{
+  "protocol": {
+    "bootstrap": "paired resampling of evaluation documents",
+    "draws": 10000,
+    "seed": 20260917,
+    "metric_override": "acc,none",
+    "scope": "evaluation-sample uncertainty for fixed trained checkpoints",
+    "multiplicity": "intervals and p-values are unadjusted"
+  },
+  "pairs": {
+    "75m": {
+      "baseline_model": {
+        "name": "75m-baseline",
+        "family": "baseline",
+        "size": "75m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/75m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 76558848,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "75m-dagformer",
+        "family": "dagformer",
+        "size": "75m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 105657332,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "commonsense_qa_content": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_dagformer_better": -0.000819000819000819,
+          "paired_bootstrap_95ci": [
+            -0.01638001638001638,
+            0.014742014742014743
+          ],
+          "baseline": 0.18427518427518427,
+          "dagformer": 0.18345618345618345,
+          "dag_only_correct": 47,
+          "base_only_correct": 48,
+          "mcnemar_exact_p": 1.0
+        }
+      }
+    },
+    "150m": {
+      "baseline_model": {
+        "name": "150m-baseline",
+        "family": "baseline",
+        "size": "150m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/150m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 152593152,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "150m-dagformer",
+        "family": "dagformer",
+        "size": "150m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 182561679,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "commonsense_qa_content": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_dagformer_better": -0.004914004914004914,
+          "paired_bootstrap_95ci": [
+            -0.02375102375102375,
+            0.013923013923013924
+          ],
+          "baseline": 0.23914823914823916,
+          "dagformer": 0.23423423423423423,
+          "dag_only_correct": 65,
+          "base_only_correct": 71,
+          "mcnemar_exact_p": 0.6682658523131814
+        }
+      }
+    },
+    "300m": {
+      "baseline_model": {
+        "name": "300m-baseline",
+        "family": "baseline",
+        "size": "300m",
+        "kind": "dense",
+        "path": "checkpoints/pr_sync_20260917/300m-baseline",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 304137216,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "commonsense_qa_content": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_dagformer_better": 0.001638001638001638,
+          "paired_bootstrap_95ci": [
+            -0.018837018837018837,
+            0.022133497133496834
+          ],
+          "baseline": 0.27436527436527436,
+          "dagformer": 0.276003276003276,
+          "dag_only_correct": 85,
+          "base_only_correct": 83,
+          "mcnemar_exact_p": 0.9385334053887999
+        }
+      }
+    }
+  }
+}

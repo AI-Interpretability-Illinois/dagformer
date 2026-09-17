@@ -70,8 +70,19 @@ The [explicit-label audit](standard_matched/label_bias.md) shows two limitations
 all models choose A on at least 98.94% of standard CommonsenseQA questions,
 and every BoolQ score remains below the 62.17% constant-yes baseline. The
 relative BoolQ gain above therefore does not establish successful reading
-comprehension. A separately named, answer-text CommonsenseQA control is queued;
-it will not replace the upstream task's results.
+comprehension. The [answer-text CommonsenseQA control](commonsense_content/README.md)
+is now complete. Its length-normalized accuracies are 24.73% → 25.23% at 75M,
+26.04% → 27.44% at 150M, and 28.99% → 29.65% at 300M. Only the 150M paired
+interval excludes zero, narrowly; using raw answer likelihood, that pair
+changes from 23.91% to 23.42% with an interval spanning zero. This custom
+control provides no scoring-convention-independent gain across the pairs.
+
+The [step-10500 checkpoint comparison](standard_latest/README.md) is also
+complete for all 14 endpoints. With 5.506B processed tokens, its WikiText BPB
+improves from step 9000's 1.02248 to 1.01830. Its twelve accuracy differences
+all have paired intervals including zero, and GSM8K joint BPB is slightly
+worse. It is a continuation-of-training comparison; the budget-matched
+baseline comparison above continues to use step 9000.
 
 ![All paired ordinary-task effects](figures/ordinary_paired.png)
 

@@ -86,6 +86,8 @@ def main():
     ap.add_argument("--dir", type=Path, required=True)
     ap.add_argument("--draws", type=int, default=10000)
     ap.add_argument("--seed", type=int, default=20260917)
+    ap.add_argument("--metric", help="override the primary metric for every task in this directory")
+    ap.add_argument("--out-stem", default="paired_summary")
     args = ap.parse_args()
     pairs = {}
     for path in sorted(args.dir.glob("*__*.json")):
@@ -96,9 +98,11 @@ def main():
         pairs.setdefault(model["size"], {})[model["family"]] = payload
     result = {"protocol": {"bootstrap": "paired resampling of evaluation documents",
                             "draws": args.draws, "seed": args.seed,
+                            "metric_override": args.metric,
                             "scope": "evaluation-sample uncertainty for fixed trained checkpoints",
                             "multiplicity": "intervals and p-values are unadjusted"}, "pairs": {}}
-    lines = ["# Paired ordinary evaluation", "",
+    title = "# Paired evaluation" + (f" — {args.metric}" if args.metric else " — primary metrics")
+    lines = [title, "",
              "Positive differences favor DAGFormer. Intervals resample the same documents",
              "for both models; they do not measure variation across training seeds.", "",
              "| Size | Task | Baseline | DAGFormer | Difference | Paired 95% CI |",
@@ -112,7 +116,9 @@ def main():
         for task in base["results"]:
             if task not in dag["results"]:
                 continue
-            metric = primary_metric(task, base["results"][task])
+            metric = args.metric or primary_metric(task, base["results"][task])
+            if metric not in base["results"][task] or metric not in dag["results"][task]:
+                raise ValueError(f"Metric {metric} is not available for both models on {task}")
             filter_name = metric.split(",", 1)[1]
             b = read_samples(args.dir / "samples" / f"{base['model']['name']}__{task}.jsonl", filter_name)
             d = read_samples(args.dir / "samples" / f"{dag['model']['name']}__{task}.jsonl", filter_name)
@@ -127,8 +133,8 @@ def main():
                          f"{stats['dagformer']:.4f} | {stats['delta_dagformer_better']:+.4f} | "
                          f"[{lo:+.4f}, {hi:+.4f}] |")
         result["pairs"][size] = rec
-    (args.dir / "paired_summary.json").write_text(json.dumps(result, indent=2) + "\n")
-    (args.dir / "paired_summary.md").write_text("\n".join(lines) + "\n")
+    (args.dir / (args.out_stem + ".json")).write_text(json.dumps(result, indent=2) + "\n")
+    (args.dir / (args.out_stem + ".md")).write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
 

@@ -1,0 +1,78 @@
+{
+  "model": {
+    "name": "150m-baseline",
+    "family": "baseline",
+    "size": "150m",
+    "kind": "dense",
+    "path": "checkpoints/pr_sync_20260917/150m-baseline",
+    "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+    "step": 6000,
+    "num_parameters": 152593152,
+    "train_seq_len": 1024,
+    "routing_intervention": null
+  },
+  "eval": {
+    "date": "2026-09-17T09:49:59+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [
+      "commonsense_qa_content"
+    ],
+    "generative_tasks": [],
+    "limit": null,
+    "gen_limit": 200,
+    "batch_size": 8,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": true,
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "d489c0a3eb530529e631e80e5a1b7b30a9695a34",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 0,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "loglikelihood": 16.025554180145264
+    },
+    "peak_gpu_gb": 0.88,
+    "sample_files": [
+      "experiments/results/eval_20260917/commonsense_content/samples/150m-baseline__commonsense_qa_content.jsonl"
+    ]
+  },
+  "results": {
+    "commonsense_qa_content": {
+      "name": "commonsense_qa_content",
+      "alias": "commonsense_qa_content",
+      "sample_len": 1221,
+      "acc,none": 0.23914823914823916,
+      "acc_stderr,none": 0.012212475442884712,
+      "acc_norm,none": 0.26044226044226043,
+      "acc_norm_stderr,none": 0.012564981568550807
+    }
+  },
+  "n-samples": {
+    "commonsense_qa_content": {
+      "original": 1221,
+      "effective": 1221
+    }
+  },
+  "versions": {
+    "commonsense_qa_content": 1.0
+  },
+  "n-shot": {
+    "commonsense_qa_content": 0
+  },
+  "higher_is_better": {
+    "commonsense_qa_content": {
+      "acc": true,
+      "acc_norm": true
+    }
+  },
+  "group_subtasks": {}
+}

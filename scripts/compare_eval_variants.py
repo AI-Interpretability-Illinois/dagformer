@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 from summarize_paired_eval import paired_difference, primary_metric, read_samples
@@ -50,6 +51,9 @@ def main():
             cand_samples = read_samples(args.variant_dir / "samples" /
                                         f"{model['name']}__{task}.jsonl", filter_name)
             stats = paired_difference(ref_samples, cand_samples, metric, args.draws, args.seed)
+            for label, source in (("baseline", reference), ("dagformer", candidate)):
+                if not math.isclose(stats[label], source["results"][task][metric], abs_tol=1e-8):
+                    raise ValueError(f"Sample aggregation disagrees with {source['model']['name']}/{task}")
             rename = {"baseline": "reference", "dagformer": "variant",
                       "delta_dagformer_better": "delta_variant_better",
                       "dag_only_correct": "variant_only_correct", "base_only_correct": "reference_only_correct"}
