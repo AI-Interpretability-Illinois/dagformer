@@ -1,0 +1,68 @@
+{
+  "reference": "experiments/results/eval_20260917/gsm8k_full/300m-baseline__gen.json",
+  "variant": "experiments/results/eval_20260917/gsm8k_no_cache/300m-baseline__gen.json",
+  "protocol": "same saved prompts and documents; cached reference restricted to uncached document IDs; positive differences favor uncached generation; paired document bootstrap, 10000 draws, seed 20260917",
+  "metrics": {
+    "strict-match": {
+      "n_docs": 200,
+      "metric": "exact_match,strict-match",
+      "delta_uncached_better": 0.0,
+      "paired_bootstrap_95ci": [
+        0.0,
+        0.0
+      ],
+      "cached": 0.0,
+      "uncached": 0.0,
+      "uncached_only_correct": 0,
+      "cached_only_correct": 0,
+      "mcnemar_exact_p": 1.0
+    },
+    "flexible-extract": {
+      "n_docs": 200,
+      "metric": "exact_match,flexible-extract",
+      "delta_uncached_better": 0.0,
+      "paired_bootstrap_95ci": [
+        0.0,
+        0.0
+      ],
+      "cached": 0.025,
+      "uncached": 0.025,
+      "uncached_only_correct": 0,
+      "cached_only_correct": 0,
+      "mcnemar_exact_p": 1.0
+    }
+  },
+  "response_comparison": {
+    "n": 200,
+    "changed_response_count": 24,
+    "changed_extracted_count": 11,
+    "cached_mean_repeated_fourgram_fraction": 0.8605873313955508,
+    "uncached_mean_repeated_fourgram_fraction": 0.8570263511201685,
+    "changed_response_doc_ids": [
+      0,
+      6,
+      42,
+      43,
+      46,
+      54,
+      66,
+      70,
+      72,
+      73,
+      88,
+      110,
+      119,
+      127,
+      132,
+      144,
+      152,
+      154,
+      155,
+      158,
+      161,
+      182,
+      185,
+      196
+    ]
+  }
+}

@@ -63,8 +63,12 @@ occur in repeated or irrelevant text: document 52, for example, generates
 "15 pounds" where the requested answer is 15 toys. The best constant-number
 diagnostic on this test split is 3.03% (always 5). Generation runs for 150M,
 the 600M baseline and the later 300M DAGFormer checkpoint are still pending.
-Dense baselines use KV caching; DAGFormer recomputes the prefix. A 200-item
-300M baseline run with caching disabled checks sensitivity to that choice.
+Dense baselines use KV caching; DAGFormer recomputes the prefix. In the
+[200-item cache check](gsm8k_no_cache/README.md), the 300M baseline has the
+same five flexible matches with caching enabled or disabled. Text changes
+on 24 documents and extracted numbers on 11, but all correctness indicators
+are unchanged. Repetition remains high with either setting. This checks
+the evaluated subset; it does not establish numerical equivalence.
 
 The [explicit-label audit](standard_matched/label_bias.md) shows two limitations:
 all models choose A on at least 98.94% of standard CommonsenseQA questions,
