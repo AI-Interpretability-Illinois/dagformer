@@ -53,6 +53,8 @@ def main():
              "are unadjusted and do not cover training-seed or feature-selection uncertainty.", "",
              "The count column gives target tokens / windows containing target tokens.",
              "Bootstrap draws with no target tokens are omitted; valid-draw counts are in JSON.", "",
+             "Token labels are raw tokenizer pieces, including whitespace and fragments.",
+             "They are not a semantic annotation of what each feature represents.", "",
              "Negative target-token ΔNLL means that those gold tokens become more probable.",
              "The signed dose span is ΔNLL(+4) − ΔNLL(−4), calculated from paired windows.", "",
              "| Feature | Target tokens | Tokens / windows | ΔNLL at −4 [95% CI] | ΔNLL at +4 [95% CI] | Dose span [95% CI] |",

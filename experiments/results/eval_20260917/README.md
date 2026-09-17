@@ -331,6 +331,35 @@ doses, with fixed norm-preserving controls, natural-text NLL, and 32 new
 content pairs. It averages prompt paraphrases within content items before
 calculating paired bootstrap intervals.
 
+## SAE direction transfer
+
+The [eight previously selected SAE directions](sae_transfer/README.md) were
+retested without reselection on 128 WikiText test windows. Three reproduce
+opposite-sign target-token loss changes at alpha -4 and +4, with each dose's
+paired interval excluding zero. Their other-token NLL costs remain below
+0.018 in both directions:
+
+| Feature | Target tokens / target-bearing windows | Target ΔNLL at -4 | Target ΔNLL at +4 | Dose span: +4 minus -4 |
+|---|---:|---:|---:|---:|
+| 3560 | 1,139 / 94 | -0.0582 | +0.0833 | +0.1415 |
+| 7068 | 4,134 / 127 | -0.0521 | +0.0773 | +0.1294 |
+| 4222 | 84 / 38 | -0.0563 | +0.0818 | +0.1381 |
+
+A [block-bootstrap check](sae_transfer/block_bootstrap.md) preserves these
+three patterns with adjacent-window blocks up to length 16. Four other
+directions have dose-span intervals including zero, including the earlier
+kinship-associated feature 3583; feature 7019 has no matching target tokens
+in this corpus and cannot be assessed. The feature token sets mix words,
+fragments, punctuation and whitespace, so this supports transfer of some
+fixed token-conditioned loss effects, not clean semantic labels or reliable
+free-generation control.
+
+The five coordinate-permuted controls per feature preserve direction norms
+but often cause much larger other-token NLL increases. The full report shows
+their costs alongside target effects. Those controls test the importance of
+coordinate alignment; they do not isolate semantic specificity at equal
+language-model damage.
+
 ## Reproduction and artifacts
 
 - Evaluation environment: `lm_eval==0.4.13`, Transformers 4.57.1, PyTorch
