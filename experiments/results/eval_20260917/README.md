@@ -5,6 +5,8 @@ tests what the external predictor and local corrections contribute. The
 [code/PR audit](../../PROJECT_SYNC_2026-09-17.md) records recovered Delta work,
 the merged PRs and corrections to their interpretations.
 
+中文入口：[代码汇总与评估验收说明](验收说明.md)。
+
 ## Ordinary evaluation
 
 The full 14-task likelihood suite is complete for the 75M, 150M and 300M
