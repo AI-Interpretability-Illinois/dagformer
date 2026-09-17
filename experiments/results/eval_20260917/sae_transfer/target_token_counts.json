@@ -1,0 +1,252 @@
+{
+  "source": "experiments/results/eval_20260917/sae_transfer/300m.json",
+  "eval_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_test.pt",
+  "counted_positions": "gold next-token labels in the same 128 x 1024 evaluation windows",
+  "n_positions": 131072,
+  "features": {
+    "7326": [
+      {
+        "id": 78,
+        "piece": "o",
+        "count": 55,
+        "windows_with_token": 29
+      },
+      {
+        "id": 596,
+        "piece": "'s",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 952,
+        "piece": "uth",
+        "count": 0,
+        "windows_with_token": 0
+      }
+    ],
+    "1986": [
+      {
+        "id": 679,
+        "piece": "201",
+        "count": 221,
+        "windows_with_token": 40
+      },
+      {
+        "id": 2550,
+        "piece": "199",
+        "count": 93,
+        "windows_with_token": 29
+      },
+      {
+        "id": 9367,
+        "piece": "188",
+        "count": 28,
+        "windows_with_token": 11
+      },
+      {
+        "id": 9378,
+        "piece": "189",
+        "count": 16,
+        "windows_with_token": 8
+      },
+      {
+        "id": 7028,
+        "piece": "190",
+        "count": 12,
+        "windows_with_token": 6
+      },
+      {
+        "id": 9714,
+        "piece": "186",
+        "count": 36,
+        "windows_with_token": 14
+      }
+    ],
+    "3583": [
+      {
+        "id": 10868,
+        "piece": "Ġbrother",
+        "count": 9,
+        "windows_with_token": 6
+      },
+      {
+        "id": 4538,
+        "piece": "Ġson",
+        "count": 18,
+        "windows_with_token": 12
+      },
+      {
+        "id": 7555,
+        "piece": "Ġwife",
+        "count": 14,
+        "windows_with_token": 10
+      },
+      {
+        "id": 38594,
+        "piece": "Ġuncle",
+        "count": 4,
+        "windows_with_token": 3
+      },
+      {
+        "id": 1403,
+        "piece": "Ġtwo",
+        "count": 186,
+        "windows_with_token": 87
+      },
+      {
+        "id": 7126,
+        "piece": "Ġfather",
+        "count": 15,
+        "windows_with_token": 9
+      }
+    ],
+    "3560": [
+      {
+        "id": 330,
+        "piece": "Ġ\"",
+        "count": 998,
+        "windows_with_token": 85
+      },
+      {
+        "id": 358,
+        "piece": "ĠI",
+        "count": 141,
+        "windows_with_token": 50
+      },
+      {
+        "id": 1875,
+        "piece": "\"ĊĊ",
+        "count": 0,
+        "windows_with_token": 0
+      }
+    ],
+    "7019": [
+      {
+        "id": 1,
+        "piece": "\"",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 62,
+        "piece": "_",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 19298,
+        "piece": "_\"",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 7022,
+        "piece": "_,",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 1359,
+        "piece": ",\"",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 1210,
+        "piece": ".\"",
+        "count": 0,
+        "windows_with_token": 0
+      }
+    ],
+    "7068": [
+      {
+        "id": 220,
+        "piece": "Ġ",
+        "count": 4032,
+        "windows_with_token": 127
+      },
+      {
+        "id": 400,
+        "piece": "Ġ$",
+        "count": 35,
+        "windows_with_token": 13
+      },
+      {
+        "id": 4848,
+        "piece": "Ġsix",
+        "count": 24,
+        "windows_with_token": 17
+      },
+      {
+        "id": 4330,
+        "piece": "Ġfive",
+        "count": 43,
+        "windows_with_token": 31
+      }
+    ],
+    "452": [
+      {
+        "id": 365,
+        "piece": "ew",
+        "count": 3,
+        "windows_with_token": 3
+      },
+      {
+        "id": 408,
+        "piece": "end",
+        "count": 8,
+        "windows_with_token": 5
+      },
+      {
+        "id": 64639,
+        "piece": "ynthia",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 321,
+        "piece": "il",
+        "count": 24,
+        "windows_with_token": 16
+      },
+      {
+        "id": 8477,
+        "piece": "osen",
+        "count": 1,
+        "windows_with_token": 1
+      }
+    ],
+    "4222": [
+      {
+        "id": 649,
+        "piece": "Ġcan",
+        "count": 37,
+        "windows_with_token": 21
+      },
+      {
+        "id": 2011,
+        "piece": "Ġmust",
+        "count": 6,
+        "windows_with_token": 5
+      },
+      {
+        "id": 1253,
+        "piece": "Ġmay",
+        "count": 41,
+        "windows_with_token": 22
+      },
+      {
+        "id": 3358,
+        "piece": "'ll",
+        "count": 0,
+        "windows_with_token": 0
+      },
+      {
+        "id": 4805,
+        "piece": "âĢĻll",
+        "count": 0,
+        "windows_with_token": 0
+      }
+    ]
+  }
+}

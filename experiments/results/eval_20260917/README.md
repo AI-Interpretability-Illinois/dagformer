@@ -383,6 +383,13 @@ fragments, punctuation and whitespace, so this supports transfer of some
 fixed token-conditioned loss effects, not clean semantic labels or reliable
 free-generation control.
 
+The [target-token composition](sae_transfer/target_token_counts.json) makes
+this distinction concrete: 4,032 of feature 7068's 4,134 target occurrences
+are the whitespace piece `Ġ`; 998 of feature 3560's 1,139 are the
+space-prefixed quote piece. The earlier kinship-associated set for 3583
+contains 186 occurrences of `Ġtwo` among 246 target tokens. Aggregate rule
+effects should not be assigned equally to every word in those sets.
+
 The five coordinate-permuted controls per feature preserve direction norms
 but often cause much larger other-token NLL increases. The full report shows
 their costs alongside target effects. Those controls test the importance of

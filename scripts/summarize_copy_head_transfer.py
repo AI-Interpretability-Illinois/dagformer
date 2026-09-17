@@ -33,6 +33,8 @@ def main():
              "blocks sampled from the WikiText training-token marginal. They are synthetic",
              "token sequences, not contiguous natural text. Accuracy is teacher-forced",
              "next-token accuracy beginning at the first token of the second block.",
+             "The historical localization used a Dolma-token marginal and a different seed;",
+             "absolute reference accuracies across the two runs are not directly paired.",
              "Natural-text NLL uses WikiText validation windows. Brackets are paired normal",
              "95% intervals over sequences/windows, unadjusted for multiple comparisons.", "",
              "## Unedited reference", "",
@@ -52,15 +54,19 @@ def main():
                      "The range describes the measured random-head effects, not uncertainty",
                      "over all possible control circuits. The final column gives the smallest",
                      "and largest lower/upper bounds among direct paired named-minus-control",
-                     "intervals. Individual comparisons are retained in summary.json.", "",
-                     "| Channel | Gamma | Period | Named change (points) | Control change range | Paired difference interval envelope |",
-                     "|---|---:|---:|---:|---|---|"]
+                     "intervals. Individual comparisons are retained in summary.json. The NLL",
+                     "columns show whether norm matching also gives similar capability costs.", "",
+                     "| Channel | Gamma | Period | Named change (points) | Control change range | Paired difference interval envelope | Named NLL rise | Control NLL rise range |",
+                     "|---|---:|---:|---:|---|---|---:|---|"]
     tail = ["", "## Repetition interrupted by new tokens", "",
             "After three copies of a 128-token block, the remaining tokens are independent",
             "samples from the same marginal. True next-token NLL measures adaptation to the",
             "new tail. False-lag probability and argmax rates refer to the token 128 positions",
             "back, only where it differs from the actual target. Higher false-lag scores",
             "indicate more copying of a now-wrong token, not better prediction.", "",
+            f"Unedited tail NLL is {reference['summary']['pattern_break/nll']['mean']:.4f}; "
+            f"false-lag probability is {100 * reference['summary']['pattern_break/false_lag_probability']['mean']:.3f}% "
+            f"and false-lag argmax rate is {100 * reference['summary']['pattern_break/false_lag_argmax']['mean']:.3f}%.", "",
             "| Channel | Gamma | Tail NLL change | False-lag probability change (points) | False-lag argmax change (points) |",
             "|---|---:|---|---|---|"]
     for channel in ("pred", "corr", "both"):
@@ -68,8 +74,10 @@ def main():
             key = f"{channel}/named@{gamma:g}"
             arm = source["arms"][key]
             rec = {"summary": arm["summary"], "paired_named_minus_control": {}}
+            control_costs = []
             for i in range(settings["controls"]):
                 control = source["arms"][f"{channel}/random{i}@{gamma:g}"]
+                control_costs.append(control['summary']['natural_nll']['delta'])
                 rec["paired_named_minus_control"][str(i)] = {
                     metric: paired_summary(values, control["values"][metric])
                     for metric, values in arm["values"].items()}
@@ -85,7 +93,9 @@ def main():
                 intervals = [v[metric]["normal_95ci"] for v in rec["paired_named_minus_control"].values()]
                 lower, upper = min(v[0] for v in intervals), max(v[1] for v in intervals)
                 control_lines.append(f"| {channel} | {gamma:g} | {p} | {100*arm['summary'][metric]['delta']:+.3f} | "
-                                     f"[{100*min(values):+.3f}, {100*max(values):+.3f}] | [{100*lower:+.3f}, {100*upper:+.3f}] |")
+                                     f"[{100*min(values):+.3f}, {100*max(values):+.3f}] | [{100*lower:+.3f}, {100*upper:+.3f}] | "
+                                     f"{arm['summary']['natural_nll']['delta']:+.4f} | "
+                                     f"[{min(control_costs):+.4f}, {max(control_costs):+.4f}] |")
             tail.append(f"| {channel} | {gamma:g} | {effect(arm['summary']['pattern_break/nll'])} | "
                         f"{effect(arm['summary']['pattern_break/false_lag_probability'], 100)} | "
                         f"{effect(arm['summary']['pattern_break/false_lag_argmax'], 100)} |")
