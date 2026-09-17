@@ -44,9 +44,15 @@ preserved in [the historical specification](docs/legacy_oracle_design.md).
 
 ## Data and checkpoints on Delta
 
-The working project is `/projects/bfqt/users/yurenh2/ml-projects/DAGFormer`.
-Use `ssh delta` to access it. Trained checkpoints and cached interpretation data
-remain there; they are not stored in Git.
+Use `ssh delta` to access the project. The current evaluation workspace is
+`/work/hdd/bfqt/yurenh2/dagformer-eval-20260917`, containing the consolidated
+code, exported evaluation weights and new raw results.
+
+The recovered source worktree remains at
+`/projects/bfqt/users/yurenh2/ml-projects/DAGFormer`. Its original trained
+checkpoints, optimizer states and cached interpretation data are preserved;
+they are not stored in Git. The September 17 campaign uses the new workspace
+because the original `/projects/bfqt` quota is full.
 
 The collaborator model bundle is `/work/hdd/bfqt/shared/dagformer-models`:
 75M/150M/300M baseline–DAGFormer pairs and a 600M baseline, with configs and
