@@ -1,0 +1,98 @@
+[
+  {
+    "model": "150m-baseline",
+    "config": "checkpoints/pr_sync_20260917/150m-baseline/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/150m-baseline/checkpoint.pt",
+    "base_side_files": []
+  },
+  {
+    "model": "150m-dagformer",
+    "config": "checkpoints/pr_sync_20260917/150m-dagformer/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "300m-baseline",
+    "config": "checkpoints/pr_sync_20260917/300m-baseline/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+    "base_side_files": []
+  },
+  {
+    "model": "300m-dagformer",
+    "config": "checkpoints/pr_sync_20260917/300m-dagformer/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step9000_model.pt"
+    ]
+  },
+  {
+    "model": "600m-baseline",
+    "config": "checkpoints/pr_sync_20260917/600m-baseline/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/600m-baseline/checkpoint.pt",
+    "base_side_files": []
+  },
+  {
+    "model": "75m-baseline",
+    "config": "checkpoints/pr_sync_20260917/75m-baseline/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/75m-baseline/checkpoint.pt",
+    "base_side_files": []
+  },
+  {
+    "model": "75m-dagformer",
+    "config": "checkpoints/pr_sync_20260917/75m-dagformer/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step3000_model.pt"
+    ]
+  },
+  {
+    "model": "ladder/150m-identcorr",
+    "config": "checkpoints/pr_sync_20260917/ladder/150m-identcorr/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-identcorr/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "ladder/150m-lite",
+    "config": "checkpoints/pr_sync_20260917/ladder/150m-lite/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-lite/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "ladder/150m-postable",
+    "config": "checkpoints/pr_sync_20260917/ladder/150m-postable/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-postable/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "ladder/150m-static",
+    "config": "checkpoints/pr_sync_20260917/ladder/150m-static/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-static/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "ladder/150m-staticcorr",
+    "config": "checkpoints/pr_sync_20260917/ladder/150m-staticcorr/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/ladder/150m-staticcorr/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step6000_model.pt"
+    ]
+  },
+  {
+    "model": "latest/300m-dagformer",
+    "config": "checkpoints/pr_sync_20260917/latest/300m-dagformer/config.yaml",
+    "checkpoint": "checkpoints/pr_sync_20260917/latest/300m-dagformer/checkpoint.pt",
+    "base_side_files": [
+      "checkpoint_step10500_model.pt"
+    ]
+  }
+]

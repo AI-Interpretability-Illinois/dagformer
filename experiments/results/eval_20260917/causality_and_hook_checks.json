@@ -1,0 +1,20 @@
+{
+  "75m": {
+    "future_change_alpha_max": 0.0,
+    "future_change_logits_max": 0.0,
+    "prefix_logits_max": 0.09375,
+    "hook_vs_direct_max_nll_difference": 0.0
+  },
+  "150m": {
+    "future_change_alpha_max": 0.0,
+    "future_change_logits_max": 0.0,
+    "prefix_logits_max": 0.09375,
+    "hook_vs_direct_max_nll_difference": 0.0
+  },
+  "300m": {
+    "future_change_alpha_max": 0.0,
+    "future_change_logits_max": 0.0,
+    "prefix_logits_max": 0.109375,
+    "hook_vs_direct_max_nll_difference": 0.0
+  }
+}

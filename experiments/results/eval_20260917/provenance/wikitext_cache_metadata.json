@@ -1,0 +1,92 @@
+{
+  "dataset": "EleutherAI/wikitext_document_level",
+  "config": "wikitext-2-raw-v1",
+  "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+  "seq_len": 1024,
+  "seed": 20260917,
+  "packing": "EOS between documents; nonoverlapping T+1 chunks",
+  "splits": {
+    "train": {
+      "path": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+      "windows": 64,
+      "document_ids": [
+        619,
+        48,
+        112,
+        295,
+        474,
+        56,
+        486,
+        14,
+        238,
+        318,
+        317,
+        324,
+        283,
+        431,
+        115,
+        6,
+        0,
+        149,
+        535,
+        393,
+        549
+      ],
+      "dataset_fingerprint": "35de03d316a46c28"
+    },
+    "validation": {
+      "path": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_validation.pt",
+      "windows": 50,
+      "document_ids": [
+        36,
+        56,
+        2,
+        46,
+        52,
+        20,
+        14,
+        45,
+        4
+      ],
+      "dataset_fingerprint": "0bcd5608ecfc6a90"
+    },
+    "test": {
+      "path": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_test.pt",
+      "windows": 128,
+      "document_ids": [
+        48,
+        27,
+        28,
+        6,
+        10,
+        26,
+        24,
+        61,
+        22,
+        33,
+        36,
+        15,
+        55,
+        60,
+        52,
+        12,
+        47,
+        32,
+        0,
+        53,
+        45,
+        13,
+        7,
+        4,
+        39,
+        3,
+        41,
+        8,
+        21,
+        35,
+        49
+      ],
+      "dataset_fingerprint": "3b100fc026da3bad"
+    }
+  }
+}
