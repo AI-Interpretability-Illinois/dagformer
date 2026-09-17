@@ -39,6 +39,8 @@ preserved in [the historical specification](docs/legacy_oracle_design.md).
   instruction-contrast circuit suite from PR #2.
 - Benchmark evaluation: [lm-eval instructions](experiments/results/lmeval/README.md)
   and [reasoning findings](experiments/results/lmeval/reasoning/FINDINGS.md).
+- September 17: [matched ordinary and interpretability evaluations](experiments/results/eval_20260917/README.md)
+  and [merged-PR evidence audit](experiments/PROJECT_SYNC_2026-09-17.md).
 
 ## Data and checkpoints on Delta
 
@@ -66,3 +68,5 @@ python -m pytest tests -q
 The original unit suite covers binary-gate components. Passing it does not
 reproduce the trained FourWay checkpoint results; use the evaluation scripts
 with the recorded checkpoint, configuration and corpus for that purpose.
+Additional tests cover FourWay checkpoint variants, simultaneous head edits,
+and paired evaluation statistics.

@@ -51,12 +51,17 @@ def main():
     ap.add_argument("--synthetic-sequences", type=int, default=16)
     ap.add_argument("--periods", nargs="+", type=int, default=[64, 128, 256])
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--upcast-fp32", action="store_true",
+                    help="repeat with FP32 arithmetic on the loaded weights")
     args = ap.parse_args()
     torch.manual_seed(args.seed)
     device = torch.device(args.device)
     elh = load_elh()
     cfg = elh.load_config(args.config)
     model, predictor = elh.load_fourway(args.ckpt, cfg, device)
+    if args.upcast_fp32:
+        model.float()
+        predictor.float()
     L, H = cfg["num_hidden_layers"], cfg["num_attention_heads"]
     chunks = layer_chunks(L, H)
     calibration, _ = load_eval_ids(args.calibration_cache)
@@ -125,7 +130,8 @@ def main():
         args.table_out.parent.mkdir(parents=True, exist_ok=True)
         table_metadata = {"checkpoint": args.ckpt, "config": args.config,
                           "calibration_cache": args.calibration_cache,
-                          "n_calibration": len(calibration), "L": L, "H": H}
+                          "n_calibration": len(calibration), "L": L, "H": H,
+                          "upcast_fp32": args.upcast_fp32}
         torch.save({**table_metadata, "tables": {k: v.cpu() for k, v in tables.items()}}, args.table_out)
         generator = torch.Generator().manual_seed(args.seed)
         permutations = [torch.randperm(length, generator=generator).to(device) for _ in evaluation]

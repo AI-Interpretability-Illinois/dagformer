@@ -2,25 +2,27 @@
 
 Why these tasks, at this scale
 ------------------------------
-The checkpoints here are 75M-600M params trained on 12B Dolma tokens.  Two
-consequences drive the suite design:
+The checkpoints have 75M-600M backbone scales and were trained from a 12B-token
+Dolma mmap slice. Tokens actually consumed depend on checkpoint step and global
+batch size; 12B is the available corpus size, not each checkpoint's budget.
+Two observations motivate the suites:
 
 1. **Generative math is near the floor.**  ``gsm8k`` exact-match at this scale
-   is ~0-2% for every model in the comparison; it is reported because it is the
-   benchmark that gets asked about, and because ``flexible-extract`` does pick
-   up the occasional correct answer, but a 0.0-vs-0.4 gap is noise, not
-   evidence.  Read it together with ``gsm8k_bpb``.
+   was 0.5-2.5% in the original 200-item comparison. Full-test paired intervals
+   help assess small differences. Read generated accuracy separately from
+   ``gsm8k_bpb``.
 
 2. **Likelihood-scored reasoning still discriminates.**  ``gsm8k_bpb`` (defined
-   in ``tasks/gsm8k_bpb.yaml``) scores bits-per-byte of the *gold* chain of
-   thought, i.e. how well the model models step-by-step arithmetic prose.  It
+   in ``tasks/gsm8k_bpb.yaml``) scores the entire question plus gold answer,
+   including the answer's arithmetic prose. It is not answer-conditional
+   likelihood or generated reasoning accuracy. It
    is smooth, has no floor effect, and separates models that are all at 0% EM.
    It is a custom task in this directory, not an upstream lm-eval task, so it
    is comparable across the models evaluated here but not to published numbers.
 
-The multiple-choice reasoning tasks (arc_challenge, mathqa, commonsense_qa,
-social_iqa, openbookqa, winogrande) are all above chance-ish at 300M+ and are
-the load-bearing part of the comparison.
+Several multiple-choice scores are close to label chance, including at 300M.
+Interpret the per-task scores, paired differences and trivial-label baselines
+before drawing a broad reasoning claim.
 
 Not in the default suite: ``logiqa`` and ``logiqa2``.  Both hub repos ship a
 dataset loading script, so they only load with ``HF_DATASETS_TRUST_REMOTE_CODE=1``

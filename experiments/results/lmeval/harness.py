@@ -4,18 +4,15 @@
 request-batching, log-likelihood and few-shot machinery for free.  Only one
 thing has to be replaced: generation.
 
-Generative tasks (gsm8k and friends) are the point of this directory, and the
-routed DAGFormer forward has no KV cache — every layer's per-head Q/K/V inputs
-are a per-token weighted sum over *all* prior layer outputs, so there is no
-per-step state to carry.  :meth:`CheckpointLM._generate_recompute` therefore
-re-runs the full prefix for each new token.  That is O(T) forwards per sample
-instead of O(1), which is why generative task runs get their own (smaller)
-sample limit — see ``run_eval.py``.
+The routed DAGFormer wrapper currently has no KV-cache implementation.
+:meth:`CheckpointLM._generate_recompute` re-runs the full prefix for each new
+token; cached decoding processes only the new token after the initial prompt.
+Generation runs therefore have a separate sample limit — see ``run_eval.py``.
 
-Dense baselines keep HF's cached ``generate()`` by default (identical greedy
-output, ~100x faster).  ``--no-kv-cache`` forces every model down the same
-recompute path when you want the decode arithmetic to be bit-identical across
-architectures.
+Dense baselines use HF's cached ``generate()`` by default. Cached and recomputed
+BF16 execution can differ numerically and occasionally choose different greedy
+tokens. ``--no-kv-cache`` uses the recomputation path for every model when
+checking sensitivity to that implementation choice.
 """
 from __future__ import annotations
 

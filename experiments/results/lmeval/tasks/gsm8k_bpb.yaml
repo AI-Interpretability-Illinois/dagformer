@@ -1,10 +1,10 @@
-# Bits-per-byte of the GSM8K gold chain of thought.
+# Bits per byte of the entire GSM8K question plus gold answer.
 #
 # Custom task (not upstream lm-eval): at 75M-600M params gsm8k exact-match is
-# pinned at ~0, which tells you nothing about whether a routing change helped.
-# Scoring the *gold* solution under the model instead gives a smooth,
-# floor-free measure of how well it models step-by-step arithmetic reasoning,
-# on exactly the distribution gsm8k tests.
+# near the floor in the original 200-item run. Rolling likelihood gives a
+# smoother measure of language modeling on mathematical text, including both
+# the question and solution. It does not measure generated reasoning accuracy
+# or the conditional likelihood of just the answer.
 #
 # Same rolling-loglikelihood machinery as the `wikitext` task, so
 # bits_per_byte here is directly comparable to the wikitext BPB the project

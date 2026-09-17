@@ -38,6 +38,8 @@ def paired_difference(base, dag, metric, draws=10000, seed=0):
     for doc in ids:
         if base[doc].get("doc_hash") != dag[doc].get("doc_hash"):
             raise ValueError(f"Document content differs for ID {doc}")
+        if base[doc].get("prompt_hash") != dag[doc].get("prompt_hash"):
+            raise ValueError(f"Evaluation prompt differs for ID {doc}")
     n = len(ids)
     rng = np.random.default_rng(seed)
     if metric_name == "bits_per_byte":
