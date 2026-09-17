@@ -251,12 +251,60 @@ def context_generation(root, out):
     save(fig, out, "context_generation")
 
 
+def sae_transfer(root, out):
+    data = read(root / "sae_transfer/summary.json")["features"]
+    blocks = read(root / "sae_transfer/block_bootstrap.json")["features"]
+    fig, axes = plt.subplots(1, 2, sharey=True, figsize=(11.4, 5.5),
+                             gridspec_kw={"width_ratios": [1.65, 1]})
+    labels = []
+    for index, (feature_id, rec) in enumerate(data.items()):
+        labels.append(f"f{feature_id}   (n={rec['on_plus']['n_tokens']:,})")
+        old = rec["original_screen"]
+        axes[0].scatter(old["on+4"] - old["on-4"], index - .13,
+                        marker="D", color="#777777", s=28)
+        if rec["span"]["delta"] is not None:
+            value = rec["span"]["delta"]
+            lo, hi = blocks[feature_id]["contrasts"]["dose_span"]["blocks"]["16"]["paired_bootstrap_95ci"]
+            axes[0].errorbar(value, index + .13, xerr=[[value - lo], [hi - value]],
+                             fmt="o", color=COLORS["corr"], markersize=5, capsize=3)
+        else:
+            axes[0].text(.005, index + .2, "No target tokens", fontsize=8, color=COLORS["corr"])
+        axes[1].scatter(max(old["off-4"], old["off+4"]), index - .13,
+                        marker="D", color="#777777", s=28)
+        axes[1].scatter(max(rec["off_minus"]["delta"], rec["off_plus"]["delta"]), index + .13,
+                        marker="o", color=COLORS["corr"], s=28)
+    axes[0].set_yticks(range(len(data)), labels, fontsize=9)
+    axes[0].invert_yaxis()
+    axes[0].set_xlabel("Target-token dose span: ΔNLL(+4) − ΔNLL(−4)")
+    axes[0].set_title("Some fixed directions retain their effect")
+    axes[1].set_xlabel("Maximum other-token NLL rise\nacross the two doses")
+    axes[1].set_title("Cost to predicting other tokens")
+    axes[1].axvline(.03, color="#777777", linestyle=":", linewidth=1)
+    axes[1].text(.0304, -.6, "Old screen criterion", rotation=90, va="top", fontsize=8, color="#555555")
+    for ax in axes:
+        ax.axvline(0, color="#999999", linestyle="--", linewidth=.8)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.grid(axis="y", color="#eeeeee", linewidth=.6)
+        ax.grid(axis="x", color="#eeeeee", linewidth=.6)
+        ax.set_axisbelow(True)
+    axes[1].set_xlim(-.001, .045)
+    legend = [Line2D([], [], marker="D", linestyle="none", color="#777777", label="Historical screen"),
+              Line2D([], [], marker="o", linestyle="none", color=COLORS["corr"], label="New WikiText windows")]
+    fig.legend(handles=legend, loc="upper center", ncol=2, bbox_to_anchor=(.55, 1.01), frameon=False)
+    fig.text(.02, -.025, "Eight previously selected directions; alpha ±4. n = new-corpus target-token count.\n"
+             "Left: paired 95% block-bootstrap intervals, 16 adjacent windows per block. "
+             "Right: descriptive maximum cost; no interval on the maximum.\n"
+             "Token sets include fragments and whitespace. Permuted controls have unequal NLL costs; see the report.", fontsize=8.5)
+    fig.tight_layout(rect=(0, .03, 1, .95), w_pad=2)
+    save(fig, out, "sae_transfer")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, default=Path("experiments/results/eval_20260917"))
     plotters = {"ordinary_paired": ordinary, "routing_dependence": routing,
                 "context_transfer": context, "trained_ladder": trained_ladder,
-                "context_generation": context_generation}
+                "context_generation": context_generation, "sae_transfer": sae_transfer}
     ap.add_argument("--figures", nargs="+", choices=list(plotters), default=list(plotters))
     args = ap.parse_args()
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,

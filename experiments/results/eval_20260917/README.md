@@ -345,6 +345,8 @@ paired interval excluding zero. Their other-token NLL costs remain below
 | 7068 | 4,134 / 127 | -0.0521 | +0.0773 | +0.1294 |
 | 4222 | 84 / 38 | -0.0563 | +0.0818 | +0.1381 |
 
+![Historical and new-corpus SAE effects](figures/sae_transfer.png)
+
 A [block-bootstrap check](sae_transfer/block_bootstrap.md) preserves these
 three patterns with adjacent-window blocks up to length 16. Four other
 directions have dose-span intervals including zero, including the earlier

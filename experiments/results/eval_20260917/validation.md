@@ -20,7 +20,7 @@
   position-table harness hook and direct routing-dependence evaluator agreed
   exactly on the checked NLL. Results are in
   [causality_and_hook_checks.json](causality_and_hook_checks.json).
-- Five result figures were rendered and inspected; see
+- Six result figures were rendered and inspected; see
   `figures/qa-ledger.md`. Plotting reads the numeric result files directly.
 - The SAE transfer runner passed a one-window CPU execution check
   plus three focused tests: token-weighted conditional loss aggregation,

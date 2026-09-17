@@ -23,3 +23,13 @@ gray crosses. Reference rates and run sizes are read from metadata. Inspection
 of the rendered PNG found no clipping or overlapping labels; SVG/PDF exports
 use the same figure. The caption and accompanying diagnostics separate word
 omission from contradictory values.
+
+## SAE transfer
+
+Added the eight-feature old/new comparison after all 96 feature/control arms
+completed. The left panel displays the signed dose span with paired block-16
+intervals on the new corpus; the right reports the maximum other-token loss
+cost over the two doses. The target-empty feature remains visible and has no
+new target-effect point. The rendered PNG was inspected: row labels, marker
+types, intervals, the cost criterion, and the caption are readable without
+clipping. PDF and SVG use the same figure.
