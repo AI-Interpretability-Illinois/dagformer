@@ -8,6 +8,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from eval_sae_transfer import permute_within_streams, ratio_summary
+from summarize_sae_transfer import span_summary
 
 
 def test_masked_loss_is_weighted_by_tokens_not_windows():
@@ -32,3 +33,13 @@ def test_random_direction_preserves_each_layer_and_stream_multiset():
     for start, stop in zip(boundaries, boundaries[1:]):
         assert torch.equal(control[start:stop].sort().values, direction[start:stop].sort().values)
     assert not torch.equal(control, direction)
+
+
+def test_dose_span_keeps_pairing_and_target_token_weights():
+    # Both dose effects vary across windows, but their paired difference is
+    # exactly two nats per target token in each window.
+    minus = {"window_token_count": [1, 3], "window_delta_sum": [-5., 12.]}
+    plus = {"window_token_count": [1, 3], "window_delta_sum": [-3., 18.]}
+    result = span_summary(minus, plus, draws=100, seed=42)
+    assert result["delta"] == 2.
+    assert result["paired_bootstrap_95ci"] == [2., 2.]
