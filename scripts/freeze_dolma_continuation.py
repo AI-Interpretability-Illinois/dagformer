@@ -23,6 +23,9 @@ from transformers import AutoTokenizer
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.pretokenize import write_index
 from src.data.dolma import DolmaPackedDataset
+import src.data.dolma as dolma
+
+DOLMA_REVISION = "7f48140530a023e9ea4c5cfb141160922727d4d3"
 
 
 class PinnedDolma(DolmaPackedDataset):
@@ -33,8 +36,29 @@ class PinnedDolma(DolmaPackedDataset):
     def _load_stream(self):
         dataset = load_dataset(self.dataset_name, name=self.dataset_version,
                                revision=self.revision, split="train",
-                               streaming=True, trust_remote_code=True)
+                               streaming=True, trust_remote_code=True,
+                               storage_options={"http": {"block_size": 0},
+                                                "https": {"block_size": 0}})
         return dataset.shard(num_shards=self.world_size, index=self.rank)
+
+
+class ProgressTokenizer:
+    def __init__(self, tokenizer, rank):
+        self.tokenizer, self.rank = tokenizer, rank
+        self.tokens = 0
+        self.last_log = time.monotonic()
+
+    def __getattr__(self, name):
+        return getattr(self.tokenizer, name)
+
+    def __call__(self, text, **kwargs):
+        encoded = self.tokenizer(text, **kwargs)
+        self.tokens += len(encoded["input_ids"]) + 1
+        if time.monotonic() - self.last_log >= 60:
+            print(f"Rank {self.rank}: tokenized {self.tokens:,} tokens during prefix/suffix scan",
+                  flush=True)
+            self.last_log = time.monotonic()
+        return encoded
 
 
 def write_suffix(dataset, path: Path, samples: int, seq_len: int, rank: int) -> None:
@@ -71,7 +95,10 @@ def freeze_rank(task: dict) -> dict:
     if (path.exists() and marker.exists() and path.stat().st_size == size
             and json.loads(marker.read_text())["settings"] == task):
         return {"rank": rank, "path": str(path), "samples": samples}
-    tokenizer = AutoTokenizer.from_pretrained(task["tokenizer"])
+    # A preparation failure should surface instead of holding an allocation in
+    # the legacy training reader's practically unlimited retry loop.
+    dolma.MAX_RETRIES, dolma.RETRY_WAIT = 8, 10
+    tokenizer = ProgressTokenizer(AutoTokenizer.from_pretrained(task["tokenizer"]), rank)
     dataset = PinnedDolma(olmo_tokenizer=tokenizer, seq_len=1024,
                           dataset_name="allenai/dolma", dataset_version="v1_7",
                           rank=rank, world_size=8, revision=task["revision"],
@@ -106,9 +133,10 @@ def main() -> None:
     p.add_argument("--tokenizer", required=True)
     p.add_argument("--origin-updates", type=int, default=14001)
     p.add_argument("--target-updates", type=int, default=22900)
+    p.add_argument("--revision", default=DOLMA_REVISION)
     args = p.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    info = HfApi().dataset_info("allenai/dolma")
+    info = HfApi().dataset_info("allenai/dolma", revision=args.revision)
     task = {"out_dir": str(args.out_dir), "tokenizer": args.tokenizer,
             "origin_updates": args.origin_updates, "target_updates": args.target_updates,
             "revision": info.sha}

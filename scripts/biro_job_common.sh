@@ -19,6 +19,10 @@ cd "$DAG_CODE"
 export DAG_ROOT DAG_CODE
 export PYTHONPATH="$DAG_CODE"
 export HF_HOME="$DAG_ROOT/cache/huggingface"
+export HF_HUB_CACHE="$HF_HOME/hub"
+export HF_DATASETS_CACHE="$HF_HOME/datasets"
+export PIP_CACHE_DIR="$DAG_ROOT/cache/pip"
+unset TRANSFORMERS_CACHE
 export HF_HUB_DISABLE_XET=1
 export HF_HUB_DOWNLOAD_TIMEOUT=300
 export TOKENIZERS_PARALLELISM=false
@@ -26,4 +30,3 @@ export OMP_NUM_THREADS=1
 export PYTHONUNBUFFERED=1
 export WANDB_MODE=offline
 printf 'Job %s on %s, code %s\n' "$SLURM_JOB_ID" "$(hostname)" "$DAG_REVISION"
-
