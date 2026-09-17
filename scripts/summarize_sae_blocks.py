@@ -14,6 +14,8 @@ def main():
     ap.add_argument("--blocks", nargs="+", type=int, default=[1, 4, 8, 16])
     ap.add_argument("--draws", type=int, default=10000)
     ap.add_argument("--seed", type=int, default=20260917)
+    ap.add_argument("--mechanism-contrasts", action="store_true",
+                    help="also include component effects and feature-minus-control dose spans")
     args = ap.parse_args()
     source = json.loads(args.input.read_text())
     if not source["complete"]:
@@ -38,7 +40,20 @@ def main():
         n = len(counts)
         m, p = np.asarray(minus["window_delta_sum"]), np.asarray(plus["window_delta_sum"])
         output = {"target_tokens": int(counts.sum()), "target_windows": int((counts > 0).sum()), "contrasts": {}}
-        for contrast, sums in (("alpha-4", m), ("alpha4", p), ("dose_span", p - m)):
+        contrasts = [("alpha-4", m), ("alpha4", p), ("dose_span", p - m)]
+        if args.mechanism_contrasts:
+            for name in ("r_only", "qkv_only", *(f"random{i}" for i in range(source["args"]["controls"]))):
+                low = feature["arms"][f"{name}/alpha-4"]["on_rule"]
+                high = feature["arms"][f"{name}/alpha4"]["on_rule"]
+                if not all(np.array_equal(counts, arm["window_token_count"]) for arm in (low, high)):
+                    raise ValueError("SAE mechanism arms have different target positions")
+                a, b = np.asarray(low["window_delta_sum"]), np.asarray(high["window_delta_sum"])
+                if name in ("r_only", "qkv_only"):
+                    contrasts += [(f"{name}/alpha-4", a), (f"{name}/alpha4", b),
+                                  (f"{name}/dose_span", b - a)]
+                else:
+                    contrasts.append((f"feature_minus_{name}/dose_span", (p - m) - (b - a)))
+        for contrast, sums in contrasts:
             record = {"delta": float(sums.sum() / counts.sum()) if counts.sum() else None, "blocks": {}}
             cells = []
             for block in args.blocks:
@@ -58,6 +73,11 @@ def main():
             lines.append(f"| {feature_id} | {contrast} | {point} | " + " | ".join(cells) + " |")
         result["features"][feature_id] = output
     folder = args.input.parent
+    if args.mechanism_contrasts:
+        lines[2:2] = ["Component arms keep only R or Q/K/V coordinates. Control contrasts subtract",
+                      "the control's signed dose span from the feature's span, with all four arms",
+                      "paired within each window.",
+                      source["args"].get("corpus_note") or "This reuses the initial transfer corpus.", ""]
     (folder / "block_bootstrap.json").write_text(json.dumps(result, indent=2) + "\n")
     (folder / "block_bootstrap.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

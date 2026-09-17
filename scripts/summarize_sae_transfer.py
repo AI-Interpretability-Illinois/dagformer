@@ -63,7 +63,7 @@ def main():
              "No direction or token set was selected on the new WikiText test windows.",
              "Edits act on the correction channel at all positions; alpha units match the",
              "original mean active feature coefficient. NLL changes are token-weighted.",
-             "Intervals resample the 128 windows in paired form, with 10,000 draws; they",
+             f"Intervals resample the {payload['args']['n_sequences']} windows in paired form, with 10,000 draws; they",
              "are unadjusted and do not cover training-seed or feature-selection uncertainty.", "",
              "The count column gives target tokens / windows containing target tokens.",
              "Bootstrap draws with no target tokens are omitted; valid-draw counts are in JSON.", "",
@@ -171,7 +171,9 @@ def main():
     sections = lines + secondary + control_costs + (decomposition if payload["args"].get("stream_decomposition") else [])
     sections += ["", "[Direct paired span contrasts](control_comparisons.md) compare the feature",
                  "with each control while retaining the pairing of all four dose arms."]
-    if payload["args"].get("stream_decomposition"):
+    if payload["args"].get("corpus_note"):
+        sections[2:2] = [payload["protocol"]["corpus"], ""]
+    elif payload["args"].get("stream_decomposition"):
         sections[2:2] = ["This mechanism follow-up reuses the same 128 WikiText test windows as",
                          "the initial transfer run. Whole-head controls and the R/Q/K/V split",
                          "were added after inspecting that run; this is not a second corpus replication.", ""]

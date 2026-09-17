@@ -19,6 +19,10 @@ def main():
     ap.add_argument("--validation-windows", type=int, default=50)
     ap.add_argument("--test-windows", type=int, default=128)
     ap.add_argument("--seed", type=int, default=20260917)
+    ap.add_argument("--splits", nargs="+", choices=["train", "validation", "test"],
+                    default=["train", "validation", "test"])
+    ap.add_argument("--exclude-metadata", type=Path,
+                    help="exclude whole documents recorded in an earlier cache manifest")
     args = ap.parse_args()
     tok = AutoTokenizer.from_pretrained(args.tokenizer)
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -27,13 +31,24 @@ def main():
                 "tokenizer": args.tokenizer, "seq_len": args.seq_len,
                 "seed": args.seed, "packing": "EOS between documents; nonoverlapping T+1 chunks",
                 "splits": {}}
-    for split in ("train", "validation", "test"):
+    previous = json.loads(args.exclude_metadata.read_text()) if args.exclude_metadata else None
+    if previous and (previous["dataset"] != dataset_name or previous["config"] != metadata["config"]):
+        raise ValueError("Exclusion metadata belongs to another dataset")
+    if previous:
+        metadata["exclusion_source"] = str(args.exclude_metadata)
+    for split in args.splits:
         data = load_dataset(dataset_name, "wikitext-2-raw-v1", split=split)
+        prior = previous["splits"][split] if previous else None
+        if prior and prior["dataset_fingerprint"] != data._fingerprint:
+            raise ValueError("Dataset fingerprint differs from the exclusion manifest")
+        excluded = set(prior["document_ids"]) if prior else set()
         target = getattr(args, split + "_windows")
         tokens, doc_ids = [], []
         # Randomize document order before packing, identically for every model.
         order = torch.randperm(len(data), generator=torch.Generator().manual_seed(args.seed)).tolist()
         for index in order:
+            if index in excluded:
+                continue
             doc = data[index]
             text = doc.get("page", doc.get("text"))
             if not isinstance(text, str):
@@ -53,6 +68,8 @@ def main():
         metadata["splits"][split] = {"path": str(path), "windows": target,
                                      "document_ids": doc_ids,
                                      "dataset_fingerprint": data._fingerprint}
+        if prior:
+            metadata["splits"][split]["excluded_document_ids"] = sorted(excluded)
         print(split, target, "windows from", len(doc_ids), "documents", flush=True)
     (args.out_dir / "wikitext_cache_metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
 

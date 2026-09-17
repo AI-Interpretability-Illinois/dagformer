@@ -6,6 +6,10 @@ tokens sampled from the WikiText training-token marginal. Copy accuracy scores
 teacher-forced next tokens over the second half. Intervals are paired normal
 intervals across sequences. Models share backbone scale and processed-token
 budget; their total parameter counts differ, as documented in the main report.
+The exact scored targets have zero-based indices 513–1023: 511 per sequence.
+This retains the original routing-dependence convention for every model, including
+its omission of target 512. The separate historical-copy-head transfer uses the
+first token after the initial block and reports its own matched reference.
 
 | Scale | Period | Dense accuracy | DAGFormer accuracy | Difference (points) | Paired 95% interval |
 |---|---:|---:|---:|---:|---|

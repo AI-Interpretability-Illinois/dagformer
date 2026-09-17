@@ -78,6 +78,7 @@ def main():
     ap.add_argument("--draws", type=int, default=10000)
     ap.add_argument("--seed", type=int, default=20260917)
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--corpus-note", help="describe the corpus relation for a follow-up run")
     args = ap.parse_args()
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     device = torch.device(args.device)
@@ -135,7 +136,7 @@ def main():
                                "controls": control_protocol,
                                "stream_decomposition": "R-only and Q/K/V-only additive edits are evaluated separately" if args.stream_decomposition else None,
                                "uncertainty": "paired window bootstrap of token-weighted loss differences; fixed checkpoint; unadjusted intervals",
-                               "corpus": "new WikiText test windows, separate from the original Dolma feature-discovery corpus"},
+                               "corpus": args.corpus_note or "new WikiText test windows, separate from the original Dolma feature-discovery corpus"},
                   "features": {}, "complete": False}
         for feature in features:
             direction = feature["direction"].float()

@@ -4,6 +4,8 @@ All models use the same 128 WikiText test windows and 16 synthetic sequences
 at each repetition period. Token blocks are sampled from the same training-token
 marginal. Copy accuracy scores teacher-forced predictions in the second half
 of each sequence, following the original routing-dependence protocol.
+Specifically, these 1,024-token runs score target indices 513–1023 (zero-based),
+511 targets per sequence. The first token of the second half is omitted for every model.
 
 All checkpoints were trained for 6,000 updates / 3.146B tokens. They have
 different parameter counts; this is neither a matched-FLOPs nor a speed test.

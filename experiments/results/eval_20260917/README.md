@@ -203,6 +203,11 @@ External content dependence is therefore weak in these evaluations, rather
 than identically absent. The calibration table came from WikiText training
 windows and was reused unchanged on the other tasks.
 
+The [original optimizer-state audit](provenance/optimizer_activity.md) confirms
+that all predictor and correction parameter tensors have full update counts
+and finite, nonzero Adam moments at all three scales and step 10500. Omission
+from the optimizer does not explain the weak external content dependence.
+
 ## Separately trained routing variants
 
 The [complete 150M ladder](standard_ladder/README.md) holds the backbone,
@@ -226,6 +231,9 @@ percentage points [4.97, 6.77]. Identity + correction similarly improves BPB
 by 0.04338 and LAMBADA by 5.07 points. These trained variants show that the
 large external encoder is not required for the observed gains in this 150M
 configuration; they do not establish the same tradeoff at every scale.
+These variants also do not isolate the extra value of per-head routing over
+layer-level mixing or an equally sized local adapter; those are different
+architectural comparisons from the predictor/correction ladder tested here.
 
 ![Trained routing ladder](figures/trained_ladder.png)
 
@@ -518,6 +526,15 @@ whole-head controls under direct paired intervals. Feature 4222's effect
 is largely retained in Q/K/V, with paired span contrasts above zero for four
 of five controls; the fifth interval includes zero. These are measured
 control comparisons, not a population-level selectivity guarantee.
+
+The [block-bootstrap mechanism check](sae_head_controls/block_bootstrap.md)
+retains the component pattern through 16-window blocks: feature 3560's R-only
+span is +0.1555 [0.1391, 0.1673], while its Q/K/V-only span includes zero;
+feature 4222's Q/K/V-only span is +0.1462 [0.1042, 0.1921], while its R-only
+span includes zero. Feature 7068 exceeds all five controls under both window
+and block-16 intervals. For 4222, the fifth control contrast becomes positive
+under block-16 resampling but includes zero under independent-window resampling;
+its certainty depends on the resampling unit.
 
 The [individual-token results](sae_head_controls/individual_tokens.md) further
 limit the semantic interpretation. Feature 4222's aggregate is driven most

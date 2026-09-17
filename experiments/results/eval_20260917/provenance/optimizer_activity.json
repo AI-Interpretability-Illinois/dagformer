@@ -1,0 +1,4657 @@
+{
+  "notes": [
+    "Read-only CPU audit of original optimizer states; no training or checkpoint writes.",
+    "Nonzero moments establish gradient/update history, not that optimization converged or every training detail was correct.",
+    "Sparse or unused embedding coordinates may have zero moments even when their containing tensor is updated."
+  ],
+  "records": [
+    {
+      "model": "75m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_75m_dagformer_mmap/checkpoint_step3000.pt",
+      "checkpoint_step": 3000,
+      "mapping": "training optimizer order: predictor except layer_biases, then correction/v_norms; separate layer_biases group; all counts and shapes checked",
+      "groups": [
+        {
+          "index": 0,
+          "tensors": 68,
+          "saved_lr": 1.7857142857141683e-07,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 1,
+          "tensors": 45,
+          "saved_lr": 1.0714285714285009e-07,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 2,
+          "tensors": 5,
+          "saved_lr": 1.0714285714285009e-07,
+          "weight_decay": 0.0
+        }
+      ],
+      "components": {
+        "embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 25690112,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "pos_embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 1048576,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "encoder": {
+          "parameter_tensors": 24,
+          "num_parameters": 1579520,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 24,
+          "tensors_with_nonzero_second_moment": 24
+        },
+        "trunk": {
+          "parameter_tensors": 4,
+          "num_parameters": 132096,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 4,
+          "tensors_with_nonzero_second_moment": 4
+        },
+        "layer_heads": {
+          "parameter_tensors": 5,
+          "num_parameters": 256000,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 5,
+          "tensors_with_nonzero_second_moment": 5
+        },
+        "correction_mlps": {
+          "parameter_tensors": 10,
+          "num_parameters": 391680,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 10,
+          "tensors_with_nonzero_second_moment": 10
+        },
+        "layer_biases": {
+          "parameter_tensors": 5,
+          "num_parameters": 500,
+          "updates_min": 3000,
+          "updates_max": 3000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 5,
+          "tensors_with_nonzero_second_moment": 5
+        }
+      },
+      "parameters": [
+        {
+          "name": "predictor.embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100352,
+            256
+          ],
+          "num_parameters": 25690112,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 23483392,
+          "nonzero_second_moment": 23483392
+        },
+        {
+          "name": "predictor.pos_embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            4096,
+            256
+          ],
+          "num_parameters": 1048576,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            512,
+            256
+          ],
+          "num_parameters": 131072,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "predictor.trunk.1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            512
+          ],
+          "num_parameters": 512,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 512,
+          "nonzero_second_moment": 512
+        },
+        {
+          "name": "predictor.layer_heads.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            50,
+            512
+          ],
+          "num_parameters": 25600,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 25600,
+          "nonzero_second_moment": 25600,
+          "nonzero_weight_from_zero_init": 25600
+        },
+        {
+          "name": "predictor.layer_heads.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            75,
+            512
+          ],
+          "num_parameters": 38400,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 38400,
+          "nonzero_second_moment": 38400,
+          "nonzero_weight_from_zero_init": 38400
+        },
+        {
+          "name": "predictor.layer_heads.2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100,
+            512
+          ],
+          "num_parameters": 51200,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 51200,
+          "nonzero_second_moment": 51200,
+          "nonzero_weight_from_zero_init": 51200
+        },
+        {
+          "name": "predictor.layer_heads.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            125,
+            512
+          ],
+          "num_parameters": 64000,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 64000,
+          "nonzero_second_moment": 64000,
+          "nonzero_weight_from_zero_init": 64000
+        },
+        {
+          "name": "predictor.layer_heads.4.weight",
+          "optimizer_group": 1,
+          "shape": [
+            150,
+            512
+          ],
+          "num_parameters": 76800,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 76800,
+          "nonzero_second_moment": 76800,
+          "nonzero_weight_from_zero_init": 76800
+        },
+        {
+          "name": "correction_mlps.0.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            512
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "correction_mlps.0.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            50,
+            128
+          ],
+          "num_parameters": 6400,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 6400,
+          "nonzero_second_moment": 6400
+        },
+        {
+          "name": "correction_mlps.1.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            512
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "correction_mlps.1.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            75,
+            128
+          ],
+          "num_parameters": 9600,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 9600,
+          "nonzero_second_moment": 9600
+        },
+        {
+          "name": "correction_mlps.2.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            512
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "correction_mlps.2.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100,
+            128
+          ],
+          "num_parameters": 12800,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 12800,
+          "nonzero_second_moment": 12800
+        },
+        {
+          "name": "correction_mlps.3.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            512
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "correction_mlps.3.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            125,
+            128
+          ],
+          "num_parameters": 16000,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 16000,
+          "nonzero_second_moment": 16000
+        },
+        {
+          "name": "correction_mlps.4.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            512
+          ],
+          "num_parameters": 65536,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "correction_mlps.4.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            150,
+            128
+          ],
+          "num_parameters": 19200,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 19200,
+          "nonzero_second_moment": 19200
+        },
+        {
+          "name": "predictor.layer_biases.0",
+          "optimizer_group": 2,
+          "shape": [
+            50
+          ],
+          "num_parameters": 50,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 50,
+          "nonzero_second_moment": 50
+        },
+        {
+          "name": "predictor.layer_biases.1",
+          "optimizer_group": 2,
+          "shape": [
+            75
+          ],
+          "num_parameters": 75,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75,
+          "nonzero_second_moment": 75
+        },
+        {
+          "name": "predictor.layer_biases.2",
+          "optimizer_group": 2,
+          "shape": [
+            100
+          ],
+          "num_parameters": 100,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 100,
+          "nonzero_second_moment": 100
+        },
+        {
+          "name": "predictor.layer_biases.3",
+          "optimizer_group": 2,
+          "shape": [
+            125
+          ],
+          "num_parameters": 125,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 125,
+          "nonzero_second_moment": 125
+        },
+        {
+          "name": "predictor.layer_biases.4",
+          "optimizer_group": 2,
+          "shape": [
+            150
+          ],
+          "num_parameters": 150,
+          "updates": 3000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 150,
+          "nonzero_second_moment": 150
+        }
+      ]
+    },
+    {
+      "model": "150m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/pretrain_150m_dagformer_mmap/checkpoint_step6000.pt",
+      "checkpoint_step": 6000,
+      "mapping": "training optimizer order: predictor except layer_biases, then correction/v_norms; separate layer_biases group; all counts and shapes checked",
+      "groups": [
+        {
+          "index": 0,
+          "tensors": 90,
+          "saved_lr": 8.771929824563651e-08,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 1,
+          "tensors": 51,
+          "saved_lr": 5.26315789473819e-08,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 2,
+          "tensors": 7,
+          "saved_lr": 5.26315789473819e-08,
+          "weight_decay": 0.0
+        }
+      ],
+      "components": {
+        "embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 25690112,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "pos_embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 1048576,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "encoder": {
+          "parameter_tensors": 24,
+          "num_parameters": 1579520,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 24,
+          "tensors_with_nonzero_second_moment": 24
+        },
+        "trunk": {
+          "parameter_tensors": 4,
+          "num_parameters": 132096,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 4,
+          "tensors_with_nonzero_second_moment": 4
+        },
+        "layer_heads": {
+          "parameter_tensors": 7,
+          "num_parameters": 663040,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 7,
+          "tensors_with_nonzero_second_moment": 7
+        },
+        "correction_mlps": {
+          "parameter_tensors": 14,
+          "num_parameters": 853888,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 14,
+          "tensors_with_nonzero_second_moment": 14
+        },
+        "layer_biases": {
+          "parameter_tensors": 7,
+          "num_parameters": 1295,
+          "updates_min": 6000,
+          "updates_max": 6000,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 7,
+          "tensors_with_nonzero_second_moment": 7
+        }
+      },
+      "parameters": [
+        {
+          "name": "predictor.embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100352,
+            256
+          ],
+          "num_parameters": 25690112,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 24009984,
+          "nonzero_second_moment": 24009984
+        },
+        {
+          "name": "predictor.pos_embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            4096,
+            256
+          ],
+          "num_parameters": 1048576,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            512,
+            256
+          ],
+          "num_parameters": 131072,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "predictor.trunk.1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            512
+          ],
+          "num_parameters": 512,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 512,
+          "nonzero_second_moment": 512
+        },
+        {
+          "name": "predictor.layer_heads.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            74,
+            512
+          ],
+          "num_parameters": 37888,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 37888,
+          "nonzero_second_moment": 37888,
+          "nonzero_weight_from_zero_init": 37888
+        },
+        {
+          "name": "predictor.layer_heads.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            111,
+            512
+          ],
+          "num_parameters": 56832,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 56832,
+          "nonzero_second_moment": 56832,
+          "nonzero_weight_from_zero_init": 56832
+        },
+        {
+          "name": "predictor.layer_heads.2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            148,
+            512
+          ],
+          "num_parameters": 75776,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75776,
+          "nonzero_second_moment": 75776,
+          "nonzero_weight_from_zero_init": 75776
+        },
+        {
+          "name": "predictor.layer_heads.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            185,
+            512
+          ],
+          "num_parameters": 94720,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 94720,
+          "nonzero_second_moment": 94720,
+          "nonzero_weight_from_zero_init": 94720
+        },
+        {
+          "name": "predictor.layer_heads.4.weight",
+          "optimizer_group": 1,
+          "shape": [
+            222,
+            512
+          ],
+          "num_parameters": 113664,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 113664,
+          "nonzero_second_moment": 113664,
+          "nonzero_weight_from_zero_init": 113664
+        },
+        {
+          "name": "predictor.layer_heads.5.weight",
+          "optimizer_group": 1,
+          "shape": [
+            259,
+            512
+          ],
+          "num_parameters": 132608,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 132608,
+          "nonzero_second_moment": 132608,
+          "nonzero_weight_from_zero_init": 132608
+        },
+        {
+          "name": "predictor.layer_heads.6.weight",
+          "optimizer_group": 1,
+          "shape": [
+            296,
+            512
+          ],
+          "num_parameters": 151552,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 151552,
+          "nonzero_second_moment": 151552,
+          "nonzero_weight_from_zero_init": 151552
+        },
+        {
+          "name": "correction_mlps.0.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.0.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            74,
+            128
+          ],
+          "num_parameters": 9472,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 9472,
+          "nonzero_second_moment": 9472
+        },
+        {
+          "name": "correction_mlps.1.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.1.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            111,
+            128
+          ],
+          "num_parameters": 14208,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 14208,
+          "nonzero_second_moment": 14208
+        },
+        {
+          "name": "correction_mlps.2.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.2.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            148,
+            128
+          ],
+          "num_parameters": 18944,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 18944,
+          "nonzero_second_moment": 18944
+        },
+        {
+          "name": "correction_mlps.3.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.3.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            185,
+            128
+          ],
+          "num_parameters": 23680,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 23680,
+          "nonzero_second_moment": 23680
+        },
+        {
+          "name": "correction_mlps.4.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.4.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            222,
+            128
+          ],
+          "num_parameters": 28416,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 28416,
+          "nonzero_second_moment": 28416
+        },
+        {
+          "name": "correction_mlps.5.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.5.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            259,
+            128
+          ],
+          "num_parameters": 33152,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 33152,
+          "nonzero_second_moment": 33152
+        },
+        {
+          "name": "correction_mlps.6.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            768
+          ],
+          "num_parameters": 98304,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98304,
+          "nonzero_second_moment": 98304
+        },
+        {
+          "name": "correction_mlps.6.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            296,
+            128
+          ],
+          "num_parameters": 37888,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 37888,
+          "nonzero_second_moment": 37888
+        },
+        {
+          "name": "predictor.layer_biases.0",
+          "optimizer_group": 2,
+          "shape": [
+            74
+          ],
+          "num_parameters": 74,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 74,
+          "nonzero_second_moment": 74
+        },
+        {
+          "name": "predictor.layer_biases.1",
+          "optimizer_group": 2,
+          "shape": [
+            111
+          ],
+          "num_parameters": 111,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 111,
+          "nonzero_second_moment": 111
+        },
+        {
+          "name": "predictor.layer_biases.2",
+          "optimizer_group": 2,
+          "shape": [
+            148
+          ],
+          "num_parameters": 148,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 148,
+          "nonzero_second_moment": 148
+        },
+        {
+          "name": "predictor.layer_biases.3",
+          "optimizer_group": 2,
+          "shape": [
+            185
+          ],
+          "num_parameters": 185,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 185,
+          "nonzero_second_moment": 185
+        },
+        {
+          "name": "predictor.layer_biases.4",
+          "optimizer_group": 2,
+          "shape": [
+            222
+          ],
+          "num_parameters": 222,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 222,
+          "nonzero_second_moment": 222
+        },
+        {
+          "name": "predictor.layer_biases.5",
+          "optimizer_group": 2,
+          "shape": [
+            259
+          ],
+          "num_parameters": 259,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 259,
+          "nonzero_second_moment": 259
+        },
+        {
+          "name": "predictor.layer_biases.6",
+          "optimizer_group": 2,
+          "shape": [
+            296
+          ],
+          "num_parameters": 296,
+          "updates": 6000,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 296,
+          "nonzero_second_moment": 296
+        }
+      ]
+    },
+    {
+      "model": "300m-dagformer",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_300m_dagformer_mmap/checkpoint_step9000.pt",
+      "checkpoint_step": 9000,
+      "mapping": "training optimizer order: predictor except layer_biases, then correction/v_norms; separate layer_biases group; all counts and shapes checked",
+      "groups": [
+        {
+          "index": 0,
+          "tensors": 134,
+          "saved_lr": 0.0001282051282051282,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 1,
+          "tensors": 63,
+          "saved_lr": 7.692307692307691e-05,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 2,
+          "tensors": 11,
+          "saved_lr": 7.692307692307691e-05,
+          "weight_decay": 0.0
+        }
+      ],
+      "components": {
+        "embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 25690112,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "pos_embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 1048576,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "encoder": {
+          "parameter_tensors": 24,
+          "num_parameters": 1579520,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 24,
+          "tensors_with_nonzero_second_moment": 24
+        },
+        "trunk": {
+          "parameter_tensors": 4,
+          "num_parameters": 132096,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 4,
+          "tensors_with_nonzero_second_moment": 4
+        },
+        "layer_heads": {
+          "parameter_tensors": 11,
+          "num_parameters": 1931776,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 11,
+          "tensors_with_nonzero_second_moment": 11
+        },
+        "correction_mlps": {
+          "parameter_tensors": 22,
+          "num_parameters": 1924736,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 22,
+          "tensors_with_nonzero_second_moment": 22
+        },
+        "layer_biases": {
+          "parameter_tensors": 11,
+          "num_parameters": 3773,
+          "updates_min": 9001,
+          "updates_max": 9001,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 11,
+          "tensors_with_nonzero_second_moment": 11
+        }
+      },
+      "parameters": [
+        {
+          "name": "predictor.embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100352,
+            256
+          ],
+          "num_parameters": 25690112,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 24245248,
+          "nonzero_second_moment": 24245248
+        },
+        {
+          "name": "predictor.pos_embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            4096,
+            256
+          ],
+          "num_parameters": 1048576,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            512,
+            256
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "predictor.trunk.1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            512
+          ],
+          "num_parameters": 512,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 512,
+          "nonzero_second_moment": 512
+        },
+        {
+          "name": "predictor.layer_heads.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            98,
+            512
+          ],
+          "num_parameters": 50176,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 50176,
+          "nonzero_second_moment": 50176,
+          "nonzero_weight_from_zero_init": 50176
+        },
+        {
+          "name": "predictor.layer_heads.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            147,
+            512
+          ],
+          "num_parameters": 75264,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75264,
+          "nonzero_second_moment": 75264,
+          "nonzero_weight_from_zero_init": 75264
+        },
+        {
+          "name": "predictor.layer_heads.2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            196,
+            512
+          ],
+          "num_parameters": 100352,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 100352,
+          "nonzero_second_moment": 100352,
+          "nonzero_weight_from_zero_init": 100352
+        },
+        {
+          "name": "predictor.layer_heads.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            245,
+            512
+          ],
+          "num_parameters": 125440,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 125440,
+          "nonzero_second_moment": 125440,
+          "nonzero_weight_from_zero_init": 125440
+        },
+        {
+          "name": "predictor.layer_heads.4.weight",
+          "optimizer_group": 1,
+          "shape": [
+            294,
+            512
+          ],
+          "num_parameters": 150528,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 150528,
+          "nonzero_second_moment": 150528,
+          "nonzero_weight_from_zero_init": 150528
+        },
+        {
+          "name": "predictor.layer_heads.5.weight",
+          "optimizer_group": 1,
+          "shape": [
+            343,
+            512
+          ],
+          "num_parameters": 175616,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 175616,
+          "nonzero_second_moment": 175616,
+          "nonzero_weight_from_zero_init": 175616
+        },
+        {
+          "name": "predictor.layer_heads.6.weight",
+          "optimizer_group": 1,
+          "shape": [
+            392,
+            512
+          ],
+          "num_parameters": 200704,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 200704,
+          "nonzero_second_moment": 200704,
+          "nonzero_weight_from_zero_init": 200704
+        },
+        {
+          "name": "predictor.layer_heads.7.weight",
+          "optimizer_group": 1,
+          "shape": [
+            441,
+            512
+          ],
+          "num_parameters": 225792,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 225792,
+          "nonzero_second_moment": 225792,
+          "nonzero_weight_from_zero_init": 225792
+        },
+        {
+          "name": "predictor.layer_heads.8.weight",
+          "optimizer_group": 1,
+          "shape": [
+            490,
+            512
+          ],
+          "num_parameters": 250880,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 250880,
+          "nonzero_second_moment": 250880,
+          "nonzero_weight_from_zero_init": 250880
+        },
+        {
+          "name": "predictor.layer_heads.9.weight",
+          "optimizer_group": 1,
+          "shape": [
+            539,
+            512
+          ],
+          "num_parameters": 275968,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 275968,
+          "nonzero_second_moment": 275968,
+          "nonzero_weight_from_zero_init": 275968
+        },
+        {
+          "name": "predictor.layer_heads.10.weight",
+          "optimizer_group": 1,
+          "shape": [
+            588,
+            512
+          ],
+          "num_parameters": 301056,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 301056,
+          "nonzero_second_moment": 301056,
+          "nonzero_weight_from_zero_init": 301056
+        },
+        {
+          "name": "correction_mlps.0.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.0.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            98,
+            128
+          ],
+          "num_parameters": 12544,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 12544,
+          "nonzero_second_moment": 12544
+        },
+        {
+          "name": "correction_mlps.1.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.1.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            147,
+            128
+          ],
+          "num_parameters": 18816,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 18816,
+          "nonzero_second_moment": 18816
+        },
+        {
+          "name": "correction_mlps.2.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.2.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            196,
+            128
+          ],
+          "num_parameters": 25088,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 25088,
+          "nonzero_second_moment": 25088
+        },
+        {
+          "name": "correction_mlps.3.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.3.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            245,
+            128
+          ],
+          "num_parameters": 31360,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 31360,
+          "nonzero_second_moment": 31360
+        },
+        {
+          "name": "correction_mlps.4.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.4.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            294,
+            128
+          ],
+          "num_parameters": 37632,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 37632,
+          "nonzero_second_moment": 37632
+        },
+        {
+          "name": "correction_mlps.5.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.5.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            343,
+            128
+          ],
+          "num_parameters": 43904,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 43904,
+          "nonzero_second_moment": 43904
+        },
+        {
+          "name": "correction_mlps.6.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.6.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            392,
+            128
+          ],
+          "num_parameters": 50176,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 50176,
+          "nonzero_second_moment": 50176
+        },
+        {
+          "name": "correction_mlps.7.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.7.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            441,
+            128
+          ],
+          "num_parameters": 56448,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 56448,
+          "nonzero_second_moment": 56448
+        },
+        {
+          "name": "correction_mlps.8.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.8.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            490,
+            128
+          ],
+          "num_parameters": 62720,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 62720,
+          "nonzero_second_moment": 62720
+        },
+        {
+          "name": "correction_mlps.9.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.9.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            539,
+            128
+          ],
+          "num_parameters": 68992,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 68992,
+          "nonzero_second_moment": 68992
+        },
+        {
+          "name": "correction_mlps.10.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.10.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            588,
+            128
+          ],
+          "num_parameters": 75264,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75264,
+          "nonzero_second_moment": 75264
+        },
+        {
+          "name": "predictor.layer_biases.0",
+          "optimizer_group": 2,
+          "shape": [
+            98
+          ],
+          "num_parameters": 98,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98,
+          "nonzero_second_moment": 98
+        },
+        {
+          "name": "predictor.layer_biases.1",
+          "optimizer_group": 2,
+          "shape": [
+            147
+          ],
+          "num_parameters": 147,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 147,
+          "nonzero_second_moment": 147
+        },
+        {
+          "name": "predictor.layer_biases.2",
+          "optimizer_group": 2,
+          "shape": [
+            196
+          ],
+          "num_parameters": 196,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196,
+          "nonzero_second_moment": 196
+        },
+        {
+          "name": "predictor.layer_biases.3",
+          "optimizer_group": 2,
+          "shape": [
+            245
+          ],
+          "num_parameters": 245,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 245,
+          "nonzero_second_moment": 245
+        },
+        {
+          "name": "predictor.layer_biases.4",
+          "optimizer_group": 2,
+          "shape": [
+            294
+          ],
+          "num_parameters": 294,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 294,
+          "nonzero_second_moment": 294
+        },
+        {
+          "name": "predictor.layer_biases.5",
+          "optimizer_group": 2,
+          "shape": [
+            343
+          ],
+          "num_parameters": 343,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 343,
+          "nonzero_second_moment": 343
+        },
+        {
+          "name": "predictor.layer_biases.6",
+          "optimizer_group": 2,
+          "shape": [
+            392
+          ],
+          "num_parameters": 392,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 392,
+          "nonzero_second_moment": 392
+        },
+        {
+          "name": "predictor.layer_biases.7",
+          "optimizer_group": 2,
+          "shape": [
+            441
+          ],
+          "num_parameters": 441,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 441,
+          "nonzero_second_moment": 441
+        },
+        {
+          "name": "predictor.layer_biases.8",
+          "optimizer_group": 2,
+          "shape": [
+            490
+          ],
+          "num_parameters": 490,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 490,
+          "nonzero_second_moment": 490
+        },
+        {
+          "name": "predictor.layer_biases.9",
+          "optimizer_group": 2,
+          "shape": [
+            539
+          ],
+          "num_parameters": 539,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 539,
+          "nonzero_second_moment": 539
+        },
+        {
+          "name": "predictor.layer_biases.10",
+          "optimizer_group": 2,
+          "shape": [
+            588
+          ],
+          "num_parameters": 588,
+          "updates": 9001,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 588,
+          "nonzero_second_moment": 588
+        }
+      ]
+    },
+    {
+      "model": "300m-dagformer-step10500",
+      "source": "/projects/bfqt/users/yurenh2/ml-projects/DAGFormer/checkpoints/fourway_300m_dagformer_mmap/checkpoint_step10500.pt",
+      "checkpoint_step": 10500,
+      "mapping": "training optimizer order: predictor except layer_biases, then correction/v_norms; separate layer_biases group; all counts and shapes checked",
+      "groups": [
+        {
+          "index": 0,
+          "tensors": 134,
+          "saved_lr": 6.41025641025641e-05,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 1,
+          "tensors": 63,
+          "saved_lr": 3.8461538461538456e-05,
+          "weight_decay": 0.1
+        },
+        {
+          "index": 2,
+          "tensors": 11,
+          "saved_lr": 3.8461538461538456e-05,
+          "weight_decay": 0.0
+        }
+      ],
+      "components": {
+        "embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 25690112,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "pos_embed": {
+          "parameter_tensors": 1,
+          "num_parameters": 1048576,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 1,
+          "tensors_with_nonzero_second_moment": 1
+        },
+        "encoder": {
+          "parameter_tensors": 24,
+          "num_parameters": 1579520,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 24,
+          "tensors_with_nonzero_second_moment": 24
+        },
+        "trunk": {
+          "parameter_tensors": 4,
+          "num_parameters": 132096,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 4,
+          "tensors_with_nonzero_second_moment": 4
+        },
+        "layer_heads": {
+          "parameter_tensors": 11,
+          "num_parameters": 1931776,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 11,
+          "tensors_with_nonzero_second_moment": 11
+        },
+        "correction_mlps": {
+          "parameter_tensors": 22,
+          "num_parameters": 1924736,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 22,
+          "tensors_with_nonzero_second_moment": 22
+        },
+        "layer_biases": {
+          "parameter_tensors": 11,
+          "num_parameters": 3773,
+          "updates_min": 10501,
+          "updates_max": 10501,
+          "all_moments_finite": true,
+          "tensors_with_nonzero_first_moment": 11,
+          "tensors_with_nonzero_second_moment": 11
+        }
+      },
+      "parameters": [
+        {
+          "name": "predictor.embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            100352,
+            256
+          ],
+          "num_parameters": 25690112,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 24319488,
+          "nonzero_second_moment": 24319488
+        },
+        {
+          "name": "predictor.pos_embed.weight",
+          "optimizer_group": 1,
+          "shape": [
+            4096,
+            256
+          ],
+          "num_parameters": 1048576,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.0.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.0.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.0.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_weight",
+          "optimizer_group": 1,
+          "shape": [
+            768,
+            256
+          ],
+          "num_parameters": 196608,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196608,
+          "nonzero_second_moment": 196608
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.in_proj_bias",
+          "optimizer_group": 1,
+          "shape": [
+            768
+          ],
+          "num_parameters": 768,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 768,
+          "nonzero_second_moment": 768
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            256
+          ],
+          "num_parameters": 65536,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 65536,
+          "nonzero_second_moment": 65536
+        },
+        {
+          "name": "predictor.encoder.layers.1.self_attn.out_proj.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            1024,
+            256
+          ],
+          "num_parameters": 262144,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            1024
+          ],
+          "num_parameters": 1024,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 1024,
+          "nonzero_second_moment": 1024
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "num_parameters": 262144,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 262144,
+          "nonzero_second_moment": 262144
+        },
+        {
+          "name": "predictor.encoder.layers.1.linear2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.encoder.layers.1.norm2.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.0.bias",
+          "optimizer_group": 1,
+          "shape": [
+            256
+          ],
+          "num_parameters": 256,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 256,
+          "nonzero_second_moment": 256
+        },
+        {
+          "name": "predictor.trunk.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            512,
+            256
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "predictor.trunk.1.bias",
+          "optimizer_group": 1,
+          "shape": [
+            512
+          ],
+          "num_parameters": 512,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 512,
+          "nonzero_second_moment": 512
+        },
+        {
+          "name": "predictor.layer_heads.0.weight",
+          "optimizer_group": 1,
+          "shape": [
+            98,
+            512
+          ],
+          "num_parameters": 50176,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 50176,
+          "nonzero_second_moment": 50176,
+          "nonzero_weight_from_zero_init": 50176
+        },
+        {
+          "name": "predictor.layer_heads.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            147,
+            512
+          ],
+          "num_parameters": 75264,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75264,
+          "nonzero_second_moment": 75264,
+          "nonzero_weight_from_zero_init": 75264
+        },
+        {
+          "name": "predictor.layer_heads.2.weight",
+          "optimizer_group": 1,
+          "shape": [
+            196,
+            512
+          ],
+          "num_parameters": 100352,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 100352,
+          "nonzero_second_moment": 100352,
+          "nonzero_weight_from_zero_init": 100352
+        },
+        {
+          "name": "predictor.layer_heads.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            245,
+            512
+          ],
+          "num_parameters": 125440,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 125440,
+          "nonzero_second_moment": 125440,
+          "nonzero_weight_from_zero_init": 125440
+        },
+        {
+          "name": "predictor.layer_heads.4.weight",
+          "optimizer_group": 1,
+          "shape": [
+            294,
+            512
+          ],
+          "num_parameters": 150528,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 150528,
+          "nonzero_second_moment": 150528,
+          "nonzero_weight_from_zero_init": 150528
+        },
+        {
+          "name": "predictor.layer_heads.5.weight",
+          "optimizer_group": 1,
+          "shape": [
+            343,
+            512
+          ],
+          "num_parameters": 175616,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 175616,
+          "nonzero_second_moment": 175616,
+          "nonzero_weight_from_zero_init": 175616
+        },
+        {
+          "name": "predictor.layer_heads.6.weight",
+          "optimizer_group": 1,
+          "shape": [
+            392,
+            512
+          ],
+          "num_parameters": 200704,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 200704,
+          "nonzero_second_moment": 200704,
+          "nonzero_weight_from_zero_init": 200704
+        },
+        {
+          "name": "predictor.layer_heads.7.weight",
+          "optimizer_group": 1,
+          "shape": [
+            441,
+            512
+          ],
+          "num_parameters": 225792,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 225792,
+          "nonzero_second_moment": 225792,
+          "nonzero_weight_from_zero_init": 225792
+        },
+        {
+          "name": "predictor.layer_heads.8.weight",
+          "optimizer_group": 1,
+          "shape": [
+            490,
+            512
+          ],
+          "num_parameters": 250880,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 250880,
+          "nonzero_second_moment": 250880,
+          "nonzero_weight_from_zero_init": 250880
+        },
+        {
+          "name": "predictor.layer_heads.9.weight",
+          "optimizer_group": 1,
+          "shape": [
+            539,
+            512
+          ],
+          "num_parameters": 275968,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 275968,
+          "nonzero_second_moment": 275968,
+          "nonzero_weight_from_zero_init": 275968
+        },
+        {
+          "name": "predictor.layer_heads.10.weight",
+          "optimizer_group": 1,
+          "shape": [
+            588,
+            512
+          ],
+          "num_parameters": 301056,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 301056,
+          "nonzero_second_moment": 301056,
+          "nonzero_weight_from_zero_init": 301056
+        },
+        {
+          "name": "correction_mlps.0.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.0.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            98,
+            128
+          ],
+          "num_parameters": 12544,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 12544,
+          "nonzero_second_moment": 12544
+        },
+        {
+          "name": "correction_mlps.1.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.1.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            147,
+            128
+          ],
+          "num_parameters": 18816,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 18816,
+          "nonzero_second_moment": 18816
+        },
+        {
+          "name": "correction_mlps.2.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.2.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            196,
+            128
+          ],
+          "num_parameters": 25088,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 25088,
+          "nonzero_second_moment": 25088
+        },
+        {
+          "name": "correction_mlps.3.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.3.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            245,
+            128
+          ],
+          "num_parameters": 31360,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 31360,
+          "nonzero_second_moment": 31360
+        },
+        {
+          "name": "correction_mlps.4.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.4.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            294,
+            128
+          ],
+          "num_parameters": 37632,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 37632,
+          "nonzero_second_moment": 37632
+        },
+        {
+          "name": "correction_mlps.5.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.5.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            343,
+            128
+          ],
+          "num_parameters": 43904,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 43904,
+          "nonzero_second_moment": 43904
+        },
+        {
+          "name": "correction_mlps.6.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.6.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            392,
+            128
+          ],
+          "num_parameters": 50176,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 50176,
+          "nonzero_second_moment": 50176
+        },
+        {
+          "name": "correction_mlps.7.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.7.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            441,
+            128
+          ],
+          "num_parameters": 56448,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 56448,
+          "nonzero_second_moment": 56448
+        },
+        {
+          "name": "correction_mlps.8.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.8.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            490,
+            128
+          ],
+          "num_parameters": 62720,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 62720,
+          "nonzero_second_moment": 62720
+        },
+        {
+          "name": "correction_mlps.9.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.9.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            539,
+            128
+          ],
+          "num_parameters": 68992,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 68992,
+          "nonzero_second_moment": 68992
+        },
+        {
+          "name": "correction_mlps.10.1.weight",
+          "optimizer_group": 1,
+          "shape": [
+            128,
+            1024
+          ],
+          "num_parameters": 131072,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 131072,
+          "nonzero_second_moment": 131072
+        },
+        {
+          "name": "correction_mlps.10.3.weight",
+          "optimizer_group": 1,
+          "shape": [
+            588,
+            128
+          ],
+          "num_parameters": 75264,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 75264,
+          "nonzero_second_moment": 75264
+        },
+        {
+          "name": "predictor.layer_biases.0",
+          "optimizer_group": 2,
+          "shape": [
+            98
+          ],
+          "num_parameters": 98,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 98,
+          "nonzero_second_moment": 98
+        },
+        {
+          "name": "predictor.layer_biases.1",
+          "optimizer_group": 2,
+          "shape": [
+            147
+          ],
+          "num_parameters": 147,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 147,
+          "nonzero_second_moment": 147
+        },
+        {
+          "name": "predictor.layer_biases.2",
+          "optimizer_group": 2,
+          "shape": [
+            196
+          ],
+          "num_parameters": 196,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 196,
+          "nonzero_second_moment": 196
+        },
+        {
+          "name": "predictor.layer_biases.3",
+          "optimizer_group": 2,
+          "shape": [
+            245
+          ],
+          "num_parameters": 245,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 245,
+          "nonzero_second_moment": 245
+        },
+        {
+          "name": "predictor.layer_biases.4",
+          "optimizer_group": 2,
+          "shape": [
+            294
+          ],
+          "num_parameters": 294,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 294,
+          "nonzero_second_moment": 294
+        },
+        {
+          "name": "predictor.layer_biases.5",
+          "optimizer_group": 2,
+          "shape": [
+            343
+          ],
+          "num_parameters": 343,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 343,
+          "nonzero_second_moment": 343
+        },
+        {
+          "name": "predictor.layer_biases.6",
+          "optimizer_group": 2,
+          "shape": [
+            392
+          ],
+          "num_parameters": 392,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 392,
+          "nonzero_second_moment": 392
+        },
+        {
+          "name": "predictor.layer_biases.7",
+          "optimizer_group": 2,
+          "shape": [
+            441
+          ],
+          "num_parameters": 441,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 441,
+          "nonzero_second_moment": 441
+        },
+        {
+          "name": "predictor.layer_biases.8",
+          "optimizer_group": 2,
+          "shape": [
+            490
+          ],
+          "num_parameters": 490,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 490,
+          "nonzero_second_moment": 490
+        },
+        {
+          "name": "predictor.layer_biases.9",
+          "optimizer_group": 2,
+          "shape": [
+            539
+          ],
+          "num_parameters": 539,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 539,
+          "nonzero_second_moment": 539
+        },
+        {
+          "name": "predictor.layer_biases.10",
+          "optimizer_group": 2,
+          "shape": [
+            588
+          ],
+          "num_parameters": 588,
+          "updates": 10501,
+          "moment_dtypes": [
+            "torch.float32",
+            "torch.float32"
+          ],
+          "moments_finite": true,
+          "nonzero_first_moment": 588,
+          "nonzero_second_moment": 588
+        }
+      ]
+    }
+  ]
+}

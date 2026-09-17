@@ -44,6 +44,11 @@
 - Two prompt-cluster tests verify that duplicating identical prompts cannot
   narrow the clustered uncertainty, and that item-weighted and equally
   weighted unique-prompt effects remain distinct estimands.
+- The original four encoder-model optimizer states match every inspected
+  predictor/correction tensor by group order, count and shape; see
+  [optimizer participation](provenance/optimizer_activity.md).
+- All 40 feature-minus-control block-bootstrap point estimates agree with
+  the independent-window paired estimates. Only the resampling unit changes.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.
