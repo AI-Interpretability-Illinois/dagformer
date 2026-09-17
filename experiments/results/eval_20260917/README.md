@@ -138,6 +138,13 @@ The [routing results](routing_dependence/300m.json) retain all per-sequence
 losses, intervals, constant/global and cross-sequence substitutions, plus
 synthetic repetition tests at periods 64, 128 and 256.
 
+The [dense reference on identical inputs](routing_dependence/dense_comparison.md)
+shows copy-accuracy gains of 24.2–27.9 points at 75M and 6.0–11.6 points at
+150M. At 300M, period 64 improves by 1.92 points [1.07, 2.77]; period 128
+changes by -0.55 points [-4.66, 3.56] and period 256 by +0.50 points
+[-5.30, 6.30]. The advantage depends on scale and repetition period. These
+are teacher-forced predictions on periodic token sequences.
+
 ![Routing substitutions and removals](figures/routing_dependence.png)
 
 Tables use 64 WikiText training windows and evaluation uses 128 test windows.

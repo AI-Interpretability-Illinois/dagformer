@@ -1,4 +1,4 @@
-"""Match a dense checkpoint to an existing routing-dependence evaluation."""
+"""Match a dense or trained routing variant to an existing routing evaluation."""
 from __future__ import annotations
 
 import argparse
@@ -20,6 +20,7 @@ def main():
     ap.add_argument("--config", required=True)
     ap.add_argument("--ckpt", required=True)
     ap.add_argument("--routing-result", required=True, type=Path)
+    ap.add_argument("--kind", choices=["dense", "fourway"], default="dense")
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--device", default="cuda")
     args = ap.parse_args()
@@ -31,7 +32,15 @@ def main():
     device = torch.device(args.device)
     elh = load_elh()
     cfg = elh.load_config(args.config)
-    model = elh.load_dense(args.ckpt, cfg, device)
+    predictor = None
+    if args.kind == "fourway":
+        model, predictor = elh.load_fourway(args.ckpt, cfg, device)
+    else:
+        model = elh.load_dense(args.ckpt, cfg, device)
+
+    def forward(rows):
+        return model(rows, predictor(rows)) if predictor is not None else model(input_ids=rows).logits
+
     calibration, _ = load_eval_ids(settings["calibration_cache"])
     ids, labels = load_eval_ids(settings["eval_cache"])
     calibration = calibration[:settings["n_calibration"]]
@@ -39,28 +48,31 @@ def main():
     reference = routed["arms"]["pred_dynamic/corr_dynamic"]
     result = {"args": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
               "git_commit": commit, "versions": {k: importlib.metadata.version(k) for k in ("torch", "transformers")},
-              "num_parameters": sum(p.numel() for p in model.parameters()),
+              "num_parameters": sum(p.numel() for p in model.parameters())
+              + (sum(p.numel() for p in predictor.parameters()) if predictor is not None else 0),
               "protocol": "same natural-text windows and periodic token sequences as the routed reference; copy is teacher-forced next-token accuracy over the second half of each sequence",
-              "nll": [], "copy": {}, "paired_dagformer_minus_dense": {"copy": {}}}
+              "nll": [], "copy": {}}
+    comparison = "paired_dagformer_minus_dense" if args.kind == "dense" else "paired_full_dagformer_minus_variant"
+    result[comparison] = {"copy": {}}
     with torch.inference_mode():
         for row, target in zip(ids, labels):
-            logits = model(input_ids=row[None].to(device)).logits.float()
+            logits = forward(row[None].to(device)).float()
             result["nll"].append(float(F.cross_entropy(logits.reshape(-1, logits.shape[-1]), target.to(device))))
         result["mean_nll"] = float(np.mean(result["nll"]))
-        result["paired_dagformer_minus_dense"]["natural_nll"] = paired_summary(reference["nll"], result["nll"])
+        result[comparison]["natural_nll"] = paired_summary(reference["nll"], result["nll"])
         length = ids.shape[1]
         for period in settings["periods"]:
             copy_ids, _ = synthetic_induction_ids(calibration, settings["synthetic_sequences"], length,
                                                   period, settings["seed"] + period)
             accuracy, losses = [], []
             for row in copy_ids:
-                logits = model(input_ids=row[None].to(device)).logits.float()[0, length // 2:-1]
+                logits = forward(row[None].to(device)).float()[0, length // 2:-1]
                 target = row[length // 2 + 1:].to(device)
                 accuracy.append(float((logits.argmax(-1) == target).float().mean()))
                 losses.append(float(F.cross_entropy(logits, target)))
             result["copy"][str(period)] = {"accuracy": accuracy, "nll": losses,
                                           "mean_accuracy": float(np.mean(accuracy)), "mean_nll": float(np.mean(losses))}
-            result["paired_dagformer_minus_dense"]["copy"][str(period)] = {
+            result[comparison]["copy"][str(period)] = {
                 "accuracy": paired_summary(reference["copy"][str(period)]["accuracy"], accuracy),
                 "nll": paired_summary(reference["copy"][str(period)]["nll"], losses)}
     args.out.parent.mkdir(parents=True, exist_ok=True)
