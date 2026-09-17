@@ -5,19 +5,51 @@ import sys
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "scripts"))
-from interp_common import unflatten_alpha
+from interp_common import flatten_alpha, unflatten_alpha
 from interp_editing import layer_chunks
 
 
 MODES = ("none", "pred_position", "pred_global", "corr_zero", "corr_position",
-         "corr_global", "pred_position_corr_position")
+         "corr_global", "pred_position_corr_position", "context_pred", "context_corr", "context_both")
 
 
-def install_intervention(model, mode, table_path):
+def intervention_label(mode, gamma=1.25):
+    return mode + (f"_gamma{gamma:g}" if mode.startswith("context_") else "")
+
+
+def install_context_edit(model, mode, circuit_path, gamma):
+    from eval_context_fidelity import apply_edges, read_circuit
+    L, H = model.config.num_hidden_layers, model.config.num_attention_heads
+    edges = read_circuit(circuit_path, 10)
+    if any(layer >= L or head >= H for layer, stream, head, source in edges):
+        raise ValueError("The fixed context-fidelity circuit does not fit this architecture")
+    channel = mode.removeprefix("context_")
+    chunks = layer_chunks(L, H)
+    handles = []
+    if channel in ("pred", "both"):
+        def pred_hook(module, inputs, output):
+            flat = flatten_alpha(output)
+            edited = [apply_edges(flat[..., lo:hi], i + 1, H, edges, gamma)
+                      for i, (lo, hi) in enumerate(chunks)]
+            return unflatten_alpha(torch.cat(edited, -1), L, H)
+        handles.append(model.fourway_predictor.register_forward_hook(pred_hook))
+    if channel in ("corr", "both"):
+        for index, mlp in enumerate(model.fourway_model.correction_mlps):
+            def corr_hook(module, inputs, output, layer=index + 1):
+                return apply_edges(output, layer, H, edges, gamma)
+            handles.append(mlp.register_forward_hook(corr_hook))
+    model._routing_eval_handles = handles
+    return {"mode": mode, "gamma": gamma, "circuit_source": circuit_path,
+            "edges": edges, "scope": "fixed head-mean-deviation edit on predictor/corrections"}
+
+
+def install_intervention(model, mode, table_path, *, circuit_path=None, gamma=1.25):
     if mode == "none":
         return None
     if not hasattr(model, "fourway_model"):
         raise ValueError("Routing interventions require a FourWay checkpoint")
+    if mode.startswith("context_"):
+        return install_context_edit(model, mode, circuit_path, gamma)
     pred_mode = "position" if mode.startswith("pred_position") else (
         "global" if mode == "pred_global" else None)
     corr_mode = "position" if mode.endswith("corr_position") else (

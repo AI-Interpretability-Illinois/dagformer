@@ -29,6 +29,13 @@ checkpoints, without multiple-testing adjustment or training-seed uncertainty.
 GSM8K BPB scores the question and gold answer jointly; generated-answer
 accuracy is being evaluated separately on the full 1,319-item test split.
 
+The [explicit-label audit](standard_matched/label_bias.md) shows two limitations:
+all models choose A on at least 98.94% of standard CommonsenseQA questions,
+and every BoolQ score remains below the 62.17% constant-yes baseline. The
+relative BoolQ gain above therefore does not establish successful reading
+comprehension. A separately named, answer-text CommonsenseQA control is queued;
+it will not replace the upstream task's results.
+
 ## Routing dependence
 
 Position means were calibrated on 64 WikiText training windows, then evaluated
