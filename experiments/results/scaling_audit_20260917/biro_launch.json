@@ -1,0 +1,63 @@
+{
+  "biro_root": "/work/hdd/biro/yurenh2/dagformer-20260917",
+  "bfqt_mirror": "/work/hdd/bfqt/yurenh2/dagformer-eval-20260917",
+  "restoration_job": 22160141,
+  "restoration_revision": "9275b8762b95214048c160491839682ad357aad7",
+  "local_eval_gpus": {
+    "600m-baseline": 2,
+    "600m-dagformer": 3
+  },
+  "local_results": "experiments/results/scaling_eval_20260917",
+  "preprocessing_1b_job": 22160736,
+  "training_1b_job": 22160737,
+  "freeze_600m_job": 22161290,
+  "training_600m_jobs": {
+    "dagformer": 22160902,
+    "baseline": 22160903
+  },
+  "evaluation_jobs": {
+    "1b-baseline": 22160905,
+    "1b-dagformer": 22160906,
+    "600m-baseline": 22160907,
+    "600m-dagformer": 22160908
+  },
+  "summary_jobs": {
+    "1b": 22160909,
+    "600m": 22160910
+  },
+  "continuation_revision": "6cfdc7b6e95bb791042cbc3e0618a91e63ac02df",
+  "local_generation_gpus": {
+    "600m-baseline": 3,
+    "600m-dagformer": 2
+  },
+  "submitted_utc": "2026-09-17T22:09:31Z",
+  "local_completed_suites": [
+    "standard_600m",
+    "routing_dependence/600m",
+    "routing_dependence/dense_600m",
+    "frozen_predictor_600m"
+  ],
+  "local_generation_status": "running; 1319 GSM8K items requested per model",
+  "training_time_limits_hours": {
+    "1b-dagformer": 24,
+    "600m-dagformer": 24,
+    "600m-baseline": 12
+  },
+  "storage_project_quota_gib": {
+    "soft": 500,
+    "hard": 550,
+    "project_id": 22300
+  },
+  "freeze_600m_revision": "5c0b12d9a8121c65c2a0f6b0b04eab38c85d8ac6",
+  "replaced_freeze_job": {
+    "id": 22160901,
+    "reason": "Unsupported HTTP range requests; replaced after a 30000-document sequential-read check passed."
+  },
+  "training_priority": "600M training depends on its frozen data and on the 1B training job having started; 1B gets the first available training allocation.",
+  "local_finalizer": {
+    "script": "scripts/finalize_local_scaling_eval.sh",
+    "baseline_pid": 1494528,
+    "dagformer_pid": 1495823,
+    "log": "logs/scaling_20260917/local_finalize.log"
+  }
+}

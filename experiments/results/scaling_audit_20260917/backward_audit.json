@@ -1,0 +1,63 @@
+{
+  "commit": "5c0b12d9a8121c65c2a0f6b0b04eab38c85d8ac6",
+  "torch": "2.9.1+cu128",
+  "gpu": "NVIDIA A40",
+  "shape": [
+    1,
+    1024
+  ],
+  "models": [
+    {
+      "model": "1b-dagformer",
+      "optimizer_update_counts": [
+        31001
+      ],
+      "optimizer_state_tensors": 283,
+      "loss": 2.728193759918213,
+      "gradients": {
+        "backbone": {
+          "finite": true,
+          "gradient_tensors": 178,
+          "norm": 1.9724082125488482
+        },
+        "predictor_and_correction": {
+          "finite": true,
+          "gradient_tensors": 90,
+          "norm": 2.4248691329138667
+        },
+        "routing_biases": {
+          "finite": true,
+          "gradient_tensors": 15,
+          "norm": 0.26173225277258416
+        }
+      },
+      "optimizer_steps_taken": 0
+    },
+    {
+      "model": "600m-dagformer",
+      "optimizer_update_counts": [
+        14001
+      ],
+      "optimizer_state_tensors": 251,
+      "loss": 2.783761978149414,
+      "gradients": {
+        "backbone": {
+          "finite": true,
+          "gradient_tensors": 156,
+          "norm": 2.084440680699653
+        },
+        "predictor_and_correction": {
+          "finite": true,
+          "gradient_tensors": 82,
+          "norm": 2.4608834480881026
+        },
+        "routing_biases": {
+          "finite": true,
+          "gradient_tensors": 13,
+          "norm": 0.23819286659265582
+        }
+      },
+      "optimizer_steps_taken": 0
+    }
+  ]
+}

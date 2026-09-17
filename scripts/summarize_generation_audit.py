@@ -49,7 +49,7 @@ def main():
                 "For each completed model: the first three flexible matches, flexible nonmatches",
                 "and strict matches by document ID, where available. Excerpts are limited to 400 characters; full",
                 "responses remain in the ignored sample JSONLs and the Delta artifact mirror.", ""]
-    for path in sorted(args.dir.glob("*__gen*.json")):
+    for path in sorted(args.dir.glob("*__*.json")):
         payload = json.loads(path.read_text())
         if "gsm8k" not in payload.get("results", {}):
             continue

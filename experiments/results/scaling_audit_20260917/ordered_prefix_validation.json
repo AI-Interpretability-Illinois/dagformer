@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "windows": 512,
+  "tokens": 524800,
+  "reader": "historical packed_token_stream",
+  "tokenizer": "/work/hdd/biro/yurenh2/dagformer-20260917/tokenizer",
+  "file": "/work/hdd/biro/yurenh2/dagformer-20260917/data/olmo-mix-1124/data/dclm/raw/hero-run-fasttext_for_HF/filtered/OH_eli5_vs_rw_v2_bigram_200k_train/fasttext_openhermes_reddit_eli5_vs_rw_v2_bigram_200k_train/processed_data/global-shard_04_of_10/local-shard_6_of_10/shard_00000087_processed.jsonl.zstd",
+  "selection": "initial-pass alternating documents"
+}
