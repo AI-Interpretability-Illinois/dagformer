@@ -58,6 +58,10 @@
   plus the completed 49/128/160/128-arm follow-ups and all 13 checkpoint bundles.
   The additional cache loads on Delta with shape 64 × 1,024, correct next-token
   label shifts, and zero overlap with the earlier article set.
+- All five routing-dependence runs contain the expected 12 arms, with 128
+  natural-text windows and 16 synthetic sequences per repetition period in
+  each arm. The three literal harness commands in [REPRODUCE.md](REPRODUCE.md)
+  pass CPU `--dry-run` resolution for their stated models and tasks.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

@@ -572,6 +572,8 @@ than demonstrating a general per-head semantic interface.
 
 ## Reproduction and artifacts
 
+- [Runnable commands](REPRODUCE.md) cover the matched ordinary pair, full
+  GSM8K generation, fixed-head edits, routing dependence and SAE controls.
 - The [completion record](provenance/completion.json) identifies the final
   numerical-results revision and the Delta readback checks. All inference
   jobs, including the additional-article SAE check, have completed.

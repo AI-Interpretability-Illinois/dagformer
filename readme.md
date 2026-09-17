@@ -41,7 +41,8 @@ preserved in [the historical specification](docs/legacy_oracle_design.md).
   and [reasoning findings](experiments/results/lmeval/reasoning/FINDINGS.md).
 - September 17: [matched ordinary and interpretability evaluations](experiments/results/eval_20260917/README.md)
   and [merged-PR evidence audit](experiments/PROJECT_SYNC_2026-09-17.md);
-  [中文验收说明](experiments/results/eval_20260917/验收说明.md).
+  [中文验收说明](experiments/results/eval_20260917/验收说明.md) and
+  [reproduction commands](experiments/results/eval_20260917/REPRODUCE.md).
 
 ## Data and checkpoints on Delta
 
