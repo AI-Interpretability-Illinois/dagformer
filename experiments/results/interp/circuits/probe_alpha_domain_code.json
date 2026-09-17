@@ -1,0 +1,81 @@
+{
+  "args": {
+    "config": "/work/hdd/bfqt/shared/dagformer-models/300m-dagformer/config.yaml",
+    "ckpt": "/work/hdd/bfqt/shared/dagformer-models/300m-dagformer/checkpoint.pt",
+    "tokenizer": "/work/hdd/bfqt/shared/dagformer-models/tokenizer",
+    "behavior": "domain_code",
+    "device": "cuda",
+    "out": "experiments/results/interp/circuits/probe_alpha_domain_code",
+    "seed": 0,
+    "n_windows": 32,
+    "seq_len": 256,
+    "cap_cache": null,
+    "n_classes": 40,
+    "batch_size": 8,
+    "max_items": null,
+    "n_shuffles": 5,
+    "eligible": "experiments/results/interp/circuits/circuit_domain_code_pred_stats.npz",
+    "hyper_only": false
+  },
+  "behavior": "domain_code",
+  "probes": {
+    "position": {
+      "kind": "r2",
+      "score": 0.9788473662313393,
+      "null_mean": -0.03614005825935433,
+      "null_max": -0.010224472372814208,
+      "majority": 0.0,
+      "n_train": 5610,
+      "n_test": 2550
+    },
+    "log_freq_rank": {
+      "kind": "r2",
+      "score": 0.5918062128198267,
+      "null_mean": -0.049620662637173664,
+      "null_max": -0.014018385219339624,
+      "majority": 0.0,
+      "n_train": 5610,
+      "n_test": 2550
+    },
+    "token": {
+      "kind": "accuracy",
+      "score": 0.9977653631284916,
+      "null_mean": 0.038212290502793296,
+      "null_max": 0.048044692737430165,
+      "majority": 0.09162011173184358,
+      "n_classes": 40,
+      "n_train": 1947,
+      "n_test": 895
+    },
+    "prev_token": {
+      "kind": "accuracy",
+      "score": 0.2751445086705202,
+      "null_mean": 0.03907514450867052,
+      "null_max": 0.04161849710982659,
+      "majority": 0.08323699421965318,
+      "n_classes": 40,
+      "n_train": 1981,
+      "n_test": 865
+    },
+    "polarity": {
+      "kind": "accuracy",
+      "score": 1.0,
+      "null_mean": 0.49499999999999994,
+      "null_max": 0.525,
+      "majority": 0.5,
+      "n_classes": 2,
+      "n_train": 88,
+      "n_test": 40
+    }
+  },
+  "context_free": {
+    "frac_variance_within_token": 0.8295171755391484,
+    "frac_variance_within_token_pos_removed": 0.11917996035525101,
+    "frac_variance_within_position": 0.04744669154054099,
+    "n_positions": 7152,
+    "n_token_types": 870
+  },
+  "n_positions": 8160,
+  "n_features": 3234,
+  "note": "scores are held-out; groups (windows, or items for polarity) do not straddle the split; nulls retrain on shuffled labels"
+}
