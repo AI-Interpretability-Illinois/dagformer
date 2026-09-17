@@ -128,8 +128,9 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
     table_path = (args.routing_table.format(size=spec.size, name=spec.name)
                   if args.routing_table else None)
     intervention = install_intervention(model, args.routing_intervention, table_path,
-                                        circuit_path=args.routing_circuit, gamma=args.routing_gamma)
-    edit_label = intervention_label(args.routing_intervention, args.routing_gamma)
+                                        circuit_path=args.routing_circuit, gamma=args.routing_gamma,
+                                        control_seed=args.routing_control_seed)
+    edit_label = intervention_label(args.routing_intervention, args.routing_gamma, args.routing_control_seed)
     evaluation_name = spec.name + ("__" + edit_label if intervention else "")
     tokenizer = load_tokenizer(args.tokenizer)
     lm = CheckpointLM(
@@ -275,6 +276,8 @@ def parse_args(argv=None) -> argparse.Namespace:
                    help="calibrated .pt table path; may contain {size} or {name}")
     p.add_argument("--routing-gamma", type=float, default=1.25)
     p.add_argument("--routing-circuit", default="experiments/results/interp/liar_cloze/deception_conns.json")
+    p.add_argument("--routing-control-seed", type=int, default=None,
+                   help="replace the fixed context circuit with norm-matched random heads at this seed")
     p.add_argument("--batch-size", type=int, default=16, help="log-likelihood pass batch size")
     p.add_argument(
         "--gen-batch-size",
@@ -341,7 +344,7 @@ def main(argv=None) -> int:
 
     suite_label = args.suite if not args.tasks else "custom"
     if args.routing_intervention != "none":
-        suite_label += "__" + intervention_label(args.routing_intervention, args.routing_gamma)
+        suite_label += "__" + intervention_label(args.routing_intervention, args.routing_gamma, args.routing_control_seed)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"models     : {[s.name for s in specs]}")
