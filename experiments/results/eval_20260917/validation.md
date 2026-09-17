@@ -1,6 +1,6 @@
 # Validation record
 
-- Full unit suite: **65 passed**, one PyTorch nested-tensor warning, in 11.58
+- Full unit suite: **65 passed**, one PyTorch nested-tensor warning, in 11.02
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
