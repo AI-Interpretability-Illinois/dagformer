@@ -61,7 +61,9 @@ pred/corr/both channels.
 2. **GSM8K BPB includes the question and gold answer.** Its 4.38%, 4.65%, 5.03%
    improvements are likelihood results, not generated problem-solving accuracy.
    The reported 1.7x ratio uses absolute BPB differences; relative improvement
-   ratios are 1.26–1.33x. Generated exact-match remains 0.5–2.5% on 200 items.
+   ratios are 1.26–1.33x. The original 200-item generation scores were
+   0.5–2.5%; the [new full-split matched evaluation](results/eval_20260917/README.md)
+   reports all three pairs separately.
 3. **The Wikitext discrepancy is traced to checkpoint metadata.** The old
    1.0714925 number belongs to dense step 9000, as recorded in
    `results/lmeval/matched_mmap/dense_300m_mmap_s9000.json`. PR #1 measured
@@ -98,7 +100,10 @@ pred/corr/both channels.
    q/k/v/r restrictions ran only at the largest additive dose and omitted NLL.
    A large stream score shift therefore could not establish useful steering.
    Future verifier runs include their NLL, and the follow-up measures all
-   four streams and the joint direction across six doses with controls.
+   four streams and the joint direction across six small doses with controls.
+   The [completed stream results](results/eval_20260917/domain_streams/README.md)
+   detect small correction Q/V effects on new content, alongside their
+   natural-text NLL costs and separate code/prose likelihood changes.
    Also, the verifier's reported magnitude ratio uses predictor alpha in its
    denominator even for correction edits; it is not a measurement of the
    correction channel's own relative amplitude.

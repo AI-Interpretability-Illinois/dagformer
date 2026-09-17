@@ -28,13 +28,16 @@ def main():
                "nll_limit": args.nll_limit, "channels": {}}
     lines = ["# Domain-code direction: stream and content transfer", "",
              "This exploratory follow-up keeps the PR #2 training-half directions and circuit",
-             "masks fixed. It tests all four streams and their joint direction, six additive",
-             "doses, and three within-layer/stream permuted controls fixed across doses.",
+             f"masks fixed. It tests {len(settings['streams'])} stream conditions at "
+             f"{len(settings['lams'])} additive doses",
+             f"({', '.join(f'{v:g}' for v in settings['lams'])}), with "
+             f"{settings['controls']} within-layer/stream permuted controls fixed across doses.",
              "The new 32 content pairs reuse the original instruction templates. The original",
              "test set has eight content items; paraphrases are averaged within each item.", "",
              "The endpoint is mean per-token code log probability minus prose log probability.",
              "It does not measure generated code correctness. Natural-text NLL uses 50 WikiText",
-             "validation windows. Intervals are unadjusted paired content/window bootstrap",
+             f"validation windows (reference NLL {np.mean(source['reference_nll']):.6f}). "
+             "Intervals are unadjusted paired content/window bootstrap",
              "intervals, without training-seed uncertainty.", "",
              "## Reference behavior", "",
              "| Channel | Content set | Neutral score | Positive instruction | Negative instruction | Instruction gap |",
@@ -51,7 +54,7 @@ def main():
                                         "largest_tested_transfer_shift_below_nll_limit": {}}
 
     lines += ["", "## All circuit doses", "",
-              "Each bracket is a paired 95% interval. The control range contains three",
+              f"Each bracket is a paired 95% interval. The control range contains {settings['controls']}",
               "measured transfer shifts at the same dose, not a confidence interval.", "",
               "| Channel / stream | Dose | Original shift | New-content shift | New-control shift range | NLL rise |",
               "|---|---:|---|---|---|---|"]
@@ -63,9 +66,11 @@ def main():
                   "|---|---:|---|---:|---:|---:|"]
     controls_table = ["# Direct circuit-versus-control comparisons", "",
                       "All differences use the same content items. Intervals resample items,",
-                      "not the population of possible random control directions.", "",
-                      "| Channel / stream | Dose | Control | New-content score difference [95% interval] |",
-                      "|---|---:|---|---|"]
+                      "not the population of possible random control directions. The last two",
+                      "columns give each intervention's natural-text NLL rise against the same",
+                      "reference. Equal direction norms need not imply equal capability costs.", "",
+                      "| Channel / stream | Dose | Control | New-content score difference [95% interval] | Circuit NLL rise | Control NLL rise |",
+                      "|---|---:|---|---|---:|---:|"]
     for channel, data in source["channels"].items():
         out = summary["channels"][channel]
         for key, arm in data["arms"].items():
@@ -83,7 +88,8 @@ def main():
                         control["behavior"][name]["per_unit_delta"],
                         settings["draws"], settings["seed"])
                 controls_table.append(f"| {channel}/{stream} | {lam:g} | {tag} | "
-                                      f"{interval(comparisons[tag]['new_content'])} |")
+                                      f"{interval(comparisons[tag]['new_content'])} | "
+                                      f"{arm['nll']['delta']:+.4f} | {control['nll']['delta']:+.4f} |")
             vals = [c["behavior"]["new_content"]["delta"] for c in others.values()]
             components = {}
             for name, behavior in arm["behavior"].items():
@@ -96,6 +102,7 @@ def main():
             out["circuit_arms"][key] = {
                 "behavior": arm["behavior"], "nll": arm["nll"],
                 "candidate_changes": components, "paired_circuit_minus_controls": comparisons,
+                "control_nll": {tag: control['nll'] for tag, control in others.items()},
                 "new_control_range": [min(vals), max(vals)],
                 "fraction_of_instruction_gap": {
                     name: value["delta"] / out["instruction_gaps"][name]
@@ -127,7 +134,7 @@ def main():
                          f"{100*frac:.2f}% | {val['nll']['delta']:+.4f} |")
     lines += ["", "[Candidate likelihood components](candidate_components.md) distinguish changes",
               "to the code and prose scores. [Direct control comparisons](control_comparisons.md)",
-              "retain paired item uncertainty for all three fixed controls. The input JSON",
+              "retain paired item uncertainty and NLL costs for all fixed controls. The input JSON",
               "retains every circuit/control arm and per-item/window changes.", ""]
     output = args.input.parent
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

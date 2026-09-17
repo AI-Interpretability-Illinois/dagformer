@@ -339,11 +339,24 @@ instruction effect is nearly unchanged.
 
 The archived verifier's automatic NULL label uses the raw-score SEM rather
 than paired-change uncertainty. Its per-stream arms also omitted NLL. These
-labels alone do not establish an absence of small effects. An exploratory
-follow-up now evaluates all four streams and the joint direction at six
-doses, with fixed norm-preserving controls, natural-text NLL, and 32 new
-content pairs. It averages prompt paraphrases within content items before
-calculating paired bootstrap intervals.
+labels alone do not establish an absence of small effects. The completed
+[small-dose stream follow-up](domain_streams/README.md) tests all four streams
+and the joint direction at six doses, with three fixed norm-preserving
+controls, natural-text NLL, and 32 new content pairs. It averages prompt
+paraphrases within content items before calculating paired bootstrap intervals.
+Predictor-direction effects remain small: the largest new-content shift among
+tested doses below +0.05 NLL is +0.0033, or 0.09% of the instruction gap.
+
+The correction Q direction at dose 2 gives +0.0902 [0.0626, 0.1167], 2.42% of
+the new-content instruction gap, at +0.0203 NLL. V at dose 2 gives +0.0664
+[0.0263, 0.1034], 1.79% of the gap, at +0.0266 NLL. Most of each score change
+comes from lowering prose likelihood: code/prose log-probability changes are
++0.0186/-0.0717 for Q and +0.0099/-0.0565 for V. None of these circuit arms
+changes which candidate wins. Q does not consistently beat the three fixed
+controls; V's comparison depends on dose and control. The controls often
+damage natural-text likelihood much more, so the comparison does not isolate
+semantic selectivity at matched capability cost. The larger-dose follow-up,
+including the PR's dose 64, is still pending.
 
 ## SAE direction transfer
 
