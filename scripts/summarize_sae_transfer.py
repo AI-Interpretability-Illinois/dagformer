@@ -20,6 +20,8 @@ def span_summary(minus, plus, draws, seed):
     keep = den > 0
     values = sums[indexes[keep]].sum(1) / den[keep]
     return {"delta": float(sums.sum() / counts.sum()),
+            "n_tokens": int(counts.sum()), "n_windows": int((counts > 0).sum()),
+            "valid_bootstrap_draws": int(keep.sum()),
             "paired_bootstrap_95ci": np.quantile(values, [.025, .975]).tolist()}
 
 
@@ -49,9 +51,11 @@ def main():
              "original mean active feature coefficient. NLL changes are token-weighted.",
              "Intervals resample the 128 windows in paired form, with 10,000 draws; they",
              "are unadjusted and do not cover training-seed or feature-selection uncertainty.", "",
+             "The count column gives target tokens / windows containing target tokens.",
+             "Bootstrap draws with no target tokens are omitted; valid-draw counts are in JSON.", "",
              "Negative target-token ΔNLL means that those gold tokens become more probable.",
              "The signed dose span is ΔNLL(+4) − ΔNLL(−4), calculated from paired windows.", "",
-             "| Feature | Target tokens | Target count | ΔNLL at −4 [95% CI] | ΔNLL at +4 [95% CI] | Dose span [95% CI] |",
+             "| Feature | Target tokens | Tokens / windows | ΔNLL at −4 [95% CI] | ΔNLL at +4 [95% CI] | Dose span [95% CI] |",
              "|---|---|---:|---|---|---|"]
     secondary = ["", "## Original screen, other tokens and permuted controls", "",
                  "Controls permute each direction within every layer and Q/K/V/R stream.",
@@ -78,7 +82,7 @@ def main():
             "span": span, "control_spans": controls, "control_span_range": bounds,
             "original_screen": old[feature_id]}
         token_text = ", ".join(tokens).replace("|", "\\|")
-        lines.append(f"| {feature_id} | {token_text} | {plus['on_rule']['n_tokens']} | "
+        lines.append(f"| {feature_id} | {token_text} | {plus['on_rule']['n_tokens']} / {plus['on_rule']['n_windows']} | "
                      f"{effect(minus['on_rule'])} | {effect(plus['on_rule'])} | {effect(span)} |")
         bound_text = f"[{bounds[0]:+.4f}, {bounds[1]:+.4f}]" if bounds else "no target tokens"
         historical = old[feature_id]
