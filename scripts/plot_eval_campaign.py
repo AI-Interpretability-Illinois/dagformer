@@ -289,7 +289,7 @@ def sae_transfer(root, out):
     axes[0].set_yticks(range(len(data)), labels, fontsize=9)
     axes[0].invert_yaxis()
     axes[0].set_xlabel("Target-token dose span: ΔNLL(+4) − ΔNLL(−4)")
-    axes[0].set_title("Some fixed directions retain their effect")
+    axes[0].set_title("Fixed directions in the first article sample")
     axes[1].set_xlabel("Maximum other-token NLL rise\nacross the two doses")
     axes[1].set_title("Cost to predicting other tokens")
     axes[1].axvline(.03, color="#777777", linestyle=":", linewidth=1)
@@ -302,9 +302,9 @@ def sae_transfer(root, out):
         ax.set_axisbelow(True)
     axes[1].set_xlim(-.001, .045)
     legend = [Line2D([], [], marker="D", linestyle="none", color="#777777", label="Historical screen"),
-              Line2D([], [], marker="o", linestyle="none", color=COLORS["corr"], label="New WikiText windows")]
+              Line2D([], [], marker="o", linestyle="none", color=COLORS["corr"], label="First 128 WikiText windows")]
     fig.legend(handles=legend, loc="upper center", ncol=2, bbox_to_anchor=(.55, 1.01), frameon=False)
-    fig.text(.02, -.025, "Eight previously selected directions; alpha ±4. n = new-corpus target-token count.\n"
+    fig.text(.02, -.025, "Eight previously selected directions; alpha ±4. n = target count in the first 128 windows.\n"
              "Left: paired 95% block-bootstrap intervals, 16 adjacent windows per block. "
              "Right: descriptive maximum cost; no interval on the maximum.\n"
              "Token sets include fragments and whitespace. Permuted controls have unequal NLL costs; see the report.", fontsize=8.5)

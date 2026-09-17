@@ -1,6 +1,6 @@
 # Validation record
 
-- Full unit suite: **68 passed**, one PyTorch nested-tensor warning, in 8.23
+- Full unit suite: **68 passed**, one PyTorch nested-tensor warning, in 10.43
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
@@ -47,8 +47,13 @@
 - The original four encoder-model optimizer states match every inspected
   predictor/correction tensor by group order, count and shape; see
   [optimizer participation](provenance/optimizer_activity.md).
-- All 40 feature-minus-control block-bootstrap point estimates agree with
+- All 80 feature-minus-control block-bootstrap point estimates across both
+  article samples agree with
   the independent-window paired estimates. Only the resampling unit changes.
+- The additional 64-window cache uses 14 test documents and excludes all 31
+  earlier test documents, with matching dataset fingerprints. Raw records
+  confirm the same 128 intervention names, doses, direction norms and control
+  seeds across the two samples.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

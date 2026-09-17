@@ -44,3 +44,11 @@ appear on the same scale as the earlier positive results. The first expanded
 render crowded the footer against the lower labels; reserved footer space
 and explicit y ticks resolve this. The revised PNG was inspected, with the
 same updated figure exported to PDF and SVG.
+
+## SAE article sample labels
+
+After the additional 64-window run, relabeled the existing SAE figure to name
+the first 128-window sample explicitly. Numeric inputs are unchanged; the new
+article sample and its sparse-token uncertainty remain in the complete comparison
+table. The updated PNG was inspected: longer title and legend fit, and markers,
+intervals and the footer remain clear. PDF/SVG exports use the same figure.

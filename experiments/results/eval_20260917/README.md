@@ -470,8 +470,14 @@ generation or capability-preserving steering.
 
 ## SAE direction transfer
 
+Across two nonoverlapping WikiText article samples, fixed features 3560 and
+7068 retain opposite-sign target-token effects. The initially supported 4222
+effect is uncertain in the additional sample. The
+[article comparison](sae_article_replication/replication_comparison.md) reports
+all eight directions, including sparse and target-empty cases.
+
 The [eight previously selected SAE directions](sae_transfer/README.md) were
-retested without reselection on 128 WikiText test windows. Three reproduce
+first retested without reselection on 128 WikiText test windows. Three reproduce
 opposite-sign target-token loss changes at alpha -4 and +4, with each dose's
 paired interval excluding zero. Their other-token NLL costs remain below
 0.018 in both directions:
@@ -482,7 +488,7 @@ paired interval excluding zero. Their other-token NLL costs remain below
 | 7068 | 4,134 / 127 | -0.0521 | +0.0773 | +0.1294 |
 | 4222 | 84 / 38 | -0.0563 | +0.0818 | +0.1381 |
 
-![Historical and new-corpus SAE effects](figures/sae_transfer.png)
+![Historical and first-sample SAE effects](figures/sae_transfer.png)
 
 A [block-bootstrap check](sae_transfer/block_bootstrap.md) preserves these
 three patterns with adjacent-window blocks up to length 16. Four other
@@ -543,6 +549,26 @@ dose effects. Feature 1986 gives opposite-sign changes for `201` but different
 responses for other year fragments. Component effects need not add in this
 nonlinear network, and rare-token intervals do not establish general semantic
 control.
+
+The additional sample was fixed in the
+[committed protocol](provenance/sae_replication_protocol.md) before running:
+64 windows from 14 other test documents, excluding all 31 earlier test
+documents. It repeats all 128 feature/control/component arms unchanged.
+Features 3560 and 7068 have target effects of -0.0666/+0.0938 and
+-0.0429/+0.0622 respectively at alpha -4/+4; both window and block-16
+intervals support opposite signs. Their other-token costs remain below
+0.016. Feature 3560 again retains its effect in shared R; one whole-head
+control has a larger span by 0.0555 [0.0236, 0.0888]. Feature 7068 again
+exceeds all five controls under both resampling schemes.
+
+Feature 4222 has only 35 target tokens in these additional articles. Its
+full-direction effects are -0.0210 [-0.0716, 0.0264] and +0.0242
+[-0.0302, 0.0818]; the signed span is +0.0452 [-0.0523, 0.1495]. This does
+not establish a zero effect, but it does not confirm the first sample's
+bidirectional result. The other four target-bearing directions also do not
+meet that criterion, and 7019 again has no targets. The stable results are
+therefore concentrated in the quote-heavy and whitespace-heavy sets, rather
+than demonstrating a general per-head semantic interface.
 
 ## Reproduction and artifacts
 
