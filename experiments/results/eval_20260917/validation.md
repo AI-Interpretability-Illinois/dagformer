@@ -1,12 +1,13 @@
 # Validation record
 
-- Full unit suite: **60 passed**, one PyTorch nested-tensor warning, in 10.37
+- Full unit suite: **64 passed**, one PyTorch nested-tensor warning, in 9.79
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
 - The suite covers the existing routing components plus checkpoint loading
   for encoder/static/position-table variants, simultaneous head editing,
-  paired statistics, result grouping and generated-value extraction.
+  matched random-head harness hooks, paired statistics, result grouping,
+  generated-value extraction and copy-task boundary scoring.
 - CPU end-to-end checks exercised the custom answer-text CommonsenseQA task,
   fixed-head ordinary-harness interventions, and the unconstrained context
   generation runner before GPU evaluation.
@@ -22,12 +23,16 @@
 - Five result figures were rendered and inspected; see
   `figures/qa-ledger.md`. Plotting reads the numeric result files directly.
 - The SAE transfer runner passed a one-window CPU execution check
-  plus two focused tests: token-weighted conditional loss aggregation and
-  exact preservation of each layer/stream's coefficient multiset in controls.
+  plus three focused tests: token-weighted conditional loss aggregation,
+  exact preservation of each layer/stream's coefficient multiset in controls,
+  and paired uncertainty for the positive-minus-negative dose span.
   The CPU execution check is an implementation check, not a scientific result.
 - Two domain-stream tests passed: paraphrases are averaged within
   content items, and permuted controls preserve each layer/stream's coefficient
   multiset while remaining on eligible hyperconnections.
+- The MHA fastpath control confirms actual fused encoder execution changes
+  from 64 calls to zero on each 32-window run; see
+  [the numerical comparison](routing_dependence/fastpath.md).
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.
