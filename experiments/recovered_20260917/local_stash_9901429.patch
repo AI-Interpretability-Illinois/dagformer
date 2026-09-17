@@ -1,0 +1,241 @@
+diff --git a/scripts/pretrain_dagformer.py b/scripts/pretrain_dagformer.py
+index 57ca923..fc532ab 100644
+--- a/scripts/pretrain_dagformer.py
++++ b/scripts/pretrain_dagformer.py
+@@ -641,6 +641,7 @@ def save_checkpoint(
+     optimizer: torch.optim.Optimizer,
+     best_eval_nll: float,
+     routing_model: Optional[nn.Module] = None,
++    tokens_seen: int = 0,
+ ) -> str:
+     os.makedirs(save_dir, exist_ok=True)
+     path = os.path.join(save_dir, f"checkpoint_step{step}.pt")
+@@ -654,6 +655,7 @@ def save_checkpoint(
+         "optimizer_state_dict": optimizer.state_dict(),
+         "best_eval_nll": best_eval_nll,
+         "model_state_path": model_path,
++        "tokens_seen": tokens_seen,
+     }
+     if predictor is not None:
+         state["predictor_state_dict"] = predictor.state_dict()
+@@ -1159,6 +1161,7 @@ def main() -> None:
+     # Resume from DAGFormer checkpoint (for continuing interrupted runs)
+     global_step = 0
+     best_eval_nll = float("inf")
++    resume_tokens = 0
+     resume_path = config.resume_from or find_latest_checkpoint(config.save_dir)
+     if resume_path:
+         if is_main:
+@@ -1203,6 +1206,7 @@ def main() -> None:
+                 print("  Continuing with fresh optimizer momentum (model weights OK)")
+         global_step = ckpt["step"] + 1
+         best_eval_nll = ckpt.get("best_eval_nll", float("inf"))
++        resume_tokens = ckpt.get("tokens_seen", 0)
+         del ckpt
+         if is_main:
+             print(f"Resumed at step {global_step}")
+@@ -1228,12 +1232,14 @@ def main() -> None:
+     def save_on_signal(signum: int, frame: Any) -> None:
+         if is_main:
+             print(f"\nSignal {signum}, saving checkpoint...")
++            _ts = (global_step + 1) * tokens_per_step
+             if use_fourway:
+                 save_checkpoint(
+                     config.save_dir, global_step,
+                     base_model, fourway_predictor,
+                     optimizer, best_eval_nll,
+                     routing_model=fourway_model,
++                    tokens_seen=_ts,
+                 )
+             else:
+                 save_checkpoint(
+@@ -1241,6 +1247,7 @@ def main() -> None:
+                     base_model, predictor,
+                     optimizer, best_eval_nll,
+                     routing_model=routing_model if use_routing_mode else None,
++                    tokens_seen=_ts,
+                 )
+         raise SystemExit(0)
+ 
+@@ -1248,6 +1255,21 @@ def main() -> None:
+ 
+     # ── Training loop ──
+     train_iter = iter(train_loader)
++
++    # On resume: skip training data already consumed to avoid replaying from offset 0.
++    if resume_path and resume_tokens > 0:
++        skip_seqs = resume_tokens // config.seq_len
++        if is_main:
++            print(f"  Skipping ~{skip_seqs:,} sequences ({resume_tokens:,} tokens) in train stream...")
++        for _ in range(skip_seqs):
++            try:
++                next(train_iter)
++            except StopIteration:
++                train_iter = iter(train_loader)
++                break
++        if is_main:
++            print(f"  Train stream advanced past checkpoint data.")
++
+     vocab_size = config.vocab_size
+     accum_steps = config.gradient_accumulation_steps
+ 
+@@ -1448,7 +1470,8 @@ def main() -> None:
+                     last_A = A.detach()
+                 else:
+                     # Standard step: fast dense forward (no A, no predictor)
+-                    outputs = combined_raw.base_model(input_ids=input_ids)
++                    # Use combined (DDP wrapper) to ensure gradient sync.
++                    outputs = combined(input_ids)
+                     nll = F.cross_entropy(
+                         outputs.logits.contiguous().view(-1, vocab_size),
+                         labels.contiguous().view(-1),
+@@ -1651,12 +1674,14 @@ def main() -> None:
+ 
+         # Checkpoint
+         if is_main and global_step > 0 and global_step % config.save_every == 0:
++            _ts = (global_step + 1) * tokens_per_step
+             if use_fourway:
+                 save_checkpoint(
+                     config.save_dir, global_step,
+                     base_model, fourway_predictor,
+                     optimizer, best_eval_nll,
+                     routing_model=fourway_model,
++                    tokens_seen=_ts,
+                 )
+             else:
+                 save_checkpoint(
+@@ -1664,6 +1689,7 @@ def main() -> None:
+                     base_model, predictor,
+                     optimizer, best_eval_nll,
+                     routing_model=routing_model if use_routing_mode else None,
++                    tokens_seen=_ts,
+                 )
+ 
+         global_step += 1
+@@ -1717,12 +1743,14 @@ def main() -> None:
+         final_nll = eval_nll_final_total / max(n_eval, 1)
+         print(f"\nFinal eval NLL: {final_nll:.4f}")
+ 
++        _ts = (global_step + 1) * tokens_per_step
+         if use_fourway:
+             save_checkpoint(
+                 config.save_dir, global_step,
+                 base_model, fourway_predictor,
+                 optimizer, best_eval_nll,
+                 routing_model=fourway_model,
++                tokens_seen=_ts,
+             )
+         else:
+             save_checkpoint(
+@@ -1730,6 +1758,7 @@ def main() -> None:
+                 base_model, predictor,
+                 optimizer, best_eval_nll,
+                 routing_model=routing_model if use_routing_mode else None,
++                tokens_seen=_ts,
+             )
+ 
+     finish_wandb(wandb_run)
+diff --git a/src/data/dolma.py b/src/data/dolma.py
+index 272d2e2..8489a62 100644
+--- a/src/data/dolma.py
++++ b/src/data/dolma.py
+@@ -115,6 +115,7 @@ class DolmaPackedDataset(IterableDataset):
+         buffer: list[int] = []
+         sample_count = 0
+         retries = 0
++        docs_consumed = 0  # track position for skip-on-retry
+         # For dolmino_mix, HF .shard() doesn't work on interleaved datasets,
+         # so we do manual document-level modulo sharding here instead.
+         manual_shard = (self.dataset_version == "dolmino_mix" and self.world_size > 1)
+@@ -122,12 +123,19 @@ class DolmaPackedDataset(IterableDataset):
+         while retries <= MAX_RETRIES:
+             try:
+                 dataset = self._load_stream()
++                # Skip docs already consumed before the error to avoid
++                # repeating data (which causes overfitting to early docs).
++                if docs_consumed > 0:
++                    print(f"[DolmaDataset] Skipping {docs_consumed} already-consumed docs...")
++                    dataset = dataset.skip(docs_consumed)
+                 doc_idx = 0
+ 
+                 for doc in dataset:
+                     if self.max_samples is not None and sample_count >= self.max_samples:
+                         return
+ 
++                    docs_consumed += 1
++
+                     # Manual DDP sharding: each rank takes every world_size-th doc
+                     if manual_shard:
+                         if doc_idx % self.world_size != self.rank:
+@@ -170,7 +178,7 @@ class DolmaPackedDataset(IterableDataset):
+                 if retries > MAX_RETRIES:
+                     raise RuntimeError(f"Dolma stream failed after {MAX_RETRIES} retries: {e}") from e
+                 print(f"[DolmaDataset] Stream error (retry {retries}/{MAX_RETRIES}): {e}")
+-                print(f"[DolmaDataset] Waiting {RETRY_WAIT}s before reconnecting...")
++                print(f"[DolmaDataset] Resuming from doc {docs_consumed} after {RETRY_WAIT}s...")
+                 time.sleep(RETRY_WAIT)
+                 buffer = []  # reset buffer, data order doesn't matter for training
+ 
+@@ -217,10 +225,17 @@ def build_eval_dataloader(
+     Skips eval_skip examples in the stream, then takes eval_size packed sequences.
+     Caches to disk to avoid repeated skip on restart.
+     """
+-    # Try loading from cache
++    # Try loading from cache (with validation)
+     if cache_path and os.path.exists(cache_path):
+-        print(f"Loading eval cache from {cache_path}")
+-        return torch.load(cache_path)
++        cached = torch.load(cache_path)
++        # Validate: check batch count matches expected eval_size / batch_size
++        expected_batches = (eval_size + batch_size - 1) // batch_size
++        if len(cached) == expected_batches:
++            print(f"Loading eval cache from {cache_path} ({len(cached)} batches)")
++            return cached
++        else:
++            print(f"Eval cache mismatch: {len(cached)} batches (expected {expected_batches}), rebuilding...")
++            os.remove(cache_path)
+ 
+     print(f"Building eval set (skip={eval_skip}, size={eval_size})...")
+ 
+diff --git a/src/model/predictor.py b/src/model/predictor.py
+index 00cb28d..77b9334 100644
+--- a/src/model/predictor.py
++++ b/src/model/predictor.py
+@@ -988,6 +988,10 @@ class FourWayPredictor(nn.Module):
+             norm_first=True,
+         )
+         self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=encoder_layers)
++        # Disable fused fastpath: it activates when training=False + no_grad,
++        # producing numerically different bf16 results than the standard path
++        # used during training. This causes train/eval routing weight mismatch.
++        self.encoder.enable_nested_tensor = False
+ 
+         # Shared trunk: encoder output → hidden
+         # Dropout after GELU regularizes the input to per-layer routing heads.
+@@ -1038,13 +1042,21 @@ class FourWayPredictor(nn.Module):
+         H = self.num_heads
+ 
+         # Encode
++        # Disable MHA fastpath to ensure identical results in train/eval mode.
++        # PyTorch's TransformerEncoderLayer uses a fused kernel when
++        # training=False + no_grad, producing different bf16 results.
+         positions = torch.arange(T, device=input_ids.device)
+         x = self.embed(input_ids) + self.pos_embed(positions)
+-        if self.causal:
+-            causal_mask = torch.triu(torch.ones(T, T, device=x.device), diagonal=1).bool()
+-            x = self.encoder(x, mask=causal_mask)  # [B, T, encoder_dim]
+-        else:
+-            x = self.encoder(x)  # [B, T, encoder_dim] — bidirectional
++        prev_fp = torch.backends.mha.get_fastpath_enabled()
++        torch.backends.mha.set_fastpath_enabled(False)
++        try:
++            if self.causal:
++                causal_mask = torch.triu(torch.ones(T, T, device=x.device), diagonal=1).bool()
++                x = self.encoder(x, mask=causal_mask)  # [B, T, encoder_dim]
++            else:
++                x = self.encoder(x)  # [B, T, encoder_dim] — bidirectional
++        finally:
++            torch.backends.mha.set_fastpath_enabled(prev_fp)
+         x = self.trunk(x)    # [B, T, hidden_dim]
+ 
+         # Per-layer routing weights
