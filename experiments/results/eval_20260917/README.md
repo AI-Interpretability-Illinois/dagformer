@@ -100,6 +100,13 @@ the larger correction effects. Substitution hooks still execute the original
 predictor before replacing its output; these runs measure dependence, not
 an inference-speed improvement.
 
+A [moving-block bootstrap check](routing_dependence/block_bootstrap.md) keeps
+groups of adjacent windows together because windows can share source articles.
+The conclusions persist with blocks of 4, 8 and 16 windows. At 300M, the
+position-table substitution costs +0.000614 NLL; the 16-window-block interval
+is [0.000274, 0.000893]. This supports a small positive cost even when nearby
+windows are resampled together.
+
 The same position-table substitution was also evaluated on all 14 ordinary
 tasks at all three scales. The table below reports *cost* for BPB and signed
 accuracy change for LAMBADA; the full
