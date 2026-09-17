@@ -46,14 +46,25 @@ Two further custom controls score the question prefix and the gold answer
 conditioned on that prefix separately. These remain teacher-forced
 likelihood endpoints; they do not count generated solutions as correct.
 
-The first completed full-generation run, 300M baseline, has 1.59% flexible
-extraction and 0% strict-match accuracy. The
-[generation audit](gsm8k_full/generation_audit.md) retains the official scores
+Full GSM8K generation is complete for the 75M and 300M pairs, with 1,319
+documents per model, three few-shot examples and a 256-token generation cap.
+Both pairs show no detected improvement in flexible numeric extraction:
+
+| Scale | Baseline | DAGFormer | Difference | Paired 95% interval |
+|---|---:|---:|---:|---|
+| 75M | 1.82% | 1.67% | -0.15 percentage points | [-1.06, +0.76] |
+| 300M | 1.59% | 1.52% | -0.08 percentage points | [-0.91, +0.76] |
+
+Strict-format accuracy is 0% for all four. The
+[paired results](gsm8k_full/paired_summary.md) and
+[generation audit](gsm8k_full/generation_audit.md) retain the official scores
 alongside deterministic output examples. A matching extracted number can
 occur in repeated or irrelevant text: document 52, for example, generates
 "15 pounds" where the requested answer is 15 toys. The best constant-number
-diagnostic on this test split is 3.03% (always 5). Other generation runs are
-still running; a model comparison will be added when both members finish.
+diagnostic on this test split is 3.03% (always 5). Generation runs for 150M,
+the 600M baseline and the later 300M DAGFormer checkpoint are still pending.
+Dense baselines use KV caching; DAGFormer recomputes the prefix. A 200-item
+300M baseline run with caching disabled checks sensitivity to that choice.
 
 The [explicit-label audit](standard_matched/label_bias.md) shows two limitations:
 all models choose A on at least 98.94% of standard CommonsenseQA questions,
