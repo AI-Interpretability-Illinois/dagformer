@@ -1,0 +1,4986 @@
+{
+  "protocol": {
+    "status": "posthoc robustness and endpoint diagnostics; primary target-first results are retained",
+    "clusters": "identical rendered prompt strings, separately within each condition",
+    "intervals": "paired prompt-cluster bootstrap, preserving the original item-weighted point estimate by resampling cluster sums and counts",
+    "equal_unique_prompt_delta": "additional point estimate giving every distinct rendered prompt equal weight",
+    "heldout_scope": "original item keys include the receiver; distinct item keys do not guarantee distinct facts or neutral QA prompts",
+    "secondary_endpoint": "target_without_alternative is literal target mention with no listed alternative anywhere; it does not resolve negation, quotations, or separate statements about another speaker",
+    "selection": "all named edits and both measured controls; no selection by effect direction"
+  },
+  "draws": 10000,
+  "seed": 20260917,
+  "sources": {
+    "context_generation": {
+      "path": "experiments/results/eval_20260917/raw/context_generation.json",
+      "n_items": 1024,
+      "unique_item_keys": 1024,
+      "original_discovery_item_key_overlap": 0,
+      "unique_facts": 819,
+      "original_discovery_fact_overlap": 96,
+      "item_rows_with_discovery_fact": 115,
+      "conditions": {
+        "original/neutral": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.4794921875,
+            "alternative_first": 0.0,
+            "no_candidate": 0.5205078125,
+            "target_without_alternative": 0.4794921875,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.494140625,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.505859375,
+                "delta": -0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0234375,
+                  -0.0068359375
+                ],
+                "equal_unique_prompt_delta": -0.0146484375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.494140625,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.4794921875,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.5205078125,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.4794921875,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.478515625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.521484375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.478515625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.4951171875,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.005859375,
+                  0.025390625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.5048828125,
+                "delta": -0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.025390625,
+                  -0.005859375
+                ],
+                "equal_unique_prompt_delta": -0.015625
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.4951171875,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.005859375,
+                  0.025390625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.486328125,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.513671875,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.486328125,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.478515625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.521484375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.0068359375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.478515625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.5009765625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.4990234375,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03125,
+                  -0.01171875
+                ],
+                "equal_unique_prompt_delta": -0.021484375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.5009765625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.4853515625,
+                "delta": 0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009765625,
+                  0.01171875
+                ],
+                "equal_unique_prompt_delta": 0.005859375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.5146484375,
+                "delta": -0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01171875,
+                  -0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.005859375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.4853515625,
+                "delta": 0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009765625,
+                  0.01171875
+                ],
+                "equal_unique_prompt_delta": 0.005859375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.4794921875,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.5205078125,
+                "variant": 0.5205078125,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.4794921875,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.494140625,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.494140625,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.478515625,
+                "variant": 0.494140625,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "target_without_alternative": {
+                "reference": 0.478515625,
+                "variant": 0.494140625,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.486328125,
+                "variant": 0.4951171875,
+                "delta": 0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.017578125
+                ],
+                "equal_unique_prompt_delta": 0.0087890625
+              },
+              "target_without_alternative": {
+                "reference": 0.486328125,
+                "variant": 0.4951171875,
+                "delta": 0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.017578125
+                ],
+                "equal_unique_prompt_delta": 0.0087890625
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.478515625,
+                "variant": 0.4951171875,
+                "delta": 0.0166015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.0166015625
+              },
+              "target_without_alternative": {
+                "reference": 0.478515625,
+                "variant": 0.4951171875,
+                "delta": 0.0166015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.0166015625
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.4853515625,
+                "variant": 0.5009765625,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.025390625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "target_without_alternative": {
+                "reference": 0.4853515625,
+                "variant": 0.5009765625,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.025390625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.4794921875,
+                "variant": 0.5009765625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              },
+              "target_without_alternative": {
+                "reference": 0.4794921875,
+                "variant": 0.5009765625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              }
+            }
+          }
+        },
+        "original/deceptive": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.458984375,
+            "alternative_first": 0.0,
+            "no_candidate": 0.541015625,
+            "target_without_alternative": 0.458984375,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4833984375,
+                "delta": 0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.015625,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0244140625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5166015625,
+                "delta": -0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0341796875,
+                  -0.015625
+                ],
+                "equal_unique_prompt_delta": -0.0244140625
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4833984375,
+                "delta": 0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.015625,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0244140625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4609375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5390625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0078125,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4609375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4599609375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5400390625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4599609375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4765625,
+                "delta": 0.017578125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.009765625,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.017578125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5234375,
+                "delta": -0.017578125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0263671875,
+                  -0.009765625
+                ],
+                "equal_unique_prompt_delta": -0.017578125
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4765625,
+                "delta": 0.017578125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.009765625,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.017578125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.466796875,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0146484375
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.533203125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0146484375,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0078125
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.466796875,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0146484375
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.462890625,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": 0.00390625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.537109375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0087890625,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": -0.00390625
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.462890625,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": 0.00390625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4912109375,
+                "delta": 0.0322265625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0224609375,
+                  0.04296875
+                ],
+                "equal_unique_prompt_delta": 0.0322265625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5087890625,
+                "delta": -0.0322265625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.04296875,
+                  -0.0224609375
+                ],
+                "equal_unique_prompt_delta": -0.0322265625
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4912109375,
+                "delta": 0.0322265625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0224609375,
+                  0.04296875
+                ],
+                "equal_unique_prompt_delta": 0.0322265625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.47265625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.52734375,
+                "delta": -0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.021484375,
+                  -0.0068359375
+                ],
+                "equal_unique_prompt_delta": -0.013671875
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.47265625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.458984375,
+                "variant": 0.4609375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.001953125,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.541015625,
+                "variant": 0.5390625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.458984375,
+                "variant": 0.4609375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.001953125,
+                  0.005859375
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.4609375,
+                "variant": 0.4833984375,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              },
+              "target_without_alternative": {
+                "reference": 0.4609375,
+                "variant": 0.4833984375,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.4599609375,
+                "variant": 0.4833984375,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0146484375,
+                  0.033203125
+                ],
+                "equal_unique_prompt_delta": 0.0234375
+              },
+              "target_without_alternative": {
+                "reference": 0.4599609375,
+                "variant": 0.4833984375,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0146484375,
+                  0.033203125
+                ],
+                "equal_unique_prompt_delta": 0.0234375
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.466796875,
+                "variant": 0.4765625,
+                "delta": 0.009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0185546875
+                ],
+                "equal_unique_prompt_delta": 0.009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.466796875,
+                "variant": 0.4765625,
+                "delta": 0.009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0185546875
+                ],
+                "equal_unique_prompt_delta": 0.009765625
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.462890625,
+                "variant": 0.4765625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "target_without_alternative": {
+                "reference": 0.462890625,
+                "variant": 0.4765625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.47265625,
+                "variant": 0.4912109375,
+                "delta": 0.0185546875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0087890625,
+                  0.0283203125
+                ],
+                "equal_unique_prompt_delta": 0.0185546875
+              },
+              "target_without_alternative": {
+                "reference": 0.47265625,
+                "variant": 0.4912109375,
+                "delta": 0.0185546875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0087890625,
+                  0.0283203125
+                ],
+                "equal_unique_prompt_delta": 0.0185546875
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.4609375,
+                "variant": 0.4912109375,
+                "delta": 0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0205078125,
+                  0.041015625
+                ],
+                "equal_unique_prompt_delta": 0.0302734375
+              },
+              "target_without_alternative": {
+                "reference": 0.4609375,
+                "variant": 0.4912109375,
+                "delta": 0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0205078125,
+                  0.041015625
+                ],
+                "equal_unique_prompt_delta": 0.0302734375
+              }
+            }
+          }
+        },
+        "qa/neutral": {
+          "unique_prompts": 819,
+          "max_multiplicity": 4,
+          "group_size_histogram": {
+            "1": 643,
+            "2": 150,
+            "3": 23,
+            "4": 3
+          },
+          "reference_means": {
+            "target_first": 0.90234375,
+            "alternative_first": 0.0,
+            "no_candidate": 0.09765625,
+            "target_without_alternative": 0.90234375,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.9248046875,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01352657004830918,
+                  0.03235364145658263
+                ],
+                "equal_unique_prompt_delta": 0.026862026862026864
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.0751953125,
+                "delta": -0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.032353641456582635,
+                  -0.01352657004830918
+                ],
+                "equal_unique_prompt_delta": -0.026862026862026864
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.9248046875,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01352657004830918,
+                  0.03235364145658263
+                ],
+                "equal_unique_prompt_delta": 0.026862026862026864
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.8984375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01145092902076978,
+                  0.001001001001001001
+                ],
+                "equal_unique_prompt_delta": -0.002442002442002442
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.1015625,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.001001001001001001,
+                  0.011450929020769773
+                ],
+                "equal_unique_prompt_delta": 0.002442002442002442
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.8984375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01145092902076978,
+                  0.001001001001001001
+                ],
+                "equal_unique_prompt_delta": -0.002442002442002442
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.8876953125,
+                "delta": -0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.023880597014925373,
+                  -0.006711248682146624
+                ],
+                "equal_unique_prompt_delta": -0.015873015873015872
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.1123046875,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0067112486821466226,
+                  0.023880597014925373
+                ],
+                "equal_unique_prompt_delta": 0.015873015873015872
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.8876953125,
+                "delta": -0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.023880597014925373,
+                  -0.006711248682146624
+                ],
+                "equal_unique_prompt_delta": -0.015873015873015872
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.91796875,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.008687049254792746,
+                  0.023786516588796065
+                ],
+                "equal_unique_prompt_delta": 0.019536019536019536
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.08203125,
+                "delta": -0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02378651658879607,
+                  -0.008687049254792748
+                ],
+                "equal_unique_prompt_delta": -0.019536019536019536
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.91796875,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.008687049254792746,
+                  0.023786516588796065
+                ],
+                "equal_unique_prompt_delta": 0.019536019536019536
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.89453125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.015841584158415842,
+                  -0.001941747572815534
+                ],
+                "equal_unique_prompt_delta": -0.007326007326007326
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.10546875,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001941747572815534,
+                  0.015841584158415842
+                ],
+                "equal_unique_prompt_delta": 0.007326007326007326
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.89453125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.015841584158415842,
+                  -0.001941747572815534
+                ],
+                "equal_unique_prompt_delta": -0.007326007326007326
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.880859375,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03288280739466091,
+                  -0.011627906976744186
+                ],
+                "equal_unique_prompt_delta": -0.02197802197802198
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.119140625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.011627906976744186,
+                  0.032882807394660894
+                ],
+                "equal_unique_prompt_delta": 0.02197802197802198
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.880859375,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03288280739466091,
+                  -0.011627906976744186
+                ],
+                "equal_unique_prompt_delta": -0.02197802197802198
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.923828125,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.012608811908360213,
+                  0.031093279839518557
+                ],
+                "equal_unique_prompt_delta": 0.02564102564102564
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.076171875,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.031093279839518557,
+                  -0.012608811908360218
+                ],
+                "equal_unique_prompt_delta": -0.02564102564102564
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.923828125,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.012608811908360213,
+                  0.031093279839518557
+                ],
+                "equal_unique_prompt_delta": 0.02564102564102564
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.89453125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.016190572585309426,
+                  -0.0009813542688910696
+                ],
+                "equal_unique_prompt_delta": -0.007326007326007326
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.10546875,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009813542688910696,
+                  0.016190572585309426
+                ],
+                "equal_unique_prompt_delta": 0.007326007326007326
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.89453125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.016190572585309426,
+                  -0.0009813542688910696
+                ],
+                "equal_unique_prompt_delta": -0.007326007326007326
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.90234375,
+                "variant": 0.875,
+                "delta": -0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.040697674418604654,
+                  -0.01557935735150925
+                ],
+                "equal_unique_prompt_delta": -0.026862026862026864
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.09765625,
+                "variant": 0.125,
+                "delta": 0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01557935735150925,
+                  0.040697674418604654
+                ],
+                "equal_unique_prompt_delta": 0.026862026862026864
+              },
+              "target_without_alternative": {
+                "reference": 0.90234375,
+                "variant": 0.875,
+                "delta": -0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.040697674418604654,
+                  -0.01557935735150925
+                ],
+                "equal_unique_prompt_delta": -0.026862026862026864
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8984375,
+                "variant": 0.9248046875,
+                "delta": 0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01565519470954734,
+                  0.03826799865990293
+                ],
+                "equal_unique_prompt_delta": 0.029304029304029304
+              },
+              "target_without_alternative": {
+                "reference": 0.8984375,
+                "variant": 0.9248046875,
+                "delta": 0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01565519470954734,
+                  0.03826799865990293
+                ],
+                "equal_unique_prompt_delta": 0.029304029304029304
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8876953125,
+                "variant": 0.9248046875,
+                "delta": 0.037109375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025072256858357754,
+                  0.050148726569577015
+                ],
+                "equal_unique_prompt_delta": 0.042735042735042736
+              },
+              "target_without_alternative": {
+                "reference": 0.8876953125,
+                "variant": 0.9248046875,
+                "delta": 0.037109375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025072256858357754,
+                  0.050148726569577015
+                ],
+                "equal_unique_prompt_delta": 0.042735042735042736
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.89453125,
+                "variant": 0.91796875,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01364522417153996,
+                  0.034688502608634146
+                ],
+                "equal_unique_prompt_delta": 0.026862026862026864
+              },
+              "target_without_alternative": {
+                "reference": 0.89453125,
+                "variant": 0.91796875,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01364522417153996,
+                  0.034688502608634146
+                ],
+                "equal_unique_prompt_delta": 0.026862026862026864
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.880859375,
+                "variant": 0.91796875,
+                "delta": 0.037109375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.024702947648943187,
+                  0.05083088954056696
+                ],
+                "equal_unique_prompt_delta": 0.04151404151404151
+              },
+              "target_without_alternative": {
+                "reference": 0.880859375,
+                "variant": 0.91796875,
+                "delta": 0.037109375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.024702947648943187,
+                  0.05083088954056696
+                ],
+                "equal_unique_prompt_delta": 0.04151404151404151
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.89453125,
+                "variant": 0.923828125,
+                "delta": 0.029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01812977099236641,
+                  0.04137947628688062
+                ],
+                "equal_unique_prompt_delta": 0.03296703296703297
+              },
+              "target_without_alternative": {
+                "reference": 0.89453125,
+                "variant": 0.923828125,
+                "delta": 0.029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01812977099236641,
+                  0.04137947628688062
+                ],
+                "equal_unique_prompt_delta": 0.03296703296703297
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.875,
+                "variant": 0.923828125,
+                "delta": 0.048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.03411279159114771,
+                  0.064453125
+                ],
+                "equal_unique_prompt_delta": 0.052503052503052504
+              },
+              "target_without_alternative": {
+                "reference": 0.875,
+                "variant": 0.923828125,
+                "delta": 0.048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.03411279159114771,
+                  0.064453125
+                ],
+                "equal_unique_prompt_delta": 0.052503052503052504
+              }
+            }
+          }
+        },
+        "qa/deceptive": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.9033203125,
+            "alternative_first": 0.0,
+            "no_candidate": 0.0966796875,
+            "target_without_alternative": 0.9033203125,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.9052734375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.00390625,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.0947265625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0078125,
+                  0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.9052734375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.00390625,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.8994140625,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0078125,
+                  -0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.00390625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.1005859375,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009765625,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.00390625
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.8994140625,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0078125,
+                  -0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.00390625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.8896484375,
+                "delta": -0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.021484375,
+                  -0.0068359375
+                ],
+                "equal_unique_prompt_delta": -0.013671875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.1103515625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.8896484375,
+                "delta": -0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.021484375,
+                  -0.0068359375
+                ],
+                "equal_unique_prompt_delta": -0.013671875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.91015625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.08984375,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.91015625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.896484375,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.103515625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.896484375,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.880859375,
+                "delta": -0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0322265625,
+                  -0.013671875
+                ],
+                "equal_unique_prompt_delta": -0.0224609375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.119140625,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.880859375,
+                "delta": -0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0322265625,
+                  -0.013671875
+                ],
+                "equal_unique_prompt_delta": -0.0224609375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.9111328125,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0029296875,
+                  0.013671875
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.0888671875,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013671875,
+                  -0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0078125
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.9111328125,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0029296875,
+                  0.013671875
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.896484375,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.103515625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.896484375,
+                "delta": -0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0126953125,
+                  -0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0068359375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.9033203125,
+                "variant": 0.873046875,
+                "delta": -0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.041015625,
+                  -0.0205078125
+                ],
+                "equal_unique_prompt_delta": -0.0302734375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.0966796875,
+                "variant": 0.126953125,
+                "delta": 0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0205078125,
+                  0.041015625
+                ],
+                "equal_unique_prompt_delta": 0.0302734375
+              },
+              "target_without_alternative": {
+                "reference": 0.9033203125,
+                "variant": 0.873046875,
+                "delta": -0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.041015625,
+                  -0.0205078125
+                ],
+                "equal_unique_prompt_delta": -0.0302734375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8994140625,
+                "variant": 0.9052734375,
+                "delta": 0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.005859375
+              },
+              "target_without_alternative": {
+                "reference": 0.8994140625,
+                "variant": 0.9052734375,
+                "delta": 0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.005859375
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8896484375,
+                "variant": 0.9052734375,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0244140625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "target_without_alternative": {
+                "reference": 0.8896484375,
+                "variant": 0.9052734375,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0244140625
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.896484375,
+                "variant": 0.91015625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "target_without_alternative": {
+                "reference": 0.896484375,
+                "variant": 0.91015625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.880859375,
+                "variant": 0.91015625,
+                "delta": 0.029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01953125,
+                  0.0400390625
+                ],
+                "equal_unique_prompt_delta": 0.029296875
+              },
+              "target_without_alternative": {
+                "reference": 0.880859375,
+                "variant": 0.91015625,
+                "delta": 0.029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01953125,
+                  0.0400390625
+                ],
+                "equal_unique_prompt_delta": 0.029296875
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.896484375,
+                "variant": 0.9111328125,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0224609375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              },
+              "target_without_alternative": {
+                "reference": 0.896484375,
+                "variant": 0.9111328125,
+                "delta": 0.0146484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0078125,
+                  0.0224609375
+                ],
+                "equal_unique_prompt_delta": 0.0146484375
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.873046875,
+                "variant": 0.9111328125,
+                "delta": 0.0380859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.02734375,
+                  0.05078125
+                ],
+                "equal_unique_prompt_delta": 0.0380859375
+              },
+              "target_without_alternative": {
+                "reference": 0.873046875,
+                "variant": 0.9111328125,
+                "delta": 0.0380859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.02734375,
+                  0.05078125
+                ],
+                "equal_unique_prompt_delta": 0.0380859375
+              }
+            }
+          }
+        },
+        "dialogue/neutral": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.8798828125,
+            "alternative_first": 0.0,
+            "no_candidate": 0.1201171875,
+            "target_without_alternative": 0.8798828125,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.8994140625,
+                "delta": 0.01953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.0283203125
+                ],
+                "equal_unique_prompt_delta": 0.01953125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.1005859375,
+                "delta": -0.01953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0283203125,
+                  -0.01171875
+                ],
+                "equal_unique_prompt_delta": -0.01953125
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.8994140625,
+                "delta": 0.01953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.0283203125
+                ],
+                "equal_unique_prompt_delta": 0.01953125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.87890625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.12109375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.0068359375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.87890625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.869140625,
+                "delta": -0.0107421875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  -0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0107421875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.130859375,
+                "delta": 0.0107421875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0048828125,
+                  0.017578125
+                ],
+                "equal_unique_prompt_delta": 0.0107421875
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.869140625,
+                "delta": -0.0107421875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  -0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0107421875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.8955078125,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0087890625,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.1044921875,
+                "delta": -0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0234375,
+                  -0.0087890625
+                ],
+                "equal_unique_prompt_delta": -0.015625
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.8955078125,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0087890625,
+                  0.0234375
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.875,
+                "delta": -0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01171875,
+                  0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0048828125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.125,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.001953125,
+                  0.01171875
+                ],
+                "equal_unique_prompt_delta": 0.0048828125
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.875,
+                "delta": -0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01171875,
+                  0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0048828125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.859375,
+                "delta": -0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.029296875,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.0205078125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.140625,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.029296875
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.859375,
+                "delta": -0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.029296875,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.0205078125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.900390625,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.029296875
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.099609375,
+                "delta": -0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.029296875,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.0205078125
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.900390625,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.029296875
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.8779296875,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0087890625,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.1220703125,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.8779296875,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0087890625,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8798828125,
+                "variant": 0.853515625,
+                "delta": -0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.037109375,
+                  -0.017578125
+                ],
+                "equal_unique_prompt_delta": -0.0263671875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1201171875,
+                "variant": 0.146484375,
+                "delta": 0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.017578125,
+                  0.037109375
+                ],
+                "equal_unique_prompt_delta": 0.0263671875
+              },
+              "target_without_alternative": {
+                "reference": 0.8798828125,
+                "variant": 0.853515625,
+                "delta": -0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.037109375,
+                  -0.017578125
+                ],
+                "equal_unique_prompt_delta": -0.0263671875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.87890625,
+                "variant": 0.8994140625,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.029296875
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              },
+              "target_without_alternative": {
+                "reference": 0.87890625,
+                "variant": 0.8994140625,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01171875,
+                  0.029296875
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.869140625,
+                "variant": 0.8994140625,
+                "delta": 0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0205078125,
+                  0.041015625
+                ],
+                "equal_unique_prompt_delta": 0.0302734375
+              },
+              "target_without_alternative": {
+                "reference": 0.869140625,
+                "variant": 0.8994140625,
+                "delta": 0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0205078125,
+                  0.041015625
+                ],
+                "equal_unique_prompt_delta": 0.0302734375
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.875,
+                "variant": 0.8955078125,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0107421875,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              },
+              "target_without_alternative": {
+                "reference": 0.875,
+                "variant": 0.8955078125,
+                "delta": 0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0107421875,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.0205078125
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.859375,
+                "variant": 0.8955078125,
+                "delta": 0.0361328125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025390625,
+                  0.0478515625
+                ],
+                "equal_unique_prompt_delta": 0.0361328125
+              },
+              "target_without_alternative": {
+                "reference": 0.859375,
+                "variant": 0.8955078125,
+                "delta": 0.0361328125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025390625,
+                  0.0478515625
+                ],
+                "equal_unique_prompt_delta": 0.0361328125
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.8779296875,
+                "variant": 0.900390625,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              },
+              "target_without_alternative": {
+                "reference": 0.8779296875,
+                "variant": 0.900390625,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.853515625,
+                "variant": 0.900390625,
+                "delta": 0.046875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0341796875,
+                  0.060546875
+                ],
+                "equal_unique_prompt_delta": 0.046875
+              },
+              "target_without_alternative": {
+                "reference": 0.853515625,
+                "variant": 0.900390625,
+                "delta": 0.046875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0341796875,
+                  0.060546875
+                ],
+                "equal_unique_prompt_delta": 0.046875
+              }
+            }
+          }
+        },
+        "dialogue/deceptive": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.8701171875,
+            "alternative_first": 0.0,
+            "no_candidate": 0.1298828125,
+            "target_without_alternative": 0.8701171875,
+            "alternative_anywhere": 0.0
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.8935546875,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0146484375,
+                  0.033203125
+                ],
+                "equal_unique_prompt_delta": 0.0234375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.1064453125,
+                "delta": -0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.033203125,
+                  -0.0146484375
+                ],
+                "equal_unique_prompt_delta": -0.0234375
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.8935546875,
+                "delta": 0.0234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0146484375,
+                  0.033203125
+                ],
+                "equal_unique_prompt_delta": 0.0234375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.869140625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.130859375,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.0068359375
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.869140625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.8486328125,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03125,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.021484375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.1513671875,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0126953125,
+                  0.03125
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.8486328125,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03125,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.021484375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.892578125,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.107421875,
+                "delta": -0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0322265625,
+                  -0.013671875
+                ],
+                "equal_unique_prompt_delta": -0.0224609375
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.892578125,
+                "delta": 0.0224609375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.013671875,
+                  0.0322265625
+                ],
+                "equal_unique_prompt_delta": 0.0224609375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.8583984375,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0205078125,
+                  -0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.01171875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.1416015625,
+                "delta": 0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.00390625,
+                  0.0205078125
+                ],
+                "equal_unique_prompt_delta": 0.01171875
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.8583984375,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0205078125,
+                  -0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.01171875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.84375,
+                "delta": -0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.037109375,
+                  -0.0166015625
+                ],
+                "equal_unique_prompt_delta": -0.0263671875
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.15625,
+                "delta": 0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0166015625,
+                  0.037109375
+                ],
+                "equal_unique_prompt_delta": 0.0263671875
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.84375,
+                "delta": -0.0263671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.037109375,
+                  -0.0166015625
+                ],
+                "equal_unique_prompt_delta": -0.0263671875
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.8974609375,
+                "delta": 0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.017578125,
+                  0.0380859375
+                ],
+                "equal_unique_prompt_delta": 0.02734375
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.1025390625,
+                "delta": -0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0380859375,
+                  -0.017578125
+                ],
+                "equal_unique_prompt_delta": -0.02734375
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.8974609375,
+                "delta": 0.02734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.017578125,
+                  0.0380859375
+                ],
+                "equal_unique_prompt_delta": 0.02734375
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.861328125,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0166015625,
+                  -0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.0087890625
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.138671875,
+                "delta": 0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009765625,
+                  0.0166015625
+                ],
+                "equal_unique_prompt_delta": 0.0087890625
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.861328125,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0166015625,
+                  -0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.0087890625
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8701171875,
+                "variant": 0.8369140625,
+                "delta": -0.033203125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.044921875,
+                  -0.0224609375
+                ],
+                "equal_unique_prompt_delta": -0.033203125
+              },
+              "alternative_first": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "no_candidate": {
+                "reference": 0.1298828125,
+                "variant": 0.1630859375,
+                "delta": 0.033203125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0224609375,
+                  0.044921875
+                ],
+                "equal_unique_prompt_delta": 0.033203125
+              },
+              "target_without_alternative": {
+                "reference": 0.8701171875,
+                "variant": 0.8369140625,
+                "delta": -0.033203125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.044921875,
+                  -0.0224609375
+                ],
+                "equal_unique_prompt_delta": -0.033203125
+              },
+              "alternative_anywhere": {
+                "reference": 0.0,
+                "variant": 0.0,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": 0.0
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.869140625,
+                "variant": 0.8935546875,
+                "delta": 0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.015625,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0244140625
+              },
+              "target_without_alternative": {
+                "reference": 0.869140625,
+                "variant": 0.8935546875,
+                "delta": 0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.015625,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0244140625
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8486328125,
+                "variant": 0.8935546875,
+                "delta": 0.044921875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.033203125,
+                  0.05859375
+                ],
+                "equal_unique_prompt_delta": 0.044921875
+              },
+              "target_without_alternative": {
+                "reference": 0.8486328125,
+                "variant": 0.8935546875,
+                "delta": 0.044921875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.033203125,
+                  0.05859375
+                ],
+                "equal_unique_prompt_delta": 0.044921875
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8583984375,
+                "variant": 0.892578125,
+                "delta": 0.0341796875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0234375,
+                  0.0458984375
+                ],
+                "equal_unique_prompt_delta": 0.0341796875
+              },
+              "target_without_alternative": {
+                "reference": 0.8583984375,
+                "variant": 0.892578125,
+                "delta": 0.0341796875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0234375,
+                  0.0458984375
+                ],
+                "equal_unique_prompt_delta": 0.0341796875
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.84375,
+                "variant": 0.892578125,
+                "delta": 0.048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0361328125,
+                  0.0625
+                ],
+                "equal_unique_prompt_delta": 0.048828125
+              },
+              "target_without_alternative": {
+                "reference": 0.84375,
+                "variant": 0.892578125,
+                "delta": 0.048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0361328125,
+                  0.0625
+                ],
+                "equal_unique_prompt_delta": 0.048828125
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.861328125,
+                "variant": 0.8974609375,
+                "delta": 0.0361328125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025390625,
+                  0.0478515625
+                ],
+                "equal_unique_prompt_delta": 0.0361328125
+              },
+              "target_without_alternative": {
+                "reference": 0.861328125,
+                "variant": 0.8974609375,
+                "delta": 0.0361328125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.025390625,
+                  0.0478515625
+                ],
+                "equal_unique_prompt_delta": 0.0361328125
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8369140625,
+                "variant": 0.8974609375,
+                "delta": 0.060546875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.046875,
+                  0.0751953125
+                ],
+                "equal_unique_prompt_delta": 0.060546875
+              },
+              "target_without_alternative": {
+                "reference": 0.8369140625,
+                "variant": 0.8974609375,
+                "delta": 0.060546875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.046875,
+                  0.0751953125
+                ],
+                "equal_unique_prompt_delta": 0.060546875
+              }
+            }
+          }
+        }
+      }
+    },
+    "context_attribute_generation": {
+      "path": "experiments/results/eval_20260917/raw/context_attribute_generation.json",
+      "n_items": 1024,
+      "unique_item_keys": 1024,
+      "original_discovery_item_key_overlap": 0,
+      "unique_facts": 830,
+      "original_discovery_fact_overlap": 79,
+      "item_rows_with_discovery_fact": 94,
+      "conditions": {
+        "attribute_qa/neutral": {
+          "unique_prompts": 830,
+          "max_multiplicity": 3,
+          "group_size_histogram": {
+            "1": 656,
+            "2": 154,
+            "3": 20
+          },
+          "reference_means": {
+            "target_first": 0.8310546875,
+            "alternative_first": 0.02734375,
+            "no_candidate": 0.1416015625,
+            "target_without_alternative": 0.8310546875,
+            "alternative_anywhere": 0.02734375
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.7646484375,
+                "delta": -0.06640625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08747607765403645,
+                  -0.046351084812623275
+                ],
+                "equal_unique_prompt_delta": -0.07228915662650602
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0302734375,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.004775549188156638,
+                  0.010526567856422663
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.205078125,
+                "delta": 0.0634765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0448780487804878,
+                  0.08341416100872939
+                ],
+                "equal_unique_prompt_delta": 0.06867469879518072
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.7646484375,
+                "delta": -0.06640625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08747607765403645,
+                  -0.046351084812623275
+                ],
+                "equal_unique_prompt_delta": -0.07228915662650602
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0302734375,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.004775549188156638,
+                  0.010526567856422663
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.830078125,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.010752951202575595,
+                  0.008050067582523534
+                ],
+                "equal_unique_prompt_delta": -0.0012048192771084338
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0322265625,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0009615384615384616,
+                  0.011869729999706199
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1376953125,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.011834319526627219,
+                  0.0029702970297029703
+                ],
+                "equal_unique_prompt_delta": -0.0024096385542168677
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.830078125,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.010752951202575595,
+                  0.008050067582523534
+                ],
+                "equal_unique_prompt_delta": -0.0012048192771084338
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0322265625,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0009615384615384616,
+                  0.011869729999706199
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.8271484375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013631937682570594,
+                  0.004921259842519685
+                ],
+                "equal_unique_prompt_delta": -0.0036144578313253013
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.029296875,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029411764705882353,
+                  0.00784313725490196
+                ],
+                "equal_unique_prompt_delta": 0.0012048192771084338
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1435546875,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0058997050147492625,
+                  0.010466222645099905
+                ],
+                "equal_unique_prompt_delta": 0.0024096385542168677
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.8271484375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013631937682570594,
+                  0.004921259842519685
+                ],
+                "equal_unique_prompt_delta": -0.0036144578313253013
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.029296875,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029411764705882353,
+                  0.00784313725490196
+                ],
+                "equal_unique_prompt_delta": 0.0012048192771084338
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.8232421875,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.023506366307541625,
+                  0.006889933478142816
+                ],
+                "equal_unique_prompt_delta": -0.007228915662650603
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.015625,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.019704433497536946,
+                  -0.0048216007714561235
+                ],
+                "equal_unique_prompt_delta": -0.01325301204819277
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1611328125,
+                "delta": 0.01953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.006698404493765267,
+                  0.03362151777137368
+                ],
+                "equal_unique_prompt_delta": 0.020481927710843374
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.8232421875,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.023506366307541625,
+                  0.006889933478142816
+                ],
+                "equal_unique_prompt_delta": -0.007228915662650603
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.015625,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.019704433497536946,
+                  -0.0048216007714561235
+                ],
+                "equal_unique_prompt_delta": -0.01325301204819277
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.8330078125,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.009842762111632597,
+                  0.01304489297275705
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0341796875,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.015625
+                ],
+                "equal_unique_prompt_delta": 0.004819277108433735
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1328125,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.018375686485251685,
+                  0.0
+                ],
+                "equal_unique_prompt_delta": -0.008433734939759036
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.8330078125,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.009842762111632597,
+                  0.01304489297275705
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0341796875,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.015625
+                ],
+                "equal_unique_prompt_delta": 0.004819277108433735
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.8349609375,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.002973314573599509,
+                  0.01089108910891089
+                ],
+                "equal_unique_prompt_delta": 0.006024096385542169
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0234375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.007920792079207921,
+                  -0.0009587727708533077
+                ],
+                "equal_unique_prompt_delta": -0.004819277108433735
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1416015625,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005911475792112397,
+                  0.006018508241020842
+                ],
+                "equal_unique_prompt_delta": -0.0012048192771084338
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.8349609375,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.002973314573599509,
+                  0.01089108910891089
+                ],
+                "equal_unique_prompt_delta": 0.006024096385542169
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0234375,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.007920792079207921,
+                  -0.0009587727708533077
+                ],
+                "equal_unique_prompt_delta": -0.004819277108433735
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.7783203125,
+                "delta": -0.052734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.07392617110515942,
+                  -0.03241638589282336
+                ],
+                "equal_unique_prompt_delta": -0.05542168674698795
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0185546875,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  -0.000970873786407767
+                ],
+                "equal_unique_prompt_delta": -0.00963855421686747
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.203125,
+                "delta": 0.0615234375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.04271844660194175,
+                  0.08147466271928369
+                ],
+                "equal_unique_prompt_delta": 0.06506024096385542
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.7783203125,
+                "delta": -0.052734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.07392617110515942,
+                  -0.03241638589282336
+                ],
+                "equal_unique_prompt_delta": -0.05542168674698795
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0185546875,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  -0.000970873786407767
+                ],
+                "equal_unique_prompt_delta": -0.00963855421686747
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.837890625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005780486173432701,
+                  0.019342827879212293
+                ],
+                "equal_unique_prompt_delta": 0.008433734939759036
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.0322265625,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0009930486593843098,
+                  0.012560690157822439
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.1298828125,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02259928670233155,
+                  -0.0019342359767891683
+                ],
+                "equal_unique_prompt_delta": -0.012048192771084338
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.837890625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005780486173432701,
+                  0.019342827879212293
+                ],
+                "equal_unique_prompt_delta": 0.008433734939759036
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.0322265625,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0009930486593843098,
+                  0.012560690157822439
+                ],
+                "equal_unique_prompt_delta": 0.0036144578313253013
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8310546875,
+                "variant": 0.833984375,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.007707129094412331,
+                  0.01288404360753221
+                ],
+                "equal_unique_prompt_delta": 0.006024096385542169
+              },
+              "alternative_first": {
+                "reference": 0.02734375,
+                "variant": 0.025390625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.006930693069306931,
+                  0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0036144578313253013
+              },
+              "no_candidate": {
+                "reference": 0.1416015625,
+                "variant": 0.140625,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.00978497539919997,
+                  0.007866273352999017
+                ],
+                "equal_unique_prompt_delta": -0.0024096385542168677
+              },
+              "target_without_alternative": {
+                "reference": 0.8310546875,
+                "variant": 0.833984375,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.007707129094412331,
+                  0.01288404360753221
+                ],
+                "equal_unique_prompt_delta": 0.006024096385542169
+              },
+              "alternative_anywhere": {
+                "reference": 0.02734375,
+                "variant": 0.025390625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.006930693069306931,
+                  0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0036144578313253013
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.830078125,
+                "variant": 0.7646484375,
+                "delta": -0.0654296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0871296138234513,
+                  -0.044746387542714566
+                ],
+                "equal_unique_prompt_delta": -0.07108433734939759
+              },
+              "target_without_alternative": {
+                "reference": 0.830078125,
+                "variant": 0.7646484375,
+                "delta": -0.0654296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0871296138234513,
+                  -0.044746387542714566
+                ],
+                "equal_unique_prompt_delta": -0.07108433734939759
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8271484375,
+                "variant": 0.7646484375,
+                "delta": -0.0625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08201619626976285,
+                  -0.043911932233094794
+                ],
+                "equal_unique_prompt_delta": -0.06867469879518072
+              },
+              "target_without_alternative": {
+                "reference": 0.8271484375,
+                "variant": 0.7646484375,
+                "delta": -0.0625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08201619626976285,
+                  -0.043911932233094794
+                ],
+                "equal_unique_prompt_delta": -0.06867469879518072
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8330078125,
+                "variant": 0.8232421875,
+                "delta": -0.009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02665350444225074,
+                  0.007737131151684918
+                ],
+                "equal_unique_prompt_delta": -0.010843373493975903
+              },
+              "target_without_alternative": {
+                "reference": 0.8330078125,
+                "variant": 0.8232421875,
+                "delta": -0.009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02665350444225074,
+                  0.007737131151684918
+                ],
+                "equal_unique_prompt_delta": -0.010843373493975903
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.8349609375,
+                "variant": 0.8232421875,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02804642166344294,
+                  0.0038910505836575876
+                ],
+                "equal_unique_prompt_delta": -0.01325301204819277
+              },
+              "target_without_alternative": {
+                "reference": 0.8349609375,
+                "variant": 0.8232421875,
+                "delta": -0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02804642166344294,
+                  0.0038910505836575876
+                ],
+                "equal_unique_prompt_delta": -0.01325301204819277
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.837890625,
+                "variant": 0.7783203125,
+                "delta": -0.0595703125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08234156162464985,
+                  -0.03714202008928573
+                ],
+                "equal_unique_prompt_delta": -0.06385542168674699
+              },
+              "target_without_alternative": {
+                "reference": 0.837890625,
+                "variant": 0.7783203125,
+                "delta": -0.0595703125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.08234156162464985,
+                  -0.03714202008928573
+                ],
+                "equal_unique_prompt_delta": -0.06385542168674699
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.833984375,
+                "variant": 0.7783203125,
+                "delta": -0.0556640625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.07670079567123872,
+                  -0.035137308039747066
+                ],
+                "equal_unique_prompt_delta": -0.06144578313253012
+              },
+              "target_without_alternative": {
+                "reference": 0.833984375,
+                "variant": 0.7783203125,
+                "delta": -0.0556640625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.07670079567123872,
+                  -0.035137308039747066
+                ],
+                "equal_unique_prompt_delta": -0.06144578313253012
+              }
+            }
+          }
+        },
+        "attribute_qa/deceptive": {
+          "unique_prompts": 1024,
+          "max_multiplicity": 1,
+          "group_size_histogram": {
+            "1": 1024
+          },
+          "reference_means": {
+            "target_first": 0.8125,
+            "alternative_first": 0.0751953125,
+            "no_candidate": 0.1123046875,
+            "target_without_alternative": 0.650390625,
+            "alternative_anywhere": 0.2373046875
+          },
+          "arms": {
+            "pred/circuit": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.75390625,
+                "delta": -0.05859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0791015625,
+                  -0.0390625
+                ],
+                "equal_unique_prompt_delta": -0.05859375
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0830078125,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1630859375,
+                "delta": 0.05078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.033203125,
+                  0.068359375
+                ],
+                "equal_unique_prompt_delta": 0.05078125
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.650390625,
+                "delta": 0.0,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.02734375,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.0
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.1865234375,
+                "delta": -0.05078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.07421875,
+                  -0.0283203125
+                ],
+                "equal_unique_prompt_delta": -0.05078125
+              }
+            },
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.8046875,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0078125
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.078125,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.009765625
+                ],
+                "equal_unique_prompt_delta": 0.0029296875
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1171875,
+                "delta": 0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0048828125
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.642578125,
+                "delta": -0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0205078125,
+                  0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0078125
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.240234375,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0068359375,
+                  0.0126953125
+                ],
+                "equal_unique_prompt_delta": 0.0029296875
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.7998046875,
+                "delta": -0.0126953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.021508789062499978,
+                  -0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0126953125
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0771484375,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.123046875,
+                "delta": 0.0107421875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0029296875,
+                  0.0185546875
+                ],
+                "equal_unique_prompt_delta": 0.0107421875
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.6416015625,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0205078125,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0087890625
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.2353515625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.01171875,
+                  0.0078125
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              }
+            },
+            "corr/circuit": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.8154296875,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013671875,
+                  0.0185546875
+                ],
+                "equal_unique_prompt_delta": 0.0029296875
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.05078125,
+                "delta": -0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.037109375,
+                  -0.0126953125
+                ],
+                "equal_unique_prompt_delta": -0.0244140625
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1337890625,
+                "delta": 0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0087890625,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.021484375
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.71484375,
+                "delta": 0.064453125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.04296875,
+                  0.0869140625
+                ],
+                "equal_unique_prompt_delta": 0.064453125
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.1513671875,
+                "delta": -0.0859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.10546875,
+                  -0.06640625
+                ],
+                "equal_unique_prompt_delta": -0.0859375
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.8115234375,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0107421875,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0791015625,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0029296875,
+                  0.0107421875
+                ],
+                "equal_unique_prompt_delta": 0.00390625
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.109375,
+                "delta": -0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.009765625,
+                  0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0029296875
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.662109375,
+                "delta": 0.01171875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0009765625,
+                  0.025390625
+                ],
+                "equal_unique_prompt_delta": 0.01171875
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.228515625,
+                "delta": -0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0205078125,
+                  0.001953125
+                ],
+                "equal_unique_prompt_delta": -0.0087890625
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.814453125,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.005859375,
+                  0.009765625
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0712890625,
+                "delta": -0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.009765625,
+                  0.0009765625
+                ],
+                "equal_unique_prompt_delta": -0.00390625
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1142578125,
+                "delta": 0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0048828125,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": 0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.666015625,
+                "delta": 0.015625,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0029296875,
+                  0.0283203125
+                ],
+                "equal_unique_prompt_delta": 0.015625
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.2197265625,
+                "delta": -0.017578125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.029296875,
+                  -0.0068359375
+                ],
+                "equal_unique_prompt_delta": -0.017578125
+              }
+            },
+            "both/circuit": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.7822265625,
+                "delta": -0.0302734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.05078125,
+                  -0.0107421875
+                ],
+                "equal_unique_prompt_delta": -0.0302734375
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0537109375,
+                "delta": -0.021484375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0341796875,
+                  -0.0087890625
+                ],
+                "equal_unique_prompt_delta": -0.021484375
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1640625,
+                "delta": 0.0517578125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0341796875,
+                  0.0693359375
+                ],
+                "equal_unique_prompt_delta": 0.0517578125
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.697265625,
+                "delta": 0.046875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.01953125,
+                  0.07421875
+                ],
+                "equal_unique_prompt_delta": 0.046875
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.138671875,
+                "delta": -0.0986328125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.12109375,
+                  -0.076171875
+                ],
+                "equal_unique_prompt_delta": -0.0986328125
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.806640625,
+                "delta": -0.005859375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0146484375,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.005859375
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0830078125,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.001953125,
+                  0.0146484375
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.1103515625,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0087890625,
+                  0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.6533203125,
+                "delta": 0.0029296875,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0087890625,
+                  0.0146484375
+                ],
+                "equal_unique_prompt_delta": 0.0029296875
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.236328125,
+                "delta": -0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0107421875,
+                  0.0087890625
+                ],
+                "equal_unique_prompt_delta": -0.0009765625
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8125,
+                "variant": 0.8076171875,
+                "delta": -0.0048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013671875,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.0048828125
+              },
+              "alternative_first": {
+                "reference": 0.0751953125,
+                "variant": 0.0732421875,
+                "delta": -0.001953125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0078125,
+                  0.0029296875
+                ],
+                "equal_unique_prompt_delta": -0.001953125
+              },
+              "no_candidate": {
+                "reference": 0.1123046875,
+                "variant": 0.119140625,
+                "delta": 0.0068359375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0,
+                  0.0146484375
+                ],
+                "equal_unique_prompt_delta": 0.0068359375
+              },
+              "target_without_alternative": {
+                "reference": 0.650390625,
+                "variant": 0.6640625,
+                "delta": 0.013671875,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0009765625,
+                  0.0263671875
+                ],
+                "equal_unique_prompt_delta": 0.013671875
+              },
+              "alternative_anywhere": {
+                "reference": 0.2373046875,
+                "variant": 0.216796875,
+                "delta": -0.0205078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.03125,
+                  -0.009765625
+                ],
+                "equal_unique_prompt_delta": -0.0205078125
+              }
+            }
+          },
+          "paired_circuit_minus_control": {
+            "pred/random0": {
+              "target_first": {
+                "reference": 0.8046875,
+                "variant": 0.75390625,
+                "delta": -0.05078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0712890625,
+                  -0.03125
+                ],
+                "equal_unique_prompt_delta": -0.05078125
+              },
+              "target_without_alternative": {
+                "reference": 0.642578125,
+                "variant": 0.650390625,
+                "delta": 0.0078125,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0185546875,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0078125
+              }
+            },
+            "pred/random1": {
+              "target_first": {
+                "reference": 0.7998046875,
+                "variant": 0.75390625,
+                "delta": -0.0458984375,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0654296875,
+                  -0.0263671875
+                ],
+                "equal_unique_prompt_delta": -0.0458984375
+              },
+              "target_without_alternative": {
+                "reference": 0.6416015625,
+                "variant": 0.650390625,
+                "delta": 0.0087890625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.017578125,
+                  0.0341796875
+                ],
+                "equal_unique_prompt_delta": 0.0087890625
+              }
+            },
+            "corr/random0": {
+              "target_first": {
+                "reference": 0.8115234375,
+                "variant": 0.8154296875,
+                "delta": 0.00390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.013671875,
+                  0.021484375
+                ],
+                "equal_unique_prompt_delta": 0.00390625
+              },
+              "target_without_alternative": {
+                "reference": 0.662109375,
+                "variant": 0.71484375,
+                "delta": 0.052734375,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.029296875,
+                  0.0751953125
+                ],
+                "equal_unique_prompt_delta": 0.052734375
+              }
+            },
+            "corr/random1": {
+              "target_first": {
+                "reference": 0.814453125,
+                "variant": 0.8154296875,
+                "delta": 0.0009765625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.015625,
+                  0.017578125
+                ],
+                "equal_unique_prompt_delta": 0.0009765625
+              },
+              "target_without_alternative": {
+                "reference": 0.666015625,
+                "variant": 0.71484375,
+                "delta": 0.048828125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.02734375,
+                  0.0703125
+                ],
+                "equal_unique_prompt_delta": 0.048828125
+              }
+            },
+            "both/random0": {
+              "target_first": {
+                "reference": 0.806640625,
+                "variant": 0.7822265625,
+                "delta": -0.0244140625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0458984375,
+                  -0.00390625
+                ],
+                "equal_unique_prompt_delta": -0.0244140625
+              },
+              "target_without_alternative": {
+                "reference": 0.6533203125,
+                "variant": 0.697265625,
+                "delta": 0.0439453125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0166015625,
+                  0.0712890625
+                ],
+                "equal_unique_prompt_delta": 0.0439453125
+              }
+            },
+            "both/random1": {
+              "target_first": {
+                "reference": 0.8076171875,
+                "variant": 0.7822265625,
+                "delta": -0.025390625,
+                "prompt_cluster_bootstrap_95ci": [
+                  -0.0458984375,
+                  -0.0048828125
+                ],
+                "equal_unique_prompt_delta": -0.025390625
+              },
+              "target_without_alternative": {
+                "reference": 0.6640625,
+                "variant": 0.697265625,
+                "delta": 0.033203125,
+                "prompt_cluster_bootstrap_95ci": [
+                  0.0068359375,
+                  0.0595703125
+                ],
+                "equal_unique_prompt_delta": 0.033203125
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

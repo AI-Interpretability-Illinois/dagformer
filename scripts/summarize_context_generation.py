@@ -28,7 +28,7 @@ def main():
         "endpoint": "literal target-value inclusion in the first 16 generated tokens",
         "omission": "no candidate value mentioned; a response may still name the correct object",
         "alternatives": "literal mentions, without resolving negation or quoted speech",
-        "examples": "first three reference object-only omissions and first two added/removed target-value mentions by item index, for each condition"},
+        "examples": "first three reference object-only omissions and alternative-first outputs, plus first two added/removed target-value mentions by item index, for each condition"},
         "arms": {}}
     result["protocol"]["endpoint"] = f"literal target-value inclusion in at most {raw['args']['max_new_tokens']} generated tokens"
     lines = ["# Context generation: value inclusion and omission", "",
@@ -76,11 +76,14 @@ def main():
         examples += [f"## {condition}", ""]
         omitted = [i for i, item in enumerate(items)
                    if not values["any_value"][i] and mentioned(values["generations"][i], item["obj"])][:3]
+        alternative_first = [i for i in range(len(items))
+                             if values["any_value"][i] and not values["first_value_true"][i]][:3]
         added = [i for i in range(len(items)) if not values["first_value_true"][i]
                  and edited[condition]["first_value_true"][i]][:2]
         removed = [i for i in range(len(items)) if values["first_value_true"][i]
                    and not edited[condition]["first_value_true"][i]][:2]
         for label, indexes in (("Object named, attribute omitted", omitted),
+                               ("Reference names an alternative first", alternative_first),
                                ("Target-value mention added by edit", added),
                                ("Target-value mention removed by edit", removed)):
             for index in indexes:

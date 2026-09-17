@@ -12,7 +12,7 @@
    was required. Exported the same figure to PDF and SVG.
 
 Future plots or changed result inputs require a new render and inspection;
-this record applies to the four exports listed above.
+subsequent renders are recorded below.
 
 ## Context generation
 
@@ -33,3 +33,14 @@ cost over the two doses. The target-empty feature remains visible and has no
 new target-effect point. The rendered PNG was inspected: row labels, marker
 types, intervals, the cost criterion, and the caption are readable without
 clipping. PDF and SVG use the same figure.
+
+## Attribute-QA follow-up
+
+Expanded the context-generation figure from six to eight panels after the
+additional ten arms completed. All intervals now use the prompt-cluster
+bootstrap, which keeps repeated neutral-QA prompts together. The new cohort
+and question change are labeled, and the negative primary-endpoint effects
+appear on the same scale as the earlier positive results. The first expanded
+render crowded the footer against the lower labels; reserved footer space
+and explicit y ticks resolve this. The revised PNG was inspected, with the
+same updated figure exported to PDF and SVG.

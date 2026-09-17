@@ -281,11 +281,14 @@ gamma 1.25 increases explicit target-value inclusion under the deceptive cue:
 
 | Prompt | Unedited inclusion | Edited inclusion | Difference | Paired 95% interval |
 |---|---:|---:|---:|---|
-| Narrative | 45.90% | 49.12% | +3.22 percentage points | [2.14, 4.30] |
-| Dialogue | 87.01% | 89.75% | +2.73 percentage points | [1.74, 3.73] |
-| Question–answer | 90.33% | 91.11% | +0.78 percentage points | [0.24, 1.32] |
+| Narrative | 45.90% | 49.12% | +3.22 percentage points | [2.25, 4.30] |
+| Dialogue | 87.01% | 89.75% | +2.73 percentage points | [1.76, 3.81] |
+| Question–answer | 90.33% | 91.11% | +0.78 percentage points | [0.29, 1.37] |
 
 ![Target-value inclusion in unconstrained generation](figures/context_generation.png)
+
+The table and figure use paired prompt-cluster bootstrap intervals. The
+figure's rightmost column is the separate attribute-QA cohort described below.
 
 Neutral cues also show gains. The both-channel circuit exceeds each of the
 two fixed controls in all six conditions under the unadjusted
@@ -302,9 +305,33 @@ these counts do not measure lying or semantic factual-error rates. The QA
 prompt asks about the observed fact, while narrative/dialogue prompts continue
 a character's utterance, changing the query as well as its presentation.
 The QA generation gain also reverses its first-token candidate-ratio decline,
-confirming that the latter was an inadequate answer endpoint here. A further
-test explicitly asks for the color, metal or animal on 1,024 additional
-content combinations so that the target property is required by the question.
+confirming that the latter was an inadequate answer endpoint here.
+
+The completed [explicit attribute-QA follow-up](context_fidelity/attribute_qa/README.md)
+does **not** retain the primary endpoint gain. On 1,024 additional item keys,
+the both-channel edit changes deceptive-cue target-first inclusion from
+81.25% to 78.22%, a -3.03-point difference [-5.08, -1.07]. The neutral-cue
+difference is -5.27 points [-7.39, -3.24]. Predictor-only also reduces
+inclusion, while correction-only has an interval containing zero. Predictor
+and both-channel edits fall below both fixed controls on this endpoint.
+
+Both-channel editing reduces alternative-first outputs from 7.52% to 5.37%,
+but increases omissions from 11.23% to 16.41% under the deceptive cue.
+It also reduces later mentions of other candidate values. A secondary
+literal metric, target mention with no alternative anywhere, rises from
+65.04% to 69.73%; correction-only reaches 71.48%. These diagnostics distinguish
+incomplete answers and additional candidate mentions, without changing the
+primary endpoint or claiming semantic truth grading. The fixed direction's
+benefit depends on the evaluation prompt and endpoint.
+
+The [prompt-cluster audit](context_fidelity/prompt_clusters/README.md) records
+819 distinct neutral-QA prompts in the earlier 1,024-item generation cohort
+and 830 in the new one; deceptive prompts are all distinct. Neutral QA omits
+the receiver field used to distinguish original item keys. Grouped uncertainty
+preserves the earlier positive and new negative patterns. These cohorts
+exclude discovery item keys, not every repeated factual sentence. The new
+attribute-QA comparison changes both content and question, so it does not
+isolate a wording-only effect.
 
 The [seven hyperconnection edges](context_fidelity/context_validation_hyper.md)
 and [three sequential-path edges](context_fidelity/context_validation_sequential.md)

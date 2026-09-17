@@ -1,6 +1,6 @@
 # Validation record
 
-- Full unit suite: **65 passed**, one PyTorch nested-tensor warning, in 11.02
+- Full unit suite: **67 passed**, one PyTorch nested-tensor warning, in 16.73
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
@@ -39,6 +39,9 @@
   unequal counts report an unavailable paired t statistic as JSON `null`
   and table `n/a`. Four legacy `NaN` placeholders in this campaign's two
   whole-circuit JSONs were normalized; scores, NLLs and shifts are unchanged.
+- Two prompt-cluster tests verify that duplicating identical prompts cannot
+  narrow the clustered uncertainty, and that item-weighted and equally
+  weighted unique-prompt effects remain distinct estimands.
 
 These checks validate implementation and artifact consistency. Evaluation
 uncertainty is reported separately in the paired result tables.

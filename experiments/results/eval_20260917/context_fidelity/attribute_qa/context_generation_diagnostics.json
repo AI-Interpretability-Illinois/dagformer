@@ -1,0 +1,1033 @@
+{
+  "source": "experiments/results/eval_20260917/raw/context_attribute_generation.json",
+  "protocol": {
+    "endpoint": "literal target-value inclusion in at most 16 generated tokens",
+    "omission": "no candidate value mentioned; a response may still name the correct object",
+    "alternatives": "literal mentions, without resolving negation or quoted speech",
+    "examples": "first three reference object-only omissions and alternative-first outputs, plus first two added/removed target-value mentions by item index, for each condition"
+  },
+  "arms": {
+    "reference": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 851,
+          "alternative_first": 28,
+          "no_candidate": 145,
+          "object_without_value": 139,
+          "target_anywhere": 851,
+          "alternative_anywhere": 28,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 355,
+            "alternative_first": 13,
+            "no_candidate": 6,
+            "object_without_value": 6,
+            "target_anywhere": 355,
+            "alternative_anywhere": 13,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 341,
+            "alternative_first": 15,
+            "no_candidate": 133,
+            "object_without_value": 133,
+            "target_anywhere": 341,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 155,
+            "alternative_first": 0,
+            "no_candidate": 6,
+            "object_without_value": 0,
+            "target_anywhere": 155,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 832,
+          "alternative_first": 77,
+          "no_candidate": 115,
+          "object_without_value": 114,
+          "target_anywhere": 844,
+          "alternative_anywhere": 243,
+          "target_and_alternative": 178
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 349,
+            "alternative_first": 22,
+            "no_candidate": 3,
+            "object_without_value": 3,
+            "target_anywhere": 349,
+            "alternative_anywhere": 160,
+            "target_and_alternative": 138
+          },
+          "color": {
+            "n": 489,
+            "target_first": 323,
+            "alternative_first": 55,
+            "no_candidate": 111,
+            "object_without_value": 111,
+            "target_anywhere": 335,
+            "alternative_anywhere": 83,
+            "target_and_alternative": 40
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 160,
+            "alternative_first": 0,
+            "no_candidate": 1,
+            "object_without_value": 0,
+            "target_anywhere": 160,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "pred/circuit": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 783,
+          "alternative_first": 31,
+          "no_candidate": 210,
+          "object_without_value": 208,
+          "target_anywhere": 783,
+          "alternative_anywhere": 31,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 346,
+            "alternative_first": 13,
+            "no_candidate": 15,
+            "object_without_value": 15,
+            "target_anywhere": 346,
+            "alternative_anywhere": 13,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 278,
+            "alternative_first": 18,
+            "no_candidate": 193,
+            "object_without_value": 193,
+            "target_anywhere": 278,
+            "alternative_anywhere": 18,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 159,
+            "alternative_first": 0,
+            "no_candidate": 2,
+            "object_without_value": 0,
+            "target_anywhere": 159,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 772,
+          "alternative_first": 85,
+          "no_candidate": 167,
+          "object_without_value": 167,
+          "target_anywhere": 778,
+          "alternative_anywhere": 191,
+          "target_and_alternative": 112
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 339,
+            "alternative_first": 22,
+            "no_candidate": 13,
+            "object_without_value": 13,
+            "target_anywhere": 339,
+            "alternative_anywhere": 98,
+            "target_and_alternative": 76
+          },
+          "color": {
+            "n": 489,
+            "target_first": 272,
+            "alternative_first": 63,
+            "no_candidate": 154,
+            "object_without_value": 154,
+            "target_anywhere": 278,
+            "alternative_anywhere": 93,
+            "target_and_alternative": 36
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 161,
+            "alternative_first": 0,
+            "no_candidate": 0,
+            "object_without_value": 0,
+            "target_anywhere": 161,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "pred/random0": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 850,
+          "alternative_first": 33,
+          "no_candidate": 141,
+          "object_without_value": 136,
+          "target_anywhere": 850,
+          "alternative_anywhere": 33,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 351,
+            "alternative_first": 15,
+            "no_candidate": 8,
+            "object_without_value": 8,
+            "target_anywhere": 351,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 343,
+            "alternative_first": 18,
+            "no_candidate": 128,
+            "object_without_value": 128,
+            "target_anywhere": 343,
+            "alternative_anywhere": 18,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 156,
+            "alternative_first": 0,
+            "no_candidate": 5,
+            "object_without_value": 0,
+            "target_anywhere": 156,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 824,
+          "alternative_first": 80,
+          "no_candidate": 120,
+          "object_without_value": 115,
+          "target_anywhere": 840,
+          "alternative_anywhere": 246,
+          "target_and_alternative": 182
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 343,
+            "alternative_first": 24,
+            "no_candidate": 7,
+            "object_without_value": 7,
+            "target_anywhere": 343,
+            "alternative_anywhere": 162,
+            "target_and_alternative": 138
+          },
+          "color": {
+            "n": 489,
+            "target_first": 325,
+            "alternative_first": 56,
+            "no_candidate": 108,
+            "object_without_value": 108,
+            "target_anywhere": 341,
+            "alternative_anywhere": 84,
+            "target_and_alternative": 44
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 156,
+            "alternative_first": 0,
+            "no_candidate": 5,
+            "object_without_value": 0,
+            "target_anywhere": 156,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "pred/random1": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 847,
+          "alternative_first": 30,
+          "no_candidate": 147,
+          "object_without_value": 143,
+          "target_anywhere": 847,
+          "alternative_anywhere": 30,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 353,
+            "alternative_first": 15,
+            "no_candidate": 6,
+            "object_without_value": 6,
+            "target_anywhere": 353,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 337,
+            "alternative_first": 15,
+            "no_candidate": 137,
+            "object_without_value": 137,
+            "target_anywhere": 337,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 157,
+            "alternative_first": 0,
+            "no_candidate": 4,
+            "object_without_value": 0,
+            "target_anywhere": 157,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 819,
+          "alternative_first": 79,
+          "no_candidate": 126,
+          "object_without_value": 123,
+          "target_anywhere": 831,
+          "alternative_anywhere": 241,
+          "target_and_alternative": 174
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 343,
+            "alternative_first": 24,
+            "no_candidate": 7,
+            "object_without_value": 7,
+            "target_anywhere": 343,
+            "alternative_anywhere": 157,
+            "target_and_alternative": 133
+          },
+          "color": {
+            "n": 489,
+            "target_first": 318,
+            "alternative_first": 55,
+            "no_candidate": 116,
+            "object_without_value": 116,
+            "target_anywhere": 330,
+            "alternative_anywhere": 84,
+            "target_and_alternative": 41
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 158,
+            "alternative_first": 0,
+            "no_candidate": 3,
+            "object_without_value": 0,
+            "target_anywhere": 158,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "corr/circuit": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 843,
+          "alternative_first": 16,
+          "no_candidate": 165,
+          "object_without_value": 158,
+          "target_anywhere": 843,
+          "alternative_anywhere": 16,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 360,
+            "alternative_first": 8,
+            "no_candidate": 6,
+            "object_without_value": 6,
+            "target_anywhere": 360,
+            "alternative_anywhere": 8,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 329,
+            "alternative_first": 8,
+            "no_candidate": 152,
+            "object_without_value": 152,
+            "target_anywhere": 329,
+            "alternative_anywhere": 8,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 154,
+            "alternative_first": 0,
+            "no_candidate": 7,
+            "object_without_value": 0,
+            "target_anywhere": 154,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 835,
+          "alternative_first": 52,
+          "no_candidate": 137,
+          "object_without_value": 137,
+          "target_anywhere": 840,
+          "alternative_anywhere": 155,
+          "target_and_alternative": 108
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 351,
+            "alternative_first": 18,
+            "no_candidate": 5,
+            "object_without_value": 5,
+            "target_anywhere": 351,
+            "alternative_anywhere": 103,
+            "target_and_alternative": 85
+          },
+          "color": {
+            "n": 489,
+            "target_first": 323,
+            "alternative_first": 34,
+            "no_candidate": 132,
+            "object_without_value": 132,
+            "target_anywhere": 328,
+            "alternative_anywhere": 52,
+            "target_and_alternative": 23
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 161,
+            "alternative_first": 0,
+            "no_candidate": 0,
+            "object_without_value": 0,
+            "target_anywhere": 161,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "corr/random0": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 853,
+          "alternative_first": 35,
+          "no_candidate": 136,
+          "object_without_value": 131,
+          "target_anywhere": 853,
+          "alternative_anywhere": 35,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 351,
+            "alternative_first": 15,
+            "no_candidate": 8,
+            "object_without_value": 8,
+            "target_anywhere": 351,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 346,
+            "alternative_first": 20,
+            "no_candidate": 123,
+            "object_without_value": 123,
+            "target_anywhere": 346,
+            "alternative_anywhere": 20,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 156,
+            "alternative_first": 0,
+            "no_candidate": 5,
+            "object_without_value": 0,
+            "target_anywhere": 156,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 831,
+          "alternative_first": 81,
+          "no_candidate": 112,
+          "object_without_value": 112,
+          "target_anywhere": 848,
+          "alternative_anywhere": 234,
+          "target_and_alternative": 170
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 344,
+            "alternative_first": 24,
+            "no_candidate": 6,
+            "object_without_value": 6,
+            "target_anywhere": 344,
+            "alternative_anywhere": 151,
+            "target_and_alternative": 127
+          },
+          "color": {
+            "n": 489,
+            "target_first": 326,
+            "alternative_first": 57,
+            "no_candidate": 106,
+            "object_without_value": 106,
+            "target_anywhere": 343,
+            "alternative_anywhere": 83,
+            "target_and_alternative": 43
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 161,
+            "alternative_first": 0,
+            "no_candidate": 0,
+            "object_without_value": 0,
+            "target_anywhere": 161,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "corr/random1": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 855,
+          "alternative_first": 24,
+          "no_candidate": 145,
+          "object_without_value": 136,
+          "target_anywhere": 855,
+          "alternative_anywhere": 24,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 355,
+            "alternative_first": 13,
+            "no_candidate": 6,
+            "object_without_value": 6,
+            "target_anywhere": 355,
+            "alternative_anywhere": 13,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 348,
+            "alternative_first": 11,
+            "no_candidate": 130,
+            "object_without_value": 130,
+            "target_anywhere": 348,
+            "alternative_anywhere": 11,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 152,
+            "alternative_first": 0,
+            "no_candidate": 9,
+            "object_without_value": 0,
+            "target_anywhere": 152,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 834,
+          "alternative_first": 73,
+          "no_candidate": 117,
+          "object_without_value": 112,
+          "target_anywhere": 846,
+          "alternative_anywhere": 225,
+          "target_and_alternative": 164
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 348,
+            "alternative_first": 23,
+            "no_candidate": 3,
+            "object_without_value": 3,
+            "target_anywhere": 348,
+            "alternative_anywhere": 151,
+            "target_and_alternative": 128
+          },
+          "color": {
+            "n": 489,
+            "target_first": 330,
+            "alternative_first": 50,
+            "no_candidate": 109,
+            "object_without_value": 109,
+            "target_anywhere": 342,
+            "alternative_anywhere": 74,
+            "target_and_alternative": 36
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 156,
+            "alternative_first": 0,
+            "no_candidate": 5,
+            "object_without_value": 0,
+            "target_anywhere": 156,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "both/circuit": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 797,
+          "alternative_first": 19,
+          "no_candidate": 208,
+          "object_without_value": 204,
+          "target_anywhere": 797,
+          "alternative_anywhere": 19,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 356,
+            "alternative_first": 8,
+            "no_candidate": 10,
+            "object_without_value": 10,
+            "target_anywhere": 356,
+            "alternative_anywhere": 8,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 284,
+            "alternative_first": 11,
+            "no_candidate": 194,
+            "object_without_value": 194,
+            "target_anywhere": 284,
+            "alternative_anywhere": 11,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 157,
+            "alternative_first": 0,
+            "no_candidate": 4,
+            "object_without_value": 0,
+            "target_anywhere": 157,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 801,
+          "alternative_first": 55,
+          "no_candidate": 168,
+          "object_without_value": 166,
+          "target_anywhere": 804,
+          "alternative_anywhere": 142,
+          "target_and_alternative": 90
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 346,
+            "alternative_first": 18,
+            "no_candidate": 10,
+            "object_without_value": 10,
+            "target_anywhere": 346,
+            "alternative_anywhere": 84,
+            "target_and_alternative": 66
+          },
+          "color": {
+            "n": 489,
+            "target_first": 294,
+            "alternative_first": 37,
+            "no_candidate": 158,
+            "object_without_value": 156,
+            "target_anywhere": 297,
+            "alternative_anywhere": 58,
+            "target_and_alternative": 24
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 161,
+            "alternative_first": 0,
+            "no_candidate": 0,
+            "object_without_value": 0,
+            "target_anywhere": 161,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "both/random0": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 858,
+          "alternative_first": 33,
+          "no_candidate": 133,
+          "object_without_value": 128,
+          "target_anywhere": 858,
+          "alternative_anywhere": 33,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 347,
+            "alternative_first": 16,
+            "no_candidate": 11,
+            "object_without_value": 11,
+            "target_anywhere": 347,
+            "alternative_anywhere": 16,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 355,
+            "alternative_first": 17,
+            "no_candidate": 117,
+            "object_without_value": 117,
+            "target_anywhere": 355,
+            "alternative_anywhere": 17,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 156,
+            "alternative_first": 0,
+            "no_candidate": 5,
+            "object_without_value": 0,
+            "target_anywhere": 156,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 826,
+          "alternative_first": 85,
+          "no_candidate": 113,
+          "object_without_value": 112,
+          "target_anywhere": 846,
+          "alternative_anywhere": 242,
+          "target_and_alternative": 177
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 343,
+            "alternative_first": 24,
+            "no_candidate": 7,
+            "object_without_value": 7,
+            "target_anywhere": 343,
+            "alternative_anywhere": 159,
+            "target_and_alternative": 135
+          },
+          "color": {
+            "n": 489,
+            "target_first": 323,
+            "alternative_first": 61,
+            "no_candidate": 105,
+            "object_without_value": 105,
+            "target_anywhere": 343,
+            "alternative_anywhere": 83,
+            "target_and_alternative": 42
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 160,
+            "alternative_first": 0,
+            "no_candidate": 1,
+            "object_without_value": 0,
+            "target_anywhere": 160,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    },
+    "both/random1": {
+      "attribute_qa/neutral": {
+        "all": {
+          "n": 1024,
+          "target_first": 854,
+          "alternative_first": 26,
+          "no_candidate": 144,
+          "object_without_value": 137,
+          "target_anywhere": 854,
+          "alternative_anywhere": 26,
+          "target_and_alternative": 0
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 352,
+            "alternative_first": 15,
+            "no_candidate": 7,
+            "object_without_value": 7,
+            "target_anywhere": 352,
+            "alternative_anywhere": 15,
+            "target_and_alternative": 0
+          },
+          "color": {
+            "n": 489,
+            "target_first": 348,
+            "alternative_first": 11,
+            "no_candidate": 130,
+            "object_without_value": 130,
+            "target_anywhere": 348,
+            "alternative_anywhere": 11,
+            "target_and_alternative": 0
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 154,
+            "alternative_first": 0,
+            "no_candidate": 7,
+            "object_without_value": 0,
+            "target_anywhere": 154,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      },
+      "attribute_qa/deceptive": {
+        "all": {
+          "n": 1024,
+          "target_first": 827,
+          "alternative_first": 75,
+          "no_candidate": 122,
+          "object_without_value": 118,
+          "target_anywhere": 838,
+          "alternative_anywhere": 222,
+          "target_and_alternative": 158
+        },
+        "categories": {
+          "metal": {
+            "n": 374,
+            "target_first": 345,
+            "alternative_first": 24,
+            "no_candidate": 5,
+            "object_without_value": 5,
+            "target_anywhere": 345,
+            "alternative_anywhere": 151,
+            "target_and_alternative": 127
+          },
+          "color": {
+            "n": 489,
+            "target_first": 325,
+            "alternative_first": 51,
+            "no_candidate": 113,
+            "object_without_value": 113,
+            "target_anywhere": 336,
+            "alternative_anywhere": 71,
+            "target_and_alternative": 31
+          },
+          "animal": {
+            "n": 161,
+            "target_first": 157,
+            "alternative_first": 0,
+            "no_candidate": 4,
+            "object_without_value": 0,
+            "target_anywhere": 157,
+            "alternative_anywhere": 0,
+            "target_and_alternative": 0
+          }
+        }
+      }
+    }
+  },
+  "paired_circuit_minus_control": {
+    "pred/random0": {
+      "attribute_qa/neutral": {
+        "mean": 0.7646484375,
+        "delta": -0.0654296875,
+        "paired_se": 0.009197478749136288,
+        "normal_95ci": [
+          -0.08345674584830712,
+          -0.047402629151692875
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.75390625,
+        "delta": -0.05078125,
+        "paired_se": 0.010123535079738283,
+        "normal_95ci": [
+          -0.07062337875628703,
+          -0.030939121243712966
+        ]
+      }
+    },
+    "pred/random1": {
+      "attribute_qa/neutral": {
+        "mean": 0.7646484375,
+        "delta": -0.0625,
+        "paired_se": 0.008628980869745851,
+        "normal_95ci": [
+          -0.07941280250470187,
+          -0.04558719749529813
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.75390625,
+        "delta": -0.0458984375,
+        "paired_se": 0.009908298798394133,
+        "normal_95ci": [
+          -0.0653187031448525,
+          -0.0264781718551475
+        ]
+      }
+    },
+    "corr/random0": {
+      "attribute_qa/neutral": {
+        "mean": 0.8232421875,
+        "delta": -0.009765625,
+        "paired_se": 0.00730511762181705,
+        "normal_95ci": [
+          -0.02408365553876142,
+          0.004552405538761418
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.8154296875,
+        "delta": 0.00390625,
+        "paired_se": 0.008738055173883676,
+        "normal_95ci": [
+          -0.013220338140812006,
+          0.021032838140812006
+        ]
+      }
+    },
+    "corr/random1": {
+      "attribute_qa/neutral": {
+        "mean": 0.8232421875,
+        "delta": -0.01171875,
+        "paired_se": 0.006759206523216839,
+        "normal_95ci": [
+          -0.024966794785505002,
+          0.0015292947855050035
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.8154296875,
+        "delta": 0.0009765625,
+        "paired_se": 0.008461356804283086,
+        "normal_95ci": [
+          -0.01560769683639485,
+          0.01756082183639485
+        ]
+      }
+    },
+    "both/random0": {
+      "attribute_qa/neutral": {
+        "mean": 0.7783203125,
+        "delta": -0.0595703125,
+        "paired_se": 0.009836912566715863,
+        "normal_95ci": [
+          -0.07885066113076308,
+          -0.04028996386923691
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.7822265625,
+        "delta": -0.0244140625,
+        "paired_se": 0.010720296025490194,
+        "normal_95ci": [
+          -0.04542584270996078,
+          -0.0034022822900392213
+        ]
+      }
+    },
+    "both/random1": {
+      "attribute_qa/neutral": {
+        "mean": 0.7783203125,
+        "delta": -0.0556640625,
+        "paired_se": 0.00915643877882966,
+        "normal_95ci": [
+          -0.07361068250650613,
+          -0.03771744249349387
+        ]
+      },
+      "attribute_qa/deceptive": {
+        "mean": 0.7822265625,
+        "delta": -0.025390625,
+        "paired_se": 0.010493053428170526,
+        "normal_95ci": [
+          -0.04595700971921423,
+          -0.00482424028078577
+        ]
+      }
+    }
+  }
+}

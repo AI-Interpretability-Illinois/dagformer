@@ -36,7 +36,10 @@ def style(ax):
 
 def save(fig, out, name):
     for suffix in ("png", "pdf", "svg"):
-        fig.savefig(out / f"{name}.{suffix}", dpi=180, bbox_inches="tight")
+        path = out / f"{name}.{suffix}"
+        fig.savefig(path, dpi=180, bbox_inches="tight")
+        if suffix == "svg":
+            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     plt.close(fig)
     print(name, flush=True)
 
@@ -207,22 +210,30 @@ def trained_ladder(root, out):
 
 
 def context_generation(root, out):
-    data = read(root / "context_fidelity/context_generation.summary.json")
-    expected = 1 + 3 * (1 + data["args"]["controls"])
-    if len(data["arms"]) != expected:
-        raise ValueError("The context-generation run has not finished")
-    styles = [("original", "Narrative"), ("dialogue", "Dialogue"), ("qa", "Question–answer")]
-    fig, axes = plt.subplots(2, 3, sharey=True, figsize=(12, 6.6))
+    datasets = {name: read(root / f"context_fidelity/{name}.summary.json")
+                for name in ("context_generation", "context_attribute_generation")}
+    clustered = read(root / "context_fidelity/prompt_clusters/summary.json")["sources"]
+    for data in datasets.values():
+        expected = 1 + 3 * (1 + data["args"]["controls"])
+        if len(data["arms"]) != expected:
+            raise ValueError("The context-generation run has not finished")
+    styles = [("context_generation", "original", "Narrative"),
+              ("context_generation", "dialogue", "Dialogue"),
+              ("context_generation", "qa", "Question–answer"),
+              ("context_attribute_generation", "attribute_qa", "Attribute QA (new cohort)")]
+    fig, axes = plt.subplots(2, 4, sharey=True, figsize=(14.8, 6.8))
     limits = [0.]
-    labels = [f"{CHANNELS[c]}\nγ={data['args'][c + '_gamma']:g}" for c in CHANNELS]
     for row, cue in enumerate(("neutral", "deceptive")):
-        for col, (prompt_style, title) in enumerate(styles):
+        for col, (source, prompt_style, title) in enumerate(styles):
+            data = datasets[source]
+            labels = [f"{CHANNELS[c]}\nγ={data['args'][c + '_gamma']:g}" for c in CHANNELS]
             ax = axes[row, col]
             condition = f"{prompt_style}/{cue}"
+            stats = clustered[source]["conditions"][condition]
             for index, channel in enumerate(CHANNELS):
-                value = data["arms"][f"{channel}/circuit"]["conditions"][condition]["first_value_true"]
+                value = stats["arms"][f"{channel}/circuit"]["target_first"]
                 delta = 100 * value["delta"]
-                lo, hi = 100 * np.array(value["normal_95ci"])
+                lo, hi = 100 * np.array(value["prompt_cluster_bootstrap_95ci"])
                 ax.errorbar(index, delta, yerr=[[delta - lo], [hi - delta]],
                             fmt=MARKERS[channel], color=COLORS[channel], capsize=3, markersize=6)
                 limits.extend([lo, hi])
@@ -242,12 +253,14 @@ def context_generation(root, out):
     low, high = min(limits), max(limits)
     for ax in axes.flat:
         ax.set_ylim(low - .6, high + .6)
-    fig.suptitle("Fixed head edits and explicit value inclusion in generated text", fontsize=13, y=1.005)
-    fig.text(.03, -.025, f"{data['n_items']:,} new content combinations; greedy generation, at most "
-             f"{data['args']['max_new_tokens']} tokens; paired 95% normal intervals.\n"
-             f"Gray ×: {data['args']['controls']} norm-matched controls per channel. "
-             "Omitted attributes can leave a fact-compatible answer.", fontsize=9)
-    fig.tight_layout(h_pad=2.1, w_pad=1.8)
+        ax.set_yticks([-7.5, -5, -2.5, 0, 2.5])
+    fig.suptitle("Fixed head edits: the first mentioned value matches the fact", fontsize=13, y=.995)
+    fig.text(.03, .015, "Left three formats share 1,024 item keys; attribute QA uses a separate 1,024-item cohort. "
+             "Greedy generation, at most 16 new tokens.\n"
+             "Paired 95% prompt-cluster bootstrap intervals. Gray ×: two norm-matched controls per channel. "
+             "Each edit is compared with its own reference.\n"
+             "Attribute QA changes both questions and content items; this is not a paired wording-only comparison.", fontsize=9)
+    fig.tight_layout(rect=(0, .12, 1, .96), h_pad=2.1, w_pad=1.8)
     save(fig, out, "context_generation")
 
 
