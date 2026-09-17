@@ -60,7 +60,7 @@ def main():
              "| Feature | Target tokens | Tokens / windows | ΔNLL at −4 [95% CI] | ΔNLL at +4 [95% CI] | Dose span [95% CI] |",
              "|---|---|---:|---|---|---|"]
     secondary = ["", "## Original screen, other tokens and permuted controls", "",
-                 "Controls permute each direction within every layer and Q/K/V/R stream.",
+                 payload["protocol"]["controls"] + ".",
                  "They preserve coefficient values and norms. The five-control span range",
                  "is descriptive and is not a confidence interval. Cross-corpus differences",
                  "also change which target tokens occur and their contexts.", "",
@@ -75,6 +75,19 @@ def main():
                      "| Feature | Control other-token ΔNLL range at −4 | Range at +4 |",
                      "|---|---|---|"]
     summary = {"source": str(args.input), "old_screen": str(args.old_screen), "features": {}}
+    decomposition = ["", "## Shared residual and Q/K/V components", "",
+                     "The same feature direction is restricted to shared R or Q/K/V coordinates.",
+                     "The two component effects need not add because the network is nonlinear.", "",
+                     "| Feature | Component | Target ΔNLL −4 | Target ΔNLL +4 | Other-token ΔNLL −4 / +4 |",
+                     "|---|---|---|---|---|"]
+    token_lines = ["# Individual tokens within the fixed SAE target sets", "",
+                   "These diagnostics retain all tokens in each pre-existing rule. Labels are",
+                   "raw tokenizer pieces. Counts and unadjusted paired window-bootstrap",
+                   "intervals show when an aggregate effect is driven by a common piece,",
+                   "such as whitespace, rather than every token in the set.", "",
+                   "| Feature | Component | Token | Occurrences | ΔNLL at −4 | ΔNLL at +4 |",
+                   "|---|---|---|---:|---|---|"]
+    has_token_details = False
     for feature_id, rec in payload["features"].items():
         arms = rec["arms"]
         minus, plus = arms["feature/alpha-4"], arms["feature/alpha4"]
@@ -106,10 +119,32 @@ def main():
                          f"{minus['off_rule']['delta']:+.4f} / {plus['off_rule']['delta']:+.4f} | {bound_text} |")
         control_costs.append(f"| {feature_id} | [{off_ranges['-4'][0]:+.4f}, {off_ranges['-4'][1]:+.4f}] | "
                              f"[{off_ranges['4'][0]:+.4f}, {off_ranges['4'][1]:+.4f}] |")
+        if payload["args"].get("stream_decomposition"):
+            summary["features"][feature_id]["components"] = {}
+            for component in ("r_only", "qkv_only"):
+                low, high = arms[f"{component}/alpha-4"], arms[f"{component}/alpha4"]
+                summary["features"][feature_id]["components"][component] = {"minus": low, "plus": high}
+                decomposition.append(f"| {feature_id} | {component} | {effect(low['on_rule'])} | "
+                                     f"{effect(high['on_rule'])} | {low['off_rule']['delta']:+.4f} / {high['off_rule']['delta']:+.4f} |")
+        for component in ("feature", "r_only", "qkv_only"):
+            if f"{component}/alpha-4" not in arms or "by_token" not in arms[f"{component}/alpha-4"]:
+                continue
+            has_token_details = True
+            for token_id, low in arms[f"{component}/alpha-4"]["by_token"].items():
+                high = arms[f"{component}/alpha4"]["by_token"][token_id]
+                label = tokenizer.convert_ids_to_tokens(int(token_id)).replace("|", "\\|")
+                token_lines.append(f"| {feature_id} | {component} | {label} | {low['n_tokens']} | "
+                                   f"{effect(low)} | {effect(high)} |")
     output = args.input.parent
     (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    (output / "README.md").write_text("\n".join(lines + secondary + control_costs) + "\n")
-    print("\n".join(lines + secondary + control_costs))
+    sections = lines + secondary + control_costs + (decomposition if payload["args"].get("stream_decomposition") else [])
+    if has_token_details:
+        sections += ["", "[Individual-token diagnostics](individual_tokens.md) retain occurrence counts",
+                     "and paired intervals within each fixed target set."]
+    (output / "README.md").write_text("\n".join(sections) + "\n")
+    if has_token_details:
+        (output / "individual_tokens.md").write_text("\n".join(token_lines) + "\n")
+    print("\n".join(sections))
 
 
 if __name__ == "__main__":

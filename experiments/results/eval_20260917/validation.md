@@ -1,6 +1,6 @@
 # Validation record
 
-- Full unit suite: **64 passed**, one PyTorch nested-tensor warning, in 9.79
+- Full unit suite: **65 passed**, one PyTorch nested-tensor warning, in 11.58
   seconds. Command: `CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=4
   OPENBLAS_NUM_THREADS=4 /scratch/yurenh2/venvs/dagformer-eval-20260917/bin/python
   -m pytest tests -q`. Log: `logs/eval_20260917/full_pytest.log`.
@@ -26,6 +26,8 @@
   plus three focused tests: token-weighted conditional loss aggregation,
   exact preservation of each layer/stream's coefficient multiset in controls,
   and paired uncertainty for the positive-minus-negative dose span.
+  A fourth test checks the additional whole-head control: source positions,
+  Q/K/V alignment and shared R coefficients remain fixed.
   The CPU execution check is an implementation check, not a scientific result.
 - Two domain-stream tests passed: paraphrases are averaged within
   content items, and permuted controls preserve each layer/stream's coefficient

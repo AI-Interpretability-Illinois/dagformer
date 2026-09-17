@@ -7,7 +7,8 @@ import pytest
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from eval_sae_transfer import permute_within_streams, ratio_summary
+from eval_sae_transfer import permute_whole_heads, permute_within_streams, ratio_summary
+from interp_editing import layer_chunks, stream_slices
 from summarize_sae_transfer import span_summary
 
 
@@ -43,3 +44,23 @@ def test_dose_span_keeps_pairing_and_target_token_weights():
     result = span_summary(minus, plus, draws=100, seed=42)
     assert result["delta"] == 2.
     assert result["paired_bootstrap_95ci"] == [2., 2.]
+
+
+def test_whole_head_control_preserves_sources_qkv_alignment_and_residual():
+    chunks = layer_chunks(4, 4)
+    direction = torch.arange(chunks[-1][1], dtype=torch.float32)
+    control = permute_whole_heads(direction, chunks, 4, 42)
+    assert not torch.equal(control, direction)
+    for layer, (start, _) in enumerate(chunks, 1):
+        slices, n_sources = stream_slices(layer, 4)
+        permutations = []
+        for stream in ("q", "k", "v"):
+            lo, hi = slices[stream]
+            original = direction[start + lo:start + hi].reshape(4, n_sources)
+            actual = control[start + lo:start + hi].reshape(4, n_sources)
+            torch.testing.assert_close(actual.sort(dim=0).values, original.sort(dim=0).values)
+            permutations.append((actual[:, 0] - original[0, 0]) / n_sources)
+        assert torch.equal(permutations[0], permutations[1])
+        assert torch.equal(permutations[1], permutations[2])
+        lo, hi = slices["r"]
+        assert torch.equal(control[start + lo:start + hi], direction[start + lo:start + hi])
