@@ -46,6 +46,15 @@ Two further custom controls score the question prefix and the gold answer
 conditioned on that prefix separately. These remain teacher-forced
 likelihood endpoints; they do not count generated solutions as correct.
 
+The first completed full-generation run, 300M baseline, has 1.59% flexible
+extraction and 0% strict-match accuracy. The
+[generation audit](gsm8k_full/generation_audit.md) retains the official scores
+alongside deterministic output examples. A matching extracted number can
+occur in repeated or irrelevant text: document 52, for example, generates
+"15 pounds" where the requested answer is 15 toys. The best constant-number
+diagnostic on this test split is 3.03% (always 5). Other generation runs are
+still running; a model comparison will be added when both members finish.
+
 The [explicit-label audit](standard_matched/label_bias.md) shows two limitations:
 all models choose A on at least 98.94% of standard CommonsenseQA questions,
 and every BoolQ score remains below the 62.17% constant-yes baseline. The
@@ -90,6 +99,24 @@ different vertical ranges to show the small external-predictor effect and
 the larger correction effects. Substitution hooks still execute the original
 predictor before replacing its output; these runs measure dependence, not
 an inference-speed improvement.
+
+The same position-table substitution was also evaluated on all 14 ordinary
+tasks at all three scales. The table below reports *cost* for BPB and signed
+accuracy change for LAMBADA; the full
+[paired report](standard_frozen_predictor/paired_vs_dagformer.md) uses a common
+positive-is-better convention and includes every task's intervals.
+
+| Scale | WikiText BPB increase | GSM8K joint BPB increase | LAMBADA accuracy change |
+|---|---:|---:|---:|
+| 75M | +0.000472 | +0.002540 | +0.233 percentage points |
+| 150M | +0.000205 | +0.003791 | -0.136 percentage points |
+| 300M | +0.000129 | +0.002993 | -0.213 percentage points |
+
+The likelihood penalties are small but distinguishable from zero under
+paired document resampling. Most accuracy changes are small and uncertain.
+External content dependence is therefore weak in these evaluations, rather
+than identically absent. The calibration table came from WikiText training
+windows and was reused unchanged on the other tasks.
 
 ## Separately trained routing variants
 

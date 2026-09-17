@@ -1,0 +1,703 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "150m-dagformer__pred_position": {
+      "reference_model": {
+        "name": "150m-dagformer",
+        "family": "dagformer",
+        "size": "150m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 182561679,
+        "train_seq_len": 1024
+      },
+      "variant_model": {
+        "name": "150m-dagformer__pred_position",
+        "family": "dagformer",
+        "size": "150m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/150m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+        "step": 6000,
+        "num_parameters": 182561679,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "pred_position",
+          "table": "checkpoints/pr_sync_20260917/routing_tables/150m.pt",
+          "calibration": {
+            "checkpoint": "checkpoints/pr_sync_20260917/150m-dagformer/checkpoint.pt",
+            "config": "checkpoints/pr_sync_20260917/150m-dagformer/config.yaml",
+            "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+            "n_calibration": 64,
+            "L": 8,
+            "H": 12
+          },
+          "scope": "post-training inference substitution; predictor still executes before hook",
+          "parameter_count": "original trained checkpoint, including the substituted predictor"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.00020523740324237058,
+          "paired_bootstrap_95ci": [
+            -0.0002831339005194693,
+            -0.0001392182537438011
+          ],
+          "reference": 1.1521071165250558,
+          "variant": 1.1523123539282982,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": -0.0013584319813700757,
+          "paired_bootstrap_95ci": [
+            -0.003299049097613041,
+            0.0005821851348728896
+          ],
+          "reference": 0.21366194449835046,
+          "variant": 0.2123035125169804,
+          "variant_only_correct": 10,
+          "reference_only_correct": 17,
+          "mcnemar_exact_p": 0.24778856337070465
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0004979087831109341,
+          "paired_bootstrap_95ci": [
+            -0.0008962358095996813,
+            0.0019916351324437364
+          ],
+          "reference": 0.27305317665803625,
+          "variant": 0.2735510854411472,
+          "variant_only_correct": 30,
+          "reference_only_correct": 25,
+          "mcnemar_exact_p": 0.5900533317766354
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.001088139281828074,
+          "paired_bootstrap_95ci": [
+            -0.00544069640914037,
+            0.003264417845484222
+          ],
+          "reference": 0.6017410228509249,
+          "variant": 0.6006528835690969,
+          "variant_only_correct": 8,
+          "reference_only_correct": 10,
+          "mcnemar_exact_p": 0.8145294189453125
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0008417508417508417,
+          "paired_bootstrap_95ci": [
+            -0.0021043771043771043,
+            0.003787878787878788
+          ],
+          "reference": 0.3484848484848485,
+          "variant": 0.3493265993265993,
+          "variant_only_correct": 7,
+          "reference_only_correct": 5,
+          "mcnemar_exact_p": 0.7744140625
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.0034129692832764505,
+            0.0034129692832764505
+          ],
+          "reference": 0.22440273037542663,
+          "variant": 0.22440273037542663,
+          "variant_only_correct": 2,
+          "reference_only_correct": 2,
+          "mcnemar_exact_p": 1.0
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0023677979479084454,
+          "paired_bootstrap_95ci": [
+            -0.011049723756906077,
+            0.01578531965272297
+          ],
+          "reference": 0.5232833464877664,
+          "variant": 0.5256511444356748,
+          "variant_only_correct": 38,
+          "reference_only_correct": 35,
+          "mcnemar_exact_p": 0.8151212352249976
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.002,
+          "paired_bootstrap_95ci": [
+            -0.004,
+            0.01
+          ],
+          "reference": 0.256,
+          "variant": 0.258,
+          "variant_only_correct": 2,
+          "reference_only_correct": 1,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.005,
+            0.005
+          ],
+          "reference": 0.6,
+          "variant": 0.6,
+          "variant_only_correct": 3,
+          "reference_only_correct": 3,
+          "mcnemar_exact_p": 1.0
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0009174311926605505,
+          "paired_bootstrap_95ci": [
+            -0.0030581039755351682,
+            0.004892966360856269
+          ],
+          "reference": 0.5067278287461774,
+          "variant": 0.5076452599388379,
+          "variant_only_correct": 24,
+          "reference_only_correct": 21,
+          "mcnemar_exact_p": 0.765991824244793
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0006700167504187605,
+          "paired_bootstrap_95ci": [
+            -0.0023450586264656616,
+            0.0036850921273031824
+          ],
+          "reference": 0.22278056951423786,
+          "variant": 0.2234505862646566,
+          "variant_only_correct": 12,
+          "reference_only_correct": 10,
+          "mcnemar_exact_p": 0.8318119049072266
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19656019656019655,
+          "variant": 0.19656019656019655,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": -0.0010235414534288639,
+          "paired_bootstrap_95ci": [
+            -0.004605936540429887,
+            0.00255885363357216
+          ],
+          "reference": 0.3638689866939611,
+          "variant": 0.36284544524053225,
+          "variant_only_correct": 5,
+          "reference_only_correct": 7,
+          "mcnemar_exact_p": 0.7744140625
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.003791020061984612,
+          "paired_bootstrap_95ci": [
+            -0.003968271579066694,
+            -0.003615980712988513
+          ],
+          "reference": 1.5186839706422304,
+          "variant": 1.5224749907042148,
+          "bytes": 728241
+        }
+      }
+    },
+    "300m-dagformer__pred_position": {
+      "reference_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024
+      },
+      "variant_model": {
+        "name": "300m-dagformer__pred_position",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "pred_position",
+          "table": "checkpoints/pr_sync_20260917/routing_tables/300m.pt",
+          "calibration": {
+            "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+            "config": "checkpoints/pr_sync_20260917/300m-dagformer/config.yaml",
+            "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+            "n_calibration": 64,
+            "L": 12,
+            "H": 16
+          },
+          "scope": "post-training inference substitution; predictor still executes before hook",
+          "parameter_count": "original trained checkpoint, including the substituted predictor"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.00012850893595535632,
+          "paired_bootstrap_95ci": [
+            -0.00017706798178756197,
+            -8.306704897271013e-05
+          ],
+          "reference": 1.0224808260122566,
+          "variant": 1.022609334948212,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": -0.002134678827867262,
+          "paired_bootstrap_95ci": [
+            -0.004657481078983117,
+            0.00038812342324859306
+          ],
+          "reference": 0.3017659615757811,
+          "variant": 0.29963128274791384,
+          "variant_only_correct": 17,
+          "reference_only_correct": 28,
+          "mcnemar_exact_p": 0.1351564508456704
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 9.958175662218681e-05,
+          "paired_bootstrap_95ci": [
+            -0.001095399322844055,
+            0.0013941445927106153
+          ],
+          "reference": 0.31447918741286596,
+          "variant": 0.3145787691694881,
+          "variant_only_correct": 21,
+          "reference_only_correct": 20,
+          "mcnemar_exact_p": 1.0
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.000544069640914037,
+          "paired_bootstrap_95ci": [
+            -0.004896626768226333,
+            0.003808487486398259
+          ],
+          "reference": 0.6436343852013058,
+          "variant": 0.6430903155603918,
+          "variant_only_correct": 7,
+          "reference_only_correct": 8,
+          "mcnemar_exact_p": 1.0
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.003367003367003367,
+            0.003367003367003367
+          ],
+          "reference": 0.3846801346801347,
+          "variant": 0.3846801346801347,
+          "variant_only_correct": 8,
+          "reference_only_correct": 8,
+          "mcnemar_exact_p": 1.0
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0008532423208191126,
+          "paired_bootstrap_95ci": [
+            -0.0034129692832764505,
+            0.005119453924914676
+          ],
+          "reference": 0.23208191126279865,
+          "variant": 0.23293515358361774,
+          "variant_only_correct": 4,
+          "reference_only_correct": 3,
+          "mcnemar_exact_p": 1.0
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": -0.003946329913180742,
+          "paired_bootstrap_95ci": [
+            -0.01578531965272297,
+            0.007892659826361484
+          ],
+          "reference": 0.5217048145224941,
+          "variant": 0.5177584846093133,
+          "variant_only_correct": 27,
+          "reference_only_correct": 32,
+          "mcnemar_exact_p": 0.6029232012571504
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.002,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.006
+          ],
+          "reference": 0.276,
+          "variant": 0.278,
+          "variant_only_correct": 1,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.004,
+            0.004
+          ],
+          "reference": 0.698,
+          "variant": 0.698,
+          "variant_only_correct": 2,
+          "reference_only_correct": 2,
+          "mcnemar_exact_p": 1.0
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0006116207951070336,
+          "paired_bootstrap_95ci": [
+            -0.001834862385321101,
+            0.0030581039755351682
+          ],
+          "reference": 0.6079510703363914,
+          "variant": 0.6085626911314985,
+          "variant_only_correct": 9,
+          "reference_only_correct": 7,
+          "mcnemar_exact_p": 0.803619384765625
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0006700167504187605,
+          "paired_bootstrap_95ci": [
+            -0.0016750418760469012,
+            0.003015075376884422
+          ],
+          "reference": 0.22780569514237856,
+          "variant": 0.2284757118927973,
+          "variant_only_correct": 8,
+          "reference_only_correct": 6,
+          "mcnemar_exact_p": 0.79052734375
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19574119574119575,
+          "variant": 0.19574119574119575,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.00255885363357216,
+            0.0030706243602865915
+          ],
+          "reference": 0.36284544524053225,
+          "variant": 0.36284544524053225,
+          "variant_only_correct": 4,
+          "reference_only_correct": 4,
+          "mcnemar_exact_p": 1.0
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.002992788624716999,
+          "paired_bootstrap_95ci": [
+            -0.0031277104469857424,
+            -0.0028604855282480315
+          ],
+          "reference": 1.3313922139688217,
+          "variant": 1.3343850025935386,
+          "bytes": 728241
+        }
+      }
+    },
+    "75m-dagformer__pred_position": {
+      "reference_model": {
+        "name": "75m-dagformer",
+        "family": "dagformer",
+        "size": "75m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 105657332,
+        "train_seq_len": 1024
+      },
+      "variant_model": {
+        "name": "75m-dagformer__pred_position",
+        "family": "dagformer",
+        "size": "75m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/75m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+        "step": 3000,
+        "num_parameters": 105657332,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "pred_position",
+          "table": "checkpoints/pr_sync_20260917/routing_tables/75m.pt",
+          "calibration": {
+            "checkpoint": "checkpoints/pr_sync_20260917/75m-dagformer/checkpoint.pt",
+            "config": "checkpoints/pr_sync_20260917/75m-dagformer/config.yaml",
+            "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+            "n_calibration": 64,
+            "L": 6,
+            "H": 8
+          },
+          "scope": "post-training inference substitution; predictor still executes before hook",
+          "parameter_count": "original trained checkpoint, including the substituted predictor"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.00047164074443376984,
+          "paired_bootstrap_95ci": [
+            -0.0006012233359226342,
+            -0.0003565054588785787
+          ],
+          "reference": 1.347233672554265,
+          "variant": 1.347705313298699,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0023287405394915583,
+          "paired_bootstrap_95ci": [
+            0.0005821851348728896,
+            0.004075295944110227
+          ],
+          "reference": 0.07044440131961964,
+          "variant": 0.0727731418591112,
+          "variant_only_correct": 17,
+          "reference_only_correct": 5,
+          "mcnemar_exact_p": 0.01690053939819336
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0009958175662218682,
+          "paired_bootstrap_95ci": [
+            -0.0004979087831109341,
+            0.0024895439155546706
+          ],
+          "reference": 0.26249751045608444,
+          "variant": 0.2634933280223063,
+          "variant_only_correct": 34,
+          "reference_only_correct": 24,
+          "mcnemar_exact_p": 0.23704711476271959
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.001632208922742111,
+          "paired_bootstrap_95ci": [
+            -0.005984766050054407,
+            0.002720348204570185
+          ],
+          "reference": 0.5576713819368879,
+          "variant": 0.5560391730141458,
+          "variant_only_correct": 7,
+          "reference_only_correct": 10,
+          "mcnemar_exact_p": 0.629058837890625
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.00042087542087542086,
+          "paired_bootstrap_95ci": [
+            -0.0021043771043771043,
+            0.002946127946127946
+          ],
+          "reference": 0.30176767676767674,
+          "variant": 0.3021885521885522,
+          "variant_only_correct": 5,
+          "reference_only_correct": 4,
+          "mcnemar_exact_p": 1.0
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.0008532423208191126,
+          "paired_bootstrap_95ci": [
+            -0.005119453924914676,
+            0.0034129692832764505
+          ],
+          "reference": 0.20819112627986347,
+          "variant": 0.20733788395904437,
+          "variant_only_correct": 3,
+          "reference_only_correct": 4,
+          "mcnemar_exact_p": 1.0
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": -0.004735595895816891,
+          "paired_bootstrap_95ci": [
+            -0.016574585635359115,
+            0.006314127861089187
+          ],
+          "reference": 0.5138121546961326,
+          "variant": 0.5090765588003157,
+          "variant_only_correct": 25,
+          "reference_only_correct": 31,
+          "mcnemar_exact_p": 0.5044037600228255
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.002,
+          "paired_bootstrap_95ci": [
+            -0.01,
+            0.006
+          ],
+          "reference": 0.25,
+          "variant": 0.248,
+          "variant_only_correct": 2,
+          "reference_only_correct": 3,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": 0.001,
+          "paired_bootstrap_95ci": [
+            -0.003,
+            0.005
+          ],
+          "reference": 0.464,
+          "variant": 0.465,
+          "variant_only_correct": 3,
+          "reference_only_correct": 2,
+          "mcnemar_exact_p": 1.0
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": -0.0021406727828746177,
+          "paired_bootstrap_95ci": [
+            -0.007033639143730887,
+            0.0024464831804281344
+          ],
+          "reference": 0.42477064220183486,
+          "variant": 0.42262996941896025,
+          "variant_only_correct": 28,
+          "reference_only_correct": 35,
+          "mcnemar_exact_p": 0.44996253629022254
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.0023450586264656616,
+          "paired_bootstrap_95ci": [
+            -0.006030150753768844,
+            0.001340033500837521
+          ],
+          "reference": 0.2103852596314908,
+          "variant": 0.20804020100502513,
+          "variant_only_correct": 13,
+          "reference_only_correct": 20,
+          "mcnemar_exact_p": 0.296206368599087
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.0
+          ],
+          "reference": 0.19574119574119575,
+          "variant": 0.19574119574119575,
+          "variant_only_correct": 0,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.0035823950870010235,
+            0.0035823950870010235
+          ],
+          "reference": 0.3413510747185261,
+          "variant": 0.3413510747185261,
+          "variant_only_correct": 7,
+          "reference_only_correct": 7,
+          "mcnemar_exact_p": 1.0
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.002540320140890851,
+          "paired_bootstrap_95ci": [
+            -0.002761950537987665,
+            -0.0023199275322367255
+          ],
+          "reference": 1.7590963432801499,
+          "variant": 1.7616366634210407,
+          "bytes": 728241
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "scope": "explicit letter/yes-no prediction only; not hidden answer-array indices",
+  "tasks": {
+    "commonsense_qa": {
+      "150m-dagformer__pred_position": {
+        "n": 1221,
+        "accuracy": 0.19656019656019655,
+        "prediction_counts": {
+          "A": 1214,
+          "D": 2,
+          "B": 5
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9942669942669943,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "300m-dagformer__pred_position": {
+        "n": 1221,
+        "accuracy": 0.19574119574119575,
+        "prediction_counts": {
+          "A": 1216,
+          "D": 2,
+          "B": 3
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9959049959049959,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "75m-dagformer__pred_position": {
+        "n": 1221,
+        "accuracy": 0.19574119574119575,
+        "prediction_counts": {
+          "A": 1220,
+          "B": 1
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9991809991809992,
+        "best_constant_label_accuracy": 0.20884520884520885
+      }
+    },
+    "boolq": {
+      "150m-dagformer__pred_position": {
+        "n": 3270,
+        "accuracy": 0.5076452599388379,
+        "prediction_counts": {
+          "yes": 1723,
+          "no": 1547
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "yes",
+        "dominant_prediction_share": 0.5269113149847094,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "300m-dagformer__pred_position": {
+        "n": 3270,
+        "accuracy": 0.6085626911314985,
+        "prediction_counts": {
+          "no": 185,
+          "yes": 3085
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "yes",
+        "dominant_prediction_share": 0.9434250764525994,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "75m-dagformer__pred_position": {
+        "n": 3270,
+        "accuracy": 0.42262996941896025,
+        "prediction_counts": {
+          "no": 2373,
+          "yes": 897
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "no",
+        "dominant_prediction_share": 0.7256880733944954,
+        "best_constant_label_accuracy": 0.6217125382262997
+      }
+    }
+  }
+}

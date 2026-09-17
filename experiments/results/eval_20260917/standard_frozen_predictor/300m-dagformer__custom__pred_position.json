@@ -1,0 +1,358 @@
+{
+  "model": {
+    "name": "300m-dagformer__pred_position",
+    "family": "dagformer",
+    "size": "300m",
+    "kind": "fourway",
+    "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+    "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+    "step": 9000,
+    "num_parameters": 336447805,
+    "train_seq_len": 1024,
+    "routing_intervention": {
+      "mode": "pred_position",
+      "table": "checkpoints/pr_sync_20260917/routing_tables/300m.pt",
+      "calibration": {
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "config": "checkpoints/pr_sync_20260917/300m-dagformer/config.yaml",
+        "calibration_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+        "n_calibration": 64,
+        "L": 12,
+        "H": 16
+      },
+      "scope": "post-training inference substitution; predictor still executes before hook",
+      "parameter_count": "original trained checkpoint, including the substituted predictor"
+    }
+  },
+  "eval": {
+    "date": "2026-09-17T08:11:32+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [
+      "wikitext",
+      "lambada_openai",
+      "hellaswag",
+      "piqa",
+      "arc_easy",
+      "arc_challenge",
+      "winogrande",
+      "openbookqa",
+      "sciq",
+      "boolq",
+      "mathqa",
+      "commonsense_qa",
+      "social_iqa",
+      "gsm8k_bpb"
+    ],
+    "generative_tasks": [],
+    "limit": null,
+    "gen_limit": 200,
+    "batch_size": 8,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": false,
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "67d7835e93055c86e55cb845bad67f7f45d3cdc5",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 0,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "loglikelihood": 345.1531195640564
+    },
+    "peak_gpu_gb": 8.44,
+    "sample_files": [
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__wikitext.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__lambada_openai.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__hellaswag.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__piqa.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__arc_easy.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__arc_challenge.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__winogrande.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__openbookqa.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__sciq.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__boolq.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__mathqa.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__commonsense_qa.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__social_iqa.jsonl",
+      "experiments/results/eval_20260917/standard_frozen_predictor/samples/300m-dagformer__pred_position__gsm8k_bpb.jsonl"
+    ]
+  },
+  "results": {
+    "wikitext": {
+      "name": "wikitext",
+      "alias": "wikitext",
+      "sample_len": 62,
+      "word_perplexity,none": 44.272929759475936,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.031590080511061,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.022609334948212,
+      "bits_per_byte_stderr,none": "N/A"
+    },
+    "lambada_openai": {
+      "name": "lambada_openai",
+      "alias": "lambada_openai",
+      "sample_len": 5153,
+      "perplexity,none": 52.62009065604494,
+      "perplexity_stderr,none": 2.2046094147079707,
+      "acc,none": 0.29963128274791384,
+      "acc_stderr,none": 0.0063821795697938085
+    },
+    "hellaswag": {
+      "name": "hellaswag",
+      "alias": "hellaswag",
+      "sample_len": 10042,
+      "acc,none": 0.2889862577175861,
+      "acc_stderr,none": 0.004523651184016626,
+      "acc_norm,none": 0.3145787691694881,
+      "acc_norm_stderr,none": 0.004633988985170295
+    },
+    "piqa": {
+      "name": "piqa",
+      "alias": "piqa",
+      "sample_len": 1838,
+      "acc,none": 0.6409140369967355,
+      "acc_stderr,none": 0.011192949073844181,
+      "acc_norm,none": 0.6430903155603918,
+      "acc_norm_stderr,none": 0.011177909079261129
+    },
+    "arc_easy": {
+      "name": "arc_easy",
+      "alias": "arc_easy",
+      "sample_len": 2376,
+      "acc,none": 0.41919191919191917,
+      "acc_stderr,none": 0.010124905282491126,
+      "acc_norm,none": 0.3846801346801347,
+      "acc_norm_stderr,none": 0.009983171707008973
+    },
+    "arc_challenge": {
+      "name": "arc_challenge",
+      "alias": "arc_challenge",
+      "sample_len": 1172,
+      "acc,none": 0.17918088737201365,
+      "acc_stderr,none": 0.011207045216615686,
+      "acc_norm,none": 0.23293515358361774,
+      "acc_norm_stderr,none": 0.012352507042617355
+    },
+    "winogrande": {
+      "name": "winogrande",
+      "alias": "winogrande",
+      "sample_len": 1267,
+      "acc,none": 0.5177584846093133,
+      "acc_stderr,none": 0.014043619596174988
+    },
+    "openbookqa": {
+      "name": "openbookqa",
+      "alias": "openbookqa",
+      "sample_len": 500,
+      "acc,none": 0.162,
+      "acc_stderr,none": 0.016494123566423557,
+      "acc_norm,none": 0.278,
+      "acc_norm_stderr,none": 0.020055833888070865
+    },
+    "sciq": {
+      "name": "sciq",
+      "alias": "sciq",
+      "sample_len": 1000,
+      "acc,none": 0.698,
+      "acc_stderr,none": 0.014526080235459496,
+      "acc_norm,none": 0.589,
+      "acc_norm_stderr,none": 0.01556667341859915
+    },
+    "boolq": {
+      "name": "boolq",
+      "alias": "boolq",
+      "sample_len": 3270,
+      "acc,none": 0.6085626911314985,
+      "acc_stderr,none": 0.008536430524404039
+    },
+    "mathqa": {
+      "name": "mathqa",
+      "alias": "mathqa",
+      "sample_len": 2985,
+      "acc,none": 0.22244556113902847,
+      "acc_stderr,none": 0.007613386278535773,
+      "acc_norm,none": 0.2284757118927973,
+      "acc_norm_stderr,none": 0.007685912066383788
+    },
+    "commonsense_qa": {
+      "name": "commonsense_qa",
+      "alias": "commonsense_qa",
+      "sample_len": 1221,
+      "acc,none": 0.19574119574119575,
+      "acc_stderr,none": 0.011359497363584397
+    },
+    "social_iqa": {
+      "name": "social_iqa",
+      "alias": "social_iqa",
+      "sample_len": 1954,
+      "acc,none": 0.36284544524053225,
+      "acc_stderr,none": 0.010880080590947175
+    },
+    "gsm8k_bpb": {
+      "name": "gsm8k_bpb",
+      "alias": "gsm8k_bpb",
+      "sample_len": 1319,
+      "word_perplexity,none": 156.70323024118585,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.5216796375405366,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.3343850025935386,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    },
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 5153
+    },
+    "hellaswag": {
+      "original": 10042,
+      "effective": 10042
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 1838
+    },
+    "arc_easy": {
+      "original": 2376,
+      "effective": 2376
+    },
+    "arc_challenge": {
+      "original": 1172,
+      "effective": 1172
+    },
+    "winogrande": {
+      "original": 1267,
+      "effective": 1267
+    },
+    "openbookqa": {
+      "original": 500,
+      "effective": 500
+    },
+    "sciq": {
+      "original": 1000,
+      "effective": 1000
+    },
+    "boolq": {
+      "original": 3270,
+      "effective": 3270
+    },
+    "mathqa": {
+      "original": 2985,
+      "effective": 2985
+    },
+    "commonsense_qa": {
+      "original": 1221,
+      "effective": 1221
+    },
+    "social_iqa": {
+      "original": 1954,
+      "effective": 1954
+    },
+    "gsm8k_bpb": {
+      "original": 1319,
+      "effective": 1319
+    }
+  },
+  "versions": {
+    "arc_challenge": 1.0,
+    "arc_easy": 1.0,
+    "boolq": 2.0,
+    "commonsense_qa": "Yaml",
+    "gsm8k_bpb": 1.0,
+    "hellaswag": 1.0,
+    "lambada_openai": 1.0,
+    "mathqa": 1.0,
+    "openbookqa": 1.0,
+    "piqa": 1.0,
+    "sciq": 1.0,
+    "social_iqa": 0.0,
+    "wikitext": 2.0,
+    "winogrande": 1.0
+  },
+  "n-shot": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 0,
+    "commonsense_qa": 0,
+    "gsm8k_bpb": 0,
+    "hellaswag": 0,
+    "lambada_openai": 0,
+    "mathqa": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "sciq": 0,
+    "social_iqa": 0,
+    "wikitext": 0,
+    "winogrande": 0
+  },
+  "higher_is_better": {
+    "arc_challenge": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "arc_easy": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "boolq": {
+      "acc": true
+    },
+    "commonsense_qa": {
+      "acc": true
+    },
+    "gsm8k_bpb": {
+      "word_perplexity": false,
+      "byte_perplexity": false,
+      "bits_per_byte": false
+    },
+    "hellaswag": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "lambada_openai": {
+      "perplexity": false,
+      "acc": true
+    },
+    "mathqa": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "openbookqa": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "piqa": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "sciq": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "social_iqa": {
+      "acc": true
+    },
+    "wikitext": {
+      "word_perplexity": false,
+      "byte_perplexity": false,
+      "bits_per_byte": false
+    },
+    "winogrande": {
+      "acc": true
+    }
+  },
+  "group_subtasks": {}
+}
