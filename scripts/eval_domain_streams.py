@@ -121,15 +121,20 @@ def main():
         prompts = {name: {pol: [p for p in ps.by(pol) if name == "new_content" or p.item in keep]
                           for pol in ("neutral", "pos", "neg")}
                    for name, ps in sets.items()}
-        references = {}
+        references, reference_candidates = {}, {}
         runner.clear_edits()
         for name, spec in specs.items():
             references[name] = {}
+            reference_candidates[name] = {}
             for pol in ("neutral", "pos", "neg"):
                 ps = sets[name]
                 scores = score_behavior(runner, spec, prompts[name][pol], tokenizer, ps.filler_id, args.batch_size)
                 references[name][pol] = item_means(prompts[name][pol], scores["per_item"]).tolist()
-        output = {"reference": references, "arms": {}}
+                reference_candidates[name][pol] = {
+                    "mean_logp_code": scores["logp_plus"],
+                    "mean_logp_prose": scores["logp_minus"],
+                    "code_candidate_win_rate": scores["plus_rate"]}
+        output = {"reference": references, "reference_candidates": reference_candidates, "arms": {}}
         result["channels"][channel] = output
         for stream in args.streams:
             selected = chosen if stream == "all" else chosen & layout.mask(streams=[stream])
@@ -154,6 +159,8 @@ def main():
                         sc = score_behavior(runner, spec, prompts[name]["neutral"], tokenizer, ps.filler_id, args.batch_size)
                         values = item_means(prompts[name]["neutral"], sc["per_item"])
                         arm["behavior"][name] = {"score": float(values.mean()),
+                            "mean_logp_code": sc["logp_plus"], "mean_logp_prose": sc["logp_minus"],
+                            "code_candidate_win_rate": sc["plus_rate"],
                             **paired_bootstrap(values, references[name]["neutral"], args.draws, args.seed)}
                     runner.set_edit(channel, edit)
                     losses = nlls()
