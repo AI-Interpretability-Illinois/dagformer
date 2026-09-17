@@ -70,8 +70,8 @@ Strict-format accuracy is 0% for all six. The
 alongside deterministic output examples. A matching extracted number can
 occur in repeated or irrelevant text: document 52, for example, generates
 "15 pounds" where the requested answer is 15 toys. The best constant-number
-diagnostic on this test split is 3.03% (always 5). Generation runs for
-the 600M baseline and the later 300M DAGFormer checkpoint are still pending.
+diagnostic on this test split is 3.03% (always 5). The 600M baseline generation
+run is still pending.
 Dense baselines use KV caching; DAGFormer recomputes the prefix. In the
 [200-item cache check](gsm8k_no_cache/README.md), the 300M baseline has the
 same five flexible matches with caching enabled or disabled. Text changes
@@ -97,6 +97,13 @@ improves from step 9000's 1.02248 to 1.01830. Its twelve accuracy differences
 all have paired intervals including zero, and GSM8K joint BPB is slightly
 worse. This measures continued training of the same model. The comparison
 at equal baseline/DAGFormer training budgets continues to use step 9000.
+
+Its [full GSM8K generation comparison](gsm8k_latest/README.md) is also complete:
+step 10500 gets 26 flexible matches versus 20 at step 9000, or 1.97% versus
+1.52%. The +0.45-point difference has interval [-0.23, +1.21]. Three responses
+match the strict format and final number, but all three contain incorrect or
+unrelated derivations, retained in the examples. This does not establish a
+generated-solving improvement from the additional training.
 
 ![All paired ordinary-task effects](figures/ordinary_paired.png)
 

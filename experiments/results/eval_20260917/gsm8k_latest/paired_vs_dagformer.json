@@ -1,0 +1,49 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "300m-dagformer": {
+      "reference_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+        "step": 9000,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "variant_model": {
+        "name": "300m-dagformer",
+        "family": "dagformer",
+        "size": "300m",
+        "kind": "fourway",
+        "path": "checkpoints/pr_sync_20260917/latest/300m-dagformer",
+        "checkpoint": "checkpoints/pr_sync_20260917/latest/300m-dagformer/checkpoint.pt",
+        "step": 10500,
+        "num_parameters": 336447805,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "gsm8k": {
+          "n_docs": 1319,
+          "metric": "exact_match,flexible-extract",
+          "delta_variant_better": 0.004548900682335102,
+          "paired_bootstrap_95ci": [
+            -0.002274450341167551,
+            0.012130401819560273
+          ],
+          "reference": 0.015163002274450341,
+          "variant": 0.019711902956785442,
+          "variant_only_correct": 15,
+          "reference_only_correct": 9,
+          "mcnemar_exact_p": 0.30745625495910645
+        }
+      }
+    }
+  }
+}

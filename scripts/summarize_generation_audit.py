@@ -38,7 +38,7 @@ def main():
         "flexible_extract": "last numeric regex match, including numbers in repeated or irrelevant text",
         "constant_answer": "most frequent gold answer in this evaluated split; diagnostic, not a trained model",
         "repetition": "one minus distinct whitespace-token 4-grams divided by total 4-grams; descriptive only",
-        "examples": "first three flexible matches and first three nonmatches in document-ID order"},
+        "examples": "first three flexible matches, flexible nonmatches and strict matches in document-ID order, where available"},
         "models": {}}
     lines = ["# GSM8K generation audit", "",
              "Scores below retain the upstream extraction rules. Flexible extraction",
@@ -46,8 +46,8 @@ def main():
              "| Model | Documents | Strict match | Flexible match | Best constant answer | Mean repeated 4-gram fraction |",
              "|---|---:|---:|---:|---|---:|"]
     examples = ["# Deterministic GSM8K example sample", "",
-                "For each completed model: the first three flexible matches and first three",
-                "nonmatches by document ID. Excerpts are limited to 400 characters; full",
+                "For each completed model: the first three flexible matches, flexible nonmatches",
+                "and strict matches by document ID, where available. Excerpts are limited to 400 characters; full",
                 "responses remain in the ignored sample JSONLs and the Delta artifact mirror.", ""]
     for path in sorted(args.dir.glob("*__gen*.json")):
         payload = json.loads(path.read_text())
@@ -77,10 +77,12 @@ def main():
                      f"{100*scores['flexible-extract']:.2f}% | {mode}: {100*count/len(rows):.2f}% | "
                      f"{np.mean(repeats):.3f} |")
         examples += [f"## {name}", ""]
-        for correct in (True, False):
-            chosen = [r for r in rows if bool(r["exact_match"]) == correct][:3]
+        selections = [("flexible match", [r for r in rows if r["exact_match"]][:3]),
+                      ("flexible nonmatch", [r for r in rows if not r["exact_match"]][:3]),
+                      ("strict match", [r for r in grouped["strict-match"] if r["exact_match"]][:3])]
+        for label, chosen in selections:
             for row in chosen:
-                examples += [f"### Document {row['doc_id']} — flexible {'match' if correct else 'nonmatch'}", "",
+                examples += [f"### Document {row['doc_id']} — {label}", "",
                              f"Question: {row['doc']['question']}", "",
                              f"Gold final answer: `{normalize_gold(row['target'])}`. "
                              f"Extracted: `{row['filtered_resps'][0]}`.", "",
