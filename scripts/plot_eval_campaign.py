@@ -165,9 +165,53 @@ def context(root, out):
     save(fig, out, "context_transfer")
 
 
+def trained_ladder(root, out):
+    ablations = read(root / "standard_ladder/paired_vs_baseline.json")["variants"]
+    full = read(root / "standard_matched/paired_summary.json")["pairs"]["150m"]
+    names = ["150m-static", "150m-postable", "150m-identcorr", "150m-staticcorr",
+             "150m-lite", "150m-dagformer"]
+    labels = ["Static", "Position table", "Identity + correction", "Static + correction",
+              "Position table + correction", "Encoder + correction"]
+    fig, axes = plt.subplots(1, 2, sharey=True, figsize=(11.5, 4.8))
+    ylabels = []
+    for row, (name, label) in enumerate(zip(names, labels)):
+        record = full if name == "150m-dagformer" else ablations[name]
+        model = record["dagformer_model"] if name == "150m-dagformer" else record["variant_model"]
+        ylabels.append(f"{label} ({model['num_parameters'] / 1e6:.2f}M)")
+        color = "#777777" if row < 2 else ("#222222" if row == 5 else "#0072B2")
+        marker = "s" if row < 2 else ("o" if row == 5 else "D")
+        for ax, task, factor in zip(axes, ["wikitext", "lambada_openai"], [1, 100]):
+            stats = record["tasks"][task]
+            delta = stats.get("delta_variant_better", stats.get("delta_dagformer_better"))
+            lo, hi = factor * np.array(stats["paired_bootstrap_95ci"])
+            value = factor * delta
+            ax.errorbar(value, row, xerr=[[value - lo], [hi - value]], fmt=marker,
+                        color=color, markersize=6, capsize=3, linewidth=1.3)
+    axes[0].set_yticks(range(len(names)), ylabels)
+    axes[0].invert_yaxis()
+    for ax in axes:
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.grid(axis="x", color="#e4e4e4", linewidth=.6)
+        ax.set_axisbelow(True)
+        ax.axvline(0, color="#777777", linestyle="--", linewidth=.9)
+        ax.margins(y=.12)
+    axes[0].set_title("(a) WikiText", loc="left", fontweight="bold")
+    axes[1].set_title("(b) LAMBADA", loc="left", fontweight="bold")
+    axes[0].set_xlabel("BPB reduction versus baseline")
+    axes[1].set_xlabel("Accuracy gain versus baseline (percentage points)")
+    fig.suptitle("Trained 150M ablations at the same 3.146B-token budget", y=1.015, fontsize=13)
+    fig.text(.03, -.035, "Each configuration is one trained checkpoint at 6,000 updates. Labels show total parameters.\n"
+             "Bars: paired 95% document-bootstrap intervals; training-seed variation is not estimated.", fontsize=9)
+    fig.tight_layout(w_pad=2)
+    save(fig, out, "trained_ladder")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, default=Path("experiments/results/eval_20260917"))
+    plotters = {"ordinary_paired": ordinary, "routing_dependence": routing,
+                "context_transfer": context, "trained_ladder": trained_ladder}
+    ap.add_argument("--figures", nargs="+", choices=list(plotters), default=list(plotters))
     args = ap.parse_args()
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,
                          "axes.titlesize": 11, "axes.labelsize": 10,
@@ -175,9 +219,8 @@ def main():
                          "savefig.facecolor": "white"})
     out = args.root / "figures"
     out.mkdir(exist_ok=True)
-    ordinary(args.root, out)
-    routing(args.root, out)
-    context(args.root, out)
+    for name in args.figures:
+        plotters[name](args.root, out)
 
 
 if __name__ == "__main__":

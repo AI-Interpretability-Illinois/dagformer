@@ -76,7 +76,7 @@ The external predictor's input-dependent component has a small marginal effect
 in this test. Removing its learned wiring entirely is a different intervention
 and causes substantial damage. Freezing the local corrections also hurts
 performance. These inference edits do not establish what a retrained model
-needs; the separately trained 150M ablation ladder is queued for evaluation.
+needs; the separately trained 150M ablation ladder below tests that question.
 
 The [routing results](routing_dependence/300m.json) retain all per-sequence
 losses, intervals, constant/global and cross-sequence substitutions, plus
@@ -90,6 +90,28 @@ different vertical ranges to show the small external-predictor effect and
 the larger correction effects. Substitution hooks still execute the original
 predictor before replacing its output; these runs measure dependence, not
 an inference-speed improvement.
+
+## Separately trained routing variants
+
+The [complete 150M ladder](standard_ladder/README.md) holds the backbone,
+training updates and processed-token budget fixed across seven models.
+Static + correction has **153.45M total parameters**, 15.95% fewer than the
+full encoder model's 182.56M, and improves WikiText BPB from 1.15211 to 1.14890.
+The paired BPB reduction is 0.00320, with interval [0.00214, 0.00431]. LAMBADA
+is similar: 21.48% versus 21.37%, with a difference interval of [-0.74, +1.01]
+percentage points. Even frozen identity routing plus correction reaches
+1.15252 BPB. The static and position-table models without corrections are
+substantially worse on WikiText, LAMBADA and SciQ.
+
+![Trained routing ladder](figures/trained_ladder.png)
+
+These results support local corrections as the main contributor to the
+ordinary-task gains at this scale and budget. Simpler routing is not uniformly
+best: position table + correction improves WikiText and LAMBADA but is 1.21
+points lower on MathQA than the full encoder. The
+[full paired table](standard_ladder/paired_vs_dagformer.md) includes all 14
+endpoints and their unadjusted intervals. Each configuration has one training
+run, so these intervals do not measure training-seed variation.
 
 ## Direct head edits and the PR #2 contrast
 
@@ -122,9 +144,15 @@ criterion. The original natural-text cache had understated this cost.
 The gray range shows five norm-matched random-head controls for both-channel
 edits; it is not a confidence interval. Colored intervals are paired normal
 intervals across the 1,024 content combinations or 50 language-model windows.
-The QA reversal limits the claim to the measured prompt formats. An
-unconstrained generation evaluation on a third disjoint item set is queued to
-test whether the candidate-based result transfers to generated answers.
+The [metric diagnostics](context_fidelity/metric_diagnostics.md) show why the
+QA result needs a generation check: the unchanged model assigns the true value
+only 0.0000149 mean whole-vocabulary probability at the first answer position
+under the deceptive cue, where an article or another opening word may come
+first. In narrative and dialogue, the mean probabilities are 0.16665 and
+0.30551, increasing by 0.02187 and 0.05512 with the edit. Thus the cloze gains
+also exist in whole-vocabulary probability, while the QA candidate ratio is
+an incomplete answer metric. Unconstrained generation on a third disjoint
+item set is queued to check generated answers directly.
 
 The [seven hyperconnection edges](context_fidelity/context_validation_hyper.md)
 and [three sequential-path edges](context_fidelity/context_validation_sequential.md)

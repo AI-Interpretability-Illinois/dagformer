@@ -1,0 +1,183 @@
+{
+  "scope": "explicit letter/yes-no prediction only; not hidden answer-array indices",
+  "tasks": {
+    "commonsense_qa": {
+      "150m-identcorr": {
+        "n": 1221,
+        "accuracy": 0.19492219492219492,
+        "prediction_counts": {
+          "A": 1205,
+          "D": 5,
+          "B": 10,
+          "C": 1
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9868959868959869,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "150m-lite": {
+        "n": 1221,
+        "accuracy": 0.19574119574119575,
+        "prediction_counts": {
+          "A": 1214,
+          "D": 5,
+          "B": 2
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9942669942669943,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "150m-postable": {
+        "n": 1221,
+        "accuracy": 0.1941031941031941,
+        "prediction_counts": {
+          "A": 1191,
+          "D": 14,
+          "B": 9,
+          "C": 5,
+          "E": 2
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9754299754299754,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "150m-static": {
+        "n": 1221,
+        "accuracy": 0.19574119574119575,
+        "prediction_counts": {
+          "A": 1213,
+          "D": 3,
+          "B": 5
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9934479934479934,
+        "best_constant_label_accuracy": 0.20884520884520885
+      },
+      "150m-staticcorr": {
+        "n": 1221,
+        "accuracy": 0.19492219492219492,
+        "prediction_counts": {
+          "A": 1203,
+          "D": 5,
+          "B": 10,
+          "E": 3
+        },
+        "target_counts": {
+          "A": 239,
+          "B": 255,
+          "C": 241,
+          "D": 251,
+          "E": 235
+        },
+        "dominant_prediction": "A",
+        "dominant_prediction_share": 0.9852579852579852,
+        "best_constant_label_accuracy": 0.20884520884520885
+      }
+    },
+    "boolq": {
+      "150m-identcorr": {
+        "n": 3270,
+        "accuracy": 0.5896024464831804,
+        "prediction_counts": {
+          "yes": 2979,
+          "no": 291
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "yes",
+        "dominant_prediction_share": 0.9110091743119266,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "150m-lite": {
+        "n": 3270,
+        "accuracy": 0.5929663608562691,
+        "prediction_counts": {
+          "yes": 2912,
+          "no": 358
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "yes",
+        "dominant_prediction_share": 0.890519877675841,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "150m-postable": {
+        "n": 3270,
+        "accuracy": 0.4489296636085627,
+        "prediction_counts": {
+          "yes": 1089,
+          "no": 2181
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "no",
+        "dominant_prediction_share": 0.6669724770642201,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "150m-static": {
+        "n": 3270,
+        "accuracy": 0.4452599388379205,
+        "prediction_counts": {
+          "no": 2323,
+          "yes": 947
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "no",
+        "dominant_prediction_share": 0.7103975535168195,
+        "best_constant_label_accuracy": 0.6217125382262997
+      },
+      "150m-staticcorr": {
+        "n": 3270,
+        "accuracy": 0.5978593272171254,
+        "prediction_counts": {
+          "yes": 2932,
+          "no": 338
+        },
+        "target_counts": {
+          "no": 1237,
+          "yes": 2033
+        },
+        "dominant_prediction": "yes",
+        "dominant_prediction_share": 0.8966360856269113,
+        "best_constant_label_accuracy": 0.6217125382262997
+      }
+    }
+  }
+}
