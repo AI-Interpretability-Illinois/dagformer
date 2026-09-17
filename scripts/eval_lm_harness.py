@@ -145,10 +145,33 @@ def _replace_olmo_rmsnorm(model):
     return count
 
 
+def build_fourway_predictor_from_config(cfg: dict, device):
+    """Use the same predictor variant and dimensions as the training config."""
+    from src.model.predictor import (FourWayPredictor, FourWayPositionalPredictor,
+                                     FourWayStaticPredictor)
+    common = dict(num_layers=cfg["num_hidden_layers"], num_heads=cfg["num_attention_heads"])
+    variant = cfg.get("fourway_predictor_variant", "encoder")
+    if variant == "static":
+        predictor = FourWayStaticPredictor(**common)
+    elif variant == "pos_table":
+        predictor = FourWayPositionalPredictor(max_seq_len=cfg.get("seq_len", 1024), **common)
+    elif variant == "encoder":
+        predictor = FourWayPredictor(
+            vocab_size=cfg["vocab_size"],
+            encoder_dim=cfg.get("predictor_encoder_dim", 256),
+            encoder_layers=cfg.get("predictor_encoder_layers", 2),
+            encoder_heads=cfg.get("predictor_encoder_heads", 4),
+            max_seq_len=cfg.get("predictor_max_seq_len", 4096),
+            hidden_dim=cfg.get("fourway_hidden", 512),
+            causal=cfg.get("predictor_causal", True), dropout=0.0, **common)
+    else:
+        raise ValueError(f"Evaluation loader does not support predictor variant {variant!r}")
+    return predictor.to(device=device)
+
+
 def load_fourway(ckpt_path: str, cfg: dict, device):
-    """Load a FourWay DAGFormer (base OLMo + FourWayPredictor + FourWayDAGFormer wrapper)."""
+    """Load the trained backbone, configured predictor, and routing parameters."""
     from src.model.olmo_graph import FourWayDAGFormer
-    from src.model.predictor import FourWayPredictor
     replace_olmo_rmsnorm = _replace_olmo_rmsnorm
 
     base = build_base_model(cfg, device)
@@ -166,25 +189,14 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         use_v_norm=cfg.get("use_v_norm", False),
         correction_pool=cfg.get("correction_pool", "none"),
     ).to(device=device)
-    fourway_predictor = FourWayPredictor(
-        vocab_size=cfg["vocab_size"],
-        encoder_dim=cfg.get("predictor_encoder_dim", 256),
-        encoder_layers=cfg.get("predictor_encoder_layers", 2),
-        encoder_heads=cfg.get("predictor_encoder_heads", 4),
-        max_seq_len=cfg.get("predictor_max_seq_len", 4096),
-        num_layers=cfg["num_hidden_layers"],
-        num_heads=cfg["num_attention_heads"],
-        hidden_dim=cfg.get("fourway_hidden", 512),
-        causal=cfg.get("predictor_causal", True),
-        dropout=0.0,
-    ).to(device=device)
+    fourway_predictor = build_fourway_predictor_from_config(cfg, device)
 
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     # Predictor
-    if "predictor_state_dict" in ckpt:
-        ps = strip_prefixes(ckpt["predictor_state_dict"])
-        m, u = fourway_predictor.load_state_dict(ps, strict=False)
-        print(f"[load_fourway:predictor] missing={len(m)} unexpected={len(u)}")
+    ps = strip_prefixes(ckpt["predictor_state_dict"])
+    fourway_predictor.load_state_dict(ps, strict=True)
+    print(f"[load_fourway:predictor] variant={cfg.get('fourway_predictor_variant', 'encoder')} "
+          "missing=0 unexpected=0")
     # Base model
     state = None
     if "model_state_path" in ckpt:
@@ -196,17 +208,24 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         state = torch.load(side, map_location="cpu", weights_only=False)
     elif "model_state_dict" in ckpt:
         state = ckpt["model_state_dict"]
-    if state is not None:
-        if isinstance(state, dict) and "state_dict" in state:
-            state = state["state_dict"]
-        state = strip_prefixes(state)
-        m, u = base.load_state_dict(state, strict=False)
-        print(f"[load_fourway:base] missing={len(m)} unexpected={len(u)} (first 3 missing: {m[:3]})")
+    if state is None:
+        raise ValueError("FourWay checkpoint has no backbone weights or model_state_path")
+    if isinstance(state, dict) and "state_dict" in state:
+        state = state["state_dict"]
+    state = strip_prefixes(state)
+    base.load_state_dict(state, strict=True)
+    print("[load_fourway:base] missing=0 unexpected=0")
     # Routing state (v_norms, correction MLPs)
-    if "routing_state_dict" in ckpt and len(ckpt["routing_state_dict"]) > 0:
-        rs = strip_prefixes(ckpt["routing_state_dict"])
-        m, u = fourway_model.load_state_dict(rs, strict=False)
-        print(f"[load_fourway:routing] loaded {len(rs)} keys (missing={len(m)} unexpected={len(u)})")
+    # Older routing dumps duplicate the backbone. It has already been loaded
+    # above; verify that every configured correction/v-norm key is present.
+    rs = {k: v for k, v in strip_prefixes(ckpt.get("routing_state_dict", {})).items()
+          if k.startswith(("correction_mlps.", "v_norms."))}
+    required = {k for k in fourway_model.state_dict() if not k.startswith("olmo.")}
+    if set(rs) != required:
+        raise ValueError(f"Routing weights disagree with config: missing={sorted(required - set(rs))}; "
+                         f"unexpected={sorted(set(rs) - required)}")
+    fourway_model.load_state_dict(rs, strict=False)
+    print(f"[load_fourway:routing] loaded all {len(rs)} routing keys")
 
     fourway_model.eval()
     fourway_predictor.eval()

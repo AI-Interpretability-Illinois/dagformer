@@ -97,10 +97,11 @@ def matched_edges(edges, heads, seed):
     return out
 
 
-def heldout_items(n, seed):
+def heldout_items(n, seed, exclude=()):
     """Exclude all original 240 discovery items and repeated evaluation items."""
     key = lambda item: (item["fact"], item["ask"], item["a"], item["b"])
     used = {key(it) for it in build_items(240, seed=0)}
+    used.update(key(it) for it in exclude)
     items = []
     for item in build_items(n * 10, seed=seed):
         if key(item) not in used:
@@ -130,6 +131,8 @@ def main():
     ap.add_argument("--circuit", default="experiments/results/interp/liar_cloze/deception_conns.json")
     ap.add_argument("--out", required=True)
     ap.add_argument("--seed", type=int, default=20260917)
+    ap.add_argument("--exclude-items", nargs="*", default=[],
+                    help="prior raw evaluation JSON files whose content items must be excluded")
     ap.add_argument("--n-items", type=int, default=240)
     ap.add_argument("--n-nll", type=int, default=20)
     ap.add_argument("--batch-size", type=int, default=16)
@@ -158,7 +161,10 @@ def main():
     if args.edge_scope != "all":
         edges = [edge for edge in edges if
                  (edge[3] < edge[0]) == (args.edge_scope == "hyper")]
-    items = heldout_items(args.n_items, args.seed)
+    previous_items = []
+    for path in args.exclude_items:
+        previous_items.extend(json.loads(Path(path).read_text())["items"])
+    items = heldout_items(args.n_items, args.seed, previous_items)
     buckets = {}
     for cue in args.cues:
         grouped = defaultdict(list)

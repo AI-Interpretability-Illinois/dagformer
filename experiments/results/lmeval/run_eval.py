@@ -51,6 +51,7 @@ from models import (  # noqa: E402
     resolve_models,
 )
 from suites import SUITES, resolve_tasks  # noqa: E402
+from interventions import MODES, install_intervention  # noqa: E402
 
 TASKS_DIR = HERE / "tasks"
 DEFAULT_OUT_DIR = HERE / "reasoning"
@@ -122,6 +123,10 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
 
     t_load = time.time()
     model = load_model(spec, device)
+    table_path = (args.routing_table.format(size=spec.size, name=spec.name)
+                  if args.routing_table else None)
+    intervention = install_intervention(model, args.routing_intervention, table_path)
+    evaluation_name = spec.name + ("__" + args.routing_intervention if intervention else "")
     tokenizer = load_tokenizer(args.tokenizer)
     lm = CheckpointLM(
         model,
@@ -184,7 +189,7 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
         timings[label] = time.time() - t0
         print(f"[{spec.name}] {label} pass finished in {timings[label]:.1f}s", flush=True)
         if save_samples:
-            sample_files += write_samples(results, args.out_dir / "samples", spec.name)
+            sample_files += write_samples(results, args.out_dir / "samples", evaluation_name)
             results.pop("samples", None)
         merge_results(merged, results)
 
@@ -192,7 +197,7 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
 
     payload = {
         "model": {
-            "name": spec.name,
+            "name": evaluation_name,
             "family": spec.family,
             "size": spec.size,
             "kind": spec.kind,
@@ -201,6 +206,7 @@ def evaluate_model(spec, args, task_manager, gen_tasks: list[str], ll_tasks: lis
             "step": checkpoint_step(spec.ckpt_path),
             "num_parameters": sum(p.numel() for p in model.parameters()),
             "train_seq_len": spec.train_seq_len,
+            "routing_intervention": intervention,
         },
         "eval": {
             "date": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -260,6 +266,9 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     p.add_argument("--tokenizer", type=Path, default=DEFAULT_TOKENIZER)
     p.add_argument("--device", default="cuda")
+    p.add_argument("--routing-intervention", choices=MODES, default="none")
+    p.add_argument("--routing-table", default=None,
+                   help="calibrated .pt table path; may contain {size} or {name}")
     p.add_argument("--batch-size", type=int, default=16, help="log-likelihood pass batch size")
     p.add_argument(
         "--gen-batch-size",
@@ -325,6 +334,8 @@ def main(argv=None) -> int:
     specs = resolve_models(args.model, args.models_root)
 
     suite_label = args.suite if not args.tasks else "custom"
+    if args.routing_intervention != "none":
+        suite_label += "__" + args.routing_intervention
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"models     : {[s.name for s in specs]}")
