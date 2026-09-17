@@ -30,7 +30,6 @@
     "600m-baseline": 3,
     "600m-dagformer": 2
   },
-  "submitted_utc": "2026-09-17T22:09:31Z",
   "local_completed_suites": [
     "standard_600m",
     "routing_dependence/600m",
@@ -59,5 +58,8 @@
     "baseline_pid": 1494528,
     "dagformer_pid": 1495823,
     "log": "logs/scaling_20260917/local_finalize.log"
-  }
+  },
+  "recorded_utc": "2026-09-17T22:34:15.796119+00:00",
+  "one_b_training_revision": "cb24428b9352851865282f9e867713e80dcaacd8",
+  "one_b_baseline_standard": "completed: experiments/results/completed_scaling_20260917/standard_1b/1b-baseline__custom.json"
 }
