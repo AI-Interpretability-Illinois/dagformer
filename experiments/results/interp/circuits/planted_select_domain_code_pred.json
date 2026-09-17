@@ -1,0 +1,179 @@
+{
+  "rows": [
+    {
+      "k": 16,
+      "magnitude": 0.0005,
+      "induced_rotation": 6.289240036042457e-06,
+      "precision": 0.10056818181818183,
+      "recall": 0.009375,
+      "n_selected": 8.9
+    },
+    {
+      "k": 16,
+      "magnitude": 0.001,
+      "induced_rotation": 1.2578480072084915e-05,
+      "precision": 0.25,
+      "recall": 0.0375,
+      "n_selected": 9.4
+    },
+    {
+      "k": 16,
+      "magnitude": 0.002,
+      "induced_rotation": 2.515696014416983e-05,
+      "precision": 0.7866254372813593,
+      "recall": 0.21875,
+      "n_selected": 12.25
+    },
+    {
+      "k": 16,
+      "magnitude": 0.005,
+      "induced_rotation": 6.289240036042458e-05,
+      "precision": 0.894887036365833,
+      "recall": 0.4625,
+      "n_selected": 16.15
+    },
+    {
+      "k": 16,
+      "magnitude": 0.01,
+      "induced_rotation": 0.00012578480072084915,
+      "precision": 0.9020503102941874,
+      "recall": 0.73125,
+      "n_selected": 20.5
+    },
+    {
+      "k": 16,
+      "magnitude": 0.02,
+      "induced_rotation": 0.0002515696014416983,
+      "precision": 0.9071806930693069,
+      "recall": 0.84375,
+      "n_selected": 22.3
+    },
+    {
+      "k": 16,
+      "magnitude": 0.05,
+      "induced_rotation": 0.0006289240036042457,
+      "precision": 0.9093103799243432,
+      "recall": 0.9875,
+      "n_selected": 24.55
+    },
+    {
+      "k": 64,
+      "magnitude": 0.0005,
+      "induced_rotation": 2.820619132432902e-05,
+      "precision": 0.2216320816864295,
+      "recall": 0.01171875,
+      "n_selected": 9.4
+    },
+    {
+      "k": 64,
+      "magnitude": 0.001,
+      "induced_rotation": 5.641238264865804e-05,
+      "precision": 0.6430805243445693,
+      "recall": 0.03515625,
+      "n_selected": 10.8
+    },
+    {
+      "k": 64,
+      "magnitude": 0.002,
+      "induced_rotation": 0.00011282476529731608,
+      "precision": 0.9031036168132942,
+      "recall": 0.1609375,
+      "n_selected": 18.9
+    },
+    {
+      "k": 64,
+      "magnitude": 0.005,
+      "induced_rotation": 0.0002820619132432902,
+      "precision": 0.9218360264312289,
+      "recall": 0.46484375,
+      "n_selected": 38.45
+    },
+    {
+      "k": 64,
+      "magnitude": 0.01,
+      "induced_rotation": 0.0005641238264865804,
+      "precision": 0.9331656700386362,
+      "recall": 0.72265625,
+      "n_selected": 55.0
+    },
+    {
+      "k": 64,
+      "magnitude": 0.02,
+      "induced_rotation": 0.0011282476529731608,
+      "precision": 0.9381013393661339,
+      "recall": 0.89921875,
+      "n_selected": 66.15
+    },
+    {
+      "k": 64,
+      "magnitude": 0.05,
+      "induced_rotation": 0.002820619132432902,
+      "precision": 0.9405784395973154,
+      "recall": 0.97421875,
+      "n_selected": 71.1
+    },
+    {
+      "k": 256,
+      "magnitude": 0.0005,
+      "induced_rotation": 0.00010052171402167384,
+      "precision": 0.2390956072351421,
+      "recall": 0.0046875,
+      "n_selected": 9.3
+    },
+    {
+      "k": 256,
+      "magnitude": 0.001,
+      "induced_rotation": 0.00020104342804334768,
+      "precision": 0.6099837662337663,
+      "recall": 0.028515625,
+      "n_selected": 15.65
+    },
+    {
+      "k": 256,
+      "magnitude": 0.002,
+      "induced_rotation": 0.00040208685608669536,
+      "precision": 0.93300072859745,
+      "recall": 0.1673828125,
+      "n_selected": 50.95
+    },
+    {
+      "k": 256,
+      "magnitude": 0.005,
+      "induced_rotation": 0.0010052171402167383,
+      "precision": 0.9575840994974483,
+      "recall": 0.4751953125,
+      "n_selected": 129.7
+    },
+    {
+      "k": 256,
+      "magnitude": 0.01,
+      "induced_rotation": 0.0020104342804334765,
+      "precision": 0.9687898148308086,
+      "recall": 0.732421875,
+      "n_selected": 195.9
+    },
+    {
+      "k": 256,
+      "magnitude": 0.02,
+      "induced_rotation": 0.004020868560866953,
+      "precision": 0.9732522488546206,
+      "recall": 0.8966796875,
+      "n_selected": 237.8
+    },
+    {
+      "k": 256,
+      "magnitude": 0.05,
+      "induced_rotation": 0.010052171402167385,
+      "precision": 0.9755126682926202,
+      "recall": 0.97890625,
+      "n_selected": 258.7
+    }
+  ],
+  "n_selected_on_noise_alone": 8.8,
+  "s_cutoff": 2.9956696549026796,
+  "channel": "pred",
+  "note": "recall is the fraction of planted edges the rule recovers; the detection floor is the smallest induced rotation with recall >= 0.5",
+  "part": "select",
+  "stats": "experiments/results/interp/circuits/circuit_domain_code_pred_stats.npz",
+  "leverage": "experiments/results/interp/circuits/leverage_domain_code_pred.npz"
+}

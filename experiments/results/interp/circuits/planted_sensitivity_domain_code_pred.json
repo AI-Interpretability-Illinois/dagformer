@@ -1,0 +1,181 @@
+{
+  "rows": [
+    {
+      "k": 16,
+      "magnitude": 0.01,
+      "induced_rotation": 0.0001262163382171738,
+      "abs_shift": 0.000275392085313797,
+      "shift_over_se": 0.0008074358560887507,
+      "nll_rise": -0.000798344612121582
+    },
+    {
+      "k": 16,
+      "magnitude": 0.05,
+      "induced_rotation": 0.0007320501262873939,
+      "abs_shift": 0.004686538130044937,
+      "shift_over_se": 0.01374069600734392,
+      "nll_rise": -0.0002899169921875
+    },
+    {
+      "k": 16,
+      "magnitude": 0.1,
+      "induced_rotation": 0.0015571279569830477,
+      "abs_shift": 0.0037411488592624664,
+      "shift_over_se": 0.01096886182655557,
+      "nll_rise": -0.000766754150390625
+    },
+    {
+      "k": 16,
+      "magnitude": 0.2,
+      "induced_rotation": 0.004098079018838328,
+      "abs_shift": 0.006524138152599335,
+      "shift_over_se": 0.019128447604014744,
+      "nll_rise": -0.0009690523147583008
+    },
+    {
+      "k": 16,
+      "magnitude": 0.5,
+      "induced_rotation": 0.00458646280473623,
+      "abs_shift": 0.2659299448132515,
+      "shift_over_se": 0.7796933321640545,
+      "nll_rise": 0.04199337959289551
+    },
+    {
+      "k": 16,
+      "magnitude": 1.0,
+      "induced_rotation": 0.009836021176979005,
+      "abs_shift": 0.06466865539550781,
+      "shift_over_se": 0.18960527159625046,
+      "nll_rise": 0.02301323413848877
+    },
+    {
+      "k": 16,
+      "magnitude": 5.0,
+      "induced_rotation": 0.05985556690189476,
+      "abs_shift": 2.9150433093309402,
+      "shift_over_se": 8.546761564783042,
+      "nll_rise": 3.3893617391586304
+    },
+    {
+      "k": 256,
+      "magnitude": 0.01,
+      "induced_rotation": 0.0018138110491090743,
+      "abs_shift": 0.004908215254545212,
+      "shift_over_se": 0.01439064227792109,
+      "nll_rise": -0.0002808570861816406
+    },
+    {
+      "k": 256,
+      "magnitude": 0.05,
+      "induced_rotation": 0.007852754308851805,
+      "abs_shift": 0.05610455945134163,
+      "shift_over_se": 0.16449576951152375,
+      "nll_rise": -0.0009003877639770508
+    },
+    {
+      "k": 256,
+      "magnitude": 0.1,
+      "induced_rotation": 0.019656041416291202,
+      "abs_shift": 0.14648854732513428,
+      "shift_over_se": 0.4294971131138078,
+      "nll_rise": 0.03129994869232178
+    },
+    {
+      "k": 256,
+      "magnitude": 0.2,
+      "induced_rotation": 0.03668786191121175,
+      "abs_shift": 0.0863572433590889,
+      "shift_over_se": 0.25319512956103535,
+      "nll_rise": 0.11820662021636963
+    },
+    {
+      "k": 256,
+      "magnitude": 0.5,
+      "induced_rotation": 0.10210669848670845,
+      "abs_shift": 0.8531929478049278,
+      "shift_over_se": 2.501519161070978,
+      "nll_rise": 0.9205641746520996
+    },
+    {
+      "k": 256,
+      "magnitude": 1.0,
+      "induced_rotation": 0.1780181188079537,
+      "abs_shift": 0.5429226607084274,
+      "shift_over_se": 1.591822157269271,
+      "nll_rise": 1.8180550336837769
+    },
+    {
+      "k": 256,
+      "magnitude": 5.0,
+      "induced_rotation": 1.0584479329921845,
+      "abs_shift": 3.3466364294290543,
+      "shift_over_se": 9.812171062704357,
+      "nll_rise": 6.410438776016235
+    },
+    {
+      "k": 3234,
+      "magnitude": 0.01,
+      "induced_rotation": 0.011732238277682126,
+      "abs_shift": 0.004651278257369995,
+      "shift_over_se": 0.013637315819614736,
+      "nll_rise": 0.0024300813674926758
+    },
+    {
+      "k": 3234,
+      "magnitude": 0.05,
+      "induced_rotation": 0.05866119138841064,
+      "abs_shift": 0.05464094504714012,
+      "shift_over_se": 0.160204525091432,
+      "nll_rise": 0.058972835540771484
+    },
+    {
+      "k": 3234,
+      "magnitude": 0.1,
+      "induced_rotation": 0.11732238277682128,
+      "abs_shift": 0.44878842681646347,
+      "shift_over_se": 1.3158252794243264,
+      "nll_rise": 0.38163435459136963
+    },
+    {
+      "k": 3234,
+      "magnitude": 0.2,
+      "induced_rotation": 0.23464476555364255,
+      "abs_shift": 0.11223218962550163,
+      "shift_over_se": 0.32905918123145816,
+      "nll_rise": 1.1814898252487183
+    },
+    {
+      "k": 3234,
+      "magnitude": 0.5,
+      "induced_rotation": 0.5866119138841064,
+      "abs_shift": 2.7958295419812202,
+      "shift_over_se": 8.19723274594315,
+      "nll_rise": 4.699488639831543
+    },
+    {
+      "k": 3234,
+      "magnitude": 1.0,
+      "induced_rotation": 1.1732238277682128,
+      "abs_shift": 4.179778531193733,
+      "shift_over_se": 12.254902143430307,
+      "nll_rise": 7.933777093887329
+    },
+    {
+      "k": 3234,
+      "magnitude": 5.0,
+      "induced_rotation": 5.8661191388410625,
+      "abs_shift": 4.06493516266346,
+      "shift_over_se": 11.918187115909829,
+      "nll_rise": 10.698840379714966
+    }
+  ],
+  "baseline_score": -5.1357086300849915,
+  "baseline_se": 0.34106992306213213,
+  "baseline_nll": 5.516452074050903,
+  "behavior": "domain_code",
+  "max_nll_rise": 0.05,
+  "note": "the floor is the smallest induced rotation whose behaviour shift clears 2 se without a material NLL rise",
+  "part": "sensitivity",
+  "stats": "experiments/results/interp/circuits/circuit_domain_code_pred_stats.npz",
+  "leverage": "experiments/results/interp/circuits/leverage_domain_code_pred.npz"
+}
