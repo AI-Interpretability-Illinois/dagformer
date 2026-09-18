@@ -1,0 +1,125 @@
+{
+  "observed_at": "2026-09-18T00:39:01-05:00",
+  "timezone": "America/Chicago (CDT, UTC-05:00)",
+  "scheduler_sources": [
+    "squeue --start -j 22160737,22160902,22160903",
+    "scontrol show job 22174301 -o",
+    "sacct -X -j 22160736,22160905,22161290,22163326"
+  ],
+  "models": {
+    "1b-dagformer": {
+      "job": 22160737,
+      "remaining_optimizer_updates": 7159,
+      "remaining_tokens": 3753377792,
+      "historical_tokens_per_second": 96853,
+      "estimated_training_hours": 10.764818252632569,
+      "estimated_eval_compute_hours": [
+        2,
+        4
+      ],
+      "scheduler_start_prediction": "2026-09-19T05:53:28-05:00",
+      "limitation": "Training uses historical 8-H200 throughput; eval bounds are planning estimates, not measured completed-run durations. Additional eval and summary queues are unknown.",
+      "queue_reason": "Priority",
+      "predicted_remaining_queue_hours": 29.240833333333335,
+      "predicted_training_end": "2026-09-19T16:39:21.345709-05:00",
+      "predicted_eval_end_without_extra_queue": [
+        "2026-09-19T18:39:21.345709-05:00",
+        "2026-09-19T20:39:21.345709-05:00"
+      ]
+    },
+    "600m-dagformer": {
+      "job": 22160902,
+      "remaining_optimizer_updates": 8899,
+      "remaining_tokens": 4665638912,
+      "historical_tokens_per_second": 106950,
+      "estimated_training_hours": 12.117913126590826,
+      "estimated_eval_compute_hours": [
+        2,
+        3
+      ],
+      "scheduler_start_prediction": null,
+      "limitation": "Training uses historical 8-H200 throughput; eval bounds are planning estimates, not measured completed-run durations. Additional eval and summary queues are unknown.",
+      "queue_reason": "Dependency",
+      "dependencies": [
+        "afterok:22174301",
+        "after:22160737"
+      ],
+      "absolute_completion_eta": null
+    },
+    "600m-baseline": {
+      "job": 22160903,
+      "remaining_optimizer_updates": 8899,
+      "remaining_tokens": 4665638912,
+      "historical_tokens_per_second": 294068,
+      "estimated_training_hours": 4.407180682321398,
+      "estimated_eval_compute_hours": [
+        1,
+        2
+      ],
+      "scheduler_start_prediction": null,
+      "limitation": "Training uses historical 8-H200 throughput; eval bounds are planning estimates, not measured completed-run durations. Additional eval and summary queues are unknown.",
+      "queue_reason": "Dependency",
+      "dependencies": [
+        "afterok:22174301",
+        "after:22160737"
+      ],
+      "absolute_completion_eta": null
+    }
+  },
+  "evaluation_estimate_evidence": {
+    "1b_dense_a100_job_elapsed_seconds": 3744,
+    "1b_dense_a100_standard_seconds": 616.3638753890991,
+    "1b_dense_a100_gsm8k_seconds": 2022.661777973175,
+    "600m_dag_rtx_a6000_standard_seconds": 623.88831782341,
+    "600m_dag_rtx_a6000_gsm8k_seconds": 5936.172372341156
+  },
+  "freeze_600m": {
+    "job": 22174301,
+    "state": "RUNNING",
+    "start_time": "2026-09-18T00:35:56-05:00",
+    "submission_time": "2026-09-18T00:35:21-05:00",
+    "actual_queue_seconds": 35,
+    "prior_failed_job": 22161290,
+    "revision": "2586e433dd66c2f26e20d78333e9d1c6c6c5a52e",
+    "estimated_compute_hours": [
+      1.5,
+      3
+    ],
+    "estimate_basis": "Before the previous job hit its five-minute HTTP timeout, ranks processed about 17M-27M tokens per minute. Each rank must scan 1,502,240,000 tokens; decoding, packing, merging, and retries add time. New job startup and throughput still require confirmation."
+  },
+  "completed": {
+    "1b_data": {
+      "job": 22160736,
+      "tokens": 21000000125,
+      "elapsed_seconds": 16944,
+      "end_time": "2026-09-17T21:44:04-05:00"
+    },
+    "1b_dense_eval": {
+      "job": 22160905,
+      "elapsed_seconds": 3744,
+      "end_time": "2026-09-17T18:09:04-05:00"
+    },
+    "600m_interim_eval": "Both sides complete at 7,340,556,288 training tokens; ordinary tasks, routing interventions, frozen predictor, and full GSM8K."
+  },
+  "fairshare": {
+    "observed_at": "2026-09-18T00:31:18-05:00",
+    "biro-delta-gpu": 0.138044,
+    "bcsi-delta-gpu": 0.117128,
+    "bfqt-delta-gpu": 0.059857
+  },
+  "storage": {
+    "project_id": 22300,
+    "used_kib": 368164512,
+    "soft_limit_kib": 524288000,
+    "hard_limit_kib": 576716800
+  },
+  "test_only_new_submission": {
+    "times_requested_hours": [
+      16,
+      24
+    ],
+    "returned_start_for_both": "2026-09-21T17:40:36-05:00",
+    "interpretation": "These were test-only new submissions with different priority from the existing aged job. They are not forecasts for 22160737, and shortening the requested wall time did not improve these probes."
+  },
+  "paired_600m_finish_rule": "DAG eval waits for both 600M training jobs. Paired completion is max(end_dense_eval, end_dag_eval), then summary compute and its queue. There is no finite scheduler prediction for these dependent jobs at this snapshot."
+}

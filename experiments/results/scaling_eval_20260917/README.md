@@ -25,7 +25,14 @@
 PIQA、ARC-Challenge、WinoGrande、MathQA、CommonsenseQA 和 SocialIQA 的
 区间跨零。完整数据见 [配对表](standard_600m/paired_summary.md) 和
 [机器可读结果](standard_600m/paired_summary.json)。GSM8K BPB 也改善，
-但这是 teacher-forced likelihood；完整 1,319 题生成正在独立运行，尚无结果。
+但这是 teacher-forced likelihood。
+
+完整 1,319 题 GSM8K 生成已在 2026-09-17 23:43 UTC 完成。Strict match
+为 dense 0.30%、DAGFormer 0.76%；flexible extraction 为 2.35%、1.59%，
+后者的配对差为 −0.76 pp，95% CI [−1.67, +0.15] pp。当前没有生成准确率
+改善的证据。逐题输出已归档到 biro，见
+[生成配对表](gsm8k_full_600m/paired_summary.md) 和
+[生成行为审计](gsm8k_full_600m/generation_audit.md)。
 
 ## Predictor 与 correction 依赖
 

@@ -10,7 +10,7 @@
   "local_results": "experiments/results/scaling_eval_20260917",
   "preprocessing_1b_job": 22160736,
   "training_1b_job": 22160737,
-  "freeze_600m_job": 22161290,
+  "freeze_600m_job": 22174301,
   "training_600m_jobs": {
     "dagformer": 22160902,
     "baseline": 22160903
@@ -34,9 +34,10 @@
     "standard_600m",
     "routing_dependence/600m",
     "routing_dependence/dense_600m",
-    "frozen_predictor_600m"
+    "frozen_predictor_600m",
+    "gsm8k_full_600m"
   ],
-  "local_generation_status": "running; 1319 GSM8K items requested per model",
+  "local_generation_status": "COMPLETED; 1319 GSM8K items per model; finalized 2026-09-17T23:43:52Z",
   "training_time_limits_hours": {
     "1b-dagformer": 24,
     "600m-dagformer": 24,
@@ -47,7 +48,7 @@
     "hard": 550,
     "project_id": 22300
   },
-  "freeze_600m_revision": "5c0b12d9a8121c65c2a0f6b0b04eab38c85d8ac6",
+  "freeze_600m_revision": "2586e433dd66c2f26e20d78333e9d1c6c6c5a52e",
   "replaced_freeze_job": {
     "id": 22160901,
     "reason": "Unsupported HTTP range requests; replaced after a 30000-document sequential-read check passed."
@@ -59,7 +60,28 @@
     "dagformer_pid": 1495823,
     "log": "logs/scaling_20260917/local_finalize.log"
   },
-  "recorded_utc": "2026-09-17T22:34:15.796119+00:00",
+  "recorded_utc": "2026-09-18T05:38:37.264151+00:00",
   "one_b_training_revision": "cb24428b9352851865282f9e867713e80dcaacd8",
-  "one_b_baseline_standard": "completed: experiments/results/completed_scaling_20260917/standard_1b/1b-baseline__custom.json"
+  "one_b_baseline_standard": "completed: experiments/results/completed_scaling_20260917/standard_1b/1b-baseline__custom.json",
+  "failed_freeze_job": {
+    "id": 22161290,
+    "elapsed": "01:36:49",
+    "ended_cdt": "2026-09-17T18:54:54-05:00",
+    "reason": "The aiohttp default 300-second total request timeout repeatedly terminated healthy sequential shard reads; eight outer retries were exhausted.",
+    "replacement": 22174301
+  },
+  "600m_training_dependencies": [
+    "afterok:22174301",
+    "after:22160737"
+  ],
+  "freeze_600m_status": "RUNNING; started 2026-09-18T00:35:56-05:00; six-hour wall-time ceiling",
+  "preprocessing_1b_status": "COMPLETED; 21,000,000,125 tokens; elapsed 04:42:24; ended 2026-09-17T21:44:04-05:00",
+  "local_generation_archive": {
+    "job": 22163326,
+    "state": "COMPLETED",
+    "destination": "biro/results/interim_600m"
+  },
+  "one_b_baseline_generation": "completed: experiments/results/completed_scaling_20260917/gsm8k_full_1b/1b-baseline__custom.json",
+  "one_b_baseline_eval_status": "COMPLETED; elapsed 01:02:24; ended 2026-09-17T18:09:04-05:00",
+  "eta_snapshot": "eta_20260918.json"
 }

@@ -16,22 +16,26 @@ soft 500 GiB / hard 550 GiB。旧 SSH ControlMaster 没有新组权限，但 Slu
 | 阶段 | 作业 | 依赖 / 目标 |
 |---|---|---|
 | 恢复语料及 checkpoint | 22160141，已完成 | 固定版本 263 个源文件；保留 optimizer |
-| 1B 数据重建 | 22160736 | 按旧 reader 的实际顺序与文档选择恢复 21B cache |
+| 1B 数据重建 | 22160736，已完成 | 按旧 reader 的实际顺序与文档选择恢复 21B cache |
 | 1B DAGFormer 续训 | 22160737 | 数据完成后，8×H200，31,001 → 38,160 updates |
-| 600M streaming 后缀冻结 | 22161290 | 按原 8 ranks，从每 rank 896,064 sequences 后取固定后缀 |
+| 600M streaming 后缀冻结 | 22174301 | 按原 8 ranks，从每 rank 896,064 sequences 后取固定后缀 |
 | 600M DAGFormer / dense 续训 | 22160902 / 22160903 | 同一份后缀；1B 启动后放行，8×H200，各 14,001 → 22,900 updates |
 | 1B dense / DAGFormer eval | 22160905 / 22160906 | 普通任务、完整 GSM8K；DAGFormer 加 routing 干预 |
 | 600M dense / DAGFormer eval | 22160907 / 22160908 | 完成训练后按相同 protocol 评估 |
 | 配对汇总 | 22160909 / 22160910 | 等待各尺寸两侧 eval 成功，再生成 paired CI |
 
-这些是已提交的依赖链，不代表完整训练已结束。1B 数据恢复作业已经开始写
-shards；600M 冻结和 1B dense eval 已分配到节点。完整状态与代码版本保存在
+这些是已提交的依赖链，不代表完整训练已结束。1B 数据恢复于 9 月 17 日
+21:44 CDT 完成，写出 21,000,000,125 tokens；1B dense 的普通任务和完整
+GSM8K 均已完成。完整状态与代码版本保存在
 [启动记录](results/scaling_audit_20260917/biro_launch.json)。
 
 1B 重建及训练代码固定在 `cb24428`，600M 训练与后续 eval 固定在 `6cfdc7b`。
-600M 数据准备使用 `5c0b12d`：实测顺序读取通过 30,000 篇文档，修复了上游
-HTTP server 不支持 range requests 的问题；替换旧准备作业 22160901，训练依赖
-已更新为 22161290。
+600M 数据准备使用 `2586e43`。上一版本 `5c0b12d` 修复了不支持 HTTP range
+requests 的问题，但作业 22161290 在 9 月 17 日 18:54 CDT 失败：aiohttp
+默认 300 秒的总请求时限会中止仍在正常读取、分词的 shard，8 个 rank 均
+反复触发，最终耗尽重试。新版本移除总时限，保留连接和空闲读取超时；
+真实本地 HTTP 慢响应回归测试及冻结后缀顺序测试均通过。新的准备作业
+为 22174301，两个 600M 训练的依赖已重新连接到它。
 每个作业在 biro 上使用对应 commit 的独立 worktree。训练保留 architecture、
 原 optimizer 和原 LR schedule；DAGFormer 若 optimizer 恢复失败会报错退出。
 完成检查使用 optimizer 的实际 update count，再导出供 eval 使用的模型。
@@ -110,6 +114,9 @@ token batch；两者分别有 26 / 82 条 streaming error 记录。它们可以�
 
 这是历史吞吐外推，不含排队、数据恢复、streaming 前缀跳过和新的 I/O 影响。
 旧 YAML 注释中的运行时估计不作为本次预算依据。
+
+9 月 18 日排队与完成时间的具体估算、条件和查询时间见
+[时间估算](results/scaling_audit_20260917/eta_20260918.md)。
 
 ## 数据恢复的边界
 

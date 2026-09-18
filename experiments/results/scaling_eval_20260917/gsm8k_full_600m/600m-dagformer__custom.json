@@ -1,0 +1,77 @@
+{
+  "model": {
+    "name": "600m-dagformer",
+    "family": "dagformer",
+    "size": "600m",
+    "kind": "fourway",
+    "path": "checkpoints/scaling_20260917/600m-dagformer",
+    "checkpoint": "checkpoints/scaling_20260917/600m-dagformer/checkpoint.pt",
+    "step": 14000,
+    "num_parameters": 717003240,
+    "train_seq_len": 1024,
+    "routing_intervention": null
+  },
+  "eval": {
+    "date": "2026-09-17T23:43:30+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [],
+    "generative_tasks": [
+      "gsm8k"
+    ],
+    "limit": null,
+    "gen_limit": 1319,
+    "batch_size": 4,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": false,
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.10.0+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "6cfdc7b6e95bb791042cbc3e0618a91e63ac02df",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 34,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "generative": 5936.172372341156
+    },
+    "peak_gpu_gb": 1.91,
+    "sample_files": [
+      "experiments/results/scaling_eval_20260917/gsm8k_full_600m/samples/600m-dagformer__gsm8k.jsonl"
+    ]
+  },
+  "results": {
+    "gsm8k": {
+      "name": "gsm8k",
+      "alias": "gsm8k",
+      "sample_len": 1319,
+      "exact_match,strict-match": 0.0075815011372251705,
+      "exact_match_stderr,strict-match": 0.002389281512077214,
+      "exact_match,flexible-extract": 0.01592115238817286,
+      "exact_match_stderr,flexible-extract": 0.003447819272389005
+    }
+  },
+  "n-samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 1319
+    }
+  },
+  "versions": {
+    "gsm8k": 3.0
+  },
+  "n-shot": {
+    "gsm8k": 3
+  },
+  "higher_is_better": {
+    "gsm8k": {
+      "exact_match": true
+    }
+  },
+  "group_subtasks": {}
+}
