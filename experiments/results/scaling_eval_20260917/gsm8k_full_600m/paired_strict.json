@@ -1,0 +1,54 @@
+{
+  "protocol": {
+    "bootstrap": "paired resampling of evaluation documents",
+    "draws": 10000,
+    "seed": 20260917,
+    "metric_override": "exact_match,strict-match",
+    "scope": "evaluation-sample uncertainty for fixed trained checkpoints",
+    "multiplicity": "intervals and p-values are unadjusted"
+  },
+  "pairs": {
+    "600m": {
+      "baseline_model": {
+        "name": "600m-baseline",
+        "family": "baseline",
+        "size": "600m",
+        "kind": "dense",
+        "path": "checkpoints/scaling_20260917/600m-baseline",
+        "checkpoint": "checkpoints/scaling_20260917/600m-baseline/checkpoint.pt",
+        "step": 14000,
+        "num_parameters": 682710528,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "dagformer_model": {
+        "name": "600m-dagformer",
+        "family": "dagformer",
+        "size": "600m",
+        "kind": "fourway",
+        "path": "checkpoints/scaling_20260917/600m-dagformer",
+        "checkpoint": "checkpoints/scaling_20260917/600m-dagformer/checkpoint.pt",
+        "step": 14000,
+        "num_parameters": 717003240,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "tasks": {
+        "gsm8k": {
+          "n_docs": 1319,
+          "metric": "exact_match,strict-match",
+          "delta_dagformer_better": 0.004548900682335102,
+          "paired_bootstrap_95ci": [
+            -1.895375284304569e-05,
+            0.009855951478392721
+          ],
+          "baseline": 0.003032600454890068,
+          "dagformer": 0.0075815011372251705,
+          "dag_only_correct": 9,
+          "base_only_correct": 3,
+          "mcnemar_exact_p": 0.14599609375
+        }
+      }
+    }
+  }
+}

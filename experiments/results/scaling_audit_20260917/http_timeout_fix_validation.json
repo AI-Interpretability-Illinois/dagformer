@@ -1,0 +1,32 @@
+{
+  "observed_at_utc": "2026-09-18T05:45:08.240045+00:00",
+  "job": 22174301,
+  "revision": "2586e433dd66c2f26e20d78333e9d1c6c6c5a52e",
+  "log": "/work/hdd/bfqt/yurenh2/dagformer-eval-20260917/logs/scaling_20260917/freeze_600m_22174301.log",
+  "slurm": "22174301|RUNNING|9:12|2026-09-18T00:35:56|gpub073",
+  "latest_rank_token_counts": {
+    "2": 131046965,
+    "7": 115560667,
+    "5": 139067416,
+    "4": 130677523,
+    "1": 136117215,
+    "6": 180630173,
+    "0": 153555885,
+    "3": 125679724
+  },
+  "minute_progress_updates": {
+    "2": 7,
+    "7": 7,
+    "5": 7,
+    "4": 7,
+    "1": 7,
+    "6": 7,
+    "0": 7,
+    "3": 7
+  },
+  "stream_errors": 0,
+  "disconnects": 0,
+  "tracebacks": 0,
+  "test_result": "2 passed: slow HTTP stream beyond default total timeout, and frozen suffix rank/resume roundtrip",
+  "interpretation": "Ongoing data preparation; this validates continued stream progress, not completion of the dataset or training."
+}
