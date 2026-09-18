@@ -15,6 +15,7 @@ from pathlib import Path
 import sys
 import time
 
+from aiohttp import ClientTimeout
 import numpy as np
 from datasets import load_dataset
 from huggingface_hub import HfApi
@@ -28,6 +29,15 @@ import src.data.dolma as dolma
 DOLMA_REVISION = "7f48140530a023e9ea4c5cfb141160922727d4d3"
 
 
+def dolma_http_options() -> dict:
+    # A shard stays open while documents are tokenized. aiohttp's default
+    # five-minute total deadline kills healthy streams during this work.
+    # Retain limits for connecting and stalled reads, without a total deadline.
+    return {scheme: {"block_size": 0, "client_kwargs": {
+        "timeout": ClientTimeout(total=None, sock_connect=60, sock_read=300),
+    }} for scheme in ("http", "https")}
+
+
 class PinnedDolma(DolmaPackedDataset):
     def __init__(self, *args, revision: str, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,8 +47,7 @@ class PinnedDolma(DolmaPackedDataset):
         dataset = load_dataset(self.dataset_name, name=self.dataset_version,
                                revision=self.revision, split="train",
                                streaming=True, trust_remote_code=True,
-                               storage_options={"http": {"block_size": 0},
-                                                "https": {"block_size": 0}})
+                               storage_options=dolma_http_options())
         return dataset.shard(num_shards=self.world_size, index=self.rank)
 
 

@@ -1,12 +1,17 @@
 """Frozen rank suffixes must replay the same samples at optimizer boundaries."""
 import json
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import sys
+from threading import Thread
+import time
 
+import aiohttp
+import fsspec
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts.freeze_dolma_continuation import merge_ranks, write_suffix
+from scripts.freeze_dolma_continuation import dolma_http_options, merge_ranks, write_suffix
 from src.data.dolma import DolmaPackedDataset
 from src.data.mmap_dataset import MmapPackedDataset
 
@@ -24,6 +29,40 @@ class Tokenizer:
 class Source(DolmaPackedDataset):
     def _load_stream(self):
         return iter({"text": f"{i} {i + 1} {i + 2}"} for i in range(300))
+
+
+def test_sequential_http_read_outlives_default_total_timeout(monkeypatch):
+    # Compress the production failure (a healthy stream open beyond 300 s)
+    # into a local HTTP response that stays active beyond a 0.1 s deadline.
+    monkeypatch.setattr(aiohttp.client, "DEFAULT_TIMEOUT", aiohttp.ClientTimeout(total=0.1))
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_HEAD(self):
+            self.send_response(200)
+            self.send_header("Content-Length", "4")
+            self.end_headers()
+
+        def do_GET(self):
+            self.do_HEAD()
+            for _ in range(4):
+                self.wfile.write(b"x")
+                self.wfile.flush()
+                time.sleep(0.1)
+
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        fs = fsspec.filesystem("http", **dolma_http_options()["http"], skip_instance_cache=True)
+        with fs.open(f"http://127.0.0.1:{server.server_port}/shard", "rb") as stream:
+            assert stream.read() == b"xxxx"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
 
 
 def test_frozen_suffix_roundtrips_rank_order_and_resume(tmp_path):
