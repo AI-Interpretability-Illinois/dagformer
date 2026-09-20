@@ -23,6 +23,24 @@ verify_circuit.py     intervene on those coordinates and see whether the
 plot_circuit.py       optional figures
 ```
 
+**That premise did not survive contact with the checkpoint, and the second half
+of this directory is the consequence.** Alpha turns out to be causally inert
+at any magnitude that leaves the model intact, so steering through it does not
+work — see the results section, and `planted_circuit.py` for why that is a
+measurement rather than a failure to look hard enough. What survives is the
+*other* half of the claim, which never needed alpha to be a good lever, only a
+good basis:
+
+```
+edge_ablation.py      which pathways carry the computation, by removing them
+                      exactly rather than steering through them
+```
+
+Steering asks "can I push this behaviour from here". Description asks "does
+this pathway carry anything". The second question is answerable in this
+architecture in a way it is not in a vanilla transformer, and it does not
+depend on the first.
+
 ## The measurement
 
 ### Coordinates
@@ -296,6 +314,51 @@ stand in for the syntactic probes — they test whether alpha_pred sees context
 and lexical class at all, which is what those probes were for. Only the
 predictor is loaded, so this does not need the base model.
 
+## Steering versus description
+
+Steering through alpha can never be a *more powerful* intervention than
+activation steering, and this is structural rather than a fact about any
+checkpoint. Alpha re-weights a mixture the model already computed —
+`dy/dalpha_s = x_s` exactly — so the reachable set of head inputs is the span
+of the source vectors at that token, at most `L` dimensions per head. Adding a
+vector to the residual stream reaches all `d`. The routing basis buys legibility
+by giving up expressiveness, and "more causal than a steering vector" was never
+the claim it could win. "Causally sufficient within a basis whose elements have
+names" is.
+
+But the *description* half of the claim costs nothing and survives the negative
+intact. Because alpha enters linearly, two operations that are approximate in a
+vanilla transformer are exact here:
+
+| | vanilla transformer | routing graph |
+|---|---|---|
+| remove an edge | path patching with a donor distribution, mean ablation, or a corrupted run — all stand-ins | set `alpha_eff = 0`: the head no longer reads that layer, by definition |
+| score every edge | EAP / attribution patching, estimating an object that is not directly available | `dL/dalpha_s = <dL/dy, x_s>`, one backward pass, all 3773 edges, no SAE in the loop |
+
+`edge_ablation.py` is that tool.
+
+- `--part channel` — the coarse knockout ladder: zero `corr` alone, `pred`
+  alone, every hyperconnection, every sequential path, each stream. This is
+  what separates "the dynamics live in `corr`" as an inference from variance
+  ratios from the same claim as a measurement about dependence.
+- `--part attribute` — exact per-edge attribution, **validated against
+  brute-force ablation** on a stratified sample. Attribution is still a
+  linearisation of a finite removal, and how good it is, is an empirical
+  question; a circuit story built on gradients alone is worth exactly that
+  correlation. Stratified, because a uniform sample of 3234 edges is a sample
+  of edges that do nothing, and correlating those measures noise against noise.
+- `--part circuit` — ablate the top-k against matched-random and bottom-k
+  controls, then test specificity by ablating a circuit found on one corpus
+  against another. Without the specificity arm, a "circuit" is indistinguishable
+  from the model's load-bearing wiring.
+
+The task is next-token NLL on a corpus rather than a behaviour score, and that
+is deliberate: the model demonstrably has capability to lose, whereas only one
+behaviour on this checkpoint has usable headroom. *Which pathways carry the
+computation* is answerable where *which pathways carry lying* is not. The two
+corpora are Python and English prose drawn from the repo itself, so the
+specificity test needs no external data.
+
 ## Behaviours
 
 Registered in `behaviors.py`:
@@ -371,6 +434,20 @@ python experiments/interp/probe_alpha.py \
     --behavior domain_code --eligible $R/circuit_domain_code_pred_stats.npz \
     --out $R/probe_alpha_domain_code
 ```
+
+The description half, which needs no behaviour to have been found:
+
+```bash
+for part in channel attribute circuit; do
+    python experiments/interp/edge_ablation.py --part $part \
+        --config $MODELS/config.yaml --ckpt $MODELS/checkpoint.pt \
+        --out $R/ablate_$part
+done
+```
+
+Or `sbatch scripts/slurm/interp_edge_ablation.slurm`, which chains the three
+and feeds the saved attribution into the circuit part so the backward pass is
+not repeated.
 
 Only the `pred` channel is needed for steps 1–2, and
 `--channel pred --no-behavior-score` skips the base-model load entirely, which
