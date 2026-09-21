@@ -12,9 +12,9 @@
 #SBATCH --error=/work/hdd/bfqt/yurenh2/dagformer-eval-20260917/logs/scaling_20260917/summary_%j.log
 set -euo pipefail
 source "${DAG_CODE_SOURCE:-/work/hdd/bfqt/yurenh2/dagformer-eval-20260917}/scripts/biro_job_common.sh"
-DAG_OUT=$DAG_ROOT/results/completed_scaling
+DAG_OUT=$DAG_HOME/results/completed_scaling
 DAG_SIZE=${DAG_SIZE:?Choose 600m or 1b}
-DAG_PYTHON=$DAG_ROOT/envs/evaluation/bin/python
+DAG_PYTHON=$DAG_HOME/envs/evaluation/bin/python
 for DAG_SUITE in standard gsm8k_full; do
     "$DAG_PYTHON" scripts/summarize_paired_eval.py --dir "$DAG_OUT/${DAG_SUITE}_$DAG_SIZE"
 done

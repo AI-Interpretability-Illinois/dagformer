@@ -13,7 +13,7 @@
 set -euo pipefail
 source "${DAG_CODE_SOURCE:-/work/hdd/bfqt/yurenh2/dagformer-eval-20260917}/scripts/biro_job_common.sh"
 DAG_MODEL=${DAG_MODEL:?Choose a completed model}
-DAG_EVAL_ENV=$DAG_ROOT/envs/evaluation
+DAG_EVAL_ENV=$DAG_HOME/envs/evaluation
 (
     flock 8
     if [ ! -f "$DAG_EVAL_ENV/.ready" ]; then
@@ -21,9 +21,9 @@ DAG_EVAL_ENV=$DAG_ROOT/envs/evaluation
         "$DAG_EVAL_ENV/bin/python" -m pip install 'lm_eval==0.4.13' 'transformers==4.57.1'
         touch "$DAG_EVAL_ENV/.ready"
     fi
-) 8>"$DAG_ROOT/.eval-env.lock"
+) 8>"$DAG_HOME/.eval-env.lock"
 DAG_PYTHON=$DAG_EVAL_ENV/bin/python
-DAG_OUT=$DAG_ROOT/results/completed_scaling
+DAG_OUT=$DAG_HOME/results/completed_scaling
 mkdir -p "$DAG_OUT"
 dag_copy_compact_results() {
     mkdir -p "$DAG_SOURCE/experiments/results/completed_scaling_20260917"

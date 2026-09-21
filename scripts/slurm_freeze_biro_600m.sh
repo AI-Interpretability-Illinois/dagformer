@@ -12,7 +12,7 @@
 #SBATCH --error=/work/hdd/bfqt/yurenh2/dagformer-eval-20260917/logs/scaling_20260917/freeze_600m_%j.log
 set -euo pipefail
 source "${DAG_CODE_SOURCE:-/work/hdd/bfqt/yurenh2/dagformer-eval-20260917}/scripts/biro_job_common.sh"
-DAG_DATA_ENV=$DAG_ROOT/envs/dolma-data
+DAG_DATA_ENV=$DAG_HOME/envs/dolma-data
 if [ ! -x "$DAG_DATA_ENV/bin/python" ]; then
     "$DAG_PYTHON" -m venv --system-site-packages "$DAG_DATA_ENV"
 fi
