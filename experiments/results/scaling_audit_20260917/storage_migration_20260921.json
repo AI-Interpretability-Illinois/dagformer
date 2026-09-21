@@ -1,0 +1,82 @@
+{
+  "started": 1790008177.770348,
+  "root": "/work/hdd/biro/yurenh2/dagformer-20260917",
+  "home": "/u/yurenh2/dagformer-20260917",
+  "moved": [
+    {
+      "path": "cache",
+      "entries_before": 343,
+      "bytes": 243434523,
+      "destination": "/u/yurenh2/dagformer-20260917/cache"
+    },
+    {
+      "path": "code",
+      "entries_before": 6510,
+      "bytes": 250432142,
+      "destination": "/u/yurenh2/dagformer-20260917/code"
+    },
+    {
+      "path": "envs",
+      "entries_before": 20996,
+      "bytes": 74474945,
+      "destination": "/u/yurenh2/dagformer-20260917/envs"
+    },
+    {
+      "path": "repository.git",
+      "entries_before": 247,
+      "bytes": 19617732,
+      "destination": "/u/yurenh2/dagformer-20260917/repository.git"
+    },
+    {
+      "path": "results",
+      "entries_before": 96,
+      "bytes": 426829035,
+      "destination": "/u/yurenh2/dagformer-20260917/results"
+    },
+    {
+      "path": "provenance",
+      "entries_before": 3,
+      "bytes": 906,
+      "destination": "/u/yurenh2/dagformer-20260917/provenance"
+    },
+    {
+      "path": "tokenizer",
+      "entries_before": 4,
+      "bytes": 7141647,
+      "destination": "/u/yurenh2/dagformer-20260917/tokenizer"
+    },
+    {
+      "path": "data/olmo-mix-1124/.cache",
+      "entries_before": 642,
+      "bytes": 32809,
+      "destination": "/u/yurenh2/dagformer-20260917/data/olmo-mix-1124/.cache"
+    }
+  ],
+  "finished": 1790009764.2671268,
+  "inode_count_before_approx": 30115,
+  "inode_count_after": 509,
+  "inode_count_method": "du -s --inodes without following symlinks; before total reconstructed from top-level counts plus root and two lock files",
+  "project_quota_after": {
+    "project_id": 22300,
+    "used_kib": 390059552,
+    "used_inodes": 974,
+    "soft_kib": 524288000,
+    "hard_kib": 576716800
+  },
+  "removed_reproducible_cache": {
+    "path": "data/tokenized_files/olmo_mix",
+    "files": 780,
+    "bytes": 190164809430,
+    "preserved_manifest_record": "/u/yurenh2/dagformer-20260917/tokenization_cache_cleanup_20260921.json"
+  },
+  "jobs_released_utc": "2026-09-21T16:56:30Z",
+  "released_jobs": [
+    22160902,
+    22160903,
+    22160907,
+    22160908,
+    22160910,
+    22283422,
+    22283596
+  ]
+}

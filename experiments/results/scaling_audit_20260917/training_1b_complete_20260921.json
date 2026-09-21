@@ -1,0 +1,39 @@
+{
+  "staging": {
+    "source_checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/1b-dagformer-complete/checkpoint_step38160.pt",
+    "source_config": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/1b-dagformer-complete/resume.yaml",
+    "checkpoint_step": 38160,
+    "optimizer_update_counts": [
+      38160
+    ],
+    "tokens_per_update": 524288,
+    "processed_tokens": 20006830080,
+    "includes_optimizer": false,
+    "training_data_source_override": null,
+    "files": {
+      "checkpoint_step38160_model.pt": 2558836866,
+      "checkpoint.pt": 146647943,
+      "config.yaml": 1275
+    }
+  },
+  "training_rows": 715,
+  "finite_training_nll": true,
+  "last_training_row": {
+    "step": "38150",
+    "train/nll": "1.22119140625",
+    "train/sparsity_loss": "0.0",
+    "train/total_loss": "1.22119140625",
+    "train/lr": "1.0764262648006451e-07",
+    "train/predictor_lr": "5.3821313240032256e-08",
+    "train/tokens_per_sec": "118066.58441367048",
+    "train/tokens_seen_B": "20.002111488",
+    "grad/base_norm": "0.08096688792616143",
+    "grad/predictor_norm": "0.11989728825059134",
+    "schedule/tau": "0.20000081332521172",
+    "schedule/lambda": "0.01",
+    "train/use_dagformer": "1.0",
+    "eval/nll_soft": "",
+    "eval/nll_hard": "",
+    "eval/nll_baseline": ""
+  }
+}

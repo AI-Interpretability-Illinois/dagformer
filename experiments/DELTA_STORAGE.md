@@ -19,7 +19,7 @@ large files themselves stay on biro. `biro_job_common.sh` places new code and
 caches in home; run metadata paths also point there. The finalizer archives
 evaluation artifacts directly into home without allocating a GPU to copy them.
 
-The September 21 migration holds this project's pending jobs while files move.
+The September 21 migration completed and released all held jobs at 16:56 UTC.
 Each directory is copied and compared with rsync before removing the old copy.
 The shared Git worktree links are repaired after relocation. Records are kept
 in home as `storage_migration_20260921.json` and
@@ -40,3 +40,19 @@ The project was above its 550 GiB block hard limit at inspection; small-file
 relocation also reduces its inode consumption. Evaluation is retried by job
 22283422 using home for outputs. The 600M continuations remain separate queued
 jobs, 22160902 and 22160903.
+
+Physical entries on biro fell from approximately 30,115 to 509 (98.3%), counting
+files, directories, and symlinks without following links. The remaining data
+directory has 454 entries, checkpoints 26, and runs 19; other top-level paths
+are compatibility links. Project block usage is now 390,059,552 KiB (372 GiB).
+The relocated evaluation environment imports torch 2.9.1+cu128, transformers
+4.57.1, and lm_eval 0.4.13. Both packed corpora and checkpoint paths were
+revalidated before releasing the jobs.
+
+The old 1B summary job 22160909 was admin-held after its upstream failure;
+user release was denied. It was cancelled and replaced with 22283596, which
+depends on the new evaluation job 22283422. Both 600M training jobs and the
+1B evaluation retry are pending after release; downstream jobs wait on their
+normal dependencies. Audit records are in
+`experiments/results/scaling_audit_20260917/storage_migration_20260921.json`
+and `storage_validation_20260921.json`.
