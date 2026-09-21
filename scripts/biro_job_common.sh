@@ -27,6 +27,18 @@ for DAG_SMALL_DIR in code repository.git envs cache results provenance tokenizer
     fi
 done
 mkdir -p "$DAG_HOME/tokenizer"
+case "${DAG_MODEL:-}" in
+    1b-dagformer|600m-dagformer|600m-baseline)
+        DAG_RUN=$DAG_ROOT/runs/$DAG_MODEL-complete
+        DAG_RUN_META=$DAG_HOME/run_metadata/$DAG_MODEL-complete
+        mkdir -p "$DAG_RUN" "$DAG_RUN_META"
+        for DAG_META_FILE in resume.yaml launch.json metrics.csv; do
+            if [ ! -e "$DAG_RUN/$DAG_META_FILE" ] && [ ! -L "$DAG_RUN/$DAG_META_FILE" ]; then
+                ln -s "$DAG_RUN_META/$DAG_META_FILE" "$DAG_RUN/$DAG_META_FILE"
+            fi
+        done
+        ;;
+esac
 cd "$DAG_CODE"
 export DAG_ROOT DAG_CODE DAG_HOME
 export PYTHONPATH="$DAG_CODE"

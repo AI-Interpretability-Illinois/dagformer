@@ -8,7 +8,9 @@ Slurm 日志。建议优先续完已有 1B run，同时评估 600M 的同预算�
 
 ## 本次启动记录
 
-主存储为 `/work/hdd/biro/yurenh2/dagformer-20260917`。项目配额已实际核对：
+模型及数据存储为 `/work/hdd/biro/yurenh2/dagformer-20260917`；代码、环境、
+缓存和评估输出迁至 `/u/yurenh2/dagformer-20260917`，见
+[存储布局](DELTA_STORAGE.md)。项目配额已实际核对：
 soft 500 GiB / hard 550 GiB。旧 SSH ControlMaster 没有新组权限，但 Slurm
 计算进程已获得 `delta_biro` 组，恢复和后续作业均通过它访问新目录。
 日志留在 bfqt 镜像的 `logs/scaling_20260917`，方便现有 SSH 查看。
@@ -17,10 +19,10 @@ soft 500 GiB / hard 550 GiB。旧 SSH ControlMaster 没有新组权限，但 Slu
 |---|---|---|
 | 恢复语料及 checkpoint | 22160141，已完成 | 固定版本 263 个源文件；保留 optimizer |
 | 1B 数据重建 | 22160736，已完成 | 按旧 reader 的实际顺序与文档选择恢复 21B cache |
-| 1B DAGFormer 续训 | 22160737 | 数据完成后，8×H200，31,001 → 38,160 updates |
-| 600M streaming 后缀冻结 | 22174301 | 按原 8 ranks，从每 rank 896,064 sequences 后取固定后缀 |
+| 1B DAGFormer 续训 | 22160737，已完成 | 数据完成后，8×H200，31,001 → 38,160 updates |
+| 600M streaming 后缀冻结 | 22174301，已完成 | 按原 8 ranks，从每 rank 896,064 sequences 后取固定后缀 |
 | 600M DAGFormer / dense 续训 | 22160902 / 22160903 | 同一份后缀；1B 启动后放行，8×H200，各 14,001 → 22,900 updates |
-| 1B dense / DAGFormer eval | 22160905 / 22160906 | 普通任务、完整 GSM8K；DAGFormer 加 routing 干预 |
+| 1B dense / DAGFormer eval | 22160905 / 22283422（重试） | 普通任务、完整 GSM8K；DAGFormer 加 routing 干预 |
 | 600M dense / DAGFormer eval | 22160907 / 22160908 | 完成训练后按相同 protocol 评估 |
 | 配对汇总 | 22160909 / 22160910 | 等待各尺寸两侧 eval 成功，再生成 paired CI |
 
@@ -36,13 +38,18 @@ requests 的问题，但作业 22161290 在 9 月 17 日 18:54 CDT 失败：aioh
 反复触发，最终耗尽重试。新版本移除总时限，保留连接和空闲读取超时；
 真实本地 HTTP 慢响应回归测试及冻结后缀顺序测试均通过。新的准备作业
 为 22174301，两个 600M 训练的依赖已重新连接到它。
-每个作业在 biro 上使用对应 commit 的独立 worktree。训练保留 architecture、
+每个作业在 home 中使用对应 commit 的独立 worktree。训练保留 architecture、
 原 optimizer 和原 LR schedule；DAGFormer 若 optimizer 恢复失败会报错退出。
 完成检查使用 optimizer 的实际 update count，再导出供 eval 使用的模型。
 在已分配的 A40 上，两份 DAGFormer checkpoint 已实际恢复 optimizer，
 并通过一个 1024-token 窗口的反向传播检查：backbone、predictor / correction
 和 routing biases 梯度均有限且非零，没有执行 optimizer step。
 见 [GPU 恢复检查](results/scaling_audit_20260917/backward_audit.json)。
+
+2026-09-21 更新：1B 续训于 9 月 19 日 21:52 CDT 完成，最终 checkpoint
+核对为 38,160 次更新 / 20,006,830,080 tokens；715 条训练 NLL 记录均有限。
+1B DAGFormer 首次 eval 作业 22160906 在写逐题结果时触及磁盘配额，已提交
+22283422 重试，并更新 1B 汇总依赖。600M 两侧续训仍在排队。
 
 ## 架构核对
 
