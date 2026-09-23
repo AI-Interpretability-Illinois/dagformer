@@ -369,14 +369,26 @@ class StructuredMasker:
                 total += c["mlp"] if n == self.I else n * c["neuron"]
         return total
 
+    def block_params_total(self) -> int:
+        """Parameters of the transformer blocks only (no embedding / lm_head /
+        final norm) -- the pool the pruning recipe draws from. At small scale
+        the tied embedding is most of the model, so backbone sparsity understates
+        how much of the compute-carrying part was removed."""
+        c = unit_param_counts(self.olmo.config)
+        return self.L * (c["attn"] + c["mlp"])
+
     def report(self, prefix: str = "prune/") -> dict[str, float]:
         base_total = count_unique_params(self.olmo)
+        block_total = self.block_params_total()
         pruned = self.pruned_params()
         out: dict[str, float] = {
             f"{prefix}base_params_total": float(base_total),
             f"{prefix}base_params_pruned": float(pruned),
             f"{prefix}base_params_remaining": float(base_total - pruned),
             f"{prefix}base_param_sparsity": pruned / max(base_total, 1),
+            f"{prefix}block_params_total": float(block_total),
+            f"{prefix}block_params_remaining": float(block_total - pruned),
+            f"{prefix}block_param_sparsity": pruned / max(block_total, 1),
             f"{prefix}events": float(self.n_prune_events),
         }
         for t, (n_pruned, n_total) in self.counts().items():

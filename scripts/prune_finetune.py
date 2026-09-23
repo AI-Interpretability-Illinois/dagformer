@@ -524,6 +524,7 @@ def main() -> None:
             json.dump(trajectory, f, indent=1)
         print(f"  [eval:{tag} @ {step}] domain={m['eval/domain_nll']:.4f}"
               + (f" general={m['eval/general_nll']:.4f}" if general_batches else "")
+              + f" block_sparsity={m['prune/block_param_sparsity']:.3f}"
               + f" base_sparsity={m['prune/base_param_sparsity']:.3f}", flush=True)
         return m
 
@@ -670,6 +671,8 @@ def main() -> None:
             "model_dir": cfg.model_dir or cfg.model_config_path,
             "base_params_total": base_total,
             "base_params_remaining": int(masker.report()["prune/base_params_remaining"]),
+            "block_params_total": masker.block_params_total(),
+            "block_params_remaining": int(masker.report()["prune/block_params_remaining"]),
             "unit_counts": masker.counts(),
             "final_domain_nll": final["eval/domain_nll"],
             "final_general_nll": final.get("eval/general_nll"),

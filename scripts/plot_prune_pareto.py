@@ -48,8 +48,9 @@ def load_runs(root: str) -> list[dict]:
             **m.groupdict(), "name": os.path.basename(run_dir),
             "target": cfg["target_sparsity"], "units": ",".join(cfg["prune_units"]),
             "importance": cfg["importance"],
-            "params_total": s["base_params_total"], "params_remaining": s["base_params_remaining"],
-            "sparsity": 1 - s["base_params_remaining"] / s["base_params_total"],
+            "params_total": s["block_params_total"], "params_remaining": s["block_params_remaining"],
+            "sparsity": 1 - s["block_params_remaining"] / s["block_params_total"],
+            "base_params_remaining": s["base_params_remaining"],
             "init_nll": s["initial_domain_nll"], "final_nll": s["final_domain_nll"],
             "final_general": s.get("final_general_nll"),
             "traj": traj,
@@ -85,12 +86,12 @@ def plot_pareto(runs: list[dict], out: str) -> None:
             ax.plot([pts[0]["params_total"] / 1e6], [pts[0]["init_nll"]], marker=MARKERS[fam],
                     markersize=7, color=COLORS[fam], markerfacecolor="none", linestyle="none")
         ax.set_title(f"{size}", fontsize=10, color="#0b0b0b", loc="left")
-        ax.set_xlabel("backbone params remaining (M)", fontsize=9, color="#52514e")
+        ax.set_xlabel("transformer-block params remaining (M)", fontsize=9, color="#52514e")
         style(ax)
     axes[0][0].set_ylabel("domain eval NLL (lower is better)", fontsize=9, color="#52514e")
     axes[0][0].legend(frameon=False, fontsize=9)
     fig.suptitle("Pruned during math finetuning: hollow = before finetuning/pruning, "
-                 "label = backbone param sparsity", fontsize=9, color="#52514e", x=0.01, ha="left")
+                 "label = block param sparsity (embedding excluded)", fontsize=9, color="#52514e", x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(out, dpi=160)
     plt.close(fig)
@@ -130,7 +131,7 @@ def plot_trajectory(runs: list[dict], out: str) -> None:
 
 
 def write_table(runs: list[dict], out: str) -> None:
-    lines = ["| run | units | importance | target | backbone sparsity | params remaining | NLL before | NLL final | general NLL final |",
+    lines = ["| run | units | importance | target | block sparsity | block params remaining | NLL before | NLL final | general NLL final |",
              "|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(runs, key=lambda r: (int(r["size"][:-1]), r["tag"], r["family"])):
         g = f"{r['final_general']:.4f}" if r["final_general"] is not None else "-"

@@ -3,6 +3,7 @@
 #   bash scripts/slurm/prune_sweep.sh            # 75m + 150m, sparsity 0.3/0.5/0.7
 #   SIZES="300m" SPARSITIES="0.5" bash scripts/slurm/prune_sweep.sh
 #   UNITS=modules bash scripts/slurm/prune_sweep.sh   # whole attn/mlp blocks instead
+#   SBATCH_EXTRA="--partition=gpuA100x4-interactive --time=01:00:00" ...   # short runs start faster
 set -u
 cd "${REPO_DIR:-/u/xiaocong/dagformer}"
 SIZES="${SIZES:-75m 150m}"
@@ -24,5 +25,5 @@ for size in $SIZES; do for fam in $FAMILIES; do for s in $SPARSITIES; do
     ov="$ov save_dir=$CKPT_ROOT/$run wandb_run_name=prune-$run $EXTRA"
     echo "submit $run: $ov"
     CONFIG=configs/prune/${size}_${fam}_math.yaml OVERRIDES="$ov" \
-        sbatch --job-name="prune_$run" scripts/slurm/prune_finetune.slurm
+        sbatch --job-name="prune_$run" ${SBATCH_EXTRA:-} scripts/slurm/prune_finetune.slurm
 done; done; done
