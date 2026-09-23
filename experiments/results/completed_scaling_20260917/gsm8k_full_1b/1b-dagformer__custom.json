@@ -1,0 +1,77 @@
+{
+  "model": {
+    "name": "1b-dagformer",
+    "family": "dagformer",
+    "size": "1b",
+    "kind": "fourway",
+    "path": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer",
+    "checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/checkpoint.pt",
+    "step": 38160,
+    "num_parameters": 1316049239,
+    "train_seq_len": 1024,
+    "routing_intervention": null
+  },
+  "eval": {
+    "date": "2026-09-22T09:18:40+00:00",
+    "suite": "custom",
+    "loglikelihood_tasks": [],
+    "generative_tasks": [
+      "gsm8k"
+    ],
+    "limit": null,
+    "gen_limit": 1319,
+    "batch_size": 4,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": false,
+    "tokenizer": "/work/hdd/biro/yurenh2/dagformer-20260917/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "torch_version": "2.9.1+cu128",
+    "transformers_version": "4.57.1",
+    "git_commit": "6b98e2cf9a26a00c9553304349a52712d08b1808",
+    "git_commit_recorded_at": "process_start",
+    "prompts_left_truncated_batches": 34,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "generative": 6861.229245662689
+    },
+    "peak_gpu_gb": 3.17,
+    "sample_files": [
+      "/u/yurenh2/dagformer-20260917/results/completed_scaling/gsm8k_full_1b/samples/1b-dagformer__gsm8k.jsonl"
+    ]
+  },
+  "results": {
+    "gsm8k": {
+      "name": "gsm8k",
+      "alias": "gsm8k",
+      "sample_len": 1319,
+      "exact_match,strict-match": 0.009855951478392721,
+      "exact_match_stderr,strict-match": 0.002721076577041659,
+      "exact_match,flexible-extract": 0.01819560272934041,
+      "exact_match_stderr,flexible-extract": 0.003681611894073871
+    }
+  },
+  "n-samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 1319
+    }
+  },
+  "versions": {
+    "gsm8k": 3.0
+  },
+  "n-shot": {
+    "gsm8k": 3
+  },
+  "higher_is_better": {
+    "gsm8k": {
+      "exact_match": true
+    }
+  },
+  "group_subtasks": {}
+}

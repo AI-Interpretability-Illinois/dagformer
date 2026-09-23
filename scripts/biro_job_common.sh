@@ -5,7 +5,8 @@ umask 027
 DAG_ROOT=${DAG_BIRO_ROOT:-/work/hdd/biro/yurenh2/dagformer-20260917}
 DAG_HOME=${DAG_HOME_ROOT:-/u/yurenh2/dagformer-20260917}
 DAG_SOURCE=${DAG_CODE_SOURCE:-/work/hdd/bfqt/yurenh2/dagformer-eval-20260917}
-DAG_REVISION=${DAG_CODE_REVISION:?Pass the committed source revision}
+DAG_REQUESTED_REVISION=${DAG_CODE_REVISION:?Pass the committed source revision}
+DAG_REVISION=$(git -C "$DAG_SOURCE" rev-parse --verify "${DAG_REQUESTED_REVISION}^{commit}")
 DAG_CODE=$DAG_HOME/code/$DAG_REVISION
 DAG_PYTHON=/u/yurenh2/miniforge3/bin/python3
 mkdir -p "$DAG_HOME/code" "$DAG_HOME/provenance" "$DAG_ROOT/runs"

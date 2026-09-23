@@ -1,0 +1,243 @@
+{
+  "protocol": "paired document bootstrap; positive differences favor the variant; fixed checkpoints; unadjusted intervals",
+  "draws": 10000,
+  "seed": 20260917,
+  "variants": {
+    "1b-dagformer__pred_position": {
+      "reference_model": {
+        "name": "1b-dagformer",
+        "family": "dagformer",
+        "size": "1b",
+        "kind": "fourway",
+        "path": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer",
+        "checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/checkpoint.pt",
+        "step": 38160,
+        "num_parameters": 1316049239,
+        "train_seq_len": 1024,
+        "routing_intervention": null
+      },
+      "variant_model": {
+        "name": "1b-dagformer__pred_position",
+        "family": "dagformer",
+        "size": "1b",
+        "kind": "fourway",
+        "path": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer",
+        "checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/checkpoint.pt",
+        "step": 38160,
+        "num_parameters": 1316049239,
+        "train_seq_len": 1024,
+        "routing_intervention": {
+          "mode": "pred_position",
+          "table": "/u/yurenh2/dagformer-20260917/results/completed_scaling/routing_dependence/1b_tables.pt",
+          "calibration": {
+            "checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/checkpoint.pt",
+            "config": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/config.yaml",
+            "calibration_cache": "/work/hdd/biro/yurenh2/dagformer-20260917/data/eval_corpora/wikitext_train.pt",
+            "n_calibration": 64,
+            "L": 16,
+            "H": 16,
+            "upcast_fp32": false,
+            "float32_matmul_precision": "highest",
+            "cuda_matmul_allow_tf32": false
+          },
+          "scope": "post-training inference substitution; predictor still executes before hook",
+          "parameter_count": "original trained checkpoint, including the substituted predictor"
+        }
+      },
+      "tasks": {
+        "wikitext": {
+          "n_docs": 62,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -5.0403659677617225e-05,
+          "paired_bootstrap_95ci": [
+            -9.4470835107653e-05,
+            -4.942028666932882e-06
+          ],
+          "reference": 0.8805658012700425,
+          "variant": 0.8806162049297201,
+          "bytes": 1290527
+        },
+        "lambada_openai": {
+          "n_docs": 5153,
+          "metric": "acc,none",
+          "delta_variant_better": 0.00019406171162429653,
+          "paired_bootstrap_95ci": [
+            -0.002134678827867262,
+            0.002522802251115855
+          ],
+          "reference": 0.4698234038424219,
+          "variant": 0.47001746555404617,
+          "variant_only_correct": 19,
+          "reference_only_correct": 18,
+          "mcnemar_exact_p": 1.0
+        },
+        "hellaswag": {
+          "n_docs": 10042,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0007966540529774945,
+          "paired_bootstrap_95ci": [
+            -0.0005974905397331209,
+            0.00219079864568811
+          ],
+          "reference": 0.41674965146385184,
+          "variant": 0.4175463055168293,
+          "variant_only_correct": 29,
+          "reference_only_correct": 21,
+          "mcnemar_exact_p": 0.3222363203575469
+        },
+        "piqa": {
+          "n_docs": 1838,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.003808487486398259,
+            0.003808487486398259
+          ],
+          "reference": 0.6877040261153428,
+          "variant": 0.6877040261153428,
+          "variant_only_correct": 6,
+          "reference_only_correct": 6,
+          "mcnemar_exact_p": 1.0
+        },
+        "arc_easy": {
+          "n_docs": 2376,
+          "metric": "acc_norm,none",
+          "delta_variant_better": -0.0016835016835016834,
+          "paired_bootstrap_95ci": [
+            -0.004629629629629629,
+            0.0012626262626262627
+          ],
+          "reference": 0.5248316498316499,
+          "variant": 0.5231481481481481,
+          "variant_only_correct": 5,
+          "reference_only_correct": 9,
+          "mcnemar_exact_p": 0.4239501953125
+        },
+        "arc_challenge": {
+          "n_docs": 1172,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0,
+          "paired_bootstrap_95ci": [
+            -0.0034129692832764505,
+            0.0034129692832764505
+          ],
+          "reference": 0.26023890784982934,
+          "variant": 0.26023890784982934,
+          "variant_only_correct": 2,
+          "reference_only_correct": 2,
+          "mcnemar_exact_p": 1.0
+        },
+        "winogrande": {
+          "n_docs": 1267,
+          "metric": "acc,none",
+          "delta_variant_better": -0.004735595895816891,
+          "paired_bootstrap_95ci": [
+            -0.01499605367008682,
+            0.0055248618784530384
+          ],
+          "reference": 0.5288082083662194,
+          "variant": 0.5240726124704025,
+          "variant_only_correct": 19,
+          "reference_only_correct": 25,
+          "mcnemar_exact_p": 0.4513808323961257
+        },
+        "openbookqa": {
+          "n_docs": 500,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.002,
+          "paired_bootstrap_95ci": [
+            0.0,
+            0.006
+          ],
+          "reference": 0.314,
+          "variant": 0.316,
+          "variant_only_correct": 1,
+          "reference_only_correct": 0,
+          "mcnemar_exact_p": 1.0
+        },
+        "sciq": {
+          "n_docs": 1000,
+          "metric": "acc,none",
+          "delta_variant_better": -0.002,
+          "paired_bootstrap_95ci": [
+            -0.005,
+            0.0
+          ],
+          "reference": 0.835,
+          "variant": 0.833,
+          "variant_only_correct": 0,
+          "reference_only_correct": 2,
+          "mcnemar_exact_p": 0.5
+        },
+        "boolq": {
+          "n_docs": 3270,
+          "metric": "acc,none",
+          "delta_variant_better": -0.0003058103975535168,
+          "paired_bootstrap_95ci": [
+            -0.004892966360856269,
+            0.004281345565749235
+          ],
+          "reference": 0.5116207951070336,
+          "variant": 0.5113149847094801,
+          "variant_only_correct": 30,
+          "reference_only_correct": 31,
+          "mcnemar_exact_p": 1.0
+        },
+        "mathqa": {
+          "n_docs": 2985,
+          "metric": "acc_norm,none",
+          "delta_variant_better": 0.0010050251256281408,
+          "paired_bootstrap_95ci": [
+            -0.0016750418760469012,
+            0.0036850921273031824
+          ],
+          "reference": 0.23852596314907873,
+          "variant": 0.23953098827470687,
+          "variant_only_correct": 10,
+          "reference_only_correct": 7,
+          "mcnemar_exact_p": 0.629058837890625
+        },
+        "commonsense_qa": {
+          "n_docs": 1221,
+          "metric": "acc,none",
+          "delta_variant_better": -0.002457002457002457,
+          "paired_bootstrap_95ci": [
+            -0.009828009828009828,
+            0.004914004914004914
+          ],
+          "reference": 0.20147420147420148,
+          "variant": 0.19901719901719903,
+          "variant_only_correct": 9,
+          "reference_only_correct": 12,
+          "mcnemar_exact_p": 0.6636238098144531
+        },
+        "social_iqa": {
+          "n_docs": 1954,
+          "metric": "acc,none",
+          "delta_variant_better": 0.0005117707267144319,
+          "paired_bootstrap_95ci": [
+            -0.0010235414534288639,
+            0.00255885363357216
+          ],
+          "reference": 0.38843398157625386,
+          "variant": 0.3889457523029683,
+          "variant_only_correct": 2,
+          "reference_only_correct": 1,
+          "mcnemar_exact_p": 1.0
+        },
+        "gsm8k_bpb": {
+          "n_docs": 1319,
+          "metric": "bits_per_byte,none",
+          "delta_variant_better": -0.0007695168013900426,
+          "paired_bootstrap_95ci": [
+            -0.0008715904181955927,
+            -0.0006688351420622104
+          ],
+          "reference": 0.9512401126720792,
+          "variant": 0.9520096294734692,
+          "bytes": 728241
+        }
+      }
+    }
+  }
+}

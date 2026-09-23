@@ -107,7 +107,7 @@ def main():
              "for both models; they do not measure variation across training seeds.", "",
              "| Size | Task | Baseline | DAGFormer | Difference | Paired 95% CI |",
              "|---|---|---:|---:|---:|---|"]
-    for size, families in sorted(pairs.items(), key=lambda item: float(item[0].rstrip("m"))):
+    for size, families in sorted(pairs.items(), key=lambda item: float(item[0][:-1]) * (1000 if item[0].endswith("b") else 1)):
         if not {"baseline", "dagformer"}.issubset(families):
             continue
         base, dag = families["baseline"], families["dagformer"]

@@ -100,5 +100,5 @@
   "one_b_retry_time_limit_hours": 6,
   "storage_migration": "storage_migration_20260921.json",
   "one_b_training_proof": "training_1b_complete_20260921.json",
-  "current_status": "1B training and 600M data freeze completed; 1B DAG eval retry and both 600M training jobs released and pending; downstream eval/summary jobs waiting on dependencies; no user-held jobs remain."
+  "current_status": "2026-09-23: 1B DAG evaluation 22283422 completed (02:25:28, ended 2026-09-22 04:18:44 CDT); paired summaries recovered successfully on September 23 after fixing short revision fetch and 1b size sorting; both 600M training jobs pending Priority, downstream jobs pending Dependency."
 }

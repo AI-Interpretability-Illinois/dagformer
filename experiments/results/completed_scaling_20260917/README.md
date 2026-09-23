@@ -1,22 +1,32 @@
-# 完整预算模型的评估
+# 完整预算模型评估：2026-09-23 更新
 
-这是 biro 续训流水线的结果目录快照。当前已完成 **1B dense / 20.00683B
-training tokens** 的 14 项普通任务，实际参数量为 1,279,395,840：
+1B dense 与 DAGFormer 均已完成约 20.00683B training tokens 的评测。
+DAGFormer 作业 22283422 于 2026-09-22 04:18:44 CDT 完成，耗时 02:25:28，
+包括 14 项普通任务、routing 干预、固定 predictor 复测及完整 GSM8K。
+600M 两个续训作业 22160902/22160903 在 9 月 23 日仍因 Priority 排队。
 
-- WikiText BPB：0.91638。
-- LAMBADA accuracy：41.9755%。
-- 完整 GSM8K 1,319 题：strict match 1.0614%，flexible extraction 1.3647%。
+| 指标 | Dense | DAGFormer |
+|---|---:|---:|
+| WikiText BPB ↓ | 0.91638 | 0.88057 |
+| WikiText word PPL ↓ | 29.8636 | 26.1508 |
+| LAMBADA accuracy | 41.98% | 46.98% |
+| HellaSwag acc_norm | 37.89% | 41.67% |
+| BoolQ accuracy | 58.65% | 51.16% |
+| GSM8K flexible extraction | 1.36% | 1.82% |
+| GSM8K strict match | 1.06% | 0.99% |
 
-完整记录见 [1B dense 普通评估](standard_1b/1b-baseline__custom.json) 和
-[完整 GSM8K](gsm8k_full_1b/1b-baseline__custom.json)。作业 22160905 于
-2026-09-17 18:09 CDT 完成，总耗时 1:02:24；其中普通任务计时 616 秒，
-GSM8K 生成 2,023 秒，其余包含环境准备、加载和结果同步。
-这是 baseline 单侧结果；1B DAGFormer 完成同预算续训后才生成配对结论。
-DAGFormer routing 干预以及 600M 完整预算评估均已设置后续作业。
+[普通任务配对统计](standard_1b/paired_summary.md)中，WikiText、LAMBADA、
+HellaSwag 等提升的文档配对 95% CI 不跨零；BoolQ 下降也不跨零。
+[GSM8K 配对统计](gsm8k_full_1b/paired_summary.md)的 flexible 提升 CI 跨零。
+这些区间衡量文档不确定性，不代表多训练 seed 的稳定性。
 
-实际作业输出持续写入 Delta
-`/work/hdd/biro/yurenh2/dagformer-20260917/results/completed_scaling`。
-每个阶段会将紧凑结果同步到 bfqt 镜像的同名结果目录，完整逐样本数据留在
-biro。Git 中的快照不会自动假定未完成作业已有结果。
+固定为按位置平均的 predictor 后，WikiText BPB 为 0.88062，几乎不变。
+[干预记录](routing_dependence/1b.json)的 128 个自然文本窗口：完整模型 NLL
+2.94441，predictor 固定位置表 2.94427，correction 置零 4.95114。
+这支持本次模型的外部 predictor 对输入内容依赖很弱、correction 很重要；
+不等价于整个路由机制没有输入依赖。详见 frozen_predictor_1b 的配对表。
 
-作业与数据恢复记录见 [启动说明](../../SCALING_COMPLETION_2026-09-17.md)。
+原始逐样本结果在 Delta home：
+`/u/yurenh2/dagformer-20260917/results/completed_scaling`。
+汇总作业 22283596 因短 commit ID fetch 失败；9 月 23 日补跑时又修复了
+汇总脚本仅识别 m、不识别 b 尺寸的问题。上述三份配对汇总已成功生成。
