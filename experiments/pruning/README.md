@@ -170,6 +170,48 @@ pruning sweep and lm-eval harness as the others.
 Not done: physically slicing pruned weights into a smaller HF config (masks
 are baked as zeros instead; parameter counts are analytic), and a Flax port.
 
+## Results so far (75M pair, math domain, 2026-09-23)
+
+Numbers are domain eval NLL on held-out MathInstruct after 2000 finetuning
+steps; "unpruned" is the same finetuning with no pruning. Full table:
+`results/prune_summary.md`; figures: `results/prune_pareto.png`,
+`results/prune_trajectory.png`. 150M / 300M runs and the random-importance
+and frozen-predictor controls are queued.
+
+| units | block sparsity | baseline | dagformer | baseline - dagformer |
+|---|---|---|---|---|
+| heads + neurons | 0.30 | 2.478 | 2.298 | +0.180 |
+| heads + neurons | 0.50 | 2.590 | 2.391 | +0.199 |
+| heads + neurons | 0.70 | 2.829 | 2.614 | +0.215 |
+| whole blocks | 0.33 | 2.610 | 2.547 | +0.063 |
+| whole blocks | 0.50 | 2.832 | 3.452 | **-0.620** |
+
+What the 75M data says:
+
+- **Head/neuron pruning: the DAGFormer advantage grows with sparsity**
+  (0.18 -> 0.20 -> 0.22 nats from 30% to 70% of block parameters removed),
+  and the post-prune ticks in the trajectory figure show much smaller
+  immediate damage for DAGFormer at 70% (peak 2.9 vs 3.2). Read against the
+  unpruned-finetune gap once the sparsity-0 controls finish; the
+  frozen-predictor run will say how much of this is re-routing versus the
+  routed model simply being more robust to removal.
+- **Whole-block pruning is where DAGFormer loses.** At one third of blocks
+  removed the gap shrinks to 0.06; at half it flips hard (DAGFormer 3.45 vs
+  2.83). Taylor importance on a block gate ranked layers 3-5's attention and
+  layers 1/3/4's MLP lowest for DAGFormer, and removing them cost 8 nats
+  before recovery versus 6 for the baseline. In the FourWay model every later
+  head has trained routing weights onto those blocks' layer outputs, so a
+  block removal perturbs every downstream reader at once, and a scalar gate
+  gradient is a poor estimate of that. This is exactly the case the
+  module-granular routing (section 3) is built for: the block's routing
+  column is the right importance score, and the predictor can be trained
+  to turn columns off gradually instead of having them cut.
+- Parameter accounting caveat: at 75M the untouched predictor is 29M
+  parameters, so at equal *total* parameters the 70%-pruned DAGFormer (88M)
+  is larger than the unpruned baseline (77M). The claim this experiment can
+  support at 75M is about the backbone; `results/prune_pareto_total.png`
+  shows the total-parameter view.
+
 ## References
 
 - Zhu & Gupta, 2017. To prune, or not to prune: exploring the efficacy of pruning for model compression.
