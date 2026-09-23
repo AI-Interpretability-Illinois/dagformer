@@ -180,6 +180,7 @@ and frozen-predictor controls are queued.
 
 | units | block sparsity | baseline | dagformer | baseline - dagformer |
 |---|---|---|---|---|
+| unpruned finetune | 0.00 | 2.388 | 2.223 | +0.165 |
 | heads + neurons | 0.30 | 2.478 | 2.298 | +0.180 |
 | heads + neurons | 0.50 | 2.590 | 2.391 | +0.199 |
 | heads + neurons | 0.70 | 2.829 | 2.614 | +0.215 |
@@ -188,13 +189,17 @@ and frozen-predictor controls are queued.
 
 What the 75M data says:
 
-- **Head/neuron pruning: the DAGFormer advantage grows with sparsity**
-  (0.18 -> 0.20 -> 0.22 nats from 30% to 70% of block parameters removed),
-  and the post-prune ticks in the trajectory figure show much smaller
-  immediate damage for DAGFormer at 70% (peak 2.9 vs 3.2). Read against the
-  unpruned-finetune gap once the sparsity-0 controls finish; the
-  frozen-predictor run will say how much of this is re-routing versus the
-  routed model simply being more robust to removal.
+- **Head/neuron pruning: the DAGFormer advantage grows with sparsity.**
+  The unpruned finetuning gap is 0.165 nats; after pruning it is 0.180,
+  0.199 and 0.215 at 30 / 50 / 70% of block parameters removed. In
+  compactness terms: DAGFormer with half its heads and MLP channels removed
+  (2.391) matches the unpruned finetuned baseline (2.388), and at 70%
+  removed (2.614) it sits between the baseline's 50% (2.590) and 70% (2.829)
+  points. The post-prune ticks in the trajectory figure also show much
+  smaller immediate damage for DAGFormer at 70% (peak 2.9 vs 3.2). The
+  queued frozen-predictor run says how much of this is re-routing versus the
+  routed model simply being more robust to removal; the random-importance
+  run says how much Taylor selection matters.
 - **Whole-block pruning is where DAGFormer loses.** At one third of blocks
   removed the gap shrinks to 0.06; at half it flips hard (DAGFormer 3.45 vs
   2.83). Taylor importance on a block gate ranked layers 3-5's attention and
