@@ -30,9 +30,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 # categorical slots 1 and 2 of the reference palette (fixed order, never cycled)
-COLORS = {"baseline": "#2a78d6", "dagformer": "#eb6834"}
-MARKERS = {"baseline": "o", "dagformer": "s"}
-RUN_RE = re.compile(r"^(?P<size>\d+m)_(?P<family>baseline|dagformer)_(?P<domain>[a-z0-9]+)_(?P<tag>.+)$")
+COLORS = {"baseline": "#2a78d6", "dagformer": "#eb6834", "muddformer": "#1baf7a",
+          "baselinest": "#2a78d6", "dagformerst": "#eb6834"}
+MARKERS = {"baseline": "o", "dagformer": "s", "muddformer": "^", "baselinest": "o", "dagformerst": "s"}
+FAMILIES = ("baseline", "dagformer", "muddformer", "baselinest", "dagformerst")
+RUN_RE = re.compile(r"^(?P<size>\d+m)_(?P<family>baseline|dagformer|muddformer|baselinest|dagformerst)_(?P<domain>[a-z0-9]+)_(?P<tag>.+)$")
 
 
 def load_runs(root: str) -> list[dict]:
@@ -83,7 +85,7 @@ def plot_pareto(runs: list[dict], out: str, xkey: str = "params_remaining",
     sizes = sorted({r["size"] for r in runs}, key=lambda s: int(s[:-1]))
     fig, axes = plt.subplots(1, len(sizes), figsize=(4.2 * len(sizes), 3.6), squeeze=False)
     for ax, size in zip(axes[0], sizes):
-        for fam in ("baseline", "dagformer"):
+        for fam in FAMILIES:
             pts = sorted([r for r in runs if r["size"] == size and r["family"] == fam
                           and r["units"] == "head,neuron" and r["importance"] == "taylor"
                           and not r["tag"].endswith("frozenpred")],
@@ -121,7 +123,7 @@ def plot_trajectory(runs: list[dict], out: str) -> None:
     nrow = (len(keys) + ncol - 1) // ncol
     fig, axes = plt.subplots(nrow, ncol, figsize=(4.4 * ncol, 3.2 * nrow), squeeze=False)
     for ax, (size, tag) in zip(axes.flat, keys):
-        for fam in ("baseline", "dagformer"):
+        for fam in FAMILIES:
             rr = [r for r in runs if r["size"] == size and r["tag"] == tag and r["family"] == fam]
             if not rr:
                 continue
@@ -171,8 +173,11 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--ckpt-root", default="/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints")
     p.add_argument("--out", default="experiments/pruning/results")
+    p.add_argument("--families", default="baseline,dagformer",
+                   help="comma list of families to include (e.g. muddformer,dagformerst,baselinest)")
     args = p.parse_args()
-    runs = load_runs(args.ckpt_root)
+    fams = set(args.families.split(","))
+    runs = [r for r in load_runs(args.ckpt_root) if r["family"] in fams]
     if not runs:
         raise SystemExit(f"no finished runs under {args.ckpt_root}")
     os.makedirs(args.out, exist_ok=True)

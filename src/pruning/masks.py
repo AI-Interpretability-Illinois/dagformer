@@ -49,6 +49,132 @@ UNIT_TYPES = ("head", "neuron", "attn", "mlp")
 IMPORTANCE_CRITERIA = ("taylor", "fisher", "magnitude", "random")
 
 
+class ArchAdapter:
+    """Where the prunable units of one decoder layer live, per architecture.
+
+    Every adapter exposes, for layer l: the projection whose INPUT is the
+    concatenated head outputs (``o_proj``), the projection whose INPUT is the
+    MLP hidden (``down_proj``), the module whose OUTPUT is the attention
+    block's contribution (``attn_out``) and the MLP block's (``mlp_out``), the
+    per-layer MLP width, and the per-unit parameter counts.
+    """
+
+    name = "olmo"
+
+    def __init__(self, model: nn.Module) -> None:
+        cfg = model.config
+        self.model = model
+        self.L = int(cfg.num_hidden_layers)
+        self.H = int(cfg.num_attention_heads)
+        self.D = int(cfg.hidden_size)
+        self.hd = self.D // self.H
+        self.I = [int(cfg.intermediate_size)] * self.L
+
+    def layers(self):
+        return self.model.model.layers
+
+    def o_proj(self, layer):
+        return layer.self_attn.o_proj
+
+    def down_proj(self, layer):
+        return layer.mlp.down_proj
+
+    def attn_out(self, layer):
+        return layer.post_attention_layernorm
+
+    def mlp_out(self, layer):
+        return layer.post_feedforward_layernorm
+
+    def qkv_weights(self, layer):
+        a = layer.self_attn
+        return a.q_proj.weight, a.k_proj.weight, a.v_proj.weight, a.o_proj.weight
+
+    def mlp_weights(self, layer):
+        m = layer.mlp
+        return m.gate_proj.weight, m.up_proj.weight, m.down_proj.weight
+
+    def attn_modules(self, layer):
+        """Modules whose parameters disappear with the attention block."""
+        return [layer.self_attn, layer.post_attention_layernorm]
+
+    def mlp_modules(self, layer):
+        return [layer.mlp, layer.post_feedforward_layernorm]
+
+    def unit_params(self, l: int) -> dict[str, int]:
+        """Parameters removed per unit of each type in layer ``l``. Block
+        counts are read off the actual modules; head / neuron are analytic."""
+        D, hd = self.D, self.hd
+        layer = list(self.layers())[l]
+        n = lambda mods: sum(p.numel() for m in mods for p in m.parameters())  # noqa: E731
+        return {
+            "head": 4 * D * hd + 2 * hd,        # q/k/v rows + o cols + q_norm/k_norm slice
+            "neuron": 3 * D,                    # gate row + up row + down col
+            "attn": n(self.attn_modules(layer)),
+            "mlp": n(self.mlp_modules(layer)),
+        }
+
+
+class MuddAdapter(ArchAdapter):
+    """MUDDFormerForCausalLM (src/model/muddformer): layers[l].attention.wo,
+    feed_forward.w2; MLP width scales with depth; qk-norm is per head_dim and
+    shared across heads."""
+
+    name = "muddformer"
+
+    def __init__(self, model: nn.Module) -> None:
+        cfg = model.config
+        self.model = model
+        self.L = int(cfg.n_layer)
+        self.H = int(cfg.n_head)
+        self.D = int(cfg.dim)
+        self.hd = int(cfg.head_dim)
+        self.I = [int(layer.feed_forward.w2.weight.shape[1]) for layer in model.model.layers]
+
+    def layers(self):
+        return self.model.model.layers
+
+    def o_proj(self, layer):
+        return layer.attention.wo
+
+    def down_proj(self, layer):
+        return layer.feed_forward.w2
+
+    def attn_out(self, layer):
+        return layer.attention
+
+    def mlp_out(self, layer):
+        return layer.feed_forward
+
+    def qkv_weights(self, layer):
+        a = layer.attention
+        if hasattr(a, "wqkv"):
+            w = a.wqkv.weight
+            return w[:self.D], w[self.D:2 * self.D], w[2 * self.D:], a.wo.weight
+        return a.wq.weight, a.wk.weight, a.wv.weight, a.wo.weight
+
+    def mlp_weights(self, layer):
+        f = layer.feed_forward
+        return f.w1.weight, f.w3.weight, f.w2.weight
+
+    def attn_modules(self, layer):
+        norms = [layer.attention_norms] if hasattr(layer, "attention_norms") else [layer.attention_norm]
+        return [layer.attention] + norms
+
+    def mlp_modules(self, layer):
+        return [layer.feed_forward, layer.ffn_norm]
+
+    def unit_params(self, l: int) -> dict[str, int]:
+        base = super().unit_params(l)
+        base["head"] = 4 * self.D * self.hd     # qk-norm is per head_dim, shared across heads
+        return base
+
+
+def make_adapter(model: nn.Module) -> ArchAdapter:
+    if type(model).__name__ == "MUDDFormerForCausalLM":
+        return MuddAdapter(model)
+    return ArchAdapter(model)
+
+
 def unit_param_counts(config) -> dict[str, int]:
     """Parameters removed by pruning one unit of each type (OLMo-2 has no
     biases; q_norm / k_norm are over the full H*hd vector, post-norms over D)."""
@@ -92,12 +218,10 @@ class StructuredMasker:
         device: Optional[torch.device] = None,
     ) -> None:
         self.olmo = olmo
-        cfg = olmo.config
-        self.L = int(cfg.num_hidden_layers)
-        self.H = int(cfg.num_attention_heads)
-        self.D = int(cfg.hidden_size)
-        self.I = int(cfg.intermediate_size)
-        self.hd = self.D // self.H
+        self.arch = make_adapter(olmo)
+        self.L, self.H, self.D, self.hd = self.arch.L, self.arch.H, self.arch.D, self.arch.hd
+        self.I_per_layer = list(self.arch.I)
+        self.I = max(self.I_per_layer)          # mask width; narrower layers are padded
         self.unit_types = tuple(unit_types)
         for t in self.unit_types:
             assert t in UNIT_TYPES, f"unknown unit type {t!r}; expected one of {UNIT_TYPES}"
@@ -116,11 +240,17 @@ class StructuredMasker:
         self.masks: dict[str, torch.Tensor] = {}
         self.gates: dict[str, torch.Tensor] = {}
         self.importance: dict[str, torch.Tensor] = {}
+        self.valid: dict[str, torch.Tensor] = {}
         for t in self.unit_types:
             shape = self.shapes[t]
             self.masks[t] = torch.ones(shape, device=self.device)
             self.gates[t] = torch.ones(shape, device=self.device, requires_grad=True)
             self.importance[t] = torch.zeros(shape, device=self.device)
+            valid = torch.ones(shape, dtype=torch.bool, device=self.device)
+            if t == "neuron":
+                for l, width in enumerate(self.I_per_layer):
+                    valid[l, width:] = False    # padding columns of narrower MLPs
+            self.valid[t] = valid
         self.n_accumulated = 0          # optimiser steps folded into `importance`
         self.n_prune_events = 0
         self.enabled = True
@@ -129,21 +259,16 @@ class StructuredMasker:
 
     # ---- hooks -------------------------------------------------------------
     def _attach(self) -> None:
-        for l, layer in enumerate(self.olmo.model.layers):
+        a = self.arch
+        for l, layer in enumerate(a.layers()):
             if "head" in self.masks:
-                self._handles.append(
-                    layer.self_attn.o_proj.register_forward_pre_hook(self._head_hook(l)))
+                self._handles.append(a.o_proj(layer).register_forward_pre_hook(self._head_hook(l)))
             if "neuron" in self.masks:
-                self._handles.append(
-                    layer.mlp.down_proj.register_forward_pre_hook(self._neuron_hook(l)))
+                self._handles.append(a.down_proj(layer).register_forward_pre_hook(self._neuron_hook(l)))
             if "attn" in self.masks:
-                self._handles.append(
-                    layer.post_attention_layernorm.register_forward_hook(
-                        self._module_hook("attn", l)))
+                self._handles.append(a.attn_out(layer).register_forward_hook(self._module_hook("attn", l)))
             if "mlp" in self.masks:
-                self._handles.append(
-                    layer.post_feedforward_layernorm.register_forward_hook(
-                        self._module_hook("mlp", l)))
+                self._handles.append(a.mlp_out(layer).register_forward_hook(self._module_hook("mlp", l)))
 
     def remove_hooks(self) -> None:
         for h in self._handles:
@@ -171,8 +296,9 @@ class StructuredMasker:
             if not self.enabled:
                 return None
             x = inputs[0]
-            assert x.shape[-1] == self.I, (x.shape, self.I)
-            g = self._gate("neuron", l, x.dtype)                     # [I]
+            width = self.I_per_layer[l]
+            assert x.shape[-1] == width, (x.shape, width)
+            g = self._gate("neuron", l, x.dtype)[:width]             # [I_l]
             return (x * g, *inputs[1:])
         return hook
 
@@ -227,37 +353,35 @@ class StructuredMasker:
     def magnitude_scores(self) -> dict[str, torch.Tensor]:
         """Weight-norm importance, the classic data-free criterion."""
         out: dict[str, torch.Tensor] = {}
-        layers = self.olmo.model.layers
+        a = self.arch
+        layers = list(a.layers())
         if "head" in self.masks:
             s = torch.zeros(self.L, self.H, device=self.device)
             for l, layer in enumerate(layers):
-                a = layer.self_attn
-                Wq = a.q_proj.weight.float().view(self.H, self.hd, self.D)
-                Wk = a.k_proj.weight.float().view(self.H, self.hd, self.D)
-                Wv = a.v_proj.weight.float().view(self.H, self.hd, self.D)
-                Wo = a.o_proj.weight.float().view(self.D, self.H, self.hd).permute(1, 0, 2)
+                Wq, Wk, Wv, Wo = a.qkv_weights(layer)
+                Wq = Wq.float().view(self.H, self.hd, self.D)
+                Wk = Wk.float().view(-1, self.hd, self.D)[:self.H]
+                Wv = Wv.float().view(-1, self.hd, self.D)[:self.H]
+                Wo = Wo.float().view(self.D, self.H, self.hd).permute(1, 0, 2)
                 s[l] = (Wq.flatten(1).norm(dim=1) + Wk.flatten(1).norm(dim=1)
                         + Wv.flatten(1).norm(dim=1) + Wo.flatten(1).norm(dim=1))
             out["head"] = s
         if "neuron" in self.masks:
             s = torch.zeros(self.L, self.I, device=self.device)
             for l, layer in enumerate(layers):
-                m = layer.mlp
-                s[l] = (m.gate_proj.weight.float().norm(dim=1)
-                        * m.up_proj.weight.float().norm(dim=1)
-                        * m.down_proj.weight.float().norm(dim=0))
+                gate, up, down = a.mlp_weights(layer)
+                w = self.I_per_layer[l]
+                s[l, :w] = (gate.float().norm(dim=1) * up.float().norm(dim=1) * down.float().norm(dim=0))
             out["neuron"] = s
         if "attn" in self.masks:
             s = torch.zeros(self.L, 1, device=self.device)
             for l, layer in enumerate(layers):
-                a = layer.self_attn
-                s[l, 0] = sum(w.weight.float().norm() for w in (a.q_proj, a.k_proj, a.v_proj, a.o_proj))
+                s[l, 0] = sum(w.float().norm() for w in a.qkv_weights(layer))
             out["attn"] = s
         if "mlp" in self.masks:
             s = torch.zeros(self.L, 1, device=self.device)
             for l, layer in enumerate(layers):
-                m = layer.mlp
-                s[l, 0] = sum(w.weight.float().norm() for w in (m.gate_proj, m.up_proj, m.down_proj))
+                s[l, 0] = sum(w.float().norm() for w in a.mlp_weights(layer))
             out["mlp"] = s
         return out
 
@@ -311,19 +435,21 @@ class StructuredMasker:
             assert t in self.masks, f"type {t!r} not managed by this masker ({self.unit_types})"
             assert 0.0 <= target <= 1.0, (t, target)
             mask = self.masks[t]
-            n_total = mask.numel()
+            valid = self.valid[t]
+            n_total = int(valid.sum().item())
             n_target = int(round(target * n_total))
-            n_pruned = int((mask == 0).sum().item())
+            n_pruned = int(((mask == 0) & valid).sum().item())
             k = n_target - n_pruned
             newly[t] = 0
             if k <= 0:
                 continue
             per_layer = mask.shape[1]
             min_alive = int(min_alive_per_layer.get(t, 0))
-            alive_per_layer = (mask != 0).sum(dim=1)
+            alive_per_layer = ((mask != 0) & valid).sum(dim=1)
 
             s = scores[t].detach().float().reshape(-1).clone()
             s[mask.reshape(-1) == 0] = float("inf")   # never re-select pruned units
+            s[~valid.reshape(-1)] = float("inf")      # padding columns are not units
             order = torch.argsort(s, stable=True)
             flat = mask.reshape(-1)
             for idx in order.tolist():
@@ -343,14 +469,15 @@ class StructuredMasker:
 
     # ---- accounting --------------------------------------------------------
     def counts(self) -> dict[str, tuple[int, int]]:
-        """type -> (pruned, total) unit counts."""
-        return {t: (int((m == 0).sum().item()), m.numel()) for t, m in self.masks.items()}
+        """type -> (pruned, total) unit counts (padding columns excluded)."""
+        return {t: (int(((m == 0) & self.valid[t]).sum().item()), int(self.valid[t].sum().item()))
+                for t, m in self.masks.items()}
 
     def pruned_params(self) -> int:
         """Parameters removed by the current masks (structure-aware)."""
-        c = unit_param_counts(self.olmo.config)
         total = 0
         for l in range(self.L):
+            c = self.arch.unit_params(l)
             attn_gone = "attn" in self.masks and self.masks["attn"][l, 0].item() == 0
             if attn_gone:
                 total += c["attn"]
@@ -365,8 +492,8 @@ class StructuredMasker:
             if mlp_gone:
                 total += c["mlp"]
             elif "neuron" in self.masks:
-                n = int((self.masks["neuron"][l] == 0).sum().item())
-                total += c["mlp"] if n == self.I else n * c["neuron"]
+                n = int(((self.masks["neuron"][l] == 0) & self.valid["neuron"][l]).sum().item())
+                total += c["mlp"] if (n == self.I_per_layer[l] and n > 0) else n * c["neuron"]
         return total
 
     def block_params_total(self) -> int:
@@ -374,8 +501,8 @@ class StructuredMasker:
         final norm) -- the pool the pruning recipe draws from. At small scale
         the tied embedding is most of the model, so backbone sparsity understates
         how much of the compute-carrying part was removed."""
-        c = unit_param_counts(self.olmo.config)
-        return self.L * (c["attn"] + c["mlp"])
+        return sum(self.arch.unit_params(l)["attn"] + self.arch.unit_params(l)["mlp"]
+                   for l in range(self.L))
 
     def report(self, prefix: str = "prune/") -> dict[str, float]:
         base_total = count_unique_params(self.olmo)

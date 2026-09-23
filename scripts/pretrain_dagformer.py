@@ -48,6 +48,7 @@ from src.model.modular_routing import (
 )
 from src.model.predictor import (
     ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
+    FourWayPerLayerPredictor,
     FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor,
     MiniEncoderPredictor,
     PerTokenSeq2MatrixPredictor, SeqToMatrixPredictor, SelfEmbedPredictor,
@@ -195,7 +196,7 @@ class DAGFormerPretrainConfig:
     use_torch_compile: bool = False      # torch.compile the fourway forward for speed
     use_triton_kernel: bool = False      # use fused Triton kernel for routing+proj
     predictor_causal: bool = True        # causal mask in FourWayPredictor encoder
-    fourway_predictor_variant: str = "encoder"  # "encoder", "static", or "attn_bottleneck" (single memory read over dense scout states)
+    fourway_predictor_variant: str = "encoder"  # "encoder", "per_layer" (independent encoder per routed layer), "static", or "attn_bottleneck"
     use_v_norm: bool = False             # add post-mix RMSNorm on V (symmetric with Q/K norm)
     freeze_predictor: bool = False       # freeze FourWayPredictor at identity init (local-only experiment)
     predictor_dropout: float = 0.0       # classical nn.Dropout inside FourWayPredictor encoder + trunk (regularizes input→α mapping)
@@ -1010,6 +1011,19 @@ def main() -> None:
                 num_layers=config.num_hidden_layers,
                 num_heads=config.num_attention_heads,
             ).to(device)
+        elif config.fourway_predictor_variant == "per_layer":
+            fourway_predictor = FourWayPerLayerPredictor(
+                vocab_size=config.vocab_size,
+                encoder_dim=config.predictor_encoder_dim,
+                encoder_layers=config.predictor_encoder_layers,
+                encoder_heads=config.predictor_encoder_heads,
+                max_seq_len=config.predictor_max_seq_len,
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+                hidden_dim=config.fourway_hidden,
+                causal=config.predictor_causal,
+                dropout=config.predictor_dropout,
+            ).to(device)
         elif config.fourway_predictor_variant == "encoder":
             fourway_predictor = FourWayPredictor(
                 vocab_size=config.vocab_size,
@@ -1026,7 +1040,7 @@ def main() -> None:
         else:
             raise ValueError(
                 f"Unknown fourway_predictor_variant: {config.fourway_predictor_variant}. "
-                "Expected 'encoder', 'static', 'pos_table', or 'attn_bottleneck'."
+                "Expected 'encoder', 'per_layer', 'static', 'pos_table', or 'attn_bottleneck'."
             )
         if config.freeze_predictor:
             # Freeze external predictor at identity. Only corrections learn.

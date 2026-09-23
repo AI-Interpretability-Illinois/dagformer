@@ -175,6 +175,8 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         use_v_norm=cfg.get("use_v_norm", False),
         correction_pool=cfg.get("correction_pool", "none"),
     ).to(device=device)
+    if cfg.get("fourway_predictor_variant", "encoder") == "per_layer":
+        from src.model.predictor import FourWayPerLayerPredictor as FourWayPredictor  # noqa: F811
     fourway_predictor = FourWayPredictor(
         vocab_size=cfg["vocab_size"],
         encoder_dim=cfg.get("predictor_encoder_dim", 256),

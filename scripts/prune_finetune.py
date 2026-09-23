@@ -51,7 +51,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from scripts.eval_lm_harness import (  # noqa: E402
-    build_base_model, load_dense, load_fourway, _replace_olmo_rmsnorm,
+    build_base_model, load_dense, load_fourway, load_muddformer, _replace_olmo_rmsnorm,
 )
 from scripts.pretrain_dagformer import (  # noqa: E402
     CSVLogger, DAGFormerPretrainConfig, _atomic_torch_save,
@@ -99,7 +99,7 @@ class PruneFinetuneConfig:
     max_grad_norm: float = 1.0
     lr_schedule: str = "linear"            # linear | cosine | constant
     lr_decay_steps: int = 0                # 0 => total_steps
-    freeze_predictor: bool = False         # DAGFormer only: no re-routing allowed
+    freeze_predictor: bool = False         # routed models: freeze the router(s) (DAGFormer predictor / MUDDFormer dense_bs + dynamic_dense)
     freeze_base: bool = False              # DAGFormer only: recovery through routing alone
     label_smoothing: float = 0.0
 
@@ -202,6 +202,8 @@ class PruneModule(nn.Module):
         super().__init__()
         self.is_fourway = fourway is not None
         self.is_modular = str(model_cfg.get("routing_mode", "")).startswith("fourway_modular")
+        self.kind = ("fourway" if self.is_fourway else
+                     "muddformer" if type(base).__name__ == "MUDDFormerForCausalLM" else "dense")
         self.base = base                # Olmo2ForCausalLM (shared with fourway.olmo)
         self.fourway = fourway
         self.predictor = predictor
@@ -236,6 +238,18 @@ def build_model(cfg: PruneFinetuneConfig, device: torch.device, is_main: bool) -
     with open(cfg.model_config_path) as f:
         model_cfg = yaml.safe_load(f)
     is_fourway = str(model_cfg.get("routing_mode", "")).startswith("fourway")
+    if model_cfg.get("model_type", "") == "muddformer":
+        assert cfg.checkpoint_path, "muddformer needs a checkpoint"
+        if is_main:
+            print(f"Loading muddformer from {cfg.checkpoint_path}")
+        base = load_muddformer(cfg.checkpoint_path, model_cfg, device)
+        module = PruneModule(model_cfg, base, None, None)
+        router_keys = ("dense_bs", "dynamic_dense")
+        for n, p in base.named_parameters():
+            is_router = any(k in n for k in router_keys)
+            p.requires_grad_(not (cfg.freeze_predictor and is_router))
+        module.train()
+        return module, model_cfg
     if is_fourway:
         variant = model_cfg.get("fourway_predictor_variant", "encoder")
         assert variant == "encoder", f"only the encoder predictor is supported here (got {variant})"
@@ -384,22 +398,24 @@ def save_checkpoint(out_dir: str, module: PruneModule, masker: StructuredMasker,
 @torch.no_grad()
 def bake_masks_into_weights(masker: StructuredMasker) -> None:
     """Zero the weights of pruned units so the saved model is standalone: the
-    plain HF / FourWay forward without hooks reproduces the masked model."""
-    layers = masker.olmo.model.layers
+    plain forward without hooks reproduces the masked model."""
+    a = masker.arch
     hd = masker.hd
-    for l, layer in enumerate(layers):
+    for l, layer in enumerate(a.layers()):
+        o_w = a.o_proj(layer).weight
+        d_w = a.down_proj(layer).weight
         if "head" in masker.masks:
             for h in range(masker.H):
                 if masker.masks["head"][l, h] == 0:
-                    layer.self_attn.o_proj.weight[:, h * hd:(h + 1) * hd].zero_()
+                    o_w[:, h * hd:(h + 1) * hd].zero_()
         if "neuron" in masker.masks:
-            dead = (masker.masks["neuron"][l] == 0).nonzero().flatten()
+            dead = ((masker.masks["neuron"][l] == 0) & masker.valid["neuron"][l]).nonzero().flatten()
             if dead.numel():
-                layer.mlp.down_proj.weight[:, dead] = 0.0
+                d_w[:, dead] = 0.0
         if "attn" in masker.masks and masker.masks["attn"][l, 0] == 0:
-            layer.self_attn.o_proj.weight.zero_()
+            o_w.zero_()
         if "mlp" in masker.masks and masker.masks["mlp"][l, 0] == 0:
-            layer.mlp.down_proj.weight.zero_()
+            d_w.zero_()
 
 
 # ─── Main ────────────────────────────────────────────────────────────────────
@@ -446,7 +462,7 @@ def main() -> None:
         if module.is_fourway:
             extra = sum(p.numel() for p in module.predictor.parameters()) + \
                 sum(p.numel() for p in module.fourway.get_routing_parameters())
-        print(f"Model: {'fourway' if module.is_fourway else 'dense'}  base params {base_total:,}"
+        print(f"Model: {module.kind}  base params {base_total:,}"
               + (f"  + predictor/routing {extra:,}" if extra else ""))
         print(f"Prunable units: {masker.counts()}")
 
@@ -667,7 +683,7 @@ def main() -> None:
         out = os.path.join(cfg.save_dir, "final")
         save_checkpoint(out, module, masker, None, global_step, model_cfg, cfg, final=True)
         summary = {
-            "model": "fourway" if module.is_fourway else "dense",
+            "model": module.kind,
             "model_dir": cfg.model_dir or cfg.model_config_path,
             "base_params_total": base_total,
             "base_params_remaining": int(masker.report()["prune/base_params_remaining"]),
