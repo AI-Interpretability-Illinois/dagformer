@@ -43,6 +43,9 @@ from src.model.olmo_graph import (
     DAGFormerOLMo, DynamicDenseHeadFormer, FourWayDAGFormer,
     LayerDWAGateFormer, create_all_ones_A,
 )
+from src.model.modular_routing import (
+    build_modular_pair, column_group_penalty, source_column_mass,
+)
 from src.model.predictor import (
     ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
     FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor,
@@ -221,6 +224,7 @@ class DAGFormerPretrainConfig:
     routing_delayed_start: int = 0       # don't use routing for first N steps (pure dense)
     routing_normalize: str = "none"      # "none", "softmax", "sinkhorn", "row_col" — normalize routing weights
     routing_sinkhorn_iters: int = 20     # Sinkhorn-Knopp iterations for sinkhorn normalize
+    routing_column_group_lambda: float = 0.0  # fourway_modular: group-lasso on source columns (module switch-off)
 
     # Checkpointing
     save_every: int = 2000
@@ -934,14 +938,46 @@ def main() -> None:
 
     # ─── Routing mode ───
     use_routing_mode = config.routing_mode in ("dynamic_head", "layer_dwa_gate")
-    use_fourway = config.routing_mode in ("fourway", "fourway_corrected")
+    use_modular = config.routing_mode in ("fourway_modular", "fourway_modular_corrected")
+    use_fourway = config.routing_mode in ("fourway", "fourway_corrected") or use_modular
     routing_model = None
     fourway_model = None
     fourway_predictor = None
     predictor = None
     dagformer = None
 
-    if use_fourway:
+    if use_modular:
+        # Module-granular routing (src/model/modular_routing.py): sources are
+        # attention / MLP block outputs, identity init is all-ones. The legacy
+        # FourWay routing knobs assume a one-hot identity and are not supported.
+        for knob, default in (("routing_clamp", 0.0), ("routing_top_k", 0),
+                              ("routing_temperature", 1.0), ("routing_delayed_start", 0),
+                              ("routing_normalize", "none"), ("routing_dropout", 0.0),
+                              ("routing_l2_lambda", 0.0), ("routing_l1_lambda", 0.0),
+                              ("routing_entropy_lambda", 0.0), ("alpha_share_heads", False),
+                              ("routing_noise_std", 0.0)):
+            assert getattr(config, knob) == default, (
+                f"{knob} is not supported with routing_mode={config.routing_mode}")
+        assert config.route_q and config.route_k and config.route_v and config.route_r
+        assert config.fourway_predictor_variant == "encoder", config.fourway_predictor_variant
+        fourway_model, fourway_predictor = build_modular_pair(config.to_dict(), base_model, device)
+        if config.freeze_predictor:
+            for p in fourway_predictor.parameters():
+                p.requires_grad_(False)
+            fourway_predictor.eval()
+        if is_main:
+            pred_params = sum(p.numel() for p in fourway_predictor.parameters())
+            corr_params = sum(p.numel() for p in fourway_model.get_routing_parameters())
+            print(f"Mode: {config.routing_mode} (module-granular per-token routing)")
+            print(f"  Predictor [modular encoder]: {pred_params:,} params")
+            if corr_params:
+                print(f"  Correction MLPs / v_norms: {corr_params:,} params")
+            if config.routing_column_group_lambda > 0:
+                print(f"  column group penalty: lambda={config.routing_column_group_lambda}")
+        if config.use_torch_compile:
+            fourway_model = torch.compile(fourway_model)
+            fourway_predictor = torch.compile(fourway_predictor)
+    elif use_fourway:
         use_correction = (config.routing_mode == "fourway_corrected")
         fourway_model = FourWayDAGFormer(
             model=base_model,
@@ -1400,6 +1436,7 @@ def main() -> None:
 
     # Consecutive steps with a non-finite gradient norm (see the guard below).
     nonfinite_steps = 0
+    last_column_mass: Optional[torch.Tensor] = None  # fourway_modular column stats
 
     while global_step < config.total_steps:
         # Compute schedules
@@ -1516,6 +1553,15 @@ def main() -> None:
                                 p = F.softmax(α, dim=-1)
                                 ent = -(p * (p + 1e-8).log()).sum(dim=-1).mean()
                                 reg_loss = reg_loss - config.routing_entropy_lambda * ent
+
+                    # Modular routing: group-lasso on source columns so the
+                    # predictor can switch whole modules off (see modular_routing.py).
+                    if use_modular and config.routing_column_group_lambda > 0:
+                        reg_loss = reg_loss + config.routing_column_group_lambda * \
+                            column_group_penalty(rw, config.num_hidden_layers)
+                    if use_modular and is_last_micro:
+                        with torch.no_grad():
+                            last_column_mass = source_column_mass(rw, config.num_hidden_layers)
 
                     # Apply deterministic transforms (clamp, top_k, temperature,
                     # delayed_start, normalize). Must match eval path exactly.
@@ -1693,6 +1739,14 @@ def main() -> None:
                 "schedule/lambda": lambda_t,
                 "train/use_dagformer": 1.0 if use_dagformer else 0.0,
             }
+
+            if last_column_mass is not None:
+                cm = last_column_mass[1:]          # skip the embedding column
+                metrics["routing/column_mass_mean"] = cm.mean().item()
+                metrics["routing/column_mass_min"] = cm.min().item()
+                metrics["routing/dead_sources"] = float((cm < 1e-3).sum().item())
+                metrics["routing/column_mass_attn_mean"] = cm[0::2].mean().item()
+                metrics["routing/column_mass_mlp_mean"] = cm[1::2].mean().item()
 
             # Topology metrics from last micro-batch's A
             if last_A is not None:

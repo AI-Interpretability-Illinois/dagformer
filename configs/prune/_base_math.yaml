@@ -1,0 +1,36 @@
+# Shared settings for the math-domain prune-during-finetune sweep.
+# Size- and model-specific files set model_dir / save_dir and inherit these
+# values by copy (the config loader has no include; keep them in sync).
+#
+# Budget: 8 x 4 x 1024 = 32K tokens/step, 2000 steps = 65M tokens
+# (~1 epoch of MathInstruct). Pruning ramps from step 200 to 1400 on a cubic
+# curve with an update every 100 steps (13 events), then 600 recovery steps.
+train_index_path: /work/hdd/bfqt/xiaocong/dagformer_pruning/data/mathinstruct/train
+eval_cache_path: /work/hdd/bfqt/xiaocong/dagformer_pruning/data/mathinstruct/eval_cache.pt
+general_eval_cache_path: /work/hdd/bfqt/xiaocong/dagformer_pruning/data/wikitext2/eval_cache.pt
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 8
+gradient_accumulation_steps: 4
+total_steps: 2000
+lr: 1.0e-4
+predictor_lr: 1.0e-4
+warmup_steps: 100
+lr_schedule: linear
+weight_decay: 0.1
+max_grad_norm: 1.0
+
+prune_units: [head, neuron]
+target_sparsity: 0.5
+prune_start_step: 200
+prune_end_step: 1400
+prune_every: 100
+importance: taylor
+min_alive_per_layer: {head: 1}
+eval_after_prune: true
+
+eval_every: 200
+eval_max_batches: 0
+log_every: 10
+save_every: 500

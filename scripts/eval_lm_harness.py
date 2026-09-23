@@ -146,7 +146,11 @@ def _replace_olmo_rmsnorm(model):
 
 
 def load_fourway(ckpt_path: str, cfg: dict, device):
-    """Load a FourWay DAGFormer (base OLMo + FourWayPredictor + FourWayDAGFormer wrapper)."""
+    """Load a FourWay DAGFormer (base OLMo + FourWayPredictor + FourWayDAGFormer wrapper).
+
+    routing_mode "fourway_modular[_corrected]" loads the module-granular variant
+    (src/model/modular_routing.py) instead; the checkpoint layout is the same.
+    """
     from src.model.olmo_graph import FourWayDAGFormer
     from src.model.predictor import FourWayPredictor
     replace_olmo_rmsnorm = _replace_olmo_rmsnorm
@@ -155,6 +159,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
     if cfg.get("replace_rmsnorm", False):
         replace_olmo_rmsnorm(base)
         base = base.to(device=device, dtype=torch.bfloat16)
+
+    if str(cfg.get("routing_mode", "")).startswith("fourway_modular"):
+        from src.model.modular_routing import build_modular_pair
+        fourway_model, fourway_predictor = build_modular_pair(cfg, base, device)
+        return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor)
 
     fourway_model = FourWayDAGFormer(
         model=base,
@@ -179,6 +188,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         dropout=0.0,
     ).to(device=device)
 
+    return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor)
+
+
+def _load_fourway_state(ckpt_path: str, base, fourway_model, fourway_predictor):
+    """Load predictor / base / routing state into an already-built pair."""
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     # Predictor
     if "predictor_state_dict" in ckpt:
