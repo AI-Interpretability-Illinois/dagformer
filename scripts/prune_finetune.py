@@ -671,6 +671,9 @@ def main() -> None:
             "model_dir": cfg.model_dir or cfg.model_config_path,
             "base_params_total": base_total,
             "base_params_remaining": int(masker.report()["prune/base_params_remaining"]),
+            "extra_params": (sum(p.numel() for p in module.predictor.parameters())
+                             + sum(p.numel() for p in module.fourway.get_routing_parameters()))
+            if module.is_fourway else 0,
             "block_params_total": masker.block_params_total(),
             "block_params_remaining": int(masker.report()["prune/block_params_remaining"]),
             "unit_counts": masker.counts(),

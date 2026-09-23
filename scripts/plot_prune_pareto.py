@@ -24,6 +24,7 @@ import re
 from collections import defaultdict
 
 import matplotlib
+import torch
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -44,6 +45,14 @@ def load_runs(root: str) -> list[dict]:
         s = json.load(open(summ))
         traj = json.load(open(os.path.join(run_dir, "trajectory.json")))
         cfg = s["config"]
+        extra = s.get("extra_params")
+        if extra is None:                      # older runs: count the saved predictor/routing state
+            extra = 0
+            if s["model"] == "fourway":
+                ck = torch.load(os.path.join(run_dir, "final", "checkpoint.pt"), map_location="cpu",
+                                weights_only=False)
+                extra = sum(v.numel() for v in ck["predictor_state_dict"].values()) + \
+                    sum(v.numel() for v in ck.get("routing_state_dict", {}).values())
         runs.append({
             **m.groupdict(), "name": os.path.basename(run_dir),
             "target": cfg["target_sparsity"], "units": ",".join(cfg["prune_units"]),
@@ -51,6 +60,9 @@ def load_runs(root: str) -> list[dict]:
             "params_total": s["block_params_total"], "params_remaining": s["block_params_remaining"],
             "sparsity": 1 - s["block_params_remaining"] / s["block_params_total"],
             "base_params_remaining": s["base_params_remaining"],
+            "total_params_remaining": s["base_params_remaining"] + extra,
+            "total_params_unpruned": s["base_params_total"] + extra,
+            "extra_params": extra,
             "init_nll": s["initial_domain_nll"], "final_nll": s["final_domain_nll"],
             "final_general": s.get("final_general_nll"),
             "traj": traj,
@@ -66,16 +78,19 @@ def style(ax):
     ax.tick_params(colors="#52514e", labelsize=9)
 
 
-def plot_pareto(runs: list[dict], out: str) -> None:
+def plot_pareto(runs: list[dict], out: str, xkey: str = "params_remaining",
+                x0key: str = "params_total", xlabel: str = "transformer-block params remaining (M)") -> None:
     sizes = sorted({r["size"] for r in runs}, key=lambda s: int(s[:-1]))
     fig, axes = plt.subplots(1, len(sizes), figsize=(4.2 * len(sizes), 3.6), squeeze=False)
     for ax, size in zip(axes[0], sizes):
         for fam in ("baseline", "dagformer"):
-            pts = sorted([r for r in runs if r["size"] == size and r["family"] == fam],
-                         key=lambda r: r["params_remaining"])
+            pts = sorted([r for r in runs if r["size"] == size and r["family"] == fam
+                          and r["units"] == "head,neuron" and r["importance"] == "taylor"
+                          and not r["tag"].endswith("frozenpred")],
+                         key=lambda r: r[xkey])
             if not pts:
                 continue
-            xs = [r["params_remaining"] / 1e6 for r in pts]
+            xs = [r[xkey] / 1e6 for r in pts]
             ys = [r["final_nll"] for r in pts]
             ax.plot(xs, ys, marker=MARKERS[fam], markersize=7, linewidth=2, color=COLORS[fam],
                     label=fam, markeredgecolor="#fcfcfb", markeredgewidth=1.5)
@@ -83,10 +98,10 @@ def plot_pareto(runs: list[dict], out: str) -> None:
                 ax.annotate(f"{r['sparsity']:.0%}", (x, y), textcoords="offset points",
                             xytext=(0, 7), ha="center", fontsize=7.5, color="#52514e")
             # unpruned starting point
-            ax.plot([pts[0]["params_total"] / 1e6], [pts[0]["init_nll"]], marker=MARKERS[fam],
+            ax.plot([pts[0][x0key] / 1e6], [pts[0]["init_nll"]], marker=MARKERS[fam],
                     markersize=7, color=COLORS[fam], markerfacecolor="none", linestyle="none")
         ax.set_title(f"{size}", fontsize=10, color="#0b0b0b", loc="left")
-        ax.set_xlabel("transformer-block params remaining (M)", fontsize=9, color="#52514e")
+        ax.set_xlabel(xlabel, fontsize=9, color="#52514e")
         style(ax)
     axes[0][0].set_ylabel("domain eval NLL (lower is better)", fontsize=9, color="#52514e")
     axes[0][0].legend(frameon=False, fontsize=9)
@@ -131,12 +146,12 @@ def plot_trajectory(runs: list[dict], out: str) -> None:
 
 
 def write_table(runs: list[dict], out: str) -> None:
-    lines = ["| run | units | importance | target | block sparsity | block params remaining | NLL before | NLL final | general NLL final |",
-             "|---|---|---|---|---|---|---|---|---|"]
+    lines = ["| run | units | importance | target | block sparsity | block params remaining | total params remaining | NLL before | NLL final | general NLL final |",
+             "|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(runs, key=lambda r: (int(r["size"][:-1]), r["tag"], r["family"])):
         g = f"{r['final_general']:.4f}" if r["final_general"] is not None else "-"
         lines.append(f"| {r['name']} | {r['units']} | {r['importance']} | {r['target']} | "
-                     f"{r['sparsity']:.3f} | {r['params_remaining']/1e6:.1f}M | {r['init_nll']:.4f} | "
+                     f"{r['sparsity']:.3f} | {r['params_remaining']/1e6:.1f}M | {r['total_params_remaining']/1e6:.1f}M | {r['init_nll']:.4f} | "
                      f"{r['final_nll']:.4f} | {g} |")
     # matched-pair deltas
     pairs = defaultdict(dict)
@@ -161,6 +176,9 @@ def main() -> None:
         raise SystemExit(f"no finished runs under {args.ckpt_root}")
     os.makedirs(args.out, exist_ok=True)
     plot_pareto(runs, os.path.join(args.out, "prune_pareto.png"))
+    plot_pareto(runs, os.path.join(args.out, "prune_pareto_total.png"), xkey="total_params_remaining",
+                x0key="total_params_unpruned",
+                xlabel="total params remaining incl. embedding + predictor (M)")
     plot_trajectory(runs, os.path.join(args.out, "prune_trajectory.png"))
     write_table(runs, os.path.join(args.out, "prune_summary.md"))
     print(open(os.path.join(args.out, "prune_summary.md")).read())
