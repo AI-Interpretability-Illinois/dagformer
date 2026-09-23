@@ -1,0 +1,3 @@
+configs/prune/75m_baseline_math.yaml target_sparsity=0.5 importance=random save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/75m_baseline_math_s50_random wandb_run_name=prune-75m_baseline_math_s50_random
+configs/prune/75m_dagformer_math.yaml target_sparsity=0.5 importance=random save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/75m_dagformer_math_s50_random wandb_run_name=prune-75m_dagformer_math_s50_random
+configs/prune/75m_dagformer_math.yaml target_sparsity=0.5 freeze_predictor=true save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/75m_dagformer_math_s50_frozenpred wandb_run_name=prune-75m_dagformer_math_s50_frozenpred
