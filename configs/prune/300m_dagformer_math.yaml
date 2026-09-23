@@ -10,8 +10,8 @@ general_eval_cache_path: /work/hdd/bfqt/xiaocong/dagformer_pruning/data/wikitext
 seq_len: 1024
 seed: 42
 
-micro_batch_size: 8
-gradient_accumulation_steps: 4
+micro_batch_size: 4
+gradient_accumulation_steps: 8
 total_steps: 2000
 lr: 1.0e-4
 predictor_lr: 1.0e-4
