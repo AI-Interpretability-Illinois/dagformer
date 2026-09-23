@@ -105,9 +105,10 @@ def plot_pareto(runs: list[dict], out: str, xkey: str = "params_remaining",
         style(ax)
     axes[0][0].set_ylabel("domain eval NLL (lower is better)", fontsize=9, color="#52514e")
     axes[0][0].legend(frameon=False, fontsize=9)
-    fig.suptitle("Pruned during math finetuning: hollow = before finetuning/pruning, "
-                 "label = block param sparsity (embedding excluded)", fontsize=9, color="#52514e", x=0.01, ha="left")
-    fig.tight_layout()
+    fig.suptitle("Pruned during math finetuning. Hollow marker = before finetuning/pruning;\n"
+                 "label = block param sparsity (embedding excluded)", fontsize=9, color="#52514e",
+                 x=0.01, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(out, dpi=160)
     plt.close(fig)
 
