@@ -61,7 +61,8 @@ from src.data.mmap_dataset import build_mmap_train_dataloader  # noqa: E402
 from src.pruning import StructuredMasker, cubic_sparsity, prune_steps  # noqa: E402
 from src.pruning.masks import IMPORTANCE_CRITERIA, UNIT_TYPES, count_unique_params  # noqa: E402
 from src.model.modular_routing import (  # noqa: E402
-    build_modular_pair, module_importance_from_mass, source_column_mass,
+    build_modular_pair, edge_sparsity_penalty, edge_sparsity_stats,
+    module_importance_from_mass, source_column_mass,
 )
 from src.utils.logging import finish_wandb, init_wandb, log_metrics  # noqa: E402
 
@@ -114,6 +115,10 @@ class PruneFinetuneConfig:
     importance: str = "taylor"             # taylor | fisher | magnitude | random | routing_column (modular: attn/mlp scored by routing column mass, other units by taylor)
     min_alive_per_layer: dict[str, int] = field(default_factory=dict)
     eval_after_prune: bool = True          # measure damage before any recovery
+    # fourway_modular only: sparsity regularisation on the connection matrix during finetuning
+    routing_sparsity_lambda: float = 0.0
+    routing_sparsity_kind: str = "l1"           # l1 | sqrt | column
+    routing_sparsity_hyper_only: bool = False
 
     # Eval / logging
     eval_every: int = 200
@@ -209,6 +214,9 @@ class PruneModule(nn.Module):
         self.predictor = predictor
         self.num_layers = int(model_cfg["num_hidden_layers"])
         self.last_column_mass: Optional[torch.Tensor] = None   # modular: [2L+1] from the last forward
+        self.last_edge_stats: Optional[dict] = None
+        self.last_sparsity_penalty: Optional[torch.Tensor] = None
+        self.sparsity_lambda, self.sparsity_kind, self.sparsity_hyper_only = 0.0, "l1", False
         self.pretrain_cfg = DAGFormerPretrainConfig(**{
             k: v for k, v in model_cfg.items()
             if k in DAGFormerPretrainConfig.__dataclass_fields__})
@@ -224,6 +232,11 @@ class PruneModule(nn.Module):
         if self.is_modular:
             with torch.no_grad():
                 self.last_column_mass = source_column_mass(rw, self.num_layers)
+                self.last_edge_stats = edge_sparsity_stats(rw, self.num_layers)
+            self.last_sparsity_penalty = (
+                edge_sparsity_penalty(rw, self.num_layers, kind=self.sparsity_kind,
+                                      hyper_only=self.sparsity_hyper_only)
+                if self.sparsity_lambda > 0 else None)
             return self.fourway(input_ids, rw)
         rw = apply_fourway_stream_mask(rw, self.pretrain_cfg)
         rw = apply_deterministic_routing_transforms(rw, self.pretrain_cfg, self._step)
@@ -454,6 +467,11 @@ def main() -> None:
     module, model_cfg = build_model(cfg, device, is_main)
     if cfg.importance == "routing_column":
         assert module.is_modular, "importance=routing_column needs routing_mode=fourway_modular*"
+    if cfg.routing_sparsity_lambda > 0:
+        assert module.is_modular, "routing_sparsity_lambda needs routing_mode=fourway_modular*"
+        module.sparsity_lambda = cfg.routing_sparsity_lambda
+        module.sparsity_kind = cfg.routing_sparsity_kind
+        module.sparsity_hyper_only = cfg.routing_sparsity_hyper_only
     masker = StructuredMasker(module.olmo, unit_types=cfg.prune_units, device=device)
     column_mass_sum: Optional[torch.Tensor] = None       # routing_column accumulator
     base_total = count_unique_params(module.base)
@@ -591,7 +609,10 @@ def main() -> None:
                 logits = ddp_model(ids)
                 nll = F.cross_entropy(logits.reshape(-1, vocab), labels.reshape(-1),
                                       label_smoothing=cfg.label_smoothing)
-                (nll / accum).backward()
+                loss = nll
+                if module.last_sparsity_penalty is not None:
+                    loss = loss + cfg.routing_sparsity_lambda * module.last_sparsity_penalty
+                (loss / accum).backward()
             accum_nll += nll.item() / accum
 
         if accumulate:
@@ -657,6 +678,10 @@ def main() -> None:
                     cfg.prune_start_step, cfg.prune_end_step),
             }
             metrics.update(masker.report())
+            if module.last_edge_stats is not None:
+                metrics.update(module.last_edge_stats)
+                if module.last_sparsity_penalty is not None:
+                    metrics["train/routing_sparsity_penalty"] = float(module.last_sparsity_penalty)
             log_metrics(metrics, global_step, wandb_run)
             csv_logger.log(global_step, metrics)
 

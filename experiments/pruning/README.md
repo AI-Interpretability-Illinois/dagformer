@@ -147,6 +147,18 @@ What this buys:
   module; zero column = module deletable with no change to the function
   (tested). `prune_finetune.py --override importance=routing_column` prunes
   whole blocks by this routing-native score instead of Taylor.
+- **Sparsity on the connection matrix itself.** `routing_sparsity_lambda`
+  adds a regulariser on the routing entries, ramped in linearly between
+  `routing_sparsity_start_frac` and `routing_sparsity_warmup_frac`:
+  `l1` (per-token lasso), `sqrt` (a group over tokens per edge, so an edge
+  is driven to zero for *all* tokens and can be dropped from the graph),
+  or `column` (the module group-lasso below). `routing_sparsity_hyper_only`
+  leaves the vanilla transformer's sequential edges free so only skips are
+  penalised; `routing_sparsity_streams` restricts it to chosen reads. Logged:
+  mean |alpha|, fraction of entries and of whole edges below eps, and with
+  `routing_sparsity_eval_eps > 0` an `eval/nll_sparsified` where entries
+  below eps are hard-zeroed, so the sparsity claimed is the sparsity that
+  works. The same option exists in `prune_finetune.py` for finetuning.
 - **The predictor can learn to switch modules off.** `routing_column_group_lambda`
   adds a group-lasso `sum_s sqrt(mass_s)` over columns, zero-inducing on whole
   columns rather than thinning edges uniformly. Column statistics are logged

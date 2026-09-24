@@ -44,7 +44,8 @@ from src.model.olmo_graph import (
     LayerDWAGateFormer, create_all_ones_A,
 )
 from src.model.modular_routing import (
-    build_modular_pair, column_group_penalty, source_column_mass,
+    build_modular_pair, column_group_penalty, edge_sparsity_penalty,
+    edge_sparsity_stats, source_column_mass, threshold_routing,
 )
 from src.model.predictor import (
     ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
@@ -226,6 +227,14 @@ class DAGFormerPretrainConfig:
     routing_normalize: str = "none"      # "none", "softmax", "sinkhorn", "row_col" — normalize routing weights
     routing_sinkhorn_iters: int = 20     # Sinkhorn-Knopp iterations for sinkhorn normalize
     routing_column_group_lambda: float = 0.0  # fourway_modular: group-lasso on source columns (module switch-off)
+    # fourway_modular: sparsity regularisation on the connection matrix itself
+    routing_sparsity_lambda: float = 0.0        # coefficient (0 = off)
+    routing_sparsity_kind: str = "l1"           # l1 | sqrt (edge dropped for all tokens) | column (module switch-off)
+    routing_sparsity_streams: str = "q,k,v,r,m,o"  # which reads are penalised
+    routing_sparsity_hyper_only: bool = False   # leave the sequential edges of the vanilla transformer free
+    routing_sparsity_start_frac: float = 0.0    # fraction of training before the penalty starts
+    routing_sparsity_warmup_frac: float = 0.0   # ... and reaches full strength (linear ramp)
+    routing_sparsity_eval_eps: float = 0.0      # >0: also eval with |alpha|<eps hard-zeroed (eval/nll_sparsified)
 
     # Checkpointing
     save_every: int = 2000
@@ -1451,6 +1460,7 @@ def main() -> None:
     # Consecutive steps with a non-finite gradient norm (see the guard below).
     nonfinite_steps = 0
     last_column_mass: Optional[torch.Tensor] = None  # fourway_modular column stats
+    last_edge_stats: Optional[dict] = None           # fourway_modular edge sparsity stats
 
     while global_step < config.total_steps:
         # Compute schedules
@@ -1573,9 +1583,24 @@ def main() -> None:
                     if use_modular and config.routing_column_group_lambda > 0:
                         reg_loss = reg_loss + config.routing_column_group_lambda * \
                             column_group_penalty(rw, config.num_hidden_layers)
+                    if use_modular and config.routing_sparsity_lambda > 0:
+                        frac = global_step / max(config.total_steps, 1)
+                        ramp = 0.0
+                        if frac >= config.routing_sparsity_start_frac:
+                            span = max(config.routing_sparsity_warmup_frac - config.routing_sparsity_start_frac, 1e-8)
+                            ramp = min(1.0, (frac - config.routing_sparsity_start_frac) / span) \
+                                if config.routing_sparsity_warmup_frac > config.routing_sparsity_start_frac else 1.0
+                        sparsity_coeff = config.routing_sparsity_lambda * ramp
+                        if sparsity_coeff > 0:
+                            reg_loss = reg_loss + sparsity_coeff * edge_sparsity_penalty(
+                                rw, config.num_hidden_layers, kind=config.routing_sparsity_kind,
+                                streams=tuple(config.routing_sparsity_streams.split(",")),
+                                hyper_only=config.routing_sparsity_hyper_only)
                     if use_modular and is_last_micro:
                         with torch.no_grad():
                             last_column_mass = source_column_mass(rw, config.num_hidden_layers)
+                            last_edge_stats = edge_sparsity_stats(rw, config.num_hidden_layers,
+                                                                  eps=config.routing_sparsity_eval_eps or 1e-2)
 
                     # Apply deterministic transforms (clamp, top_k, temperature,
                     # delayed_start, normalize). Must match eval path exactly.
@@ -1761,6 +1786,16 @@ def main() -> None:
                 metrics["routing/dead_sources"] = float((cm < 1e-3).sum().item())
                 metrics["routing/column_mass_attn_mean"] = cm[0::2].mean().item()
                 metrics["routing/column_mass_mlp_mean"] = cm[1::2].mean().item()
+            if last_edge_stats is not None:
+                metrics.update(last_edge_stats)
+                metrics["schedule/routing_sparsity_lambda"] = (
+                    config.routing_sparsity_lambda * (
+                        1.0 if config.routing_sparsity_warmup_frac <= config.routing_sparsity_start_frac
+                        else min(1.0, max(0.0, (global_step / max(config.total_steps, 1)
+                                                - config.routing_sparsity_start_frac)
+                                          / max(config.routing_sparsity_warmup_frac
+                                                - config.routing_sparsity_start_frac, 1e-8))))
+                    if global_step / max(config.total_steps, 1) >= config.routing_sparsity_start_frac else 0.0)
 
             # Topology metrics from last micro-batch's A
             if last_A is not None:
@@ -1787,6 +1822,7 @@ def main() -> None:
             combined.eval()
             eval_nll_routing_total = 0.0
             eval_nll_baseline_total = 0.0
+            eval_nll_sparsified_total = 0.0
             n_eval = 0
 
             with torch.no_grad():
@@ -1815,6 +1851,12 @@ def main() -> None:
                             elabels.contiguous().view(-1),
                         )
                         eval_nll_routing_total += nll_r.item()
+                        if use_modular and config.routing_sparsity_eval_eps > 0:
+                            logits_s = fourway_model(eids, threshold_routing(rw_eval, config.routing_sparsity_eval_eps))
+                            eval_nll_sparsified_total += F.cross_entropy(
+                                logits_s.contiguous().view(-1, vocab_size),
+                                elabels.contiguous().view(-1),
+                            ).item()
                     elif use_routing_mode:
                         logits_r = combined_raw(eids)
                         nll_r = F.cross_entropy(
@@ -1857,6 +1899,8 @@ def main() -> None:
                 "eval/nll_hard": eval_nll_routing,  # same for routing mode
                 "eval/nll_baseline": eval_nll_baseline,
             }
+            if use_modular and config.routing_sparsity_eval_eps > 0:
+                eval_metrics["eval/nll_sparsified"] = eval_nll_sparsified_total / max(n_eval, 1)
             log_metrics(eval_metrics, global_step, wandb_run)
             if csv_logger is not None:
                 csv_logger.log(global_step, eval_metrics)

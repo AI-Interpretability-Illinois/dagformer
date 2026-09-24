@@ -21,6 +21,14 @@ fourway_hidden: 512
 predictor_causal: true
 correction_hidden: 128
 routing_column_group_lambda: 0.0   # >0: group-lasso on source columns (lets the predictor switch modules off)
+# Sparsity regularisation on the connection matrix (all off by default):
+routing_sparsity_lambda: 0.0         # coefficient; e.g. 0.01-0.05 with kind=sqrt
+routing_sparsity_kind: "sqrt"        # l1 (per token) | sqrt (per edge over tokens: drops edges from the graph) | column (module switch-off)
+routing_sparsity_hyper_only: true    # leave the vanilla transformer's sequential edges unpenalised
+routing_sparsity_streams: "q,k,v,r,m,o"
+routing_sparsity_start_frac: 0.1     # ramp the penalty in linearly between these fractions of training
+routing_sparsity_warmup_frac: 0.5
+routing_sparsity_eval_eps: 0.05      # also report eval/nll_sparsified with |alpha| < eps hard-zeroed
 
 replace_rmsnorm: true
 use_torch_compile: false       # modular forward not yet compile-tested

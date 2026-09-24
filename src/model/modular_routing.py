@@ -292,6 +292,110 @@ def column_group_penalty(rw: dict, num_layers: int, eps: float = 1e-8) -> torch.
     return (mass[1:] + eps).sqrt().sum()          # skip the embedding column
 
 
+# ─── Edge-level sparsity (connection matrix) ─────────────────────────────────
+
+def _iter_edges(rw: dict, num_layers: int, streams, hyper_only: bool):
+    """Yield (alpha tensor, boolean selector over its source dim) for every
+    routed read. ``hyper_only`` keeps only edges that skip at least one full
+    layer: the two most recent sources of a reader in layer l (a_{l-1},
+    m_{l-1}), plus a_l for the MLP input, are the ordinary sequential path and
+    are left unpenalised; the embedding is sequential only for layer 0/1.
+    """
+    for l in range(1, num_layers):
+        n = modular_n_sources(l)
+        sel = torch.ones(n, dtype=torch.bool)
+        if hyper_only:
+            sel[-2:] = False
+        for s in ("q", "k", "v", "r"):
+            if s in streams:
+                yield rw[s][l - 1], sel
+    if "m" in streams:
+        for l in range(num_layers):
+            n = modular_n_sources(l)
+            sel = torch.ones(n + 1, dtype=torch.bool)
+            if hyper_only:
+                sel[-3:] = False                    # a_{l-1}, m_{l-1}, a_l  (l=0: emb, a_0)
+            yield rw["m"][l], sel
+    if "o" in streams:
+        n = modular_n_sources(num_layers)
+        sel = torch.ones(n, dtype=torch.bool)
+        if hyper_only:
+            sel[-2:] = False
+        yield rw["o"], sel
+
+
+def edge_sparsity_penalty(rw: dict, num_layers: int, kind: str = "l1",
+                          streams=MODULAR_STREAMS, hyper_only: bool = False) -> torch.Tensor:
+    """Sparsity regulariser on the routing entries themselves.
+
+    kind:
+        l1       sum_e mean_tokens |alpha_e|             (edge-wise lasso)
+        sqrt     sum_e sqrt(mean_tokens alpha_e^2 + eps)  (group over tokens:
+                 zero-inducing on an edge for ALL tokens at once, so the edge
+                 can be dropped from the graph rather than gated per token)
+        column   group-lasso over whole source columns (module switch-off),
+                 see ``column_group_penalty``
+    Returns a scalar with grad through alpha. Each edge contributes its mean
+    over batch and time, so lambda is comparable across batch sizes.
+    """
+    if kind == "column":
+        return column_group_penalty(rw, num_layers)
+    assert kind in ("l1", "sqrt"), kind
+    total = None
+    for alpha, sel in _iter_edges(rw, num_layers, streams, hyper_only):
+        if not sel.any():
+            continue
+        a = alpha.float()[..., sel.to(alpha.device)]
+        flat = a.reshape(a.shape[0] * a.shape[1], -1)          # [B*T, edges]
+        term = flat.abs().mean(dim=0).sum() if kind == "l1" else \
+            (flat.pow(2).mean(dim=0) + 1e-8).sqrt().sum()
+        total = term if total is None else total + term
+    return total if total is not None else rw["o"].new_zeros(())
+
+
+@torch.no_grad()
+def edge_sparsity_stats(rw: dict, num_layers: int, eps: float = 1e-2) -> dict[str, float]:
+    """How sparse the connection matrix is: fraction of routing entries with
+    |alpha| < eps (per token), fraction of EDGES whose token-mean |alpha| is
+    below eps (droppable from the graph), mean |alpha|, and the per-token
+    fraction restricted to hyperconnections."""
+    n_all = n_dead = n_edges = n_dead_edges = 0
+    abs_sum = 0.0
+    n_hyper = n_hyper_dead = 0
+    for alpha, sel in _iter_edges(rw, num_layers, MODULAR_STREAMS, hyper_only=False):
+        a = alpha.float().reshape(alpha.shape[0] * alpha.shape[1], -1)
+        n_all += a.numel()
+        n_dead += (a.abs() < eps).sum().item()
+        abs_sum += a.abs().sum().item()
+        per_edge = a.abs().mean(dim=0)
+        n_edges += per_edge.numel()
+        n_dead_edges += (per_edge < eps).sum().item()
+    for alpha, sel in _iter_edges(rw, num_layers, MODULAR_STREAMS, hyper_only=True):
+        if not sel.any():
+            continue
+        a = alpha.float()[..., sel.to(alpha.device)]
+        n_hyper += a.numel()
+        n_hyper_dead += (a.abs() < eps).sum().item()
+    return {
+        "routing/edge_mean_abs": abs_sum / max(n_all, 1),
+        "routing/edge_frac_below_eps": n_dead / max(n_all, 1),
+        "routing/edges_dead_frac": n_dead_edges / max(n_edges, 1),
+        "routing/hyper_frac_below_eps": n_hyper_dead / max(n_hyper, 1),
+    }
+
+
+def threshold_routing(rw: dict, eps: float) -> dict:
+    """Hard-sparsified copy of the routing: entries with |alpha| < eps set to 0.
+    Used at eval to check the penalised matrix works when actually sparsified."""
+    out: dict = {}
+    for k, v in rw.items():
+        if isinstance(v, list):
+            out[k] = [t * (t.abs() >= eps) for t in v]
+        else:
+            out[k] = v * (v.abs() >= eps)
+    return out
+
+
 # ─── Predictor ───────────────────────────────────────────────────────────────
 
 class FourWayModularPredictor(nn.Module):

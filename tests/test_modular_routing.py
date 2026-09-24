@@ -175,3 +175,47 @@ def test_masker_hooks_apply_inside_modular_forward(ids):
     loss.backward()
     for t in masker.unit_types:
         assert masker.gates[t].grad is not None and torch.isfinite(masker.gates[t].grad).all()
+
+
+# ---------------------------------------------------------------------------
+# connection-matrix sparsity regularisation
+# ---------------------------------------------------------------------------
+
+def test_edge_sparsity_penalty_and_stats():
+    from src.model.modular_routing import (
+        edge_sparsity_penalty, edge_sparsity_stats, threshold_routing, _iter_edges,
+    )
+    B, T = 2, 3
+    rw = identity_modular_routing(B, T, L, H, "cpu")
+    n_edges = sum(int(sel.numel()) * (a.shape[2] if a.dim() == 4 else 1)
+                  for a, sel in _iter_edges(rw, L, ("q", "k", "v", "r", "m", "o"), False))
+    # at identity every edge is exactly 1, so the l1 penalty counts the edges
+    assert edge_sparsity_penalty(rw, L, "l1").item() == pytest.approx(n_edges)
+    assert edge_sparsity_penalty(rw, L, "sqrt").item() == pytest.approx(n_edges, rel=1e-4)
+    # hyper-only excludes the sequential edges, so it is strictly smaller and
+    # zero for a 1-layer-lookback model would be... check the count by hand for L=3
+    hyper = edge_sparsity_penalty(rw, L, "l1", hyper_only=True).item()
+    seq_edges = sum(2 * (a.shape[2] if a.dim() == 4 else 1)
+                    for a, sel in _iter_edges(rw, L, ("q", "k", "v", "r", "o"), False)) \
+        + sum(min(3, a.shape[-1]) for a, sel in _iter_edges(rw, L, ("m",), False))
+    assert hyper == pytest.approx(n_edges - seq_edges)
+    # stream restriction
+    assert edge_sparsity_penalty(rw, L, "l1", streams=("o",)).item() == pytest.approx(rw["o"].shape[-1])
+    # column kind delegates to the group lasso
+    assert edge_sparsity_penalty(rw, L, "column").item() == pytest.approx(column_group_penalty(rw, L).item())
+    # gradient flows to alpha
+    rw_g = {k: ([t.clone().requires_grad_(True) for t in v] if isinstance(v, list)
+                else v.clone().requires_grad_(True)) for k, v in rw.items()}
+    edge_sparsity_penalty(rw_g, L, "sqrt").backward()
+    assert rw_g["o"].grad is not None and (rw_g["o"].grad != 0).all()
+    assert rw_g["m"][0].grad is not None
+    # stats + thresholding
+    st = edge_sparsity_stats(rw, L, eps=1e-2)
+    assert st["routing/edge_frac_below_eps"] == 0.0 and st["routing/edge_mean_abs"] == pytest.approx(1.0)
+    rw["o"][..., 0] = 1e-3
+    rw["q"][0][:, :, 0, :] = 0.0
+    st = edge_sparsity_stats(rw, L, eps=1e-2)
+    assert 0 < st["routing/edge_frac_below_eps"] < 1 and 0 < st["routing/edges_dead_frac"] < 1
+    thr = threshold_routing(rw, 1e-2)
+    assert (thr["o"][..., 0] == 0).all() and torch.equal(thr["o"][..., 1:], rw["o"][..., 1:])
+    assert (thr["q"][0][:, :, 0, :] == 0).all()
