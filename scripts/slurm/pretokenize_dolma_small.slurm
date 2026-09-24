@@ -20,6 +20,7 @@ set -u
 cd "${REPO_DIR:-/u/xiaocong/dagformer}"
 mkdir -p logs
 export TOKENIZERS_PARALLELISM=false PYTHONUNBUFFERED=1
+export PYTHONPATH="${REPO_DIR:-/u/xiaocong/dagformer}:${PYTHONPATH:-}"
 export HF_HUB_DOWNLOAD_TIMEOUT=300 HF_HUB_ENABLE_HF_TRANSFER=0 HF_DATASETS_TIMEOUT=300
 export HF_XET_NATIVE=0 HF_HUB_DISABLE_XET=1
 OUT_DIR="${OUT_DIR:-/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b}"
