@@ -1,0 +1,25 @@
+# Versions of the environment the pruning / modular-routing / locality work was
+# run and tested with (conda env "modularity", Python 3.10, CUDA 12.8 wheels).
+# Install torch first from the PyTorch index matching your driver, then the rest:
+#   pip install torch==2.9.0 --index-url https://download.pytorch.org/whl/cu128
+#   pip install -r requirements-train.txt
+torch==2.9.0
+transformers==4.57.1
+datasets==3.6.0
+tokenizers==0.22.1
+huggingface_hub==0.36.0
+safetensors==0.6.2
+accelerate==1.11.0
+einops==0.8.1
+numpy==1.26.4
+pyyaml==6.0.3
+wandb==0.25.1
+zstandard==0.25.0        # pretokenize.py reads dclm .jsonl.zstd shards
+matplotlib==3.10.9       # scripts/plot_prune_pareto.py
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.7.2      # experiments/interp probes
+pytest>=8
+# optional
+# lm_eval==0.4.13         # experiments/results/lmeval harness (pip install "lm_eval[api]==0.4.13")
+# triton==3.5.0           # only for use_triton_kernel (keep off; its backward is missing)
