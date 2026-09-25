@@ -89,17 +89,37 @@ run `cross_layer_patch.py` on the `global` arm: if a global-only model still
 shows zero specificity, the predictor is vestigial by construction and not
 by competition with local routers.
 
-## Experiment 3: recovery under pruning vs a layerwise-router model (queued)
+## Experiment 3: recovery under pruning vs a layerwise-router model (done)
 
 The prune-during-finetune pipeline (`experiments/pruning/`) runs unchanged on
 MUDDFormer through an architecture adapter (`src/pruning/masks.py`,
 `MuddAdapter`; tested in `tests/test_pruning_muddformer.py`). Three
-streamed-Dolma-era 150M checkpoints trained on the same data (MUDDFormer,
-DAGFormer, dense) are pruned to 30 / 50 / 70% of heads and MLP channels while
-finetuning on MathInstruct, plus sparsity-0 controls and frozen-router
-variants (`freeze_predictor=true` freezes `dense_bs` / `dynamic_dense` on
-MUDDFormer and the predictor on DAGFormer). The prediction: at matched
-sparsity the model whose router can re-plan all downstream edges recovers
-more than one whose routers each see only their own layer. Compare within
-this trio only (different data pipeline from the shared models); plot with
-`scripts/plot_prune_pareto.py --families muddformer,dagformerst,baselinest`.
+streamed-Dolma-era 150M checkpoints trained on the same data (MUDDFormer with
+per-layer dynamic-dense routers, DAGFormer, dense) were pruned to 30 / 50 /
+70% of heads and MLP channels while finetuning on MathInstruct, plus
+sparsity-0 controls and frozen-router variants. Domain eval NLL; table and
+figures in `results/exp3/`. Compare within this trio only (different data
+pipeline from the shared models).
+
+| block sparsity | dense | MUDDFormer | DAGFormer | DAG - MUDD | max post-prune damage (MUDD / DAG) |
+|---|---|---|---|---|---|
+| 0% (finetune only) | 2.075 | 1.935 | 1.924 | 0.011 | |
+| 30% | 2.157 | 2.037 | 1.990 | 0.047 | |
+| 50% | 2.273 | 2.153 | 2.087 | 0.066 | 2.433 / 2.410 |
+| 70% | 2.507 | 2.367 | 2.268 | 0.099 | 2.569 / 2.464 |
+| 50%, routers frozen | | 2.150 | 2.078 | 0.072 | |
+
+- Unpruned, the two routed models are equivalent on this domain (0.011
+  nats apart); under pruning the DAGFormer edge over MUDDFormer grows
+  monotonically to 0.10 nats at 70%, and its immediate damage after each
+  pruning step is smaller. So at matched routing granularity and matched
+  unpruned quality, the model routed by an external predictor over all prior
+  layers degrades more gracefully than the model with per-layer routers.
+- Freezing the routers changes nothing for either model (MUDD 2.150 vs
+  2.153, DAG 2.078 vs 2.087). The recovery is done by the backbone weights
+  under a fixed routing pattern, not by routers re-planning. Read together
+  with experiment 2, the advantage is structural (which sources each head
+  can draw on) rather than a property of on-line replanning. Note that for
+  DAGFormer `freeze_predictor` freezes the global predictor while the
+  correction MLPs remain trainable; the MUDDFormer arm freezes all of its
+  routers.

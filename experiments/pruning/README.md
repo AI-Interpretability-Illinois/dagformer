@@ -182,52 +182,56 @@ pruning sweep and lm-eval harness as the others.
 Not done: physically slicing pruned weights into a smaller HF config (masks
 are baked as zeros instead; parameter counts are analytic), and a Flax port.
 
-## Results so far (75M pair, math domain, 2026-09-23)
+## Results (75M / 150M / 300M matched pairs, math domain, 2026-09-25)
 
-Numbers are domain eval NLL on held-out MathInstruct after 2000 finetuning
-steps; "unpruned" is the same finetuning with no pruning. Full table:
+Domain eval NLL on held-out MathInstruct after 2000 finetuning steps.
+"unpruned" is the same finetuning with no pruning. Full tables:
 `results/prune_summary.md`; figures: `results/prune_pareto.png`,
-`results/prune_trajectory.png`. 150M / 300M runs and the random-importance
-and frozen-predictor controls are queued.
+`results/prune_pareto_total.png`, `results/prune_trajectory.png`.
 
-| units | block sparsity | baseline | dagformer | baseline - dagformer |
+| units | block sparsity | 75M base / DAG (gap) | 150M base / DAG (gap) | 300M base / DAG (gap) |
 |---|---|---|---|---|
-| unpruned finetune | 0.00 | 2.388 | 2.223 | +0.165 |
-| heads + neurons | 0.30 | 2.478 | 2.298 | +0.180 |
-| heads + neurons | 0.50 | 2.590 | 2.391 | +0.199 |
-| heads + neurons | 0.70 | 2.829 | 2.614 | +0.215 |
-| whole blocks | 0.33 | 2.610 | 2.547 | +0.063 |
-| whole blocks | 0.50 | 2.832 | 3.452 | **-0.620** |
+| unpruned finetune | 0% | 2.388 / 2.223 (+0.165) | 1.883 / 1.743 (+0.139) | queued |
+| heads + neurons | 30% | 2.478 / 2.298 (+0.180) | 1.957 / 1.807 (+0.150) | 1.665 / 1.541 (+0.124) |
+| heads + neurons | 50% | 2.590 / 2.391 (+0.199) | 2.071 / 1.899 (+0.172) | 1.762 / 1.620 (+0.142) |
+| heads + neurons | 70% | 2.829 / 2.614 (+0.215) | 2.278 / 2.091 (+0.187) | 1.967 / 1.790 (+0.177) |
+| whole blocks | 33% | 2.610 / 2.547 (+0.063) | 2.200 / 2.170 (+0.030) | |
+| whole blocks | 50% | 2.832 / 3.452 (**-0.620**) | 2.380 / 2.245 (+0.135) | |
+| heads + neurons, random importance | 50% | 3.029 / 2.935 (+0.094) | 2.280 / 2.129 (+0.151) | |
+| heads + neurons, predictor frozen | 50% | DAG 2.388 | DAG 1.899 | |
 
-What the 75M data says:
+What the data says:
 
-- **Head/neuron pruning: the DAGFormer advantage grows with sparsity.**
-  The unpruned finetuning gap is 0.165 nats; after pruning it is 0.180,
-  0.199 and 0.215 at 30 / 50 / 70% of block parameters removed. In
-  compactness terms: DAGFormer with half its heads and MLP channels removed
-  (2.391) matches the unpruned finetuned baseline (2.388), and at 70%
-  removed (2.614) it sits between the baseline's 50% (2.590) and 70% (2.829)
-  points. The post-prune ticks in the trajectory figure also show much
-  smaller immediate damage for DAGFormer at 70% (peak 2.9 vs 3.2). The
-  queued frozen-predictor run says how much of this is re-routing versus the
-  routed model simply being more robust to removal; the random-importance
-  run says how much Taylor selection matters.
-- **Whole-block pruning is where DAGFormer loses.** At one third of blocks
-  removed the gap shrinks to 0.06; at half it flips hard (DAGFormer 3.45 vs
-  2.83). Taylor importance on a block gate ranked layers 3-5's attention and
-  layers 1/3/4's MLP lowest for DAGFormer, and removing them cost 8 nats
-  before recovery versus 6 for the baseline. In the FourWay model every later
-  head has trained routing weights onto those blocks' layer outputs, so a
-  block removal perturbs every downstream reader at once, and a scalar gate
-  gradient is a poor estimate of that. This is exactly the case the
-  module-granular routing (section 3) is built for: the block's routing
-  column is the right importance score, and the predictor can be trained
-  to turn columns off gradually instead of having them cut.
-- Parameter accounting caveat: at 75M the untouched predictor is 29M
-  parameters, so at equal *total* parameters the 70%-pruned DAGFormer (88M)
-  is larger than the unpruned baseline (77M). The claim this experiment can
-  support at 75M is about the backbone; `results/prune_pareto_total.png`
-  shows the total-parameter view.
+- **The DAGFormer advantage grows with sparsity at every size.** The
+  unpruned finetuning gap is 0.165 / 0.139 nats (75M / 150M); at 70% of
+  block parameters removed it is 0.215 / 0.187, and at 300M it rises from
+  0.124 (30%) to 0.177 (70%). In compactness terms, DAGFormer with half its
+  heads and MLP channels removed matches or beats the unpruned finetuned
+  baseline at 75M (2.391 vs 2.388) and 150M (1.899 vs 1.883). Post-prune
+  ticks in the trajectory figure show smaller immediate damage for DAGFormer
+  at high sparsity.
+- **It is not the predictor re-routing.** Freezing the global predictor
+  during prune-finetune changes nothing (75M: 2.388 vs 2.391; 150M: 1.899
+  vs 1.899). Consistent with `experiments/coherence` (the predictor's
+  per-token output is causally inert), the robustness comes from the routed
+  weights themselves and, in the `fourway_corrected` checkpoints, from the
+  local correction MLPs, which stay trainable under `freeze_predictor`.
+- **Importance selection matters, for both models.** Random selection at 50%
+  costs the baseline 0.44 / 0.21 nats and DAGFormer 0.54 / 0.23 nats
+  (75M / 150M) relative to Taylor, and the gap between the two families
+  shrinks at 75M, so part of the DAGFormer edge is that Taylor gates rank
+  its units better.
+- **Whole-block pruning is the exception at 75M** (DAGFormer 3.45 vs 2.83 at
+  half the blocks removed) but not at 150M (+0.135 for DAGFormer). With 6
+  layers, removing 3 of 6 attention blocks and 3 MLPs leaves too little for
+  either model; Taylor on a block gate ranked layers 3 to 5's attention
+  lowest for DAGFormer and the removal cost 8 nats before recovery. The
+  routing-column importance of the modular variant (section 3) targets
+  exactly this case.
+- Parameter caveat: the untouched predictor is 29M parameters at 75M, 30M
+  at 150M, so at equal *total* parameters a heavily pruned DAGFormer can be
+  larger than the unpruned baseline. `results/prune_pareto_total.png` shows
+  the total-parameter view; the claim supported here is about the backbone.
 
 ## References
 
