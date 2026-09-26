@@ -31,7 +31,7 @@ routing_sparsity_warmup_frac: 0.5
 routing_sparsity_eval_eps: 0.05      # also report eval/nll_sparsified with |alpha| < eps hard-zeroed
 
 replace_rmsnorm: true
-use_torch_compile: false       # modular forward not yet compile-tested
+use_torch_compile: true        # compile-tested 2026-09-26 (loss identical to eager, ~1.2x faster at 75M); same default as the fourway configs
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

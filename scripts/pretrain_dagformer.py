@@ -674,6 +674,21 @@ def _atomic_torch_save(obj, path: str, **kwargs) -> None:
     os.replace(tmp, path)
 
 
+def _strip_compile_prefix(state: dict) -> dict:
+    """Drop the ``_orig_mod.`` prefixes torch.compile'd modules put on state-dict keys.
+
+    Makes checkpoints independent of whether the run used ``use_torch_compile``
+    (a compiled run can be resumed eagerly and vice versa), and lets the routing
+    filter below recognise the ``olmo.`` base-model keys under a compiled wrapper.
+    """
+    return {k.replace("_orig_mod.", ""): v for k, v in state.items()}
+
+
+def _uncompiled(module: nn.Module) -> nn.Module:
+    """Return the module underneath a ``torch.compile`` wrapper (or the module itself)."""
+    return getattr(module, "_orig_mod", module)
+
+
 def save_checkpoint(
     save_dir: str,
     step: int,
@@ -697,10 +712,13 @@ def save_checkpoint(
         "model_state_path": model_path,
     }
     if predictor is not None:
-        state["predictor_state_dict"] = predictor.state_dict()
+        state["predictor_state_dict"] = _strip_compile_prefix(predictor.state_dict())
     if routing_model is not None:
-        # Save only routing params (not base model, which is saved separately)
-        routing_state = {k: v for k, v in routing_model.state_dict().items()
+        # Save only routing params (not base model, which is saved separately).
+        # Strip the compile prefix first: under torch.compile the keys are
+        # "_orig_mod.olmo...." and the filter used to miss them, silently adding a
+        # second copy of the whole base model to every checkpoint.
+        routing_state = {k: v for k, v in _strip_compile_prefix(routing_model.state_dict()).items()
                          if not k.startswith("olmo.")}
         state["routing_state_dict"] = routing_state
     _atomic_torch_save(state, path)
@@ -1307,9 +1325,11 @@ def main() -> None:
             print(f"Resuming from {resume_path}")
         ckpt = torch.load(resume_path, map_location=device)
 
-        # Load predictor
+        # Load predictor (prefix-agnostic: works for checkpoints written with or
+        # without torch.compile, into a compiled or eager module)
         if "predictor_state_dict" in ckpt:
-            combined_raw.predictor.load_state_dict(ckpt["predictor_state_dict"])
+            _uncompiled(combined_raw.predictor).load_state_dict(
+                _strip_compile_prefix(ckpt["predictor_state_dict"]))
 
         # Load base model — FourWay wraps OLMo under .olmo, need to load into inner model
         model_state = None
@@ -1321,15 +1341,15 @@ def main() -> None:
         if model_state is not None:
             if use_fourway:
                 # FourWay: combined_raw.base_model is FourWayDAGFormer, real OLMo at .olmo
-                combined_raw.base_model.olmo.load_state_dict(model_state)
+                _uncompiled(combined_raw.base_model).olmo.load_state_dict(model_state)
             else:
                 combined_raw.base_model.load_state_dict(model_state)
             del model_state
 
         # Load routing state (correction MLPs, v_norms — may be empty for pure fourway)
         if use_fourway and "routing_state_dict" in ckpt and len(ckpt["routing_state_dict"]) > 0:
-            m, u = combined_raw.base_model.load_state_dict(
-                ckpt["routing_state_dict"], strict=False
+            m, u = _uncompiled(combined_raw.base_model).load_state_dict(
+                _strip_compile_prefix(ckpt["routing_state_dict"]), strict=False
             )
             if is_main:
                 print(f"  Routing state loaded: {len(ckpt['routing_state_dict'])} keys "
