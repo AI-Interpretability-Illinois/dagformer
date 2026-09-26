@@ -1,0 +1,69 @@
+# Machine-local copy of pretrain_75m_dagformer_modular.yaml for timan1 (3x RTX A6000, GPUs 1,2,3), on the
+# 12B-token Dolma v1.7 stream prefix (same recipe as the original /work/hdd/bfqt/data/pretok/dolma_v1_7_12b corpus:
+# scripts/pretokenize.py --dataset-version v1_7 --token-budget 12000000000 --seq-len 1024 --seed 0).
+# Identical to the original except mmap_index_path / save_dir (local disk) and
+# gradient_accumulation_steps 32 -> 43 so 3 GPUs keep the 512-seq global batch (516) and 1.5B-token budget (1.59B).
+
+# FourWay-Modular DAGFormer 75M: every inter-module edge (incl. attn->MLP) is routed.
+# Same architecture as 75M baseline + routing predictor
+# Chinchilla-optimal 1.5B tokens
+# Wall time estimate: ~5h on 4× A40
+
+hidden_size: 512
+num_hidden_layers: 6
+num_attention_heads: 8
+intermediate_size: 2048
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+routing_mode: "fourway_modular"   # module-granular sources, all-ones identity (src/model/modular_routing.py)
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+routing_column_group_lambda: 0.0   # >0: group-lasso on source columns (lets the predictor switch modules off)
+# Sparsity regularisation on the connection matrix (all off by default):
+routing_sparsity_lambda: 0.0         # coefficient; e.g. 0.01-0.05 with kind=sqrt
+routing_sparsity_kind: "sqrt"        # l1 (per token) | sqrt (per edge over tokens: drops edges from the graph) | column (module switch-off)
+routing_sparsity_hyper_only: true    # leave the vanilla transformer's sequential edges unpenalised
+routing_sparsity_streams: "q,k,v,r,m,o"
+routing_sparsity_start_frac: 0.1     # ramp the penalty in linearly between these fractions of training
+routing_sparsity_warmup_frac: 0.5
+routing_sparsity_eval_eps: 0.05      # also report eval/nll_sparsified with |alpha| < eps hard-zeroed
+
+replace_rmsnorm: true
+use_torch_compile: false       # modular forward not yet compile-tested
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/srv/local/xy51/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 43
+total_steps: 3000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "dagformer-75m-modular-dolma12b"
+log_every: 10
+save_every: 1500
+save_dir: "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_modular_dolma12b"
