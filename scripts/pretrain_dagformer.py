@@ -1683,6 +1683,9 @@ def main() -> None:
                 all_params = list(combined_raw.base_model.parameters()) + \
                     list(combined_raw.predictor.parameters())
             total_norm = torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
+            if os.environ.get("DDP_DEBUG") and global_step <= 10:
+                print(f"[DDP_DEBUG rank {local_rank}] step {global_step} total_norm={float(total_norm):.6f} "
+                      f"n_params_with_grad={sum(1 for p in all_params if p.grad is not None)}/{len(all_params)}", flush=True)
 
             # NaN/Inf guard. One non-finite grad element is fatal AND permanent:
             # clip_grad_norm_ turns total_norm=inf into clip_coef=0, so inf*0=NaN
@@ -1713,11 +1716,18 @@ def main() -> None:
         # DDP sync check: verify all GPUs have identical parameters
         if world_size > 1 and global_step == 10:
             param = next(base_model.parameters())
-            param_sum = param.data.sum().clone()
+            # Accumulate in float64. With bf16 params a bf16 sum + bf16 all-reduce
+            # rounds (e.g. 3 x -38.75 = -116.25 is not representable in bf16 and
+            # becomes -116.0), reporting a spurious "divergence" while every rank
+            # holds bit-identical params. Seen 2026-09-25 on a 3-GPU 75M run.
+            local_sum = param.data.detach().double().sum()
+            param_sum = local_sum.clone()
             dist.all_reduce(param_sum, op=dist.ReduceOp.SUM)
             mean_val = param_sum.item() / world_size
-            local_val = next(base_model.parameters()).data.sum().item()
+            local_val = local_sum.item()
             diff = abs(local_val - mean_val)
+            if os.environ.get("DDP_DEBUG"):
+                print(f"[DDP CHECK rank {local_rank}] local_sum={local_val:.6f} mean={mean_val:.6f}", flush=True)
             if local_rank == 0:
                 if diff < 1e-6:
                     print(f"[DDP CHECK @ step 10] PASS — params identical across {world_size} GPUs (diff={diff:.2e})")
