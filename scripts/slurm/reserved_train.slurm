@@ -64,10 +64,13 @@ LEAVING=0
 on_usr1() {
     log "SIGUSR1: asking the trainer to checkpoint and exit"
     LEAVING=1
-    # signal the python workers only (not torchrun itself, whose default USR1 action is to die)
-    for pid in $(pgrep -f "scripts/pretrain_(dagformer|baseline).py"); do
-        tr '\0' ' ' < /proc/$pid/cmdline 2>/dev/null | grep -q torchrun || kill -USR1 "$pid" 2>/dev/null
-    done
+    # signal only the rank processes (torchrun's direct children); NOT torchrun
+    # itself (default USR1 action is to die) and NOT the DataLoader worker
+    # forks, which share the cmdline -- signalling them made a worker exit and
+    # crashed rank 0 mid-save on 2026-09-27.
+    if [ -n "$trainer_pid" ]; then
+        for pid in $(pgrep -P "$trainer_pid"); do kill -USR1 "$pid" 2>/dev/null; done
+    fi
 }
 trap on_usr1 SIGUSR1
 

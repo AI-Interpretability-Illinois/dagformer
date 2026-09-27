@@ -1419,24 +1419,27 @@ def main() -> None:
         print(f"CSV logging to: {csv_path}")
 
     # Signal handler for SLURM preemption
+    # Graceful stop: the handler only raises a flag. Saving inside the handler
+    # (mid-step, while other ranks exit and torchrun tears the group down) left
+    # truncated *_model.pt.tmp files on 2026-09-27. The training loop checks the
+    # flag after each optimizer step: rank 0 writes a checkpoint, every rank
+    # passes a barrier, and all exit 0 together.
+    stop_requested = {"flag": False, "signum": 0}
+
     def save_on_signal(signum: int, frame: Any) -> None:
+        stop_requested["flag"] = True
+        stop_requested["signum"] = signum
         if is_main:
-            print(f"\nSignal {signum}, saving checkpoint...")
-            if use_fourway:
-                save_checkpoint(
-                    config.save_dir, global_step,
-                    base_model, fourway_predictor,
-                    optimizer, best_eval_nll,
-                    routing_model=fourway_model,
-                )
-            else:
-                save_checkpoint(
-                    config.save_dir, global_step,
-                    base_model, predictor,
-                    optimizer, best_eval_nll,
-                    routing_model=routing_model if use_routing_mode else None,
-                )
-        raise SystemExit(0)
+            print(f"\nSignal {signum}: will checkpoint at the end of this step and exit", flush=True)
+
+    def _save_now() -> None:
+        if use_fourway:
+            save_checkpoint(config.save_dir, global_step, base_model, fourway_predictor,
+                            optimizer, best_eval_nll, routing_model=fourway_model)
+        else:
+            save_checkpoint(config.save_dir, global_step, base_model, predictor,
+                            optimizer, best_eval_nll,
+                            routing_model=routing_model if use_routing_mode else None)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
     # SLURM sends SIGTERM on scancel/timeout by default (SIGUSR1 only if the batch
@@ -1965,6 +1968,18 @@ def main() -> None:
                     routing_model=routing_model if use_routing_mode else None,
                 )
             cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
+
+        if stop_requested["flag"]:
+            if is_main:
+                _save_now()
+                print(f"Stopped on signal {stop_requested['signum']} after step {global_step}; "
+                      f"resume with the same config.", flush=True)
+            if world_size > 1:
+                dist.barrier()
+            finish_wandb(wandb_run)
+            if world_size > 1:
+                dist.destroy_process_group()
+            return
 
         global_step += 1
 

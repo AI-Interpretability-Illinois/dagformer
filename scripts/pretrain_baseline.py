@@ -506,11 +506,15 @@ def main() -> None:
         print(f"CSV logging to: {csv_path}")
 
     # Signal handler for SLURM preemption
+    # Graceful stop (see pretrain_dagformer.py): the handler raises a flag, the
+    # loop checkpoints at the end of the current step and all ranks exit together.
+    stop_requested = {"flag": False, "signum": 0}
+
     def save_on_signal(signum: int, frame: Any) -> None:
+        stop_requested["flag"] = True
+        stop_requested["signum"] = signum
         if is_main:
-            print(f"\nSignal {signum}, saving checkpoint...")
-            save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
-        raise SystemExit(0)
+            print(f"\nSignal {signum}: will checkpoint at the end of this step and exit", flush=True)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
     # SLURM sends SIGTERM on scancel/timeout by default (SIGUSR1 only if the batch
@@ -630,6 +634,18 @@ def main() -> None:
         if is_main and global_step > 0 and global_step % config.save_every == 0:
             save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
             cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
+
+        if stop_requested["flag"]:
+            if is_main:
+                save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
+                print(f"Stopped on signal {stop_requested['signum']} after step {global_step}; "
+                      f"resume with the same config.", flush=True)
+            if world_size > 1:
+                dist.barrier()
+            finish_wandb(wandb_run)
+            if world_size > 1:
+                dist.destroy_process_group()
+            return
 
         global_step += 1
 
