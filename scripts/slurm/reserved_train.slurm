@@ -58,6 +58,16 @@ if [ ! -f "$STOP" ]; then
         && log "queued successor $nxt"
 fi
 
+# ---- reservation idle guard (scripts/slurm/resv_watchdog.sh) --------------
+# Runs here on the compute node every 60 s (NCSA kills login-node processes at
+# 7 days / 30 min CPU): e-mails the owner if a reserved node has had no allocated
+# GPU for 5 min and re-queues the GPU fillers. Killed before the final `wait`.
+guard_pid=""
+if [ -f scripts/slurm/resv_watchdog.sh ]; then
+    ( while sleep 60; do bash scripts/slurm/resv_watchdog.sh >/dev/null 2>&1; done ) &
+    guard_pid=$!
+fi
+
 # ---- SIGUSR1 (15 min before the limit): checkpoint and leave ---------------
 trainer_pid=""
 LEAVING=0
@@ -166,5 +176,6 @@ done < "$QUEUE"
 
 log "queue exhausted; no further successors (STOP written); waiting for the tokenizer if still running"
 touch "$STOP"
+[ -n "$guard_pid" ] && kill "$guard_pid" 2>/dev/null   # the guard loop would block the wait below
 wait
 log "all done"
