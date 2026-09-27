@@ -436,6 +436,14 @@ def run(args: argparse.Namespace) -> None:
     dataset, provenance = build_source_and_provenance(
         args.dataset, args.dataset_version, args.seed
     )
+    if args.num_shards > 1:
+        # Parallel tokenization: each worker takes a disjoint file-level shard of
+        # the stream (HF IterableDataset.shard) and its share of the budget; the
+        # worker dirs are merged into one corpus by scripts/merge_pretok_shards.py.
+        assert 0 <= args.shard_index < args.num_shards, (args.shard_index, args.num_shards)
+        dataset = dataset.shard(num_shards=args.num_shards, index=args.shard_index)
+        args.token_budget = int(args.token_budget) // args.num_shards
+        provenance["stream_shard"] = {"num_shards": args.num_shards, "index": args.shard_index}
     provenance["tokenizer_id"] = args.tokenizer_id
     provenance["token_budget"] = int(args.token_budget)
     provenance["seq_len"] = args.seq_len
@@ -499,6 +507,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seq-len", type=int, default=1024)
     p.add_argument("--tokenizer-id", default="allenai/OLMo-2-0425-1B")
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--num-shards", type=int, default=1, help="parallel workers over the stream (file-level shards)")
+    p.add_argument("--shard-index", type=int, default=0)
     p.add_argument(
         "--shard-tokens",
         type=int,

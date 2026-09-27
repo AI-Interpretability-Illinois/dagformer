@@ -1,0 +1,58 @@
+# 1B fourway_corrected on the reserved A100x4 node. 4 GPUs x micro 1 x accum 128 x 1024 = 524,288 tokens/step;
+# 38160 steps = 20B tokens (Chinchilla-optimal for 1B, same recipe as the 8xH200 olmo-mix runs).
+# Data: Dolma v1.7, 21B tokens tokenized in parallel on the same node (scripts/slurm/reserved_train.slurm).
+# Resumes from the latest checkpoint in save_dir; save every 250 steps (~30 min).
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+routing_mode: "fourway_corrected"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+use_v_norm: true
+routing_column_group_lambda: 0.0
+routing_sparsity_lambda: 0.0
+
+replace_rmsnorm: true
+use_torch_compile: false
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 1
+gradient_accumulation_steps: 128
+total_steps: 38160
+lr: 4e-4
+predictor_lr: 2e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 1000
+max_grad_norm: 1.0
+lr_schedule: "linear"
+lr_decay_steps: 38160
+
+eval_skip: 0
+eval_size: 200          # eval_cache.pt (200 windows split off the corpus tail) is copied into save_dir by the launcher
+eval_every: 1000
+
+wandb_project: "dagformer"
+wandb_run_name: "1b-fourway_corrected-dolma20b"
+log_every: 10
+save_every: 250
+keep_last_n: 2
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected"
