@@ -1,0 +1,56 @@
+# 300M fourway_modular on the reserved A100x4 node gpua047. 4 GPUs x micro 4 x accum 32 x 1024 = 524,288 tokens/step;
+# 12000 steps = 6.3B tokens (Chinchilla-optimal for 300M, same recipe as the shared 300M models).
+# Data: the 21B-token Dolma v1.7 corpus built by the 1B chain on gpua046 (shared on /work).
+hidden_size: 1024
+num_hidden_layers: 12
+num_attention_heads: 16
+intermediate_size: 4096
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+routing_mode: "fourway_modular"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+use_v_norm: true
+routing_column_group_lambda: 0.0
+routing_sparsity_lambda: 0.0
+
+replace_rmsnorm: true
+use_torch_compile: false
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 32
+total_steps: 12000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 0
+eval_size: 200
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "300m-fourway_modular-dolma6b"
+log_every: 10
+save_every: 250
+keep_last_n: 2
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular"

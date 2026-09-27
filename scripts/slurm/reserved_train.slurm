@@ -27,7 +27,9 @@
 # node's CPUs while the GPUs work through the 75M items; the 1B items wait
 # for the corpus index.
 #
-#   sbatch --begin=2026-09-26T20:00:00 scripts/slurm/reserved_train.slurm
+#   sbatch --begin=2026-09-26T20:00:00 scripts/slurm/reserved_train.slurm            # 1B chain on gpua046
+#   sbatch --nodelist=gpua047 --job-name=resv_train_300m \
+#          --export=ALL,QUEUE=experiments/pretrain_300m/queue.txt,TOKENIZE=0 scripts/slurm/reserved_train.slurm
 #   Queue: experiments/pretrain_1b/queue.txt   (one item per line:
 #          config=<yaml> [script=<trainer.py>] [wait=<path>] [eval=<eval_cache.pt>] [fallback=<yaml>])
 #   Stop the chain: touch experiments/pretrain_1b/STOP  (finishes the current item's save, no successor)
@@ -38,9 +40,10 @@ export PYTHONPATH="$PWD:${PYTHONPATH:-}" HF_HUB_OFFLINE=0 TOKENIZERS_PARALLELISM
 export WANDB_MODE="${WANDB_MODE:-offline}" OMP_NUM_THREADS=4
 export HF_HUB_DOWNLOAD_TIMEOUT=300 HF_HUB_ENABLE_HF_TRANSFER=0 HF_DATASETS_TIMEOUT=300 HF_XET_NATIVE=0 HF_HUB_DISABLE_XET=1
 QUEUE=${QUEUE:-experiments/pretrain_1b/queue.txt}
-STOP=experiments/pretrain_1b/STOP
+STOP=${STOP:-$(dirname "$QUEUE")/STOP}
 DATA21=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b
 N_TOK_WORKERS=${N_TOK_WORKERS:-8}
+TOKENIZE=${TOKENIZE:-1}          # 0: another job builds the corpus; never touch its worker dirs
 log() { echo "[$(date '+%F %T')] $*"; }
 
 log "job $SLURM_JOB_ID on $(hostname), GPUs=${CUDA_VISIBLE_DEVICES:-?}, cpus=$SLURM_CPUS_PER_TASK"
@@ -48,7 +51,10 @@ nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 
 # ---- successor: keep the node busy across the 48h limit -------------------
 if [ ! -f "$STOP" ]; then
-    nxt=$(sbatch --parsable --dependency=afterany:$SLURM_JOB_ID --export=ALL "$0") && log "queued successor $nxt"
+    # same node, same name, same env (QUEUE / STOP / TOKENIZE) as this job
+    nxt=$(sbatch --parsable --dependency=afterany:$SLURM_JOB_ID --nodelist="$(hostname -s)" \
+          --job-name="$SLURM_JOB_NAME" --export=ALL,QUEUE="$QUEUE",STOP="$STOP",TOKENIZE="$TOKENIZE" "$0") \
+        && log "queued successor $nxt"
 fi
 
 # ---- SIGUSR1 (15 min before the limit): checkpoint and leave ---------------
@@ -85,7 +91,7 @@ tokenize_bg() {
     python3 scripts/split_eval_from_mmap.py --index-dir "$DATA21" --n-windows 200 --out "$DATA21/eval_cache.pt" && \
     log "corpus ready: $(python3 -c "import json;print(json.load(open('$DATA21/index.json'))['total_tokens'])") tokens"
 }
-tokenize_bg > logs/pretok21b_driver_$SLURM_JOB_ID.log 2>&1 &
+if [ "$TOKENIZE" = 1 ]; then tokenize_bg > logs/pretok21b_driver_$SLURM_JOB_ID.log 2>&1 & fi
 
 # ---- the queue ------------------------------------------------------------
 run_item() {   # config script wait eval fallback
