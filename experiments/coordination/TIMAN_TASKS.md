@@ -19,7 +19,14 @@ Both places now have a 300M modular run, on different corpora (12B local vs
 21B Delta). That is a replication at two data budgets, not waste, provided
 the *pair* exists on each corpus (see task 2).
 
-## Task 1 (timan1, GPUs 1-2 now): 150M prune-during-finetune sweep
+## Task 1 (timan1): 150M prune-during-finetune sweep -- STARTED BY THE DELTA SESSION 2026-09-27 17:00 CDT
+
+Running as three `prune_worker.sh` workers on GPUs 1-3 over
+`/srv/local/xy51/prune/runlist_150m.txt` (20 runs, same protocol as the 75M
+sweep; configs `configs/prune/150m_{dense,fourway,modular}_math_timan1.yaml`,
+models `/srv/local/xy51/prune/models/150m-*`, logs
+`/srv/local/xy51/logs/prune/`). Do not launch a second copy; the workers skip
+finished runs and lock the rest. Delta will collect and commit the results.
 
 Exactly the 75M protocol (`experiments/results/pruning/timan1_75m_math/README.md`,
 its `runlist.txt` and `configs/prune/75m_*_math_timan1.yaml`) applied to the
