@@ -1,12 +1,11 @@
-# Reserved-node queue (scripts/slurm/reserved_train.slurm). Items are skipped once <save_dir>/DONE exists.
-# 75M items first (data already exists) while the 21B-token corpus is tokenized in the background.
+# gpua046: remaining 75M locality arms -> 1B dense baseline (5B tokens) -> the 300M-selected routed 1B (5B tokens).
+# The two routed items wait for experiments/pretrain_1b/CHOSEN (written by compare_300m.sh on gpua047); the loser is skipped.
 config=configs/locality/75m_modular.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/locality/75m_global.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/locality/75m_local.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/locality/75m_both.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/locality/75m_per_layer.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/locality/75m_dense.yaml script=scripts/pretrain_baseline.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
-# 1B sequence: modular -> corrected -> modular_corrected (20B tokens each; micro 1 fallback if micro 2 OOMs)
-config=configs/pretrain_1b/1b_fourway_modular_mb2.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_modular_mb1.yaml
-config=configs/pretrain_1b/1b_fourway_corrected_mb2.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_corrected_mb1.yaml
-config=configs/pretrain_1b/1b_fourway_modular_corrected_mb2.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_modular_corrected_mb1.yaml
+config=configs/pretrain_1b/1b_dense_5b_mb2.yaml script=scripts/pretrain_baseline.py wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_dense_5b_mb1.yaml
+config=configs/pretrain_1b/1b_fourway_modular_5b_mb2.yaml wait=experiments/pretrain_1b/CHOSEN skipif=experiments/pretrain_1b/CHOSEN_NOT_fourway_modular eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_modular_5b_mb1.yaml
+config=configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml wait=experiments/pretrain_1b/CHOSEN skipif=experiments/pretrain_1b/CHOSEN_NOT_fourway_corrected eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_corrected_5b_mb1.yaml

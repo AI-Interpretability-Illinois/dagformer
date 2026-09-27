@@ -1,6 +1,6 @@
-# gpua047 queue (scripts/slurm/reserved_train.slurm, TOKENIZE=0). Fill item first, then the 300M sequence
-# which waits for the 21B corpus built by the 1B chain on gpua046.
+# gpua047: 300M fourway_modular (running) -> fourway_corrected -> compare both (writes the 1B decision) -> modular_corrected.
 config=configs/locality/75m_modular_sparse.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
 config=configs/pretrain_300m/300m_fourway_modular_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_modular_mb2.yaml
 config=configs/pretrain_300m/300m_fourway_corrected_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_corrected_mb2.yaml
+task=bash scripts/compare_300m.sh done=experiments/pretrain_300m/COMPARE_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/DONE
 config=configs/pretrain_300m/300m_fourway_modular_corrected_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_modular_corrected_mb2.yaml

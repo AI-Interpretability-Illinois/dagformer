@@ -31,7 +31,8 @@
 #   sbatch --nodelist=gpua047 --job-name=resv_train_300m \
 #          --export=ALL,QUEUE=experiments/pretrain_300m/queue.txt,TOKENIZE=0 scripts/slurm/reserved_train.slurm
 #   Queue: experiments/pretrain_1b/queue.txt   (one item per line:
-#          config=<yaml> [script=<trainer.py>] [wait=<path>] [eval=<eval_cache.pt>] [fallback=<yaml>])
+#          config=<yaml> [script=<trainer.py>] [wait=<path>] [eval=<eval_cache.pt>] [fallback=<yaml>] [skipif=<path>]
+#          task=<shell command> done=<marker path> [wait=<path>]     a non-training step, e.g. an eval)
 #   Stop the chain: touch experiments/pretrain_1b/STOP  (finishes the current item's save, no successor)
 set -uo pipefail
 cd "${REPO_DIR:-/u/xiaocong/dagformer}"
@@ -94,8 +95,18 @@ tokenize_bg() {
 if [ "$TOKENIZE" = 1 ]; then tokenize_bg > logs/pretok21b_driver_$SLURM_JOB_ID.log 2>&1 & fi
 
 # ---- the queue ------------------------------------------------------------
-run_item() {   # config script wait eval fallback
-    local cfg=$1 script=$2 waitfor=$3 evalc=$4 fallback=$5
+run_task() {   # cmd done_marker wait
+    local cmd=$1 marker=$2 waitfor=$3
+    [ -f "$marker" ] && { log "skip (done): task $cmd"; return 0; }
+    if [ -n "$waitfor" ]; then
+        while [ ! -f "$waitfor" ]; do [ -f "$STOP" ] && return 0; sleep 60; done
+    fi
+    log "=== task: $cmd"
+    if bash -c "$cmd"; then touch "$marker"; log "=== task done"; else log "TASK FAILED: $cmd"; fi
+}
+
+run_item() {   # config script wait eval fallback skipif
+    local cfg=$1 script=$2 waitfor=$3 evalc=$4 fallback=$5 skipif=$6
     local save_dir total
     save_dir=$(python3 -c "import yaml;print(yaml.safe_load(open('$cfg'))['save_dir'])")
     total=$(python3 -c "import yaml;print(yaml.safe_load(open('$cfg'))['total_steps'])")
@@ -104,6 +115,7 @@ run_item() {   # config script wait eval fallback
     if [ -n "$waitfor" ]; then
         while [ ! -f "$waitfor" ]; do [ -f "$STOP" ] && return 0; sleep 60; done
     fi
+    [ -n "$skipif" ] && [ -f "$skipif" ] && { log "skip ($skipif exists): $cfg"; return 0; }
     [ -n "$evalc" ] && [ ! -f "$save_dir/eval_cache.pt" ] && cp "$evalc" "$save_dir/eval_cache.pt"
     local attempt=0
     while [ $attempt -lt 3 ]; do
@@ -124,7 +136,7 @@ run_item() {   # config script wait eval fallback
     done
     if [ -n "$fallback" ] && [ ! -f "$save_dir/DONE" ]; then
         log "falling back to $fallback"
-        run_item "$fallback" "$script" "" "$evalc" ""
+        run_item "$fallback" "$script" "" "$evalc" "" ""
     else
         log "GIVING UP on $cfg after 3 attempts"
     fi
@@ -134,14 +146,19 @@ while read -r line; do
     [ -z "$line" ] && continue
     case "$line" in \#*) continue;; esac
     [ -f "$STOP" ] && { log "STOP present, leaving queue"; break; }
-    cfg=""; script=scripts/pretrain_dagformer.py; waitfor=""; evalc=""; fallback=""
+    cfg=""; script=scripts/pretrain_dagformer.py; waitfor=""; evalc=""; fallback=""; skipif=""; task=""; marker=""
+    case "$line" in task=*)
+        task=${line#task=}; task=${task%% done=*}
+        marker=$(sed -n 's/.* done=\([^ ]*\).*/\1/p' <<<"$line"); waitfor=$(sed -n 's/.* wait=\([^ ]*\).*/\1/p' <<<"$line")
+        run_task "$task" "$marker" "$waitfor"; continue;;
+    esac
     for kv in $line; do
         case "$kv" in
             config=*) cfg=${kv#config=};; script=*) script=${kv#script=};; wait=*) waitfor=${kv#wait=};;
-            eval=*) evalc=${kv#eval=};; fallback=*) fallback=${kv#fallback=};;
+            eval=*) evalc=${kv#eval=};; fallback=*) fallback=${kv#fallback=};; skipif=*) skipif=${kv#skipif=};;
         esac
     done
-    run_item "$cfg" "$script" "$waitfor" "$evalc" "$fallback"
+    run_item "$cfg" "$script" "$waitfor" "$evalc" "$fallback" "$skipif"
 done < "$QUEUE"
 
 log "queue exhausted; no further successors (STOP written); waiting for the tokenizer if still running"
