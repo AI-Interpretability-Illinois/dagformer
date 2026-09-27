@@ -1,79 +1,64 @@
-# Tasks for the timan1 / timan108 sessions (from the Delta coordinator)
+# Coordination: timan1 / timan108 sessions and the Delta chains
 
-Written 2026-09-27 by the Delta session. Pull `pruning/gradual-finetune` with
-`git pull --rebase` first (origin >= `ef321ca`). Commit only under
-`experiments/results/timan1/` or `experiments/results/timan108/` and push
-with `git pull --rebase && git push`, so nothing collides with the Delta
-commits (which touch `experiments/pruning`, `experiments/coherence`,
-`experiments/pretrain_*`).
+Updated 2026-09-27 17:10 CDT by the Delta session (`dagformer-53`), after
+reading the timan state over ssh. Home (`/home/xy51`, shared by both timan
+hosts) is at 100% of its 10T quota with ~43G free: keep every checkpoint,
+cache and log under `/srv/local/xy51` as you already do, and keep commits
+small.
 
-Inputs you have that Delta does not: finished 75M (timan108) and 150M
-(timan1) pretraining triples, dense / `fourway_corrected` / `fourway_modular`,
-on the same 12B-token Dolma slice. Delta is busy with 300M and 1B and cannot
-take these.
+## State (what already exists, do not redo)
 
-## Task A: held-out NLL + lm-eval for the finished triples (short, do first)
+| where | done | running |
+|---|---|---|
+| timan1 (4x A6000; GPU0 holds another user's 34 GB vLLM, GPU3 7.6 GB of another user) | 75M + 150M triples dense / fourway_corrected / fourway_modular on the local 12B Dolma corpus; lm-eval + held-out NLL (`experiments/results/lmeval/timan1_dolma12b/`); the full 75M prune-during-finetune sweep incl. `routing_column` (`experiments/results/pruning/timan1_75m_math/`) | nothing on GPUs 1-3 |
+| timan108 (4x A5000 24 GB) | | 300M `fourway_modular`, 12B corpus, step ~5460/12000 (~2.4 days left) |
+| Delta gpua046 (4x A100) | 75M locality arms (global / local / both / per_layer / dense / modular / modular_sparse) on a 1.7B slice | 1B dense baseline, 5B tokens (~Sep 28 05:00), then the 300M-selected routed 1B at 5B tokens |
+| Delta gpua047 (4x A100) | | 300M `fourway_modular` -> `fourway_corrected` on a 21B corpus, then an automatic comparison that picks the 1B architecture, then `modular_corrected` |
 
-```bash
-export PYTHONPATH=$PWD HF_HUB_OFFLINE=1
-# held-out NLL on four caches (build the caches once with scripts/pretokenize_domain.py
-# --recipe mathinstruct|gsm8k|wikitext2 if you do not have them; the Dolma eval cache
-# is the one your training runs used)
-python scripts/eval_pretrained.py \
-    --model <dir of dense run> --config <its config.yaml> \
-    --model <dir of fourway_corrected run> --config <its config.yaml> \
-    --model <dir of fourway_modular run> --config <its config.yaml> \
-    --eval dolma=<train eval_cache.pt> --eval wikitext2=<wikitext2/eval_cache.pt> \
-    --eval mathinstruct=<mathinstruct/eval_cache.pt> --eval gsm8k=<gsm8k/eval_cache.pt> \
-    --out experiments/results/timan<N>/eval_<size>.json
-# lm-eval reasoning suite (lm-eval 0.4.13): experiments/results/lmeval/run_eval.py
-# expects <root>/<name>/{config.yaml,checkpoint.pt}; make such dirs with symlinks
-# (checkpoint.pt -> checkpoint_step<last>.pt, plus the *_model.pt side file for routed runs)
-# and run:  python experiments/results/lmeval/run_eval.py --root <root> --model all --suite reasoning
-```
+Both places now have a 300M modular run, on different corpora (12B local vs
+21B Delta). That is a replication at two data budgets, not waste, provided
+the *pair* exists on each corpus (see task 2).
 
-Report: one table per size, dense / corrected / modular, NLL on the four
-caches + the reasoning-suite accuracies. This is the size-scaling counterpart
-of the 300M comparison Delta will produce (`experiments/pretrain_300m/eval_300m.md`).
+## Task 1 (timan1, GPUs 1-2 now): 150M prune-during-finetune sweep
 
-## Task B: prune-during-finetune on the triples (the routing-column experiment)
+Exactly the 75M protocol (`experiments/results/pruning/timan1_75m_math/README.md`,
+its `runlist.txt` and `configs/prune/75m_*_math_timan1.yaml`) applied to the
+150M triple in `/srv/local/xy51/checkpoints/pretrain_150m_*_dolma12b`:
+s0 / s30 / s50 / s70 heads+neurons for the three families, whole blocks at
+33% / 50% for the three families, plus `routing_column` for the modular ones.
+Use `configs/prune/150m_*_math.yaml` as the hyperparameter base (micro 8 x
+accum 4; drop to micro 4 x accum 8 if the A6000 is short on memory), 1 GPU
+per run. Commit under `experiments/results/pruning/timan1_150m_math/` with
+the same README layout as the 75M one. The 75M result to test at 150M: the
+modular advantage appearing at 70% (2.551 vs 2.669 vs 2.815) and the
+whole-block picture (modular Taylor best at 50%, routing_column best at 33%).
 
-The pipeline is architecture-agnostic; see `experiments/pruning/README.md`.
-Per size, 1 GPU per run, ~15 min (75M) / ~35 min (150M) each:
+## Task 2 (timan108, after its 300M modular finishes): the 300M pair on the 12B corpus
 
-```bash
-# model dirs: <dir>/config.yaml + <dir>/checkpoint.pt (symlink to the last checkpoint;
-# routed runs also need the checkpoint_step<N>_model.pt side file next to it)
-R=experiments/results/timan<N>/prune
-for fam in dense corrected modular; do for s in 0.0 0.3 0.5 0.7; do
-  python scripts/prune_finetune.py --config configs/prune/75m_dagformer_math.yaml \
-     --override model_dir=<dir of $fam run> --override target_sparsity=$s \
-     --override train_index_path=<mathinstruct/train> --override eval_cache_path=<mathinstruct/eval_cache.pt> \
-     --override general_eval_cache_path=<wikitext2/eval_cache.pt> \
-     --override save_dir=$R/<size>_${fam}_math_s$(python -c "print(int($s*100))")
-done; done
-# modular only: whole-block pruning scored by routing column mass vs by Taylor
-for imp in routing_column taylor; do for s in 0.33 0.5; do
-  python scripts/prune_finetune.py --config configs/prune/75m_dagformer_math.yaml \
-     --override model_dir=<dir of modular run> --override "prune_units=[attn,mlp]" \
-     --override "min_alive_per_layer={}" --override importance=$imp --override target_sparsity=$s \
-     ... (same data overrides) --override save_dir=$R/<size>_modular_math_mod_s$(python -c "print(int(round($s*100)))")_$imp
-done; done
-python scripts/plot_prune_pareto.py --ckpt-root $R --families baseline,dagformer --out $R/figs
-```
+Run 300M `fourway_corrected` with the same config apart from `routing_mode`
+(and, if there is time, the 300M dense baseline) so the 12B-corpus 300M
+comparison is a matched pair like Delta's 21B-corpus one. The Delta
+comparison (`experiments/pretrain_300m/eval_300m.md`, expected ~Sep 30)
+decides the 1B architecture by held-out Dolma NLL; a second corpus agreeing
+or disagreeing is the most useful thing timan108 can add. Owner's call on
+whether to spend the ~3 days.
 
-(`configs/prune/75m_dagformer_math.yaml` is only a template for the training
-hyperparameters; `model_dir` is what selects the model. Use the 150m one on
-timan1.) Commit `summary.json`, `trajectory.json`, the figures and a short
-README with the two tables; do not commit checkpoints.
+## Task 3 (timan1, when a GPU is free, cheap): evaluate the Delta 75M locality arms
 
-What to look for: (1) the head/neuron gap between routed and dense growing
-with sparsity, as on Delta; (2) whether `routing_column` beats Taylor for
-whole-block pruning of the modular model, which is the claim the modular
-routing was built for; (3) modular vs corrected at equal sparsity.
+The arms are on Delta (`/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/*`,
+150-300 MB each); Delta cannot spare a GPU until ~Sep 28. If you can pull
+them (scp from dt-login01), run `scripts/eval_pretrained.py` on the four
+caches and the lm-eval `default` suite, and put the table under
+`experiments/results/timan1_locality_75m/`. Otherwise skip; Delta will do it.
 
-## Reporting back
+## Rules
 
-Reply to the Delta session (`dagformer-53`) with the two tables, or leave them
-in the committed READMEs and say so. Ask before starting anything that needs
-more than one GPU for more than a day.
+- Only commit under `experiments/results/pruning/timan1_*`,
+  `experiments/results/lmeval/timan*`, `experiments/results/timan1_*` and
+  `configs/prune/*_timan*.yaml`; `git pull --rebase` before every push.
+  Delta commits touch `experiments/pruning`, `experiments/coherence`,
+  `experiments/pretrain_*`, `configs/pretrain_1b`, `configs/pretrain_300m`,
+  `configs/locality`, `scripts/slurm`.
+- The Delta session can reach both timan hosts by ssh (`ssh timan1`) and
+  will read results from the repo; it will not start GPU jobs on timan
+  without saying so in this file first.
