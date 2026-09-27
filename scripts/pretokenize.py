@@ -32,6 +32,7 @@ Usage (run as a SLURM job — NOT on the login node):
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 import time
@@ -58,6 +59,28 @@ DEFAULT_SHARD_TOKENS = 512_000_000
 
 # numpy dtype used for on-disk token ids. MUST be uint32 (see module docstring).
 SHARD_DTYPE = np.uint32
+
+
+class LocalGzJsonlSource:
+    """Re-iterable document source over local Dolma-format ``*.json.gz`` files.
+
+    Used by ``--local-files`` to tokenize a mirrored subset of the corpus without
+    HTTP streaming (e.g. when the CDN stops honouring range requests, which makes
+    fsspec's HTTP reader fail). Yields the same ``{"text": ...}`` dicts as the HF
+    streaming dataset, in file order, so ``packed_token_stream`` is unchanged.
+    Deliberately re-iterable: the retry loop re-enters ``for doc in dataset`` and
+    fast-forwards by document count.
+    """
+
+    def __init__(self, files: list[str]) -> None:
+        self.files = list(files)
+
+    def __iter__(self) -> Iterator[dict]:
+        for fn in self.files:
+            with gzip.open(fn, mode="rt", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        yield {"text": json.loads(line).get("text", "")}
 
 
 def _iter_local_jsonl_text(path: str) -> Iterator[str]:
@@ -433,9 +456,20 @@ def run(args: argparse.Namespace) -> None:
             f"vocab_size {vocab} exceeds uint32 range — pick a wider dtype"
         )
 
-    dataset, provenance = build_source_and_provenance(
-        args.dataset, args.dataset_version, args.seed
-    )
+    if args.local_files:
+        assert args.num_shards == 1, "--num-shards applies to the HF stream, not --local-files"
+        dataset = LocalGzJsonlSource(args.local_files)
+        provenance = {
+            "dataset": args.dataset,
+            "dataset_version": args.dataset_version,
+            "seed": args.seed,
+            "mixture": None,
+            "local_files": [os.path.abspath(f) for f in args.local_files],
+        }
+    else:
+        dataset, provenance = build_source_and_provenance(
+            args.dataset, args.dataset_version, args.seed
+        )
     if args.num_shards > 1:
         # Parallel tokenization: each worker takes a disjoint file-level shard of
         # the stream (HF IterableDataset.shard) and its share of the budget; the
@@ -509,6 +543,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--num-shards", type=int, default=1, help="parallel workers over the stream (file-level shards)")
     p.add_argument("--shard-index", type=int, default=0)
+    p.add_argument(
+        "--local-files",
+        nargs="+",
+        default=None,
+        help="tokenize these local Dolma *.json.gz files (in this order) instead of HF streaming",
+    )
     p.add_argument(
         "--shard-tokens",
         type=int,

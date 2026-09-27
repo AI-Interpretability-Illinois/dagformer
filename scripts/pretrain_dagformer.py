@@ -674,6 +674,21 @@ def _atomic_torch_save(obj, path: str, **kwargs) -> None:
     os.replace(tmp, path)
 
 
+def _strip_compile_prefix(state: dict) -> dict:
+    """Drop the ``_orig_mod.`` prefixes torch.compile'd modules put on state-dict keys.
+
+    Makes checkpoints independent of whether the run used ``use_torch_compile``
+    (a compiled run can be resumed eagerly and vice versa), and lets the routing
+    filter below recognise the ``olmo.`` base-model keys under a compiled wrapper.
+    """
+    return {k.replace("_orig_mod.", ""): v for k, v in state.items()}
+
+
+def _uncompiled(module: nn.Module) -> nn.Module:
+    """Return the module underneath a ``torch.compile`` wrapper (or the module itself)."""
+    return getattr(module, "_orig_mod", module)
+
+
 def save_checkpoint(
     save_dir: str,
     step: int,
@@ -697,10 +712,13 @@ def save_checkpoint(
         "model_state_path": model_path,
     }
     if predictor is not None:
-        state["predictor_state_dict"] = predictor.state_dict()
+        state["predictor_state_dict"] = _strip_compile_prefix(predictor.state_dict())
     if routing_model is not None:
-        # Save only routing params (not base model, which is saved separately)
-        routing_state = {k: v for k, v in routing_model.state_dict().items()
+        # Save only routing params (not base model, which is saved separately).
+        # Strip the compile prefix first: under torch.compile the keys are
+        # "_orig_mod.olmo...." and the filter used to miss them, silently adding a
+        # second copy of the whole base model to every checkpoint.
+        routing_state = {k: v for k, v in _strip_compile_prefix(routing_model.state_dict()).items()
                          if not k.startswith("olmo.")}
         state["routing_state_dict"] = routing_state
     _atomic_torch_save(state, path)
@@ -1307,9 +1325,11 @@ def main() -> None:
             print(f"Resuming from {resume_path}")
         ckpt = torch.load(resume_path, map_location=device)
 
-        # Load predictor
+        # Load predictor (prefix-agnostic: works for checkpoints written with or
+        # without torch.compile, into a compiled or eager module)
         if "predictor_state_dict" in ckpt:
-            combined_raw.predictor.load_state_dict(ckpt["predictor_state_dict"])
+            _uncompiled(combined_raw.predictor).load_state_dict(
+                _strip_compile_prefix(ckpt["predictor_state_dict"]))
 
         # Load base model — FourWay wraps OLMo under .olmo, need to load into inner model
         model_state = None
@@ -1321,15 +1341,15 @@ def main() -> None:
         if model_state is not None:
             if use_fourway:
                 # FourWay: combined_raw.base_model is FourWayDAGFormer, real OLMo at .olmo
-                combined_raw.base_model.olmo.load_state_dict(model_state)
+                _uncompiled(combined_raw.base_model).olmo.load_state_dict(model_state)
             else:
                 combined_raw.base_model.load_state_dict(model_state)
             del model_state
 
         # Load routing state (correction MLPs, v_norms — may be empty for pure fourway)
         if use_fourway and "routing_state_dict" in ckpt and len(ckpt["routing_state_dict"]) > 0:
-            m, u = combined_raw.base_model.load_state_dict(
-                ckpt["routing_state_dict"], strict=False
+            m, u = _uncompiled(combined_raw.base_model).load_state_dict(
+                _strip_compile_prefix(ckpt["routing_state_dict"]), strict=False
             )
             if is_main:
                 print(f"  Routing state loaded: {len(ckpt['routing_state_dict'])} keys "
@@ -1683,6 +1703,9 @@ def main() -> None:
                 all_params = list(combined_raw.base_model.parameters()) + \
                     list(combined_raw.predictor.parameters())
             total_norm = torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
+            if os.environ.get("DDP_DEBUG") and global_step <= 10:
+                print(f"[DDP_DEBUG rank {local_rank}] step {global_step} total_norm={float(total_norm):.6f} "
+                      f"n_params_with_grad={sum(1 for p in all_params if p.grad is not None)}/{len(all_params)}", flush=True)
 
             # NaN/Inf guard. One non-finite grad element is fatal AND permanent:
             # clip_grad_norm_ turns total_norm=inf into clip_coef=0, so inf*0=NaN
@@ -1713,11 +1736,18 @@ def main() -> None:
         # DDP sync check: verify all GPUs have identical parameters
         if world_size > 1 and global_step == 10:
             param = next(base_model.parameters())
-            param_sum = param.data.sum().clone()
+            # Accumulate in float64. With bf16 params a bf16 sum + bf16 all-reduce
+            # rounds (e.g. 3 x -38.75 = -116.25 is not representable in bf16 and
+            # becomes -116.0), reporting a spurious "divergence" while every rank
+            # holds bit-identical params. Seen 2026-09-25 on a 3-GPU 75M run.
+            local_sum = param.data.detach().double().sum()
+            param_sum = local_sum.clone()
             dist.all_reduce(param_sum, op=dist.ReduceOp.SUM)
             mean_val = param_sum.item() / world_size
-            local_val = next(base_model.parameters()).data.sum().item()
+            local_val = local_sum.item()
             diff = abs(local_val - mean_val)
+            if os.environ.get("DDP_DEBUG"):
+                print(f"[DDP CHECK rank {local_rank}] local_sum={local_val:.6f} mean={mean_val:.6f}", flush=True)
             if local_rank == 0:
                 if diff < 1e-6:
                     print(f"[DDP CHECK @ step 10] PASS — params identical across {world_size} GPUs (diff={diff:.2e})")

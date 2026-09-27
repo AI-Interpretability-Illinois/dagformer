@@ -1,0 +1,153 @@
+{
+  "config": {
+    "ckpt": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_fourway_dolma12b/checkpoint_step3000.pt",
+    "config_file": "configs/pretrain_75m_dagformer_fourway_timan1_dolma12b.yaml",
+    "hf_model": null,
+    "hf_revision": "main",
+    "mode": "fourway",
+    "tasks": [
+      "lambada_openai",
+      "hellaswag",
+      "piqa",
+      "arc_easy",
+      "winogrande",
+      "openbookqa",
+      "sciq",
+      "boolq",
+      "wikitext"
+    ],
+    "batch_size": 8,
+    "max_length": 1024,
+    "limit": null
+  },
+  "results": {
+    "lambada_openai": {
+      "name": "lambada_openai",
+      "alias": "lambada_openai",
+      "sample_len": 5153,
+      "perplexity,none": 1720.3263969603559,
+      "perplexity_stderr,none": 80.4639835021691,
+      "acc,none": 0.08655152338443625,
+      "acc_stderr,none": 0.0039173417292412875
+    },
+    "hellaswag": {
+      "name": "hellaswag",
+      "alias": "hellaswag",
+      "sample_len": 10042,
+      "acc,none": 0.2629954192391954,
+      "acc_stderr,none": 0.004393601887506595,
+      "acc_norm,none": 0.2622983469428401,
+      "acc_norm_stderr,none": 0.004389849907040269
+    },
+    "piqa": {
+      "name": "piqa",
+      "alias": "piqa",
+      "sample_len": 1838,
+      "acc,none": 0.5772578890097932,
+      "acc_stderr,none": 0.0115257213615722,
+      "acc_norm,none": 0.5609357997823722,
+      "acc_norm_stderr,none": 0.011578865649321294
+    },
+    "arc_easy": {
+      "name": "arc_easy",
+      "alias": "arc_easy",
+      "sample_len": 2376,
+      "acc,none": 0.3005050505050505,
+      "acc_stderr,none": 0.009407763090599316,
+      "acc_norm,none": 0.2962962962962963,
+      "acc_norm_stderr,none": 0.009369711585684315
+    },
+    "winogrande": {
+      "name": "winogrande",
+      "alias": "winogrande",
+      "sample_len": 1267,
+      "acc,none": 0.4980268350434096,
+      "acc_stderr,none": 0.014052376259225629
+    },
+    "openbookqa": {
+      "name": "openbookqa",
+      "alias": "openbookqa",
+      "sample_len": 500,
+      "acc,none": 0.126,
+      "acc_stderr,none": 0.014855617750787541,
+      "acc_norm,none": 0.232,
+      "acc_norm_stderr,none": 0.018896193591952052
+    },
+    "sciq": {
+      "name": "sciq",
+      "alias": "sciq",
+      "sample_len": 1000,
+      "acc,none": 0.5,
+      "acc_stderr,none": 0.015819299929208316,
+      "acc_norm,none": 0.467,
+      "acc_norm_stderr,none": 0.015784807891138786
+    },
+    "boolq": {
+      "name": "boolq",
+      "alias": "boolq",
+      "sample_len": 3270,
+      "acc,none": 0.42629969418960245,
+      "acc_stderr,none": 0.00864953162580567
+    },
+    "wikitext": {
+      "name": "wikitext",
+      "alias": "wikitext",
+      "sample_len": 62,
+      "word_perplexity,none": 141.30298523447993,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.523998241898377,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.3357109054054952,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 5153
+    },
+    "hellaswag": {
+      "original": 10042,
+      "effective": 10042
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 1838
+    },
+    "arc_easy": {
+      "original": 2376,
+      "effective": 2376
+    },
+    "winogrande": {
+      "original": 1267,
+      "effective": 1267
+    },
+    "openbookqa": {
+      "original": 500,
+      "effective": 500
+    },
+    "sciq": {
+      "original": 1000,
+      "effective": 1000
+    },
+    "boolq": {
+      "original": 3270,
+      "effective": 3270
+    },
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "arc_easy": 1.0,
+    "boolq": 2.0,
+    "hellaswag": 1.0,
+    "lambada_openai": 1.0,
+    "openbookqa": 1.0,
+    "piqa": 1.0,
+    "sciq": 1.0,
+    "wikitext": 2.0,
+    "winogrande": 1.0
+  }
+}

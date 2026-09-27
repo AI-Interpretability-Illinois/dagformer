@@ -29,6 +29,7 @@ import torch
 import torch.nn.functional as F
 import yaml
 from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
+from transformers.modeling_outputs import CausalLMOutputWithPast
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -377,8 +378,12 @@ class FourWayLMWrapper(torch.nn.Module):
     def forward(self, input_ids, **kwargs):
         routing = self.fourway_predictor(input_ids)
         logits = self.fourway_model(input_ids, routing)
-        # Match HF interface: return object with .logits
-        return type("Out", (), {"logits": logits})()
+        # Match HF interface: return object with .logits. Use a real output
+        # object, NOT `type("Out", (), {"logits": logits})()`: a class created
+        # per call keeps the logits alive in a reference cycle until the cyclic
+        # GC runs, so a full eval leaked ~1 batch of logits per step and OOM'd a
+        # 48 GB GPU after ~7 batches (2026-09-25).
+        return CausalLMOutputWithPast(logits=logits)
 
 
 def make_lm(model, tokenizer, batch_size: int = 8, max_length: int = 1024):

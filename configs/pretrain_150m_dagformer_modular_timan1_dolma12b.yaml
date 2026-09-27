@@ -1,12 +1,17 @@
-# FourWay-Modular DAGFormer 75M: every inter-module edge (incl. attn->MLP) is routed.
-# Same architecture as 75M baseline + routing predictor
-# Chinchilla-optimal 1.5B tokens
-# Wall time estimate: ~5h on 4× A40
+# FourWay-Modular DAGFormer 150M (every inter-module edge routed) for timan1 (3x A6000, GPUs 1,2,3), local 12B corpus.
+# Derived from pretrain_150m_dagformer_mmap.yaml exactly as configs/pretrain_75m_dagformer_modular.yaml was derived from its
+# 75M counterpart (routing_mode -> fourway_modular, sparsity knobs present but off, use_torch_compile off), plus the timan1
+# overrides (local paths, gradient_accumulation_steps 32 -> 43; 6000 steps = 3.17B tokens).
 
-hidden_size: 512
-num_hidden_layers: 6
-num_attention_heads: 8
-intermediate_size: 2048
+# FourWay DAGFormer 150M for scaling law
+# Same architecture as 150M baseline + routing predictor
+# Chinchilla-optimal 3B tokens
+# Wall time estimate: ~12h on 4× A40
+
+hidden_size: 768
+num_hidden_layers: 8
+num_attention_heads: 12
+intermediate_size: 3072
 vocab_size: 100352
 tie_word_embeddings: true
 max_position_embeddings: 4096
@@ -31,24 +36,24 @@ routing_sparsity_warmup_frac: 0.5
 routing_sparsity_eval_eps: 0.05      # also report eval/nll_sparsified with |alpha| < eps hard-zeroed
 
 replace_rmsnorm: true
-use_torch_compile: true        # compile-tested 2026-09-26 (loss identical to eager, ~1.2x faster at 75M); same default as the fourway configs
+use_torch_compile: false       # off in this run for comparability; compile is supported (tested 2026-09-26: identical loss, ~1.2x faster)
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"
 data_source: "mmap"
-mmap_index_path: "/work/hdd/bfqt/data/pretok/dolma_v1_7_12b"
+mmap_index_path: "/srv/local/xy51/pretok/dolma_v1_7_12b"
 seq_len: 1024
 seed: 42
 
 micro_batch_size: 4
-gradient_accumulation_steps: 32
-total_steps: 3000
+gradient_accumulation_steps: 43
+total_steps: 6000
 lr: 5e-4
 predictor_lr: 3e-4
 beta1: 0.9
 beta2: 0.95
 weight_decay: 0.1
-warmup_steps: 200
+warmup_steps: 300
 max_grad_norm: 1.0
 lr_schedule: "linear"
 
@@ -57,7 +62,7 @@ eval_size: 50
 eval_every: 500
 
 wandb_project: "dagformer"
-wandb_run_name: "dagformer-75m-modular"
+wandb_run_name: "dagformer-150m-modular-dolma12b"
 log_every: 10
 save_every: 1500
-save_dir: "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/pretrain_75m_dagformer_modular"
+save_dir: "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_modular_dolma12b"
