@@ -23,7 +23,7 @@ routing_column_group_lambda: 0.0
 routing_sparsity_lambda: 0.0
 
 replace_rmsnorm: true
-use_torch_compile: false
+use_torch_compile: true        # checkpoints are compile-agnostic; the micro-batch fallback config keeps compile off
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"
