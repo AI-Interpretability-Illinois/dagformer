@@ -70,10 +70,14 @@ fi
 
 # ---- SIGUSR1 (15 min before the limit): checkpoint and leave ---------------
 trainer_pid=""
+cur_save_dir=""
 LEAVING=0
 on_usr1() {
     log "SIGUSR1: asking the trainer to checkpoint and exit"
     LEAVING=1
+    # primary mechanism: the trainer polls <save_dir>/STOP_REQUEST every step
+    # (Python signal handlers do not fire under torch.compile)
+    [ -n "$cur_save_dir" ] && touch "$cur_save_dir/STOP_REQUEST"
     # signal only the rank processes (torchrun's direct children); NOT torchrun
     # itself (default USR1 action is to die) and NOT the DataLoader worker
     # forks, which share the cmdline -- signalling them made a worker exit and
@@ -125,6 +129,7 @@ run_item() {   # config script wait eval fallback skipif
     total=$(python3 -c "import yaml;print(yaml.safe_load(open('$cfg'))['total_steps'])")
     mkdir -p "$save_dir"
     [ -f "$save_dir/DONE" ] && { log "skip (done): $cfg"; return 0; }
+    rm -f "$save_dir/STOP_REQUEST"
     if [ -n "$waitfor" ]; then
         while [ ! -f "$waitfor" ]; do [ -f "$STOP" ] && return 0; sleep 60; done
     fi
@@ -134,10 +139,12 @@ run_item() {   # config script wait eval fallback skipif
     while [ $attempt -lt 3 ]; do
         attempt=$((attempt + 1))
         log "=== start $cfg (attempt $attempt) -> $save_dir"
+        cur_save_dir=$save_dir
         torchrun --nproc_per_node=4 --master_port=$((29000 + RANDOM % 1000)) "$script" --config "$cfg" &
         trainer_pid=$!
         wait "$trainer_pid"; rc=$?
         while [ "$LEAVING" = 1 ] && kill -0 "$trainer_pid" 2>/dev/null; do sleep 10; done   # wait was interrupted by the trap
+        [ "$LEAVING" = 1 ] && { wait "$trainer_pid" 2>/dev/null; rc=$?; }
         trainer_pid=""
         if [ $rc -eq 0 ] && [ -f "$save_dir/checkpoint_step${total}.pt" ]; then
             touch "$save_dir/DONE"; log "=== done $cfg"; return 0

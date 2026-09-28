@@ -1969,11 +1969,27 @@ def main() -> None:
                 )
             cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
 
-        if stop_requested["flag"]:
+        # Graceful stop: a signal flag on any rank OR a STOP_REQUEST file in
+        # save_dir (written by the SLURM orchestrator; signals are not delivered
+        # to Python handlers under torch.compile, observed 2026-09-27). The
+        # decision is all-reduced so every rank stops in the same step.
+        stop_now = stop_requested["flag"]
+        stop_file = os.path.join(config.save_dir, "STOP_REQUEST")
+        if is_main and os.path.exists(stop_file):
+            stop_now = True
+        if world_size > 1:
+            flag_t = torch.tensor([1 if stop_now else 0], device=device)
+            dist.all_reduce(flag_t, op=dist.ReduceOp.MAX)
+            stop_now = bool(flag_t.item())
+        if stop_now:
             if is_main:
                 _save_now()
-                print(f"Stopped on signal {stop_requested['signum']} after step {global_step}; "
-                      f"resume with the same config.", flush=True)
+                try:
+                    os.remove(stop_file)
+                except OSError:
+                    pass
+                print(f"Stopped on request (signal {stop_requested['signum']} / stop file) after step "
+                      f"{global_step}; resume with the same config.", flush=True)
             if world_size > 1:
                 dist.barrier()
             finish_wandb(wandb_run)
