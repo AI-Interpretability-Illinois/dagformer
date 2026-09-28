@@ -33,9 +33,15 @@ WikiText word PPL，越低越好：
 
 新三族结果为 dense / corrected / modular；modular 不是 MUDDFormer。本次
 核对的40个新剪枝run不包含MUDDFormer，不能由这些表验证对其优势的转述。
+PR另有旧streamed 150M三方剪枝结果，DAG在该组优于dense和MUDDFormer；
+具体数值及checkpoint分组见下方详表的补充部分。
 
 详表和原始数据：[new_small_models.md](new_small_models.md)、
 [new_small_models.json](new_small_models.json)。
+
+实际训练池为21.16% Books、78.84% C4；新旧预训练eval cache的inputs与
+labels逐元素一致。历史上移图画的是train NLL，不能据此归因于更换OOD eval。
+数据来源、缓存比较和图中loss字段见 [eval_settings.md](eval_settings.md)。
 
 ### Scaling
 
@@ -69,6 +75,11 @@ step12000；这仍只补名义预算缺口，不会自动消除数据和总参�
 
 曲线、拟合与来源：[scaling/](scaling/)。关于实际FLOPs以及用户提到的
 ICLR2026 EBT 对照：[compute_and_ebt_notes.md](compute_and_ebt_notes.md)。
+
+换为 `word NLL = ln(word-PPL)` 后，五个尺寸的NLL相对改善为3.3–4.6%。
+固定loss floor为0的log–log拟合指数为dense 0.1611、FourWay 0.1629，
+两条曲线大体平行；这一拟合与上面的BPB对log(size)直线拟合形式不同。
+转换数值、两种拟合及图见 [NLL scaling](scaling/nll_scaling.md)。
 
 ### 合并建议
 

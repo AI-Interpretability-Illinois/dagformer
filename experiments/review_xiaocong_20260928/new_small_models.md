@@ -118,3 +118,20 @@ s0/s30/s50/s70是head+neuron的目标稀疏度；mod是整个attention和MLP模�
 - 同事 `/home/xy51` 不可读；本审计使用可共享 `/srv/local/xy51` 真正输出与PR代码，没有更改权限、模型或日志。
 
 原始已读结果、准确路径、config差异、40个summary，以及尚未单独推送的75M sweep全部20份原始trajectory内容，保存在同目录 `new_small_models.json`。
+
+## 补充：MUDDFormer 结果属于另一组 150M checkpoint
+
+本次新 75M/150M 三族是 dense、fourway_corrected、fourway_modular，modular 不能当作 MUDDFormer。PR 另有真实 MUDDFormer 剪枝结果：`experiments/coherence/results/exp3/prune_summary.md:3` 起的旧 streamed-Dolma 150M 三方实验；其 README `experiments/coherence/README.md:97` 明确要求只在这个 trio 内比较，不与新的 mmap 12B checkpoint 混合。
+
+该旧 trio 的 MathInstruct 最终 NLL（dense / MUDDFormer / DAGFormer）为：0% 剪枝 2.0752 / 1.9348 / 1.9237；30% 为 2.1569 / 2.0369 / 1.9902；50% 为 2.2729 / 2.1531 / 2.0866；70% 为 2.5066 / 2.3665 / 2.2676。50% 冻结 router 后 MUDDFormer 2.1500、DAGFormer 2.0782，因此其收益仍不支持“global predictor 在线适应性改道”解释。DAG 的 global predictor 冻结时 local correction 仍可训练；MUDDFormer 冻结全部 routers（该 README:118–125）。
+
+## 补充：Xiaocong 的曲线具体画什么
+
+- `/srv/local/xy51/compare_runs.py:18` 选择 `train/nll` 或 dense 的 `train/loss`；`:19` 选择 `eval/nll_soft` 或 dense 的 `eval/nll`。`:60–71` 明确左图是训练 NLL 的 10 个日志点滑动平均（100 steps），右图是每 500 steps 的 50 条 web-text eval。已查看 `compare_75m_12b_three_way.png`，标题及图形与脚本一致。`:45` 所谓 `Identity-wiring eval NLL` 则是同一 DAG 模型路由归零消融，不是独立训练的 dense baseline。
+- `/srv/local/xy51/compare_history.py:10–13` 将 April 旧 corrected/dense（脚本标记 streaming books-only）、September modular mmap books-only、September modular mmap 12B books+web 放在同图；`:28` 与实际 `compare_75m_history.png` 标题明确是 **train NLL**。图上末尾约 3.84 与 4.26 的上移不能归因于改变 eval 集；训练输入域变化是候选解释，具体采样分布须由实际索引验证，而非仅凭图例判断。
+- 我们新分享的 `experiments/pretraining_handoff_20260928/README.md:60` 和 `plot_curves.py:19`、`:71` 同样是 **training minibatch NLL**。若拿它与同事两栏图的右侧比较，就混用了 train/eval；目前未获知对方指的具体图，不能认定对方确实比错。
+- `/srv/local/xy51/run_build_eval_cache.sh:26–30` 的调用为 `allenai/dolma`、`v1_7`、skip 1,000,000、50 条长度 1024、batch size 4，未传训练混合比例或独立 source 参数。此前已逐 tensor 确认六个新模型及我们旧 cache 的 `[50,1024]` input 完全相同，未发现“这次换了另一个 eval cache”的证据；`compare_runs.py:39` 将该 cache 标注为 web-text。
+- 早期 books-only modular 的 final eval NLL 为 **5.5817**（`/srv/local/xy51/logs/pretrain_75m_modular.log:60`）；新 12B 组 dense / corrected / modular 为 **4.3389 / 4.2031 / 4.1935**（同目录 `pretrain_75m_baseline_dolma12b.log:40`、`pretrain_75m_fourway_dolma12b.log:76`、`pretrain_75m_modular_dolma12b.log:60`）。不能混淆两次 modular run。
+- 新 150M 三个 final eval NLL 是 **3.7752 / 3.6707 / 3.6863**（`pretrain_150m_dense.log:48`、`pretrain_150m_fourway.log:90`、`pretrain_150m_modular.log:74`）；`compare_150m_12b_progress.png` 尚只画到约 3000 steps，实际训练完成 6000 steps，旧 progress PNG 不是完成结果。
+- 普通 lm-eval 是另一套指标：`/srv/local/xy51/lmeval/run_lmeval_75m.sh:13–17` 与 `run_lmeval_150m.sh:12–20` 调用 `--tasks default --batch_size 8`，对应 final 3000 / 6000 checkpoints。这些任务结果不应与上述 Dolma 缓存 NLL 直接比较。
+- `/srv/local/xy51/scaling/dagformer` 为 0700，目前不可读；外部只有 `scaling/data/{dolma_v1_7_21b,wikitext2,mathinstruct,gsm8k}/eval_cache.pt` 与空 `scaling/experiments/scaling/`。目录名只能说明存在四种缓存，无法证明已运行了某个 21B setting 或新 OOD eval。

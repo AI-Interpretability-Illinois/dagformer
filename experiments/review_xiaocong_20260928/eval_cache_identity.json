@@ -1,0 +1,72 @@
+{
+  "reference": "checkpoints/pr_sync_20260917/eval_cache.pt",
+  "reference_shape": [
+    50,
+    1024
+  ],
+  "comparisons": [
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_150m_baseline_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_fourway_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_modular_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_300m_dagformer_modular_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_75m_baseline_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_fourway_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    },
+    {
+      "cache": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_modular_dolma12b/eval_cache.pt",
+      "shape": [
+        50,
+        1024
+      ],
+      "inputs_equal_old": true,
+      "labels_equal_old": true
+    }
+  ]
+}

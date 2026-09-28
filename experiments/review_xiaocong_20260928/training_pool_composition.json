@@ -1,0 +1,119 @@
+{
+  "source_index": "/srv/local/xy51/pretok/dolma_v1_7_12b/index.json",
+  "pool_total_tokens": 12000000950,
+  "source_tokens": {
+    "books": 2538926025,
+    "c4": 9461074925
+  },
+  "source_fractions": {
+    "books": 0.21157715200014213,
+    "c4": 0.7884228479998578
+  },
+  "parts": [
+    {
+      "part": "books-0000",
+      "included_tokens": 1089751300
+    },
+    {
+      "part": "books-0001",
+      "included_tokens": 1100243200
+    },
+    {
+      "part": "books-0002",
+      "included_tokens": 348931525
+    },
+    {
+      "part": "c4-0000",
+      "included_tokens": 411537500
+    },
+    {
+      "part": "c4-0001",
+      "included_tokens": 412188375
+    },
+    {
+      "part": "c4-0002",
+      "included_tokens": 412007975
+    },
+    {
+      "part": "c4-0003",
+      "included_tokens": 412831050
+    },
+    {
+      "part": "c4-0004",
+      "included_tokens": 412103300
+    },
+    {
+      "part": "c4-0005",
+      "included_tokens": 411781450
+    },
+    {
+      "part": "c4-0006",
+      "included_tokens": 413780200
+    },
+    {
+      "part": "c4-0007",
+      "included_tokens": 412286775
+    },
+    {
+      "part": "c4-0008",
+      "included_tokens": 411269975
+    },
+    {
+      "part": "c4-0009",
+      "included_tokens": 412621950
+    },
+    {
+      "part": "c4-0010",
+      "included_tokens": 411050625
+    },
+    {
+      "part": "c4-0011",
+      "included_tokens": 412757250
+    },
+    {
+      "part": "c4-0012",
+      "included_tokens": 412654750
+    },
+    {
+      "part": "c4-0013",
+      "included_tokens": 413097550
+    },
+    {
+      "part": "c4-0014",
+      "included_tokens": 413527025
+    },
+    {
+      "part": "c4-0015",
+      "included_tokens": 412843350
+    },
+    {
+      "part": "c4-0016",
+      "included_tokens": 413492175
+    },
+    {
+      "part": "c4-0017",
+      "included_tokens": 414183025
+    },
+    {
+      "part": "c4-0018",
+      "included_tokens": 411625650
+    },
+    {
+      "part": "c4-0019",
+      "included_tokens": 411590800
+    },
+    {
+      "part": "c4-0020",
+      "included_tokens": 410277775
+    },
+    {
+      "part": "c4-0021",
+      "included_tokens": 411175675
+    },
+    {
+      "part": "c4-0022",
+      "included_tokens": 390390725
+    }
+  ],
+  "meaning": "Composition of the rebuilt 12B mmap pool, not an exact count of the subset consumed by each training run."
+}

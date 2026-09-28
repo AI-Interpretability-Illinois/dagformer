@@ -1,0 +1,143 @@
+{
+  "source": "model_metrics.csv; same fixed paired checkpoints as scaling.md",
+  "metric": "word NLL in nats, calculated as ln(WikiText word-PPL); not token NLL",
+  "normalization_identity": {
+    "equation": "word NLL = BPB * ln(2) * bytes/words",
+    "word_nll_per_bpb": 3.706570333712411
+  },
+  "fit_scope": "All five points; nominal 300M is an intermediate checkpoint; 1B uses a different training corpus. Exploratory descriptive fits, single training seed.",
+  "power_law_assumption": "The additive loss floor E is fixed at zero, not estimated. Alpha is not an identified entropy-floor-adjusted scaling exponent.",
+  "paired_metrics": [
+    {
+      "size": "75m",
+      "nominal_parameters_m": 75.0,
+      "dense_actual_parameters": 76558848,
+      "dag_actual_parameters": 105657332,
+      "dense_word_nll_nats": 5.163618992280246,
+      "dag_word_nll_nats": 4.993616363268059,
+      "word_nll_reduction_nats": 0.17000262901218743,
+      "word_nll_reduction_percent": 3.292315511007804,
+      "processed_tokens": "1572864000",
+      "training_corpus": "Dolma v1.7",
+      "budget_status": "completed configured budget"
+    },
+    {
+      "size": "150m",
+      "nominal_parameters_m": 150.0,
+      "dense_actual_parameters": 152593152,
+      "dag_actual_parameters": 182561679,
+      "dense_word_nll_nats": 4.432672486740018,
+      "dag_word_nll_nats": 4.270366059370719,
+      "word_nll_reduction_nats": 0.16230642736929912,
+      "word_nll_reduction_percent": 3.6615930424552134,
+      "processed_tokens": "3145728000",
+      "training_corpus": "Dolma v1.7",
+      "budget_status": "completed configured budget"
+    },
+    {
+      "size": "300m",
+      "nominal_parameters_m": 300.0,
+      "dense_actual_parameters": 304137216,
+      "dag_actual_parameters": 336447805,
+      "dense_word_nll_nats": 3.9712175632799025,
+      "dag_word_nll_nats": 3.789897096486791,
+      "word_nll_reduction_nats": 0.18132046679311165,
+      "word_nll_reduction_percent": 4.565865856096685,
+      "processed_tokens": "4719116288",
+      "training_corpus": "Dolma v1.7",
+      "budget_status": "intermediate: 9001 of 12000 updates"
+    },
+    {
+      "size": "600m",
+      "nominal_parameters_m": 600.0,
+      "dense_actual_parameters": 682710528,
+      "dag_actual_parameters": 717003240,
+      "dense_word_nll_nats": 3.5761396967754924,
+      "dag_word_nll_nats": 3.4505517131998182,
+      "word_nll_reduction_nats": 0.12558798357567413,
+      "word_nll_reduction_percent": 3.511831030787571,
+      "processed_tokens": "12006195200",
+      "training_corpus": "Dolma v1.7",
+      "budget_status": "completed configured budget"
+    },
+    {
+      "size": "1b",
+      "nominal_parameters_m": 1000.0,
+      "dense_actual_parameters": 1279395840,
+      "dag_actual_parameters": 1316049239,
+      "dense_word_nll_nats": 3.3966394145016467,
+      "dag_word_nll_nats": 3.2638790758692373,
+      "word_nll_reduction_nats": 0.13276033863240944,
+      "word_nll_reduction_percent": 3.9085791110354817,
+      "processed_tokens": "20006830080",
+      "training_corpus": "OLMo-mix",
+      "budget_status": "completed configured budget"
+    }
+  ],
+  "fits": [
+    {
+      "family": "baseline",
+      "parameter_axis": "nominal_parameters_m",
+      "fit": "NLL = a + b * log2(N_M)",
+      "intercept_a": 7.9253173008714874,
+      "nll_nats_per_doubling_b": -0.46687387254333396,
+      "r_squared_in_nll_space": 0.9679774502162797
+    },
+    {
+      "family": "baseline",
+      "parameter_axis": "nominal_parameters_m",
+      "fit": "NLL = A * N_M^(-alpha); E=0",
+      "A": 10.11936415745752,
+      "alpha": 0.16111573304041718,
+      "r_squared_in_log_nll_space": 0.9854102273539367
+    },
+    {
+      "family": "dagformer",
+      "parameter_axis": "nominal_parameters_m",
+      "fit": "NLL = a + b * log2(N_M)",
+      "intercept_a": 7.675101461267615,
+      "nll_nats_per_doubling_b": -0.45515447574174883,
+      "r_squared_in_nll_space": 0.9626382393462256
+    },
+    {
+      "family": "dagformer",
+      "parameter_axis": "nominal_parameters_m",
+      "fit": "NLL = A * N_M^(-alpha); E=0",
+      "A": 9.832837556924066,
+      "alpha": 0.16286322144312698,
+      "r_squared_in_log_nll_space": 0.9820409522069347
+    },
+    {
+      "family": "baseline",
+      "parameter_axis": "actual_parameters",
+      "fit": "NLL = a + b * log2(N_M)",
+      "intercept_a": 7.647899878822243,
+      "nll_nats_per_doubling_b": -0.426517857139046,
+      "r_squared_in_nll_space": 0.950646932584474
+    },
+    {
+      "family": "baseline",
+      "parameter_axis": "actual_parameters",
+      "fit": "NLL = A * N_M^(-alpha); E=0",
+      "A": 9.490918596906313,
+      "alpha": 0.1475790261035995,
+      "r_squared_in_log_nll_space": 0.9729021359902548
+    },
+    {
+      "family": "dagformer",
+      "parameter_axis": "actual_parameters",
+      "fit": "NLL = a + b * log2(N_M)",
+      "intercept_a": 7.837497641665639,
+      "nll_nats_per_doubling_b": -0.45716319673078837,
+      "r_squared_in_nll_space": 0.9257732574697543
+    },
+    {
+      "family": "dagformer",
+      "parameter_axis": "actual_parameters",
+      "fit": "NLL = A * N_M^(-alpha); E=0",
+      "A": 10.286178718946868,
+      "alpha": 0.16439639534912645,
+      "r_squared_in_log_nll_space": 0.953860300543241
+    }
+  ]
+}
