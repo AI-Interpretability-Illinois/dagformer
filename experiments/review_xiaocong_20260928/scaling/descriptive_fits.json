@@ -1,0 +1,389 @@
+{
+  "interpretation": "Exploratory OLS slopes of five fixed checkpoint pairs. No loss floor or power-law exponent is identified. No seed-level uncertainty is available.",
+  "fits": [
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.1608496968417245,
+      "intercept": 2.3828847390357337,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9832585940057416
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.8601358141838542,
+      "intercept": 8.832329882365892,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9832585940057417
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.16237642327100393,
+      "intercept": 2.3477302618011624,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9866214366149747
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -0.8682999084039178,
+      "intercept": 8.702027339951071,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9866214366149748
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.16165148392176698,
+      "intercept": 5.614644702344596,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9832598630920392
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.8644233310174922,
+      "intercept": 20.811075488046047,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.983259863092038
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.19342058255411307,
+      "intercept": 6.488134541493722,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9782409913073287
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m"
+      ],
+      "scope": "75-300M mmap; 300M intermediate budget",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -1.0343070178043496,
+      "intercept": 24.048727012635478,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9782409913073291
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.1409360227826095,
+      "intercept": 2.245570291153798,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9783004724273977
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.7536484251085538,
+      "intercept": 8.323364223456611,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9783004724273977
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.1378542008663553,
+      "intercept": 2.178637636284824,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9721756068340015
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -0.7371685345327244,
+      "intercept": 8.075273630562663,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9721756068340014
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.13383521132045204,
+      "intercept": 4.866950367095508,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9677007829578209
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.7156771863167386,
+      "intercept": 18.03969384632703,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9677007829578207
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.14768196206903494,
+      "intercept": 5.242443040017255,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9434169224384382
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m"
+      ],
+      "scope": "75-600M Dolma; mixed mmap/streaming history and budgets",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -0.7897220024574367,
+      "intercept": 19.431483848305056,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9434169224384381
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.12595845498923106,
+      "intercept": 2.138180740505113,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9679774502162798
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.6735566206388939,
+      "intercept": 7.9253173008714874,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9679774502162796
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.12279666504692412,
+      "intercept": 2.0706747128093537,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9626382393462256
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "nominal_parameters_m",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -0.656649104991037,
+      "intercept": 7.675101461267615,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9626382393462257
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "baseline",
+      "slope": -0.11507075779993493,
+      "intercept": 4.356876665080249,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9506469325844742
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "baseline",
+      "slope": -0.6153351973450898,
+      "intercept": 16.14906979443037,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.950646932584474
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "actual_parameters",
+      "y": "wikitext_bpb",
+      "family": "dagformer",
+      "slope": -0.12333860026147363,
+      "intercept": 4.572819538999741,
+      "slope_units": "BPB per parameter doubling",
+      "r_squared": 0.9257732574697545
+    },
+    {
+      "sizes": [
+        "75m",
+        "150m",
+        "300m",
+        "600m",
+        "1b"
+      ],
+      "scope": "75M-1B; additionally changes corpus at 1B",
+      "x": "actual_parameters",
+      "y": "wikitext_word_ppl",
+      "family": "dagformer",
+      "slope": -0.6595470768004567,
+      "intercept": 16.94947724467684,
+      "slope_units": "log(PPL) per log(parameter)",
+      "r_squared": 0.9257732574697551
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+diff --git a/scripts/eval_lm_harness.py b/scripts/eval_lm_harness.py
+index d57049b..44f3dd8 100644
+--- a/scripts/eval_lm_harness.py
++++ b/scripts/eval_lm_harness.py
+@@ -29,6 +29,7 @@ import torch
+ import torch.nn.functional as F
+ import yaml
+ from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
++from transformers.modeling_outputs import CausalLMOutputWithPast
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+ 
+@@ -155,8 +156,13 @@ def build_fourway_predictor_from_config(cfg: dict, device):
+         predictor = FourWayStaticPredictor(**common)
+     elif variant == "pos_table":
+         predictor = FourWayPositionalPredictor(max_seq_len=cfg.get("seq_len", 1024), **common)
+-    elif variant == "encoder":
+-        predictor = FourWayPredictor(
++    elif variant in ("encoder", "per_layer"):
++        if variant == "per_layer":
++            from src.model.predictor import FourWayPerLayerPredictor
++            predictor_class = FourWayPerLayerPredictor
++        else:
++            predictor_class = FourWayPredictor
++        predictor = predictor_class(
+             vocab_size=cfg["vocab_size"],
+             encoder_dim=cfg.get("predictor_encoder_dim", 256),
+             encoder_layers=cfg.get("predictor_encoder_layers", 2),
+@@ -179,6 +185,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
+         replace_olmo_rmsnorm(base)
+         base = base.to(device=device, dtype=torch.bfloat16)
+ 
++    if str(cfg.get("routing_mode", "")).startswith("fourway_modular"):
++        from src.model.modular_routing import build_modular_pair
++        fourway_model, fourway_predictor = build_modular_pair(cfg, base, device)
++        return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor, cfg)
++
+     fourway_model = FourWayDAGFormer(
+         model=base,
+         num_layers=cfg["num_hidden_layers"],
+@@ -191,6 +202,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
+     ).to(device=device)
+     fourway_predictor = build_fourway_predictor_from_config(cfg, device)
+ 
++    return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor, cfg)
++
++
++def _load_fourway_state(ckpt_path: str, base, fourway_model, fourway_predictor, cfg):
++    """Load predictor / base / routing state into an already-built pair."""
+     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+     # Predictor
+     ps = strip_prefixes(ckpt["predictor_state_dict"])
+@@ -380,8 +396,12 @@ class FourWayLMWrapper(torch.nn.Module):
+     def forward(self, input_ids, **kwargs):
+         routing = self.fourway_predictor(input_ids)
+         logits = self.fourway_model(input_ids, routing)
+-        # Match HF interface: return object with .logits
+-        return type("Out", (), {"logits": logits})()
++        # Match HF interface: return object with .logits. Use a real output
++        # object, NOT `type("Out", (), {"logits": logits})()`: a class created
++        # per call keeps the logits alive in a reference cycle until the cyclic
++        # GC runs, so a full eval leaked ~1 batch of logits per step and OOM'd a
++        # 48 GB GPU after ~7 batches (2026-09-25).
++        return CausalLMOutputWithPast(logits=logits)
+ 
+ 
+ def make_lm(model, tokenizer, batch_size: int = 8, max_length: int = 1024):
+diff --git a/tests/test_fourway_eval_loading.py b/tests/test_fourway_eval_loading.py
+index 2251e48..c4b851b 100644
+--- a/tests/test_fourway_eval_loading.py
++++ b/tests/test_fourway_eval_loading.py
+@@ -8,7 +8,8 @@ import torch
+ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ from scripts.eval_lm_harness import build_base_model, load_fourway
+ from src.model.olmo_graph import FourWayDAGFormer
+-from src.model.predictor import FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor
++from src.model.predictor import (FourWayPredictor, FourWayPerLayerPredictor,
++                                 FourWayPositionalPredictor, FourWayStaticPredictor)
+ 
+ 
+ CFG = dict(hidden_size=16, num_hidden_layers=2, num_attention_heads=2,
+@@ -18,15 +19,16 @@ CFG = dict(hidden_size=16, num_hidden_layers=2, num_attention_heads=2,
+            predictor_encoder_layers=1, predictor_max_seq_len=32, fourway_hidden=8)
+ 
+ 
+-@pytest.mark.parametrize("variant", ["encoder", "static", "pos_table"])
++@pytest.mark.parametrize("variant", ["encoder", "static", "pos_table", "per_layer"])
+ def test_checkpoint_roundtrip_preserves_variant_routing_and_logits(tmp_path, variant):
+     torch.manual_seed(17)
+     cfg = {**CFG, "fourway_predictor_variant": variant}
+     base = build_base_model(cfg, "cpu")
+     model = FourWayDAGFormer(base, num_layers=2, num_heads=2,
+                             use_local_correction=True, correction_hidden=8).eval()
+-    if variant == "encoder":
+-        predictor = FourWayPredictor(vocab_size=32, encoder_dim=8, encoder_layers=1,
++    if variant in ("encoder", "per_layer"):
++        predictor_class = FourWayPerLayerPredictor if variant == "per_layer" else FourWayPredictor
++        predictor = predictor_class(vocab_size=32, encoder_dim=8, encoder_layers=1,
+                                      encoder_heads=2, max_seq_len=32, num_layers=2,
+                                      num_heads=2, hidden_dim=8)
+     elif variant == "static":
