@@ -105,7 +105,7 @@ s0/s30/s50/s70是head+neuron的目标稀疏度；mod是整个attention和MLP模�
 
 这些结果是mask/zero-weight实验，不是物理压缩或速度测试；未修改原矩阵维度。参数剩余数使用解析计数，之前已实测确认Q/K全head归一化让被mask head的Q/K仍影响输出，所以细粒度head的可删除参数计数还需修正。
 
-**旧 global predictor 冻结对照不能忽略。** 旧shared模型50% head/neuron剪枝，75M可训练predictor NLL 2.3907、冻结后2.3884；150M为1.8989、冻结后1.8994，几乎不变。此时local correction仍可训练，因此不能将旧DAG优势叙述成“global predictor自适应改道恢复能力”。新modular 40个run中没有对应freeze-predictor消融，还不能把其剪枝收益归因于这种机制。来源：PR `experiments/pruning/results/prune_summary.md`。
+**旧 global predictor 冻结对照不能忽略。** 旧shared模型50% head/neuron剪枝，75M可训练predictor NLL 2.3907、冻结后2.3884；150M为1.8989、冻结后1.8994，几乎不变。这说明在这些设定中更新global predictor参数并非恢复收益的必要条件；冻结参数的predictor仍随输入计算路由，local correction也仍可训练，因此该对照不能排除输入条件路由或局部路由变化的贡献。新modular 40个run中没有对应freeze-predictor消融，尚不能判断其恢复是否需要更新predictor参数。来源：PR `experiments/pruning/results/prune_summary.md`；参数冻结与逐输入计算分别见 `scripts/prune_finetune.py:318–324`、`:231`。
 
 ## 可以解释差异的证据与仍未知事项
 
@@ -123,7 +123,7 @@ s0/s30/s50/s70是head+neuron的目标稀疏度；mod是整个attention和MLP模�
 
 本次新 75M/150M 三族是 dense、fourway_corrected、fourway_modular，modular 不能当作 MUDDFormer。PR 另有真实 MUDDFormer 剪枝结果：`experiments/coherence/results/exp3/prune_summary.md:3` 起的旧 streamed-Dolma 150M 三方实验；其 README `experiments/coherence/README.md:97` 明确要求只在这个 trio 内比较，不与新的 mmap 12B checkpoint 混合。
 
-该旧 trio 的 MathInstruct 最终 NLL（dense / MUDDFormer / DAGFormer）为：0% 剪枝 2.0752 / 1.9348 / 1.9237；30% 为 2.1569 / 2.0369 / 1.9902；50% 为 2.2729 / 2.1531 / 2.0866；70% 为 2.5066 / 2.3665 / 2.2676。50% 冻结 router 后 MUDDFormer 2.1500、DAGFormer 2.0782，因此其收益仍不支持“global predictor 在线适应性改道”解释。DAG 的 global predictor 冻结时 local correction 仍可训练；MUDDFormer 冻结全部 routers（该 README:118–125）。
+该旧 trio 的 MathInstruct 最终 NLL（dense / MUDDFormer / DAGFormer）为：0% 剪枝 2.0752 / 1.9348 / 1.9237；30% 为 2.1569 / 2.0369 / 1.9902；50% 为 2.2729 / 2.1531 / 2.0866；70% 为 2.5066 / 2.3665 / 2.2676。50% 冻结router参数后MUDDFormer为2.1500、DAGFormer为2.0782，说明这些设定中的恢复收益不要求更新相应router参数。DAG 的 global predictor 参数冻结时local correction仍可训练；MUDDFormer冻结全部router参数（该 README:118–125）。两者被冻结的路由网络仍可根据当前输入或激活计算不同路由，不能据此认定恢复仅依赖固定路由图，也不能排除推理时的输入条件路由。
 
 ## 补充：Xiaocong 的曲线具体画什么
 

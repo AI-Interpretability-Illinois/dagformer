@@ -101,7 +101,9 @@ Loader 的合并冲突和自动合并引入的 `cfg` 未定义已在隔离目录
 
 可组合的证据是：跨尺度语言建模收益、在明确剪枝协议下保留能力，以及解释
 这些收益依赖的连接/局部计算。已有旧模型的 freeze-predictor 对照几乎不影响
-剪枝恢复，因此不能直接把鲁棒性归因为 global predictor 的自适应改道。
+剪枝恢复，说明在这些设定中更新 global predictor 参数并非恢复收益的必要条件。
+冻结参数后的 predictor 仍随输入计算路由，local correction 仍可训练；
+该对照不能排除输入条件路由或局部路由变化对鲁棒性的贡献。
 下一项最有辨别力的分析是在新模型上分开冻结 global predictor、local
 correction 与 backbone，比较相同损伤后的恢复；modular还需补它自己的
 predictor冻结对照。这里是后续建议，本次没有提交这些训练。
