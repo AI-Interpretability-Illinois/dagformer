@@ -1,0 +1,869 @@
+{
+  "heldout": {
+    "common_both_directions_correct_pairs": 61,
+    "arms": {
+      "all_qkv": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0078125,
+          "paired_95ci": [
+            -0.015625,
+            0.0390625
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.5166073031723499,
+          "paired_95ci": [
+            -0.867440439015627,
+            -0.15793283097445954
+          ],
+          "common_success_dag_minus_dense": -0.5593511511067875
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 575.5098643451929,
+          "paired_95ci": [
+            521.8965640321373,
+            630.2537200968712
+          ],
+          "common_success_dag_minus_dense": 564.545090644086
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.1959580440670834,
+          "paired_95ci": [
+            0.17859581406628422,
+            0.21341322363186918
+          ],
+          "common_success_dag_minus_dense": 0.19252367919982702
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -4.521039507932034e-05,
+          "paired_95ci": [
+            -0.00024055001538617337,
+            0.00014314319595477577
+          ],
+          "common_success_dag_minus_dense": -7.629446791235228e-05
+        }
+      },
+      "top1": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0390625,
+          "paired_95ci": [
+            0.0,
+            0.078125
+          ],
+          "common_success_dag_minus_dense": 0.03278688524590164
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.03125,
+          "paired_95ci": [
+            -0.0078125,
+            0.078125
+          ],
+          "common_success_dag_minus_dense": 0.02459016393442623
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.25398826106265915,
+          "paired_95ci": [
+            -0.4667109600477488,
+            -0.03175270943800114
+          ],
+          "common_success_dag_minus_dense": -0.23923943401409742
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 119.0652524093166,
+          "paired_95ci": [
+            114.7641740363324,
+            123.74898301197682
+          ],
+          "common_success_dag_minus_dense": 118.40637109904993
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.008512912318110466,
+          "paired_95ci": [
+            -0.021676385845057666,
+            0.03993897656910123
+          ],
+          "common_success_dag_minus_dense": 0.007887344868456731
+        },
+        "margin_recovery": {
+          "dag_minus_dense": 0.1600824811736322,
+          "paired_95ci": [
+            0.13333528389626412,
+            0.186220645339107
+          ],
+          "common_success_dag_minus_dense": 0.15904094271013605
+        }
+      },
+      "top2": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.203125,
+          "paired_95ci": [
+            0.140625,
+            0.2734375
+          ],
+          "common_success_dag_minus_dense": 0.20491803278688525
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.25,
+          "paired_95ci": [
+            0.1796875,
+            0.3203125
+          ],
+          "common_success_dag_minus_dense": 0.2459016393442623
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.699168020631987,
+          "paired_95ci": [
+            -0.9579468102241663,
+            -0.4278265702131647
+          ],
+          "common_success_dag_minus_dense": -0.6947193934837906
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 90.04564313590527,
+          "paired_95ci": [
+            85.83230218030512,
+            94.66447851359844
+          ],
+          "common_success_dag_minus_dense": 89.57513476199792
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.2069896557368338,
+          "paired_95ci": [
+            0.16972724971128628,
+            0.24612768102670088
+          ],
+          "common_success_dag_minus_dense": 0.2017455301323875
+        },
+        "margin_recovery": {
+          "dag_minus_dense": 0.1554856525549555,
+          "paired_95ci": [
+            0.13483847672592608,
+            0.1750380192349286
+          ],
+          "common_success_dag_minus_dense": 0.15548412053440935
+        }
+      },
+      "top4": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0390625,
+          "paired_95ci": [
+            -0.0625,
+            0.140625
+          ],
+          "common_success_dag_minus_dense": 0.04918032786885246
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": -0.0234375,
+          "paired_95ci": [
+            -0.1015625,
+            0.0625
+          ],
+          "common_success_dag_minus_dense": -0.01639344262295082
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 2.439641205673979,
+          "paired_95ci": [
+            1.7428850231153774,
+            3.12030789204764
+          ],
+          "common_success_dag_minus_dense": 2.3045562320907953
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 59.64092642068863,
+          "paired_95ci": [
+            55.42244443893433,
+            63.96961241774261
+          ],
+          "common_success_dag_minus_dense": 59.22793258604456
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.21658618049696088,
+          "paired_95ci": [
+            0.1623145417543128,
+            0.2733828209456988
+          ],
+          "common_success_dag_minus_dense": 0.20740598977589217
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.08579709761924259,
+          "paired_95ci": [
+            -0.11969157870124092,
+            -0.05235535367917602
+          ],
+          "common_success_dag_minus_dense": -0.07871644941146483
+        }
+      },
+      "top8": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": -0.0078125,
+          "paired_95ci": [
+            -0.0390625,
+            0.0234375
+          ],
+          "common_success_dag_minus_dense": -0.01639344262295082
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": -0.0078125,
+          "paired_95ci": [
+            -0.0234375,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 1.9591919984668493,
+          "paired_95ci": [
+            1.5353795227129012,
+            2.400269864499569
+          ],
+          "common_success_dag_minus_dense": 1.9414995986907209
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 79.89945168793201,
+          "paired_95ci": [
+            75.30283069200814,
+            84.52688870020211
+          ],
+          "common_success_dag_minus_dense": 79.6297429975916
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.5030057863332331,
+          "paired_95ci": [
+            0.46082025272480676,
+            0.5441457695269492
+          ],
+          "common_success_dag_minus_dense": 0.5048108579682522
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.0862929807197923,
+          "paired_95ci": [
+            -0.10038949613595465,
+            -0.07275741603633304
+          ],
+          "common_success_dag_minus_dense": -0.08573640721602604
+        }
+      },
+      "top16": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": -0.0078125,
+          "paired_95ci": [
+            -0.0546875,
+            0.03125
+          ],
+          "common_success_dag_minus_dense": -0.01639344262295082
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.9978761151432991,
+          "paired_95ci": [
+            0.6073355119675398,
+            1.3820131530053914
+          ],
+          "common_success_dag_minus_dense": 0.980075578220555
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 97.27665612101555,
+          "paired_95ci": [
+            91.46127756442874,
+            103.48078666031361
+          ],
+          "common_success_dag_minus_dense": 96.35752071318079
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.6506607379415073,
+          "paired_95ci": [
+            0.5971198242157698,
+            0.7050776732416125
+          ],
+          "common_success_dag_minus_dense": 0.6449301029692908
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.0555542518004869,
+          "paired_95ci": [
+            -0.06686701848647644,
+            -0.044618557471692126
+          ],
+          "common_success_dag_minus_dense": -0.05539232780346559
+        }
+      }
+    }
+  },
+  "transfer": {
+    "common_both_directions_correct_pairs": 63,
+    "arms": {
+      "all_qkv": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0078125,
+          "paired_95ci": [
+            0.0,
+            0.0234375
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.2574322633445263,
+          "paired_95ci": [
+            -0.685656639561057,
+            0.15575462561100745
+          ],
+          "common_success_dag_minus_dense": -0.27476594940064447
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 587.1920294612646,
+          "paired_95ci": [
+            533.1593714766204,
+            639.3890016425402
+          ],
+          "common_success_dag_minus_dense": 583.5231845643785
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.20364837208762765,
+          "paired_95ci": [
+            0.18547980098428524,
+            0.22158987946386333
+          ],
+          "common_success_dag_minus_dense": 0.20283522356360678
+        },
+        "margin_recovery": {
+          "dag_minus_dense": 0.00013629863468933578,
+          "paired_95ci": [
+            -6.284067671043224e-05,
+            0.0003317611291874579
+          ],
+          "common_success_dag_minus_dense": 9.396256392180113e-05
+        }
+      },
+      "top1": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.171875,
+          "paired_95ci": [
+            0.09375,
+            0.2578125
+          ],
+          "common_success_dag_minus_dense": 0.16666666666666666
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.1875,
+          "paired_95ci": [
+            0.109375,
+            0.2734375
+          ],
+          "common_success_dag_minus_dense": 0.18253968253968253
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.7816646800820308,
+          "paired_95ci": [
+            -1.126305382162809,
+            -0.4401602953979816
+          ],
+          "common_success_dag_minus_dense": -0.8009973468465937
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 111.32901633251458,
+          "paired_95ci": [
+            107.31983093833551,
+            115.27593484397512
+          ],
+          "common_success_dag_minus_dense": 111.62745310579028
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": -0.016201583202928305,
+          "paired_95ci": [
+            -0.04490878718206659,
+            0.011974617268424482
+          ],
+          "common_success_dag_minus_dense": -0.012264486816194322
+        },
+        "margin_recovery": {
+          "dag_minus_dense": 0.204575342247861,
+          "paired_95ci": [
+            0.17618119482001848,
+            0.23442381122227235
+          ],
+          "common_success_dag_minus_dense": 0.20386588461873575
+        }
+      },
+      "top2": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.546875,
+          "paired_95ci": [
+            0.4609375,
+            0.6328125
+          ],
+          "common_success_dag_minus_dense": 0.5476190476190477
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.546875,
+          "paired_95ci": [
+            0.4609375,
+            0.6328125
+          ],
+          "common_success_dag_minus_dense": 0.5555555555555556
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -1.6354115200520027,
+          "paired_95ci": [
+            -1.9692118444814697,
+            -1.2953639655388542
+          ],
+          "common_success_dag_minus_dense": -1.65990997667587
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 84.65668268501759,
+          "paired_95ci": [
+            81.26440554633737,
+            88.08264986276627
+          ],
+          "common_success_dag_minus_dense": 85.00784282078818
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.21326939342543483,
+          "paired_95ci": [
+            0.18081363823730498,
+            0.24560912331799045
+          ],
+          "common_success_dag_minus_dense": 0.21456660212032377
+        },
+        "margin_recovery": {
+          "dag_minus_dense": 0.19012255345475348,
+          "paired_95ci": [
+            0.1692766814844629,
+            0.21058120435988398
+          ],
+          "common_success_dag_minus_dense": 0.18957282911789286
+        }
+      },
+      "top4": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0625,
+          "paired_95ci": [
+            -0.0390625,
+            0.1640625
+          ],
+          "common_success_dag_minus_dense": 0.05555555555555555
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": -0.0703125,
+          "paired_95ci": [
+            -0.140625,
+            0.0078125
+          ],
+          "common_success_dag_minus_dense": -0.07142857142857142
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 1.3646371830254793,
+          "paired_95ci": [
+            0.8017302305379417,
+            1.940253963589203
+          ],
+          "common_success_dag_minus_dense": 1.366421916891658
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 54.04596485197544,
+          "paired_95ci": [
+            50.15356554277241,
+            58.034633215889336
+          ],
+          "common_success_dag_minus_dense": 54.1523760084122
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.22363852779380977,
+          "paired_95ci": [
+            0.16839894414297304,
+            0.2764906841155607
+          ],
+          "common_success_dag_minus_dense": 0.2278312272022641
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.04539712518291139,
+          "paired_95ci": [
+            -0.07118306759752387,
+            -0.019322708405874568
+          ],
+          "common_success_dag_minus_dense": -0.04706861909906923
+        }
+      },
+      "top8": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.03125,
+          "paired_95ci": [
+            0.0078125,
+            0.0625
+          ],
+          "common_success_dag_minus_dense": 0.023809523809523808
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 1.5304493140429258,
+          "paired_95ci": [
+            1.043424008693546,
+            1.985827976372093
+          ],
+          "common_success_dag_minus_dense": 1.514734118703812
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 76.24303121119738,
+          "paired_95ci": [
+            71.33803716991096,
+            80.82791545633226
+          ],
+          "common_success_dag_minus_dense": 76.65178142275128
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.46114030841272324,
+          "paired_95ci": [
+            0.40797320723650043,
+            0.5091960326186381
+          ],
+          "common_success_dag_minus_dense": 0.46882583212757867
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.06142134493381457,
+          "paired_95ci": [
+            -0.07291508149745572,
+            -0.0492231433228734
+          ],
+          "common_success_dag_minus_dense": -0.061833072459791194
+        }
+      },
+      "top16": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0234375,
+          "paired_95ci": [
+            0.0,
+            0.0546875
+          ],
+          "common_success_dag_minus_dense": 0.015873015873015872
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.6373064108192921,
+          "paired_95ci": [
+            0.10962201738730074,
+            1.14966688323766
+          ],
+          "common_success_dag_minus_dense": 0.5997338162528144
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 90.66143407672644,
+          "paired_95ci": [
+            84.17705457191914,
+            96.72755739148707
+          ],
+          "common_success_dag_minus_dense": 90.89785526669215
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.5944535971502773,
+          "paired_95ci": [
+            0.5322717234492302,
+            0.6517581780528416
+          ],
+          "common_success_dag_minus_dense": 0.593455414864279
+        },
+        "margin_recovery": {
+          "dag_minus_dense": -0.0313206497948324,
+          "paired_95ci": [
+            -0.0416736689110309,
+            -0.02090480848412574
+          ],
+          "common_success_dag_minus_dense": -0.030688855174195506
+        }
+      }
+    }
+  },
+  "unchanged_query": {
+    "common_both_directions_correct_pairs": 62,
+    "arms": {
+      "all_qkv": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.0008650783256598515,
+          "paired_95ci": [
+            -0.0002931095997837474,
+            0.002416873522679453
+          ],
+          "common_success_dag_minus_dense": -0.00010614166404270838
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 575.8352568894625,
+          "paired_95ci": [
+            521.5145373325795,
+            629.7751888196916
+          ],
+          "common_success_dag_minus_dense": 568.9734174359229
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.19615434172010282,
+          "paired_95ci": [
+            0.17880791942770885,
+            0.21302750965151063
+          ],
+          "common_success_dag_minus_dense": 0.19345643274456023
+        }
+      },
+      "top1": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.0010318341137462994,
+          "paired_95ci": [
+            -0.002654876075848733,
+            0.00041047046806852455
+          ],
+          "common_success_dag_minus_dense": -0.0009744354249579051
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 119.04953125398606,
+          "paired_95ci": [
+            114.62350644760299,
+            123.672865030705
+          ],
+          "common_success_dag_minus_dense": 119.32545369478964
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.008422634564340115,
+          "paired_95ci": [
+            -0.021349300956353543,
+            0.03788362927734852
+          ],
+          "common_success_dag_minus_dense": 0.008935837015028923
+        }
+      },
+      "top2": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": -0.0005081132471786987,
+          "paired_95ci": [
+            -0.0021366296470432646,
+            0.0009185828739191493
+          ],
+          "common_success_dag_minus_dense": -0.00026760797810575535
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 90.03355710208416,
+          "paired_95ci": [
+            85.7080776296556,
+            94.6584772657603
+          ],
+          "common_success_dag_minus_dense": 90.15515744301581
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.20678168162703514,
+          "paired_95ci": [
+            0.1676459834445268,
+            0.24574829725315794
+          ],
+          "common_success_dag_minus_dense": 0.20898617755982182
+        }
+      },
+      "top4": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.0003167492595821386,
+          "paired_95ci": [
+            -0.0031514881766725013,
+            0.005396572642121101
+          ],
+          "common_success_dag_minus_dense": -0.001172622434809924
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 59.6649724394083,
+          "paired_95ci": [
+            55.31293911784887,
+            63.931525860726836
+          ],
+          "common_success_dag_minus_dense": 59.636785338001864
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.21634614700451493,
+          "paired_95ci": [
+            0.16269863134948537,
+            0.2699568572919816
+          ],
+          "common_success_dag_minus_dense": 0.2157042771577835
+        }
+      },
+      "top8": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.0005382001709222095,
+          "paired_95ci": [
+            -0.002563889938073771,
+            0.004468011581275278
+          ],
+          "common_success_dag_minus_dense": -0.00037957772785317034
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 79.9137195572257,
+          "paired_95ci": [
+            75.21790420971811,
+            84.59063485823572
+          ],
+          "common_success_dag_minus_dense": 79.69003696595469
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.5030496281106025,
+          "paired_95ci": [
+            0.4620495152863441,
+            0.5427784454892389
+          ],
+          "common_success_dag_minus_dense": 0.5028301297176269
+        }
+      },
+      "top16": {
+        "donor_vocab_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "donor_two_choice_accuracy": {
+          "dag_minus_dense": 0.0,
+          "paired_95ci": [
+            0.0,
+            0.0
+          ],
+          "common_success_dag_minus_dense": 0.0
+        },
+        "recipient_logp": {
+          "dag_minus_dense": 0.0003765132569242269,
+          "paired_95ci": [
+            -0.0029337924529045266,
+            0.005221398387084265
+          ],
+          "common_success_dag_minus_dense": -0.0012314261628254767
+        },
+        "intervention_l2": {
+          "dag_minus_dense": 97.27865920215845,
+          "paired_95ci": [
+            91.32620040625334,
+            103.27117555104196
+          ],
+          "common_success_dag_minus_dense": 96.32907642087629
+        },
+        "relative_intervention_l2": {
+          "dag_minus_dense": 0.6505805036285892,
+          "paired_95ci": [
+            0.5968901720945723,
+            0.705438780161785
+          ],
+          "common_success_dag_minus_dense": 0.648165381964176
+        }
+      }
+    }
+  }
+}
