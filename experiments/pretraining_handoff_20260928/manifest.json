@@ -1,0 +1,581 @@
+{
+  "created_utc": "2026-09-28T15:47:54.212306+00:00",
+  "working_directory": "/u/yurenh2/dagformer-20260917/experiments/pretraining_handoff_20260928",
+  "scope": "September continuation: completed 1B DAG 20.006830080B and paired 600M 12.006195200B; 1B dense completed previously, used as paired baseline. Not a new 75M/300M pretraining campaign.",
+  "files": [
+    {
+      "source": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-baseline/config.yaml",
+      "path": "configs/1b-baseline_final_checkpoint.yaml",
+      "bytes": 775,
+      "role": "Configuration copied next to completed evaluation checkpoint"
+    },
+    {
+      "source": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/1b-dagformer/config.yaml",
+      "path": "configs/1b-dagformer_final_checkpoint.yaml",
+      "bytes": 1275,
+      "role": "Configuration copied next to completed evaluation checkpoint"
+    },
+    {
+      "source": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/600m-baseline/config.yaml",
+      "path": "configs/600m-baseline_final_checkpoint.yaml",
+      "bytes": 988,
+      "role": "Configuration copied next to completed evaluation checkpoint"
+    },
+    {
+      "source": "/work/hdd/biro/yurenh2/dagformer-20260917/checkpoints/eval/600m-dagformer/config.yaml",
+      "path": "configs/600m-dagformer_final_checkpoint.yaml",
+      "bytes": 1317,
+      "role": "Configuration copied next to completed evaluation checkpoint"
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/1b-dagformer-complete/resume.yaml",
+      "path": "configs/1b-dagformer_actual_resume.yaml",
+      "bytes": 1275,
+      "role": "Exact generated configuration used by the September continuation"
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/1b-dagformer-complete/metrics.csv",
+      "path": "raw/1b-dagformer_continuation_metrics.csv",
+      "bytes": 131644,
+      "role": "Unmodified September continuation training CSV",
+      "rows": 729,
+      "training_rows": 715,
+      "columns": [
+        "step",
+        "train/nll",
+        "train/sparsity_loss",
+        "train/total_loss",
+        "train/lr",
+        "train/predictor_lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "grad/base_norm",
+        "grad/predictor_norm",
+        "schedule/tau",
+        "schedule/lambda",
+        "train/use_dagformer",
+        "eval/nll_soft",
+        "eval/nll_hard",
+        "eval/nll_baseline"
+      ],
+      "first_training": {
+        "step": "31010",
+        "train/nll": "1.63525390625",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "1.63525390625",
+        "train/lr": "7.696447793326157e-05",
+        "train/predictor_lr": "3.848223896663079e-05",
+        "train/tokens_per_sec": "120592.63494286934",
+        "train/tokens_seen_B": "16.258695168",
+        "grad/base_norm": "0.10444262850523121",
+        "grad/predictor_norm": "0.16269909361183707",
+        "schedule/tau": "0.6039242393762775",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "last_training": {
+        "step": "38150",
+        "train/nll": "1.22119140625",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "1.22119140625",
+        "train/lr": "1.0764262648006451e-07",
+        "train/predictor_lr": "5.3821313240032256e-08",
+        "train/tokens_per_sec": "118066.58441367048",
+        "train/tokens_seen_B": "20.002111488",
+        "grad/base_norm": "0.08096688792616143",
+        "grad/predictor_norm": "0.11989728825059134",
+        "schedule/tau": "0.20000081332521172",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "training_loss_column": "train/nll"
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/600m-baseline-complete/resume.yaml",
+      "path": "configs/600m-baseline_actual_resume.yaml",
+      "bytes": 988,
+      "role": "Exact generated configuration used by the September continuation"
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/600m-baseline-complete/metrics.csv",
+      "path": "raw/600m-baseline_continuation_metrics.csv",
+      "bytes": 81739,
+      "role": "Unmodified September continuation training CSV",
+      "rows": 906,
+      "training_rows": 889,
+      "columns": [
+        "step",
+        "train/loss",
+        "train/lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "train/grad_norm",
+        "eval/nll"
+      ],
+      "training_loss_column": "train/loss",
+      "first_training": {
+        "step": "14010",
+        "train/loss": "3.701171875",
+        "train/lr": "0.00017859375",
+        "train/tokens_per_sec": "392219.2960956293",
+        "train/tokens_seen_B": "7.345799168",
+        "train/grad_norm": "0.13162421501980642",
+        "eval/nll": ""
+      },
+      "last_training": {
+        "step": "22890",
+        "train/loss": "3.412109375",
+        "train/lr": "2.008928571428814e-07",
+        "train/tokens_per_sec": "360046.89618026983",
+        "train/tokens_seen_B": "12.001476608",
+        "train/grad_norm": "0.13034524694804847",
+        "eval/nll": ""
+      }
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/600m-dagformer-complete/resume.yaml",
+      "path": "configs/600m-dagformer_actual_resume.yaml",
+      "bytes": 1317,
+      "role": "Exact generated configuration used by the September continuation"
+    },
+    {
+      "source": "/u/yurenh2/dagformer-20260917/run_metadata/600m-dagformer-complete/metrics.csv",
+      "path": "raw/600m-dagformer_continuation_metrics.csv",
+      "bytes": 160812,
+      "role": "Unmodified September continuation training CSV",
+      "rows": 906,
+      "training_rows": 889,
+      "columns": [
+        "step",
+        "train/nll",
+        "train/sparsity_loss",
+        "train/total_loss",
+        "train/lr",
+        "train/predictor_lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "grad/base_norm",
+        "grad/predictor_norm",
+        "schedule/tau",
+        "schedule/lambda",
+        "train/use_dagformer",
+        "eval/nll_soft",
+        "eval/nll_hard",
+        "eval/nll_baseline"
+      ],
+      "first_training": {
+        "step": "14010",
+        "train/nll": "3.615234375",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "3.615234375",
+        "train/lr": "0.00017859375",
+        "train/predictor_lr": "9.921875e-05",
+        "train/tokens_per_sec": "182283.23321444902",
+        "train/tokens_seen_B": "7.345799168",
+        "grad/base_norm": "0.10990717978693311",
+        "grad/predictor_norm": "0.2613405607247036",
+        "schedule/tau": "1.7743407380784886",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "last_training": {
+        "step": "22890",
+        "train/nll": "3.3310546875",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "3.3310546875",
+        "train/lr": "2.008928571428814e-07",
+        "train/predictor_lr": "1.1160714285715634e-07",
+        "train/tokens_per_sec": "198510.92848290087",
+        "train/tokens_seen_B": "12.001476608",
+        "grad/base_norm": "0.11508116413265759",
+        "grad/predictor_norm": "0.15587336719496486",
+        "schedule/tau": "0.20000225844728814",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "training_loss_column": "train/nll"
+    },
+    {
+      "source": "/work/hdd/bfqt/dagformer_checkpoints/pretrain_1b_baseline_olmomix_20b/metrics.csv",
+      "path": "raw/1b-baseline_historical_metrics.csv",
+      "bytes": 346619,
+      "role": "Unmodified historical CSV; discard abandoned tail beyond resumed checkpoint when stitching DAG 1B / both 600M",
+      "rows": 3892,
+      "training_rows": 3816,
+      "columns": [
+        "step",
+        "train/loss",
+        "train/lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "train/grad_norm",
+        "eval/nll"
+      ],
+      "training_loss_column": "train/loss",
+      "first_training": {
+        "step": "0",
+        "train/loss": "11.90625",
+        "train/lr": "0.0",
+        "train/tokens_per_sec": "172423.01131699287",
+        "train/tokens_seen_B": "0.000524288",
+        "train/grad_norm": "1.0010584397826796",
+        "eval/nll": ""
+      },
+      "last_training": {
+        "step": "38150",
+        "train/loss": "1.31640625",
+        "train/lr": "1.0764262648006451e-07",
+        "train/tokens_per_sec": "324892.1212214098",
+        "train/tokens_seen_B": "20.002111488",
+        "train/grad_norm": "0.09756118220272085",
+        "eval/nll": ""
+      }
+    },
+    {
+      "source": "/work/hdd/bfqt/dagformer_checkpoints/fourway_1b_dagformer_olmomix_20b/metrics.csv",
+      "path": "raw/1b-dagformer_historical_metrics.csv",
+      "bytes": 586242,
+      "role": "Unmodified historical CSV; discard abandoned tail beyond resumed checkpoint when stitching DAG 1B / both 600M",
+      "rows": 3255,
+      "training_rows": 3192,
+      "columns": [
+        "step",
+        "train/nll",
+        "train/sparsity_loss",
+        "train/total_loss",
+        "train/lr",
+        "train/predictor_lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "grad/base_norm",
+        "grad/predictor_norm",
+        "schedule/tau",
+        "schedule/lambda",
+        "train/use_dagformer",
+        "eval/nll_soft",
+        "eval/nll_hard",
+        "eval/nll_baseline"
+      ],
+      "first_training": {
+        "step": "0",
+        "train/nll": "11.8984375",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "11.8984375",
+        "train/lr": "0.0",
+        "train/predictor_lr": "0.0",
+        "train/tokens_per_sec": "84953.18972489095",
+        "train/tokens_seen_B": "0.000524288",
+        "grad/base_norm": "0.984970461198821",
+        "grad/predictor_norm": "0.15665149859829341",
+        "schedule/tau": "5.0",
+        "schedule/lambda": "0.0",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "last_training": {
+        "step": "31910",
+        "train/nll": "2.474609375",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "2.474609375",
+        "train/lr": "6.727664155005382e-05",
+        "train/predictor_lr": "3.363832077502691e-05",
+        "train/tokens_per_sec": "96852.64298390858",
+        "train/tokens_seen_B": "16.730554368",
+        "grad/base_norm": "0.09350207983233375",
+        "grad/predictor_norm": "0.14553037422931311",
+        "schedule/tau": "0.5107572620718391",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "training_loss_column": "train/nll"
+    },
+    {
+      "source": "/work/hdd/bfqt/dagformer_checkpoints/pretrain_600m_baseline/metrics.csv",
+      "path": "raw/600m-baseline_historical_metrics.csv",
+      "bytes": 140392,
+      "role": "Unmodified historical CSV; discard abandoned tail beyond resumed checkpoint when stitching DAG 1B / both 600M",
+      "rows": 1591,
+      "training_rows": 1560,
+      "columns": [
+        "step",
+        "train/loss",
+        "train/lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "train/grad_norm",
+        "eval/nll"
+      ],
+      "training_loss_column": "train/loss",
+      "first_training": {
+        "step": "0",
+        "train/loss": "11.8046875",
+        "train/lr": "0.0",
+        "train/tokens_per_sec": "133315.7716195852",
+        "train/tokens_seen_B": "0.000524288",
+        "train/grad_norm": "0.9991440386675883",
+        "eval/nll": ""
+      },
+      "last_training": {
+        "step": "15590",
+        "train/loss": "3.05078125",
+        "train/lr": "0.00014685267857142856",
+        "train/tokens_per_sec": "294068.37135885254",
+        "train/tokens_seen_B": "8.174174208",
+        "train/grad_norm": "0.11814224228362383",
+        "eval/nll": ""
+      }
+    },
+    {
+      "source": "/work/hdd/bfqt/dagformer_checkpoints/fourway_600m_chinchilla/metrics.csv",
+      "path": "raw/600m-dagformer_historical_metrics.csv",
+      "bytes": 271041,
+      "role": "Unmodified historical CSV; discard abandoned tail beyond resumed checkpoint when stitching DAG 1B / both 600M",
+      "rows": 1511,
+      "training_rows": 1482,
+      "columns": [
+        "step",
+        "train/nll",
+        "train/sparsity_loss",
+        "train/total_loss",
+        "train/lr",
+        "train/predictor_lr",
+        "train/tokens_per_sec",
+        "train/tokens_seen_B",
+        "grad/base_norm",
+        "grad/predictor_norm",
+        "schedule/tau",
+        "schedule/lambda",
+        "train/use_dagformer",
+        "eval/nll_soft",
+        "eval/nll_hard",
+        "eval/nll_baseline"
+      ],
+      "first_training": {
+        "step": "0",
+        "train/nll": "11.80078125",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "11.80078125",
+        "train/lr": "0.0",
+        "train/predictor_lr": "0.0",
+        "train/tokens_per_sec": "76562.32513151417",
+        "train/tokens_seen_B": "0.000524288",
+        "grad/base_norm": "0.9953895277919762",
+        "grad/predictor_norm": "0.10071652629162983",
+        "schedule/tau": "5.0",
+        "schedule/lambda": "0.0",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "last_training": {
+        "step": "14810",
+        "train/nll": "3.30078125",
+        "train/sparsity_loss": "0.0",
+        "train/total_loss": "3.30078125",
+        "train/lr": "0.0001625223214285714",
+        "train/predictor_lr": "9.029017857142858e-05",
+        "train/tokens_per_sec": "106950.12427619913",
+        "train/tokens_seen_B": "7.765229568",
+        "grad/base_norm": "0.12122302876092289",
+        "grad/predictor_norm": "0.20845459135052213",
+        "schedule/tau": "1.5324823704850365",
+        "schedule/lambda": "0.01",
+        "train/use_dagformer": "1.0",
+        "eval/nll_soft": "",
+        "eval/nll_hard": "",
+        "eval/nll_baseline": ""
+      },
+      "training_loss_column": "train/nll"
+    }
+  ],
+  "completion_proofs": {
+    "1b-baseline": {
+      "source_checkpoint": "/work/hdd/bfqt/dagformer_checkpoints/pretrain_1b_baseline_olmomix_20b/checkpoint_step38160.pt",
+      "source_config": "/work/hdd/biro/yurenh2/dagformer-20260917/code/9275b8762b95214048c160491839682ad357aad7/configs/pretrain_1b_baseline_olmomix_20b.yaml",
+      "checkpoint_step": 38160,
+      "optimizer_update_counts": [
+        38160
+      ],
+      "tokens_per_update": 524288,
+      "processed_tokens": 20006830080,
+      "includes_optimizer": false,
+      "training_data_source_override": null,
+      "files": {
+        "checkpoint.pt": 2558862955,
+        "config.yaml": 775
+      }
+    },
+    "1b-dagformer": {
+      "source_checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/1b-dagformer-complete/checkpoint_step38160.pt",
+      "source_config": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/1b-dagformer-complete/resume.yaml",
+      "checkpoint_step": 38160,
+      "optimizer_update_counts": [
+        38160
+      ],
+      "tokens_per_update": 524288,
+      "processed_tokens": 20006830080,
+      "includes_optimizer": false,
+      "training_data_source_override": null,
+      "files": {
+        "checkpoint_step38160_model.pt": 2558836866,
+        "checkpoint.pt": 146647943,
+        "config.yaml": 1275
+      }
+    },
+    "600m-baseline": {
+      "source_checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/600m-baseline-complete/checkpoint_step22900.pt",
+      "source_config": "/u/yurenh2/dagformer-20260917/run_metadata/600m-baseline-complete/resume.yaml",
+      "checkpoint_step": 22900,
+      "optimizer_update_counts": [
+        22900
+      ],
+      "tokens_per_update": 524288,
+      "processed_tokens": 12006195200,
+      "includes_optimizer": false,
+      "training_data_source_override": null,
+      "files": {
+        "checkpoint.pt": 1365483539,
+        "config.yaml": 988
+      }
+    },
+    "600m-dagformer": {
+      "source_checkpoint": "/work/hdd/biro/yurenh2/dagformer-20260917/runs/600m-dagformer-complete/checkpoint_step22900.pt",
+      "source_config": "/u/yurenh2/dagformer-20260917/run_metadata/600m-dagformer-complete/resume.yaml",
+      "checkpoint_step": 22900,
+      "optimizer_update_counts": [
+        22900
+      ],
+      "tokens_per_update": 524288,
+      "processed_tokens": 12006195200,
+      "includes_optimizer": false,
+      "training_data_source_override": null,
+      "files": {
+        "checkpoint_step22900_model.pt": 1365460592,
+        "checkpoint.pt": 137202084,
+        "config.yaml": 1317
+      }
+    }
+  },
+  "slurm_accounting": [
+    {
+      "JobID": "22160737",
+      "JobName": "1b-dag-complete",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-19T13:00:08",
+      "End": "2026-09-19T21:52:27",
+      "Elapsed": "08:52:19",
+      "AllocTRES": "billing=24000,cpu=64,gres/gpu:h200=8,gres/gpu=8,mem=512G,node=1"
+    },
+    {
+      "JobID": "22160902",
+      "JobName": "600m-dag-complete",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-23T18:30:25",
+      "End": "2026-09-24T01:04:02",
+      "Elapsed": "06:33:37",
+      "AllocTRES": "billing=24000,cpu=64,gres/gpu:h200=8,gres/gpu=8,mem=512G,node=1"
+    },
+    {
+      "JobID": "22160903",
+      "JobName": "600m-base-complete",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-24T22:10:29",
+      "End": "2026-09-25T01:48:10",
+      "Elapsed": "03:37:41",
+      "AllocTRES": "billing=24000,cpu=64,gres/gpu:h200=8,gres/gpu=8,mem=512G,node=1"
+    },
+    {
+      "JobID": "22160907",
+      "JobName": "eval-600m-base",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-25T20:56:59",
+      "End": "2026-09-25T21:24:10",
+      "Elapsed": "00:27:11",
+      "AllocTRES": "billing=1024,cpu=8,gres/gpu=1,mem=64G,node=1"
+    },
+    {
+      "JobID": "22160908",
+      "JobName": "eval-600m-dag",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-25T20:57:06",
+      "End": "2026-09-25T21:34:46",
+      "Elapsed": "00:37:40",
+      "AllocTRES": "billing=1024,cpu=8,gres/gpu=1,mem=64G,node=1"
+    },
+    {
+      "JobID": "22160910",
+      "JobName": "dag-scale-summary",
+      "Account": "biro-delta-gpu",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Start": "2026-09-26T02:02:27",
+      "End": "2026-09-26T02:02:52",
+      "Elapsed": "00:00:25",
+      "AllocTRES": "billing=500,cpu=4,gres/gpu=1,mem=24G,node=1"
+    }
+  ],
+  "curve_rules": {
+    "tokens_per_update": 524288,
+    "1b-dagformer": {
+      "keep_historical_step_max_inclusive": 31000,
+      "resume_optimizer_updates": 31001,
+      "final_optimizer_updates": 38160
+    },
+    "600m-dagformer": {
+      "keep_historical_step_max_inclusive": 14000,
+      "resume_optimizer_updates": 14001,
+      "final_optimizer_updates": 22900
+    },
+    "600m-baseline": {
+      "keep_historical_step_max_inclusive": 14000,
+      "resume_optimizer_updates": 14001,
+      "final_optimizer_updates": 22900
+    },
+    "1b-baseline": {
+      "final_optimizer_updates": 38160
+    },
+    "token_axis": "Prefer train/tokens_seen_B from each CSV where present; otherwise step label is zero-based completed step and token count=(step+1)*524288. Final checkpoint step labels have different boundary convention: use optimizer_update_counts in staging.json."
+  },
+  "limitations": [
+    "Old experiments/results/1b_dagformer_stitched_train.csv is an unrelated April Dolma ~5.24B run, not these OLMo-mix 20B runs.",
+    "1B reconstructed data reproduces known legacy reader ordering/parity but cannot prove byte-identical historical cache after three prior decompression failures.",
+    "600M continuation shares the same frozen nominal Dolma suffix; historical streaming HTTP failures differ between models, so entire historical token sequences are not proven identical.",
+    "Training NLL is minbatch training loss; do not compare its absolute scale across different datasets or treat it as WikiText evaluation."
+  ],
+  "shared_directory": "/work/hdd/bfqt/yurenh2/pretraining_handoff_20260928",
+  "excluded_current_job": {
+    "id": 22464579,
+    "project": "/work/hdd/bcsi/yurenh2/ept_1b",
+    "reason": "Different project, not DAGFormer continuation"
+  },
+  "supporting_records": "/u/yurenh2/dagformer-20260917/experiments/pretraining_handoff_20260928/raw",
+  "shared_export_scope": "Only exact configuration YAMLs, seven raw training CSVs and this manifest. Complete optimizer proofs and sacct states are embedded in this manifest. Small raw Slurm logs/data indices remain in the private working copy."
+}
