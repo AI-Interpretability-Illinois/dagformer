@@ -52,10 +52,17 @@ nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 
 # ---- successor: keep the node busy across the 48h limit -------------------
 if [ ! -f "$STOP" ]; then
-    # same node, same name, same env (QUEUE / STOP / TOKENIZE) as this job
-    nxt=$(sbatch --parsable --dependency=afterany:$SLURM_JOB_ID --nodelist="$(hostname -s)" \
-          --job-name="$SLURM_JOB_NAME" --export=ALL,QUEUE="$QUEUE",STOP="$STOP",TOKENIZE="$TOKENIZE" "$0") \
-        && log "queued successor $nxt"
+    # same node, same name, same env; if the allocation is exhausted ("safe" enforcement
+    # rejects the job), retry on the reservation's second account biro-delta-gpu
+    succ=(--parsable --dependency=afterany:$SLURM_JOB_ID --nodelist="$(hostname -s)"
+          --job-name="$SLURM_JOB_NAME" --export=ALL,QUEUE="$QUEUE",STOP="$STOP",TOKENIZE="$TOKENIZE")
+    if nxt=$(sbatch "${succ[@]}" "$0" 2>&1); then
+        log "queued successor $nxt"
+    elif nxt=$(sbatch --account=biro-delta-gpu "${succ[@]}" "$0" 2>&1); then
+        log "queued successor $nxt on fallback account biro-delta-gpu"
+    else
+        log "FAILED to queue a successor: $nxt"
+    fi
 fi
 
 # ---- reservation idle guard (scripts/slurm/resv_watchdog.sh) --------------
