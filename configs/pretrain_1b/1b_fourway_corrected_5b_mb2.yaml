@@ -24,7 +24,7 @@ routing_column_group_lambda: 0.0
 routing_sparsity_lambda: 0.0
 
 replace_rmsnorm: true
-use_torch_compile: true        # checkpoints are compile-agnostic; the micro-batch fallback config keeps compile off
+use_torch_compile: false       # broken at 1B: torch.compile + fourway_corrected + DDP produced a total_loss with no grad_fn (RuntimeError on rank0-3), 2026-09-28. Works fine at 300M with the same routing_mode/use_v_norm; not reproduced or root-caused at 1B scale yet.
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"

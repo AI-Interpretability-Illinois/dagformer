@@ -24,7 +24,7 @@ routing_column_group_lambda: 0.0
 routing_sparsity_lambda: 0.0
 
 replace_rmsnorm: true
-use_torch_compile: true        # checkpoints are compile-agnostic; the micro-batch fallback config keeps compile off
+use_torch_compile: false       # untested at 1B; fourway_corrected + compile crashed here (see 1b_fourway_corrected_5b_mb2.yaml), so left off for the unused (not chosen) modular 1B config too until verified.
 
 dataset: "allenai/dolma"
 dataset_name: "v1_7"
