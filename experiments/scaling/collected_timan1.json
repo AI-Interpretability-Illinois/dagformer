@@ -1,0 +1,431 @@
+{
+ "machine": "timan1",
+ "runs": [
+  {
+   "name": "timan_75m_dense",
+   "machine": "timan1",
+   "family": "dense",
+   "corpus": "timan12b",
+   "size": "75m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_75m_baseline_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll",
+   "hidden_size": 512,
+   "num_hidden_layers": 6,
+   "routing_mode": "dense",
+   "total_steps": 3000,
+   "total_tokens": 1585152000,
+   "params": {
+    "embed": 51380224,
+    "non_embed": 25178624,
+    "total": 76558848
+   },
+   "routing_params": 0,
+   "flops": {
+    "dense_macs": 82837504,
+    "routing_macs": 0,
+    "train_flops_per_token": 497025024
+   },
+   "done": true,
+   "train_flops_total": 787860210843648000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.4639423076923075
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.742788461538462
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.545673076923077
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 4.3954326923076925
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 4.352163461538462
+    }
+   ],
+   "final_eval_nll": 4.352163461538462
+  },
+  {
+   "name": "timan_75m_corrected",
+   "machine": "timan1",
+   "family": "corrected",
+   "corpus": "timan12b",
+   "size": "75m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_fourway_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll_soft",
+   "hidden_size": 512,
+   "num_hidden_layers": 6,
+   "routing_mode": "fourway_corrected",
+   "total_steps": 3000,
+   "total_tokens": 1585152000,
+   "params": {
+    "embed": 51380224,
+    "non_embed": 25178624,
+    "total": 76558848
+   },
+   "routing_params": 29098484,
+   "flops": {
+    "dense_macs": 82837504,
+    "routing_macs": 15237632,
+    "train_flops_per_token": 588450816
+   },
+   "done": true,
+   "train_flops_total": 932783987884032000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.367788461538462
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.564903846153846
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.3701923076923075
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 4.257211538461538
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 4.211538461538462
+    }
+   ],
+   "final_eval_nll": 4.211538461538462
+  },
+  {
+   "name": "timan_75m_modular",
+   "machine": "timan1",
+   "family": "modular",
+   "corpus": "timan12b",
+   "size": "75m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_modular_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll_soft",
+   "hidden_size": 512,
+   "num_hidden_layers": 6,
+   "routing_mode": "fourway_modular",
+   "total_steps": 3000,
+   "total_tokens": 1585152000,
+   "params": {
+    "embed": 51380224,
+    "non_embed": 25178624,
+    "total": 76558848
+   },
+   "routing_params": 28927394,
+   "flops": {
+    "dense_macs": 82837504,
+    "routing_macs": 27278848,
+    "train_flops_per_token": 660698112
+   },
+   "done": true,
+   "train_flops_total": 1047306933633024000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.2548076923076925
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.498798076923077
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.3545673076923075
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 4.237980769230769
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 4.194711538461538
+    }
+   ],
+   "final_eval_nll": 4.194711538461538
+  },
+  {
+   "name": "timan_150m_dense",
+   "machine": "timan1",
+   "family": "dense",
+   "corpus": "timan12b",
+   "size": "150m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_150m_baseline_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll",
+   "hidden_size": 768,
+   "num_hidden_layers": 8,
+   "routing_mode": "dense",
+   "total_steps": 6000,
+   "total_tokens": 3170304000,
+   "params": {
+    "embed": 77070336,
+    "non_embed": 75522816,
+    "total": 152593152
+   },
+   "routing_params": 0,
+   "flops": {
+    "dense_macs": 165150720,
+    "routing_macs": 0,
+    "train_flops_per_token": 990904320
+   },
+   "done": true,
+   "train_flops_total": 3141467929313280000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.247596153846154
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.402644230769231
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.1983173076923075
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 4.016826923076923
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 3.941105769230769
+    },
+    {
+     "step": 3000,
+     "tokens": 1585152000,
+     "eval_nll": 3.8810096153846154
+    },
+    {
+     "step": 3500,
+     "tokens": 1849344000,
+     "eval_nll": 3.855769230769231
+    },
+    {
+     "step": 4000,
+     "tokens": 2113536000,
+     "eval_nll": 3.8257211538461537
+    },
+    {
+     "step": 4500,
+     "tokens": 2377728000,
+     "eval_nll": 3.800480769230769
+    },
+    {
+     "step": 5000,
+     "tokens": 2641920000,
+     "eval_nll": 3.7836538461538463
+    },
+    {
+     "step": 5500,
+     "tokens": 2906112000,
+     "eval_nll": 3.7764423076923075
+    }
+   ],
+   "final_eval_nll": 3.7764423076923075
+  },
+  {
+   "name": "timan_150m_corrected",
+   "machine": "timan1",
+   "family": "corrected",
+   "corpus": "timan12b",
+   "size": "150m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_fourway_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll_soft",
+   "hidden_size": 768,
+   "num_hidden_layers": 8,
+   "routing_mode": "fourway_corrected",
+   "total_steps": 6000,
+   "total_tokens": 3170304000,
+   "params": {
+    "embed": 77070336,
+    "non_embed": 75522816,
+    "total": 152593152
+   },
+   "routing_params": 29968527,
+   "flops": {
+    "dense_macs": 165150720,
+    "routing_macs": 53922176,
+    "train_flops_per_token": 1314437376
+   },
+   "done": true,
+   "train_flops_total": 4167166070882304000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.115384615384615
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.242788461538462
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.056490384615385
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 3.8990384615384617
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 3.826923076923077
+    },
+    {
+     "step": 3000,
+     "tokens": 1585152000,
+     "eval_nll": 3.7716346153846154
+    },
+    {
+     "step": 3500,
+     "tokens": 1849344000,
+     "eval_nll": 3.7427884615384617
+    },
+    {
+     "step": 4000,
+     "tokens": 2113536000,
+     "eval_nll": 3.71875
+    },
+    {
+     "step": 4500,
+     "tokens": 2377728000,
+     "eval_nll": 3.6899038461538463
+    },
+    {
+     "step": 5000,
+     "tokens": 2641920000,
+     "eval_nll": 3.6826923076923075
+    },
+    {
+     "step": 5500,
+     "tokens": 2906112000,
+     "eval_nll": 3.673076923076923
+    }
+   ],
+   "final_eval_nll": 3.673076923076923
+  },
+  {
+   "name": "timan_150m_modular",
+   "machine": "timan1",
+   "family": "modular",
+   "corpus": "timan12b",
+   "size": "150m",
+   "save_dir": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_modular_dolma12b",
+   "tokens_per_step": 528384,
+   "eval_col": "eval/nll_soft",
+   "hidden_size": 768,
+   "num_hidden_layers": 8,
+   "routing_mode": "fourway_modular",
+   "total_steps": 6000,
+   "total_tokens": 3170304000,
+   "params": {
+    "embed": 77070336,
+    "non_embed": 75522816,
+    "total": 152593152
+   },
+   "routing_params": 29691764,
+   "flops": {
+    "dense_macs": 165150720,
+    "routing_macs": 104890624,
+    "train_flops_per_token": 1620248064
+   },
+   "done": true,
+   "train_flops_total": 5136678918291456000,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 264192000,
+     "eval_nll": 5.3173076923076925
+    },
+    {
+     "step": 1000,
+     "tokens": 528384000,
+     "eval_nll": 4.272836538461538
+    },
+    {
+     "step": 1500,
+     "tokens": 792576000,
+     "eval_nll": 4.076923076923077
+    },
+    {
+     "step": 2000,
+     "tokens": 1056768000,
+     "eval_nll": 3.920673076923077
+    },
+    {
+     "step": 2500,
+     "tokens": 1320960000,
+     "eval_nll": 3.840144230769231
+    },
+    {
+     "step": 3000,
+     "tokens": 1585152000,
+     "eval_nll": 3.782451923076923
+    },
+    {
+     "step": 3500,
+     "tokens": 1849344000,
+     "eval_nll": 3.7608173076923075
+    },
+    {
+     "step": 4000,
+     "tokens": 2113536000,
+     "eval_nll": 3.730769230769231
+    },
+    {
+     "step": 4500,
+     "tokens": 2377728000,
+     "eval_nll": 3.7055288461538463
+    },
+    {
+     "step": 5000,
+     "tokens": 2641920000,
+     "eval_nll": 3.6971153846153846
+    },
+    {
+     "step": 5500,
+     "tokens": 2906112000,
+     "eval_nll": 3.688701923076923
+    }
+   ],
+   "final_eval_nll": 3.688701923076923
+  }
+ ]
+}

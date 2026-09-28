@@ -1,0 +1,68 @@
+{
+ "timan_75m_dense": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_75m_baseline_dolma12b/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "dense",
+  "size": "75m",
+  "corpus": "timan12b",
+  "dolma21b": 4.993622150421142,
+  "wikitext2": 4.996735809542608,
+  "mathinstruct": 4.27066237335905,
+  "gsm8k": 4.242224941983748
+ },
+ "timan_75m_corrected": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_fourway_dolma12b/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "corrected",
+  "size": "75m",
+  "corpus": "timan12b",
+  "dolma21b": 4.639354267120361,
+  "wikitext2": 4.71090813900562,
+  "mathinstruct": 3.98370107598261,
+  "gsm8k": 3.972590740787926
+ },
+ "timan_75m_modular": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_75m_dagformer_modular_dolma12b/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "modular",
+  "size": "75m",
+  "corpus": "timan12b",
+  "dolma21b": 4.658777141571045,
+  "wikitext2": 4.7383638273739646,
+  "mathinstruct": 3.9724164074714032,
+  "gsm8k": 3.979911751724316
+ },
+ "timan_150m_dense": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_150m_baseline_dolma12b/checkpoint_step6000.pt",
+  "step": 6000,
+  "family": "dense",
+  "size": "150m",
+  "corpus": "timan12b",
+  "dolma21b": 4.258905181884765,
+  "wikitext2": 4.268440172181907,
+  "mathinstruct": 3.598534192513982,
+  "gsm8k": 3.608299939826345
+ },
+ "timan_150m_corrected": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_fourway_dolma12b/checkpoint_step6000.pt",
+  "step": 6000,
+  "family": "corrected",
+  "size": "150m",
+  "corpus": "timan12b",
+  "dolma21b": 4.049031658172607,
+  "wikitext2": 4.084553136893198,
+  "mathinstruct": 3.3830562556555512,
+  "gsm8k": 3.401911400151595
+ },
+ "timan_150m_modular": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_150m_dagformer_modular_dolma12b/checkpoint_step6000.pt",
+  "step": 6000,
+  "family": "modular",
+  "size": "150m",
+  "corpus": "timan12b",
+  "dolma21b": 4.110569467544556,
+  "wikitext2": 4.115659050907649,
+  "mathinstruct": 3.43825511101189,
+  "gsm8k": 3.41766211176603
+ }
+}

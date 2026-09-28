@@ -35,6 +35,13 @@ def latest_checkpoint(model_dir: str) -> tuple[str, int]:
         m = re.search(r"checkpoint_step(\d+)\.pt$", f)
         if m and int(m.group(1)) > best_step:
             best, best_step = f, int(m.group(1))
+    if best is None and os.path.exists(os.path.join(model_dir, "checkpoint.pt")):
+        # shared-model layout (checkpoint.pt only): read the step from the file if it has one
+        best = os.path.join(model_dir, "checkpoint.pt")
+        try:
+            best_step = int(torch.load(best, map_location="cpu", weights_only=False).get("step", -1))
+        except Exception:
+            best_step = -1
     assert best, f"no checkpoint in {model_dir}"
     return best, best_step
 
@@ -60,6 +67,7 @@ def main() -> None:
     p.add_argument("--model", action="append", required=True, help="model dir (config.yaml + checkpoints)")
     p.add_argument("--config", action="append", default=[],
                    help="config.yaml per --model if not inside the dir (same order)")
+    p.add_argument("--name", action="append", default=[], help="result key per --model (default: dir basename)")
     p.add_argument("--eval", action="append", required=True, help="name=eval_cache.pt")
     p.add_argument("--out", required=True)
     p.add_argument("--decide", default="", help="dir to write CHOSEN files into (lowest NLL on the first eval wins)")
@@ -73,7 +81,7 @@ def main() -> None:
         cfg_path = args.config[i] if i < len(args.config) else os.path.join(mdir, "config.yaml")
         cfg = yaml.safe_load(open(cfg_path))
         ckpt, step = latest_checkpoint(mdir)
-        name = os.path.basename(mdir.rstrip("/"))
+        name = args.name[i] if i < len(args.name) else os.path.basename(mdir.rstrip("/"))
         if str(cfg.get("routing_mode", "")).startswith("fourway"):
             fw, pred = load_fourway(ckpt, cfg, device)
             fwd = lambda x: fw(x, pred(x))  # noqa: E731
