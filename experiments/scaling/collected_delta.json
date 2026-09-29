@@ -27,7 +27,7 @@
     "train_flops_per_token": 4548802560
    },
    "done": true,
-   "train_flops_total": 28618591158927360000,
+   "train_flops_total": 2.861859115892736e+19,
    "curve": [
     {
      "step": 500,
@@ -173,7 +173,7 @@
     "train_flops_per_token": 3262771968
    },
    "done": true,
-   "train_flops_total": 20527586274705408000,
+   "train_flops_total": 2.052758627470541e+19,
    "curve": [
     {
      "step": 500,
@@ -318,10 +318,126 @@
     "routing_macs": 0,
     "train_flops_per_token": 1975517184
    },
-   "done": false,
-   "train_flops_total": 12428879440379904000,
-   "curve": [],
-   "final_eval_nll": null
+   "done": true,
+   "train_flops_total": 1.2428879440379904e+19,
+   "curve": [
+    {
+     "step": 500,
+     "tokens": 262144000,
+     "eval_nll": 5.26875
+    },
+    {
+     "step": 1000,
+     "tokens": 524288000,
+     "eval_nll": 3.93
+    },
+    {
+     "step": 1500,
+     "tokens": 786432000,
+     "eval_nll": 3.299375
+    },
+    {
+     "step": 2000,
+     "tokens": 1048576000,
+     "eval_nll": 3.14875
+    },
+    {
+     "step": 2500,
+     "tokens": 1310720000,
+     "eval_nll": 2.956875
+    },
+    {
+     "step": 3000,
+     "tokens": 1572864000,
+     "eval_nll": 2.865625
+    },
+    {
+     "step": 3500,
+     "tokens": 1835008000,
+     "eval_nll": 2.72375
+    },
+    {
+     "step": 4000,
+     "tokens": 2097152000,
+     "eval_nll": 2.725625
+    },
+    {
+     "step": 4500,
+     "tokens": 2359296000,
+     "eval_nll": 2.615625
+    },
+    {
+     "step": 5000,
+     "tokens": 2621440000,
+     "eval_nll": 2.571875
+    },
+    {
+     "step": 5500,
+     "tokens": 2883584000,
+     "eval_nll": 2.55625
+    },
+    {
+     "step": 6000,
+     "tokens": 3145728000,
+     "eval_nll": 2.52
+    },
+    {
+     "step": 6500,
+     "tokens": 3407872000,
+     "eval_nll": 2.48125
+    },
+    {
+     "step": 7000,
+     "tokens": 3670016000,
+     "eval_nll": 2.46
+    },
+    {
+     "step": 7500,
+     "tokens": 3932160000,
+     "eval_nll": 2.444375
+    },
+    {
+     "step": 8000,
+     "tokens": 4194304000,
+     "eval_nll": 2.435625
+    },
+    {
+     "step": 8500,
+     "tokens": 4456448000,
+     "eval_nll": 2.411875
+    },
+    {
+     "step": 9000,
+     "tokens": 4718592000,
+     "eval_nll": 2.398125
+    },
+    {
+     "step": 9500,
+     "tokens": 4980736000,
+     "eval_nll": 2.391875
+    },
+    {
+     "step": 10000,
+     "tokens": 5242880000,
+     "eval_nll": 2.386875
+    },
+    {
+     "step": 10500,
+     "tokens": 5505024000,
+     "eval_nll": 2.3775
+    },
+    {
+     "step": 11000,
+     "tokens": 5767168000,
+     "eval_nll": 2.37375
+    },
+    {
+     "step": 11500,
+     "tokens": 6029312000,
+     "eval_nll": 2.37375
+    }
+   ],
+   "final_eval_nll": 2.37375
   },
   {
    "name": "1b_dense_5b",
@@ -349,7 +465,7 @@
     "train_flops_per_token": 8078229504
    },
    "done": true,
-   "train_flops_total": 40404941258442670080,
+   "train_flops_total": 4.040494125844267e+19,
    "curve": [
     {
      "step": 1000,
@@ -425,7 +541,7 @@
     "train_flops_per_token": 17210071296
    },
    "done": false,
-   "train_flops_total": 86079743020939345920,
+   "train_flops_total": 8.607974302093935e+19,
    "curve": [
     {
      "step": 1000,
@@ -436,9 +552,19 @@
      "step": 2000,
      "tokens": 1048576000,
      "eval_nll": 2.586875
+    },
+    {
+     "step": 3000,
+     "tokens": 1572864000,
+     "eval_nll": 2.398125
+    },
+    {
+     "step": 4000,
+     "tokens": 2097152000,
+     "eval_nll": 2.2984375
     }
    ],
-   "final_eval_nll": 2.586875
+   "final_eval_nll": 2.2984375
   },
   {
    "name": "loc75m_dense",
@@ -466,7 +592,7 @@
     "train_flops_per_token": 497025024
    },
    "done": true,
-   "train_flops_total": 781752767348736000,
+   "train_flops_total": 7.81752767348736e+17,
    "curve": [
     {
      "step": 250,
@@ -552,7 +678,7 @@
     "train_flops_per_token": 588450816
    },
    "done": true,
-   "train_flops_total": 925553104257024000,
+   "train_flops_total": 9.25553104257024e+17,
    "curve": [
     {
      "step": 250,
@@ -638,7 +764,7 @@
     "train_flops_per_token": 660698112
    },
    "done": true,
-   "train_flops_total": 1039188275232768000,
+   "train_flops_total": 1.039188275232768e+18,
    "curve": [
     {
      "step": 250,
@@ -724,7 +850,7 @@
     "train_flops_per_token": 586100736
    },
    "done": true,
-   "train_flops_total": 921856748027904000,
+   "train_flops_total": 9.21856748027904e+17,
    "curve": [
     {
      "step": 250,
@@ -810,7 +936,7 @@
     "train_flops_per_token": 588450816
    },
    "done": true,
-   "train_flops_total": 925553104257024000,
+   "train_flops_total": 9.25553104257024e+17,
    "curve": [
     {
      "step": 250,
@@ -896,7 +1022,7 @@
     "train_flops_per_token": 586100736
    },
    "done": true,
-   "train_flops_total": 921856748027904000,
+   "train_flops_total": 9.21856748027904e+17,
    "curve": [
     {
      "step": 250,
@@ -982,7 +1108,7 @@
     "train_flops_per_token": 660698112
    },
    "done": true,
-   "train_flops_total": 1039188275232768000,
+   "train_flops_total": 1.039188275232768e+18,
    "curve": [
     {
      "step": 250,
@@ -1069,7 +1195,7 @@
     "train_flops_per_token": 497025024
    },
    "done": true,
-   "train_flops_total": 781752767348736000,
+   "train_flops_total": 7.81752767348736e+17,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1100,7 +1226,7 @@
     "train_flops_per_token": 588450816
    },
    "done": true,
-   "train_flops_total": 925553104257024000,
+   "train_flops_total": 9.25553104257024e+17,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1131,7 +1257,7 @@
     "train_flops_per_token": 990904320
    },
    "done": true,
-   "train_flops_total": 3117115464744960000,
+   "train_flops_total": 3.11711546474496e+18,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1162,7 +1288,7 @@
     "train_flops_per_token": 1314437376
    },
    "done": true,
-   "train_flops_total": 4134862457929728000,
+   "train_flops_total": 4.134862457929728e+18,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1193,7 +1319,7 @@
     "train_flops_per_token": 1975517184
    },
    "done": true,
-   "train_flops_total": 12428879440379904000,
+   "train_flops_total": 1.2428879440379904e+19,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1226,7 +1352,7 @@
     "train_flops_per_token": 3262771968
    },
    "done": true,
-   "train_flops_total": 15395689706029056000,
+   "train_flops_total": 1.5395689706029056e+19,
    "curve": [],
    "final_eval_nll": null
   },
@@ -1257,7 +1383,7 @@
     "train_flops_per_token": 4359979008
    },
    "done": true,
-   "train_flops_total": 52346759037950361600,
+   "train_flops_total": 5.234675903795036e+19,
    "curve": [],
    "final_eval_nll": null
   }

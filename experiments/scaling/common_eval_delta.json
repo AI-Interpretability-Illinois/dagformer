@@ -1,0 +1,200 @@
+{
+ "300m_fourway_modular": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt",
+  "step": 12000,
+  "family": "modular",
+  "size": "300m",
+  "corpus": "delta21b",
+  "dolma21b": 2.2673802947998047,
+  "wikitext2": 3.627870133582582,
+  "mathinstruct": 2.6161556725108297,
+  "gsm8k": 3.092496739620227
+ },
+ "300m_fourway_corrected": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt",
+  "step": 12000,
+  "family": "corrected",
+  "size": "300m",
+  "corpus": "delta21b",
+  "dolma21b": 2.2219589281082155,
+  "wikitext2": 3.5438556535869625,
+  "mathinstruct": 2.5650416907914186,
+  "gsm8k": 2.9365859396720047
+ },
+ "300m_dense": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/checkpoint_step12000.pt",
+  "step": 12000,
+  "family": "dense",
+  "size": "300m",
+  "corpus": "delta21b",
+  "dolma21b": 2.3736274528503416,
+  "wikitext2": 3.8077879290208747,
+  "mathinstruct": 2.742175791241707,
+  "gsm8k": 3.232445648412385
+ },
+ "1b_dense_5b": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b/checkpoint_step9540.pt",
+  "step": 9540,
+  "family": "dense",
+  "size": "1b",
+  "corpus": "delta21b",
+  "dolma21b": 2.2107624578475953,
+  "wikitext2": 3.5690191823540003,
+  "mathinstruct": 2.5858921676600746,
+  "gsm8k": 3.057594598195199
+ },
+ "loc75m_dense": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/dense/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "dense",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.4507106590270995,
+  "wikitext2": 6.592974070961594,
+  "mathinstruct": 5.373040282398189,
+  "gsm8k": 5.403720187228262
+ },
+ "loc75m_both": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/both/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "corrected",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.0373712921142575,
+  "wikitext2": 6.163348786374356,
+  "mathinstruct": 4.9322031922296645,
+  "gsm8k": 5.080074317147287
+ },
+ "loc75m_modular": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/modular/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "modular",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 5.900556678771973,
+  "wikitext2": 6.0675787147900735,
+  "mathinstruct": 4.861132516773469,
+  "gsm8k": 4.989149198577735
+ },
+ "loc75m_global": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/global/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "global",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.095779457092285,
+  "wikitext2": 6.20702090161912,
+  "mathinstruct": 4.981189395309588,
+  "gsm8k": 5.11636013049258
+ },
+ "loc75m_local": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/local/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "local",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.056009654998779,
+  "wikitext2": 6.175587454586164,
+  "mathinstruct": 4.9593556911573495,
+  "gsm8k": 5.142365341551566
+ },
+ "loc75m_per_layer": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/per_layer/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "per_layer",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.128160972595214,
+  "wikitext2": 6.255801292175942,
+  "mathinstruct": 5.025267675382282,
+  "gsm8k": 5.147886531775078
+ },
+ "loc75m_modular_sparse": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/modular_sparse/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "modular_sparse",
+  "size": "75m",
+  "corpus": "delta1p7b",
+  "dolma21b": 6.162296161651612,
+  "wikitext2": 6.273716290791829,
+  "mathinstruct": 5.139384387829982,
+  "gsm8k": 5.229270173031748
+ },
+ "shared_75m_baseline": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/75m-baseline/checkpoint.pt",
+  "step": 3000,
+  "family": "dense",
+  "size": "75m",
+  "corpus": "shared12b",
+  "dolma21b": 4.983372707366943,
+  "wikitext2": 4.980341424333289,
+  "mathinstruct": 4.2671036195317535,
+  "gsm8k": 4.216397691571541
+ },
+ "shared_75m_dagformer": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/75m-dagformer/checkpoint.pt",
+  "step": 3000,
+  "family": "corrected",
+  "size": "75m",
+  "corpus": "shared12b",
+  "dolma21b": 4.725405445098877,
+  "wikitext2": 4.775157083010843,
+  "mathinstruct": 4.052853997694243,
+  "gsm8k": 3.998533299094752
+ },
+ "shared_150m_baseline": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/150m-baseline/checkpoint.pt",
+  "step": 6000,
+  "family": "dense",
+  "size": "150m",
+  "corpus": "shared12b",
+  "dolma21b": 4.308649044036866,
+  "wikitext2": 4.297423704296139,
+  "mathinstruct": 3.630032683731219,
+  "gsm8k": 3.626064541237206
+ },
+ "shared_150m_dagformer": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/150m-dagformer/checkpoint.pt",
+  "step": 6000,
+  "family": "corrected",
+  "size": "150m",
+  "corpus": "shared12b",
+  "dolma21b": 4.070375576019287,
+  "wikitext2": 4.100284312633758,
+  "mathinstruct": 3.423599562513719,
+  "gsm8k": 3.4651284423171047
+ },
+ "shared_300m_baseline": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/300m-baseline/checkpoint.pt",
+  "step": 12000,
+  "family": "dense",
+  "size": "300m",
+  "corpus": "shared12b",
+  "dolma21b": 3.841012468338013,
+  "wikitext2": 3.8117541928663323,
+  "mathinstruct": 3.202818809299294,
+  "gsm8k": 3.2194574917332406
+ },
+ "shared_300m_dagformer": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/300m-dagformer/checkpoint.pt",
+  "step": 9000,
+  "family": "corrected",
+  "size": "300m",
+  "corpus": "shared12b",
+  "dolma21b": 3.6738854122161864,
+  "wikitext2": 3.636598803472857,
+  "mathinstruct": 3.0329777910075055,
+  "gsm8k": 3.0505796414242976
+ },
+ "shared_600m_baseline": {
+  "checkpoint": "/work/hdd/bfqt/shared/dagformer-models/600m-baseline/checkpoint.pt",
+  "step": 22900,
+  "family": "dense",
+  "size": "600m",
+  "corpus": "shared12b",
+  "dolma21b": 3.514089975357056,
+  "wikitext2": 3.4388124672233635,
+  "mathinstruct": 2.86723164024703,
+  "gsm8k": 2.8683630382045036
+ }
+}

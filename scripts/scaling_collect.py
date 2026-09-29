@@ -167,7 +167,7 @@ def main() -> None:
                  "total_tokens": total_steps * r["tokens_per_step"],
                  "params": backbone_params(cfg), "routing_params": routing_params(cfg),
                  "flops": train_flops_per_token(cfg), "done": is_done(r["save_dir"], total_steps)}
-        entry["train_flops_total"] = entry["flops"]["train_flops_per_token"] * entry["total_tokens"]
+        entry["train_flops_total"] = float(entry["flops"]["train_flops_per_token"]) * entry["total_tokens"]  # float: exceeds int64 at 1B
         curve = read_curve(r["save_dir"], r["eval_col"], r["tokens_per_step"]) if r.get("eval_col") else []
         entry["curve"] = curve
         entry["final_eval_nll"] = curve[-1]["eval_nll"] if curve else None
