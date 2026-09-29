@@ -80,6 +80,20 @@ python scripts/scaling_fit.py                        # -> results.md, runs_table
   (running) vs modular 2.2675 (done) vs dense (queued); 1B dense 2.2106 at 5B tokens vs 1B corrected
   (running).
 
+## The Dolma-21B held-out tail is not a neutral cache (found 2026-09-29)
+
+`dolma_v1_7_21b/eval_cache.pt` is the last 200 windows of the corpus's last shard, and the corpus was
+tokenized by 8 workers over 8 contiguous blocks of Dolma's source-sorted file list (w0 = books, w1-w5 =
+web, w6 = code, w7 = tulu_flan + wiki). Training samples are block-shuffled over the whole concatenation,
+so the 21B-corpus runs train on a mix of all sources (~12% flan/wiki), but the eval tail is 100% flan/wiki
+templated text. That is why the 21B-corpus 300M runs score ~2.22 on it while the timan 300M modular scores
+3.70 (both ~3.6 on wikitext-2), and why the 1B dense reads 2.21 at 5B tokens. Consequences: dolma21b
+NLL is comparable only within the 21B corpus; cross-corpus fits use `wikitext2` (the default `--eval-key`
+now), with MathInstruct and GSM8K as secondary columns; the 1.7B-slice cache is similarly a single
+Gutenberg gazetteer, so the locality arms' training-time evals are one-document numbers. A source-balanced
+Dolma held-out set from files none of the corpora consumed would fix this for every model and is the
+recommended follow-up before the paper's tables are final.
+
 ## Caveats to keep in the paper
 
 * One seed per run; differences below ~0.02 nats are noise at these eval-set sizes.

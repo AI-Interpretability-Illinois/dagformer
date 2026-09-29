@@ -110,7 +110,7 @@ def fit_joint(N, D, L):
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--root", default="experiments/scaling")
-    p.add_argument("--eval-key", default="dolma21b", help="common-eval cache used for the N-scaling fits")
+    p.add_argument("--eval-key", default="wikitext2", help="common-eval cache used for the cross-corpus fits (dolma21b is the flan/wiki-heavy tail of the 21B corpus: only comparable within that corpus)")
     p.add_argument("--chinchilla-band", nargs=2, type=float, default=[12, 30], help="tokens/param range counted as 'Chinchilla-scale'")
     p.add_argument("--params", default="total", choices=["total", "non_embed"], help="which backbone count is N")
     args = p.parse_args()
