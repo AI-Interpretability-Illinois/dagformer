@@ -119,11 +119,12 @@ def train_flops_per_token(cfg: dict, seq_len: int = SEQ_LEN) -> dict:
     return {"dense_macs": dense, "routing_macs": extra, "train_flops_per_token": 6 * (dense + extra)}
 
 
-def read_curve(save_dir: str, eval_col: str, tokens_per_step: int) -> list[dict]:
+def read_curve(save_dir: str, eval_col: str, tokens_per_step: int, curve_prefix: str = "") -> list[dict]:
+    """Eval curve from save_dir/metrics.csv; a continued run prepends its parent run's curve (curve_prefix)."""
+    out = read_curve(curve_prefix, eval_col, tokens_per_step) if curve_prefix else []
     path = os.path.join(save_dir, "metrics.csv")
     if not os.path.exists(path):
-        return []
-    out = []
+        return out
     with open(path) as f:
         for row in csv.DictReader(f):
             v = row.get(eval_col, "")
@@ -168,7 +169,7 @@ def main() -> None:
                  "params": backbone_params(cfg), "routing_params": routing_params(cfg),
                  "flops": train_flops_per_token(cfg), "done": is_done(r["save_dir"], total_steps)}
         entry["train_flops_total"] = float(entry["flops"]["train_flops_per_token"]) * entry["total_tokens"]  # float: exceeds int64 at 1B
-        curve = read_curve(r["save_dir"], r["eval_col"], r["tokens_per_step"]) if r.get("eval_col") else []
+        curve = read_curve(r["save_dir"], r["eval_col"], r["tokens_per_step"], r.get("curve_prefix", "")) if r.get("eval_col") else []
         entry["curve"] = curve
         entry["final_eval_nll"] = curve[-1]["eval_nll"] if curve else None
         collected.append(entry)

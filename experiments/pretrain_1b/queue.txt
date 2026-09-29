@@ -13,3 +13,8 @@ config=configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml wait=experiments/pre
 # shared caches, then collect + fit (experiments/scaling/). Waits for the 300M dense baseline on gpua047.
 task=bash scripts/scaling_common_eval.sh delta done=experiments/scaling/COMMON_EVAL_DELTA_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/DONE
 task=python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/scaling/FIT_DONE
+# 10B-token continuation of the routed 1B (after the 5B pair's scaling tasks): seed the 10B dir with the 5B checkpoint, train, re-run the scaling tasks.
+task=mkdir -p /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b && cp /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/checkpoint_step9540*.pt /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/ done=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/SEEDED wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/DONE
+config=configs/pretrain_1b/1b_fourway_corrected_10b_mb2.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/SEEDED eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt
+task=bash scripts/scaling_common_eval.sh delta done=experiments/scaling/COMMON_EVAL_DELTA_10B_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b/DONE
+task=python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/scaling/FIT_10B_DONE

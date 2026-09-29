@@ -17,6 +17,10 @@ runs:
      config: configs/pretrain_1b/1b_dense_5b_mb2.yaml,              save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b,               tokens_per_step: 524288, eval_col: eval/nll}
   - {name: 1b_fourway_corrected_5b, machine: delta, family: corrected, corpus: delta21b, size: 1b,
      config: configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml,  save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b,   tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: 1b_dense_10b,            machine: delta, family: dense,     corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_dense_10b_mb2.yaml,             save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b,              curve_prefix: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b,             tokens_per_step: 524288, eval_col: eval/nll, note: "continued from the 5B checkpoint, LR re-warmed"}
+  - {name: 1b_fourway_corrected_10b, machine: delta, family: corrected, corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_fourway_corrected_10b_mb2.yaml, save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b,  curve_prefix: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b, tokens_per_step: 524288, eval_col: eval/nll_soft, note: "continued from the 5B checkpoint, LR re-warmed"}
   # ---- Delta, 1.7B-token slice (75M router-locality arms), 524,288 tokens/step ----
   - {name: loc75m_dense,     machine: delta, family: dense,          corpus: delta1p7b, size: 75m, config: configs/locality/75m_dense.yaml,     save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/dense,     tokens_per_step: 524288, eval_col: eval/nll}
   - {name: loc75m_both,      machine: delta, family: corrected,      corpus: delta1p7b, size: 75m, config: configs/locality/75m_both.yaml,      save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/both,      tokens_per_step: 524288, eval_col: eval/nll_soft}

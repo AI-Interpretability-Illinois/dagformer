@@ -169,6 +169,11 @@ class DAGFormerPretrainConfig:
     max_grad_norm: float = 1.0
     lr_schedule: str = "linear"
     lr_decay_steps: int = 0              # steps over which LR decays to 0; 0 => use total_steps
+    # Continued pretraining: linearly re-warm the scheduled LR from 0 over lr_rewarm_steps steps
+    # starting at lr_rewarm_start (the resumed global step), e.g. when extending a finished run
+    # whose LR had decayed to 0. 0 disables.
+    lr_rewarm_start: int = 0
+    lr_rewarm_steps: int = 0
 
     # Eval
     eval_skip: int = 1_000_000
@@ -616,7 +621,7 @@ def predict_A(
 
 # ─── Schedules ───────────────────────────────────────────────────────────────
 
-def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+def _get_lr_base(step: int, config: DAGFormerPretrainConfig) -> float:
     """Compute learning rate with linear warmup + decay."""
     if step < config.warmup_steps:
         return config.lr * step / max(1, config.warmup_steps)
@@ -631,7 +636,7 @@ def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
         return config.lr * 0.5 * (1.0 + math.cos(math.pi * progress))
 
 
-def get_predictor_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+def _get_predictor_lr_base(step: int, config: DAGFormerPretrainConfig) -> float:
     """Compute predictor learning rate (same schedule shape, different base)."""
     if step < config.warmup_steps:
         return config.predictor_lr * step / max(1, config.warmup_steps)
@@ -2071,6 +2076,23 @@ def main() -> None:
     if is_main:
         print("Training complete.")
 
+
+def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+    """Scheduled LR, linearly re-warmed from 0 over [lr_rewarm_start, lr_rewarm_start + lr_rewarm_steps)
+    when a finished run is extended (continued pretraining); identity when lr_rewarm_steps == 0."""
+    lr = _get_lr_base(step, config)
+    if config.lr_rewarm_steps > 0 and config.lr_rewarm_start <= step < config.lr_rewarm_start + config.lr_rewarm_steps:
+        lr *= (step - config.lr_rewarm_start + 1) / config.lr_rewarm_steps
+    return lr
+
+
+def get_predictor_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+    """Scheduled LR, linearly re-warmed from 0 over [lr_rewarm_start, lr_rewarm_start + lr_rewarm_steps)
+    when a finished run is extended (continued pretraining); identity when lr_rewarm_steps == 0."""
+    lr = _get_predictor_lr_base(step, config)
+    if config.lr_rewarm_steps > 0 and config.lr_rewarm_start <= step < config.lr_rewarm_start + config.lr_rewarm_steps:
+        lr *= (step - config.lr_rewarm_start + 1) / config.lr_rewarm_steps
+    return lr
 
 if __name__ == "__main__":
     main()

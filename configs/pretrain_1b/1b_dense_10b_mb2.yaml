@@ -1,0 +1,44 @@
+# 1B dense: continued pretraining from the 5B-token checkpoint to 10B tokens (19080 steps x 524,288).
+# save_dir is seeded with checkpoint_step9540.pt copied from 1b_dense_5b (the 5B run stays intact there);
+# the trainer resumes from it, the linear-to-zero schedule is re-stretched to 19080 steps and the LR is
+# re-warmed from 0 over 500 steps (lr_rewarm_*), identical for the dense and the routed model. 2026-09-29.
+hidden_size: 2048
+num_hidden_layers: 16
+num_attention_heads: 16
+intermediate_size: 8192
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 2
+gradient_accumulation_steps: 64
+total_steps: 19080
+lr: 4e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 500
+max_grad_norm: 1.0
+lr_schedule: "linear"
+lr_decay_steps: 19080
+lr_rewarm_start: 9541
+lr_rewarm_steps: 500
+
+eval_skip: 0
+eval_size: 200
+eval_every: 1000
+
+wandb_project: "dagformer"
+wandb_run_name: "1b-dense-dolma10b"
+log_every: 10
+save_every: 250
+keep_last_n: 2
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b"

@@ -567,6 +567,84 @@
    "final_eval_nll": 2.2984375
   },
   {
+   "name": "1b_dense_10b",
+   "machine": "delta",
+   "family": "dense",
+   "corpus": "delta21b",
+   "size": "1b",
+   "save_dir": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b",
+   "curve_prefix": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b",
+   "tokens_per_step": 524288,
+   "eval_col": "eval/nll",
+   "note": "continued from the 5B checkpoint, LR re-warmed",
+   "hidden_size": 2048,
+   "num_hidden_layers": 16,
+   "routing_mode": "dense",
+   "total_steps": 19080,
+   "total_tokens": 10003415040,
+   "params": {
+    "embed": 205520896,
+    "non_embed": 1073874944,
+    "total": 1279395840
+   },
+   "routing_params": 0,
+   "flops": {
+    "dense_macs": 1346371584,
+    "routing_macs": 0,
+    "train_flops_per_token": 8078229504
+   },
+   "done": false,
+   "train_flops_total": 8.080988251688534e+19,
+   "curve": [
+    {
+     "step": 1000,
+     "tokens": 524288000,
+     "eval_nll": 3.75375
+    },
+    {
+     "step": 2000,
+     "tokens": 1048576000,
+     "eval_nll": 2.92
+    },
+    {
+     "step": 3000,
+     "tokens": 1572864000,
+     "eval_nll": 2.635625
+    },
+    {
+     "step": 4000,
+     "tokens": 2097152000,
+     "eval_nll": 2.495
+    },
+    {
+     "step": 5000,
+     "tokens": 2621440000,
+     "eval_nll": 2.350625
+    },
+    {
+     "step": 6000,
+     "tokens": 3145728000,
+     "eval_nll": 2.288125
+    },
+    {
+     "step": 7000,
+     "tokens": 3670016000,
+     "eval_nll": 2.2375
+    },
+    {
+     "step": 8000,
+     "tokens": 4194304000,
+     "eval_nll": 2.2203125
+    },
+    {
+     "step": 9000,
+     "tokens": 4718592000,
+     "eval_nll": 2.210625
+    }
+   ],
+   "final_eval_nll": 2.210625
+  },
+  {
    "name": "loc75m_dense",
    "machine": "delta",
    "family": "dense",

@@ -1,0 +1,2 @@
+# gpua047: 1B dense continued from the 5B checkpoint to 10B tokens (save_dir pre-seeded with checkpoint_step9540.pt).
+config=configs/pretrain_1b/1b_dense_10b_mb2.yaml script=scripts/pretrain_baseline.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt
