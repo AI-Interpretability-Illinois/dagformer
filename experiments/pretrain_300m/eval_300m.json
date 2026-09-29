@@ -1,0 +1,20 @@
+{
+  "300m_fourway_corrected": {
+    "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt",
+    "step": 12000,
+    "routing_mode": "fourway_corrected",
+    "dolma": 2.2219589281082155,
+    "wikitext2": 3.5438556535869625,
+    "mathinstruct": 2.5650416907914186,
+    "gsm8k": 2.9365859396720047
+  },
+  "300m_fourway_modular": {
+    "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt",
+    "step": 12000,
+    "routing_mode": "fourway_modular",
+    "dolma": 2.2673802947998047,
+    "wikitext2": 3.627870133582582,
+    "mathinstruct": 2.6161556725108297,
+    "gsm8k": 3.092496739620227
+  }
+}

@@ -172,7 +172,7 @@
     "routing_macs": 214542464,
     "train_flops_per_token": 3262771968
    },
-   "done": false,
+   "done": true,
    "train_flops_total": 20527586274705408000,
    "curve": [
     {
@@ -229,9 +229,99 @@
      "step": 5500,
      "tokens": 2883584000,
      "eval_nll": 2.368125
+    },
+    {
+     "step": 6000,
+     "tokens": 3145728000,
+     "eval_nll": 2.3275
+    },
+    {
+     "step": 6500,
+     "tokens": 3407872000,
+     "eval_nll": 2.29875
+    },
+    {
+     "step": 7000,
+     "tokens": 3670016000,
+     "eval_nll": 2.2825
+    },
+    {
+     "step": 7500,
+     "tokens": 3932160000,
+     "eval_nll": 2.2759375
+    },
+    {
+     "step": 8000,
+     "tokens": 4194304000,
+     "eval_nll": 2.2709375
+    },
+    {
+     "step": 8500,
+     "tokens": 4456448000,
+     "eval_nll": 2.253125
+    },
+    {
+     "step": 9000,
+     "tokens": 4718592000,
+     "eval_nll": 2.24
+    },
+    {
+     "step": 9500,
+     "tokens": 4980736000,
+     "eval_nll": 2.2359375
+    },
+    {
+     "step": 10000,
+     "tokens": 5242880000,
+     "eval_nll": 2.2334375
+    },
+    {
+     "step": 10500,
+     "tokens": 5505024000,
+     "eval_nll": 2.224375
+    },
+    {
+     "step": 11000,
+     "tokens": 5767168000,
+     "eval_nll": 2.2225
+    },
+    {
+     "step": 11500,
+     "tokens": 6029312000,
+     "eval_nll": 2.22125
     }
    ],
-   "final_eval_nll": 2.368125
+   "final_eval_nll": 2.22125
+  },
+  {
+   "name": "300m_dense",
+   "machine": "delta",
+   "family": "dense",
+   "corpus": "delta21b",
+   "size": "300m",
+   "save_dir": "/work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense",
+   "tokens_per_step": 524288,
+   "eval_col": "eval/nll",
+   "hidden_size": 1024,
+   "num_hidden_layers": 12,
+   "routing_mode": "dense",
+   "total_steps": 12000,
+   "total_tokens": 6291456000,
+   "params": {
+    "embed": 102760448,
+    "non_embed": 201376768,
+    "total": 304137216
+   },
+   "routing_params": 0,
+   "flops": {
+    "dense_macs": 329252864,
+    "routing_macs": 0,
+    "train_flops_per_token": 1975517184
+   },
+   "done": false,
+   "train_flops_total": 12428879440379904000,
+   "curve": [],
+   "final_eval_nll": null
   },
   {
    "name": "1b_dense_5b",
@@ -336,8 +426,19 @@
    },
    "done": false,
    "train_flops_total": 86079743020939345920,
-   "curve": [],
-   "final_eval_nll": null
+   "curve": [
+    {
+     "step": 1000,
+     "tokens": 524288000,
+     "eval_nll": 3.238125
+    },
+    {
+     "step": 2000,
+     "tokens": 1048576000,
+     "eval_nll": 2.586875
+    }
+   ],
+   "final_eval_nll": 2.586875
   },
   {
    "name": "loc75m_dense",
