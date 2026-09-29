@@ -69,16 +69,45 @@ PYTHONPATH=$PWD python scripts/scaling_collect.py --machine timan1
 python scripts/scaling_fit.py                        # -> results.md, runs_table.md, scaling_fits.json, fig_*.png
 ```
 
-## Preliminary reading (training-time evals, before the common re-evaluation)
+## Results so far (2026-09-29, all runs except the 1B DAGFormer; common wikitext-2 NLL unless stated)
 
-* Own-corpus final NLL, dense / corrected / modular: 75M (timan12b) 4.352 / 4.212 / 4.195;
-  150M (timan12b) 3.776 / 3.673 / 3.689; 75M (delta1p7b) 4.213 / 4.014 / 3.926. The routed
-  advantage is 0.10-0.20 nats at 75M-150M and, on the 75M curves, appears after the first quarter of
-  training and then slowly shrinks (`results.md`, "gap along training"), i.e. the routing helps most
-  in the data-limited regime of a run.
-* The 300M and 1B comparisons (same corpus, same eval cache) land with the chains: 300M corrected
-  (running) vs modular 2.2675 (done) vs dense (queued); 1B dense 2.2106 at 5B tokens vs 1B corrected
-  (running).
+Full tables: `results.md`; per-run inventory: `runs_table.md`; figures `fig_*.png`.
+
+**Gap at matched corpus, size and tokens** (dense minus routed, final checkpoints):
+
+| size | corpus | dense | fourway_corrected | gap | fourway_modular | gap |
+|---|---|---|---|---|---|---|
+| 75M | shared12b | 4.980 | 4.775 | +0.21 | | |
+| 75M | timan12b | 4.997 | 4.711 | +0.29 | 4.738 | +0.26 |
+| 150M | shared12b | 4.297 | 4.100 | +0.20 | | |
+| 150M | timan12b | 4.268 | 4.085 | +0.18 | 4.116 | +0.15 |
+| 300M | delta21b | 3.808 | 3.544 | +0.26 | 3.628 | +0.18 |
+
+The routed advantage does not shrink from 75M to 300M (0.20-0.29 nats for fourway_corrected). The two
+300M dense runs agree to 0.004 nats across corpora (shared 3.812 at 12B slice, Delta 3.808 at 21B corpus),
+so wikitext-2 is a fair cross-corpus yardstick.
+
+**L(N) = E + A N^-alpha at 12-30 tokens/param** (few points, E and alpha are correlated; read the
+effective-parameter column, not the exponents): dense E 2.80, alpha 0.56 (7 points, 77M-683M);
+fourway_corrected E 1.89, alpha 0.38 (6 points); fourway_modular E 2.15, alpha 0.40 (4 points).
+
+**Effective parameters** (dense size with the same loss on the dense fit): fourway_corrected 1.20-1.29x at
+75M and 150M, 1.39x (shared, 16 tok/param) to 1.72x (Delta, 21 tok/param) at 300M; fourway_modular
+1.24x at 75M-150M, 1.33-1.42x at 300M. The multiplier grows with N over this range.
+
+**Iso-compute** (C = 6 x MACs/token x tokens, routing cost included; C_eq = dense compute reaching the
+same loss on the dense L(C) fit): fourway_corrected C_eq / C = 1.22-1.36 at 75M-150M and 1.59-1.81 at
+300M, i.e. it beats a dense model given the same FLOPs despite costing 1.18-1.65x per token;
+fourway_modular 1.15 at 75M and 0.78-0.94 at 150M-300M, i.e. its 1.33-2.30x routing cost is not repaid.
+This is the compute-side argument for fourway_corrected as the main method.
+
+**Along training** (own-corpus curves, same cache within a corpus): the gap appears within the first
+quarter of every run, peaks, and then narrows slowly (`results.md`, "gap along training"); the joint
+L(N, D) fits are reported per corpus but rest on 2-3 sizes each and one cosine run per size.
+
+Pending: the 1B fourway_corrected (5B tokens, ETA 2026-09-30) adds the 1B pair to the gap table and the
+iso-compute plot (the 1B runs sit at 4 tokens/param and stay out of the Chinchilla L(N) fit); the queue
+re-runs the common eval, collect and fit automatically after it.
 
 ## The Dolma-21B held-out tail is not a neutral cache (found 2026-09-29)
 
