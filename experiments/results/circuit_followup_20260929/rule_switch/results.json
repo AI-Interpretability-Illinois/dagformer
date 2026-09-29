@@ -1,0 +1,74 @@
+{
+  "complete": true,
+  "model": "checkpoints/pr_sync_20260917/300m-dagformer",
+  "selection": {
+    "variant": "copy_query_0shot",
+    "rules": [
+      0,
+      1
+    ],
+    "family": "copy_query",
+    "shots": 0
+  },
+  "args": {
+    "model": "checkpoints/pr_sync_20260917/300m-dagformer",
+    "tokenizer": "checkpoints/pr_sync_20260917/tokenizer",
+    "token_cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_train.pt",
+    "out": "experiments/results/circuit_followup_20260929/rule_switch",
+    "phase": "run",
+    "shots": [
+      0,
+      3,
+      6
+    ],
+    "screen_groups": 8,
+    "discovery_groups": 16,
+    "test_groups": 32,
+    "batch_size": 2,
+    "memory_fraction": 0.32,
+    "capability_threshold": 0.8,
+    "seed": 20260929
+  },
+  "git_commit": "f0c0324abee3fa8fdf7b58b08c517f091ffa76e0",
+  "versions": {
+    "torch": "2.10.0",
+    "transformers": "4.57.1"
+  },
+  "stages": {
+    "discovery": {
+      "file": "discovery.json",
+      "baseline_original_accuracy": 0.984375,
+      "baseline_target_rule_accuracy": 0.984375,
+      "both_rules_correct_fraction": 0.96875,
+      "identity_max_logit_error": 0.0
+    },
+    "heldout": {
+      "file": "heldout.json",
+      "baseline_original_accuracy": 0.9765625,
+      "baseline_target_rule_accuracy": 0.9765625,
+      "both_rules_correct_fraction": 0.953125,
+      "identity_max_logit_error": 0.0
+    },
+    "transfer": {
+      "file": "transfer.json",
+      "baseline_original_accuracy": 0.953125,
+      "baseline_target_rule_accuracy": 0.953125,
+      "both_rules_correct_fraction": 0.921875,
+      "identity_max_logit_error": 0.0
+    }
+  },
+  "protocol": {
+    "task": "Copy address selection: same repeated body, a different 15-token query key. This is not a change of algorithm.",
+    "content": "Backbone token IDs always belong to the recipient; no donor embeddings, source activations, head messages, or logits are injected. Downstream activations recompute normally after routing edits.",
+    "coefficients": "Predictor and/or raw local-correction coefficients, all layers/streams; direct replacement or recipient + cross-content donor rule difference.",
+    "donors": "same/cross/wrong/delta unchanged; random donor uses a separately generated independent content group for each recipient group, never another recipient group.",
+    "alignment": "Donor/recipient lengths exactly match; selector-only pairs differ in one token for symbolic tasks. Copy-query keys differ in 15 tokens. Query scope begins at the rule selector or lookup-key prefix; test scope includes the final table/body but excludes demonstrations.",
+    "selection": "Task/template/rule pair chosen only by independent capability screen. All channels/scopes/donor controls are reported; discovery split does not tune a sparse mask.",
+    "uncertainty": "4000 unadjusted cluster bootstrap samples of independently generated paired tables (four directions per table: two symbol vocabularies times both rule directions).",
+    "transfer": "New content and extra distractor table edges for map/function, new demonstration tables for chain/index, or period128 for copy fallback.",
+    "limitation": "A negative result is interpretable only where both original and desired recipient rules are mastered; fallback copy changes an address rather than a general algorithm. No natural-text capability-cost matching or architecture superiority claim.",
+    "random_donor_generation_version": 2,
+    "donor_score_label": "donor_answer_logp / donor_vocab_accuracy refer to the cross-content desired-rule donor token for every arm."
+  },
+  "random_repair": "Only six random-donor arms rerun with independent groups; all original main-arm scores preserved; baseline equality exact. Original exploratory random arms retained in random_repair_audit.json."
+}

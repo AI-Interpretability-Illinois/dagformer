@@ -1,0 +1,142 @@
+{
+  "dag300m/discovery_inputs.json": {
+    "rows": 1152,
+    "min_tokens": 26,
+    "max_tokens": 266
+  },
+  "dag300m/heldout_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 53
+  },
+  "dag300m/transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 54
+  },
+  "dag300m/natural_validation_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 53
+  },
+  "dag300m/natural_entity_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 54
+  },
+  "dag300m/natural_fourshot_inputs.json": {
+    "rows": 384,
+    "min_tokens": 225,
+    "max_tokens": 267
+  },
+  "dag300m/natural_fourshot_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 224,
+    "max_tokens": 269
+  },
+  "dense300m/discovery_inputs.json": {
+    "rows": 1152,
+    "min_tokens": 26,
+    "max_tokens": 266
+  },
+  "dense300m/heldout_inputs.json": {
+    "rows": 384,
+    "min_tokens": 38,
+    "max_tokens": 46
+  },
+  "dense300m/transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 38,
+    "max_tokens": 46
+  },
+  "dense300m/natural_validation_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 53
+  },
+  "dense300m/natural_entity_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 54
+  },
+  "dense300m/natural_fourshot_inputs.json": {
+    "rows": 384,
+    "min_tokens": 225,
+    "max_tokens": 267
+  },
+  "dense300m/natural_fourshot_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 224,
+    "max_tokens": 269
+  },
+  "dag1b/discovery_inputs.json": {
+    "rows": 1152,
+    "min_tokens": 26,
+    "max_tokens": 266
+  },
+  "dag1b/heldout_inputs.json": {
+    "rows": 384,
+    "min_tokens": 142,
+    "max_tokens": 159
+  },
+  "dag1b/transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 140,
+    "max_tokens": 158
+  },
+  "dag1b/natural_validation_inputs.json": {
+    "rows": 384,
+    "min_tokens": 135,
+    "max_tokens": 160
+  },
+  "dag1b/natural_entity_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 133,
+    "max_tokens": 161
+  },
+  "dag1b/natural_fourshot_inputs.json": {
+    "rows": 384,
+    "min_tokens": 225,
+    "max_tokens": 267
+  },
+  "dag1b/natural_fourshot_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 224,
+    "max_tokens": 269
+  },
+  "dense1b/discovery_inputs.json": {
+    "rows": 1152,
+    "min_tokens": 26,
+    "max_tokens": 266
+  },
+  "dense1b/heldout_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 53
+  },
+  "dense1b/transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 54
+  },
+  "dense1b/natural_validation_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 53
+  },
+  "dense1b/natural_entity_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 43,
+    "max_tokens": 54
+  },
+  "dense1b/natural_fourshot_inputs.json": {
+    "rows": 384,
+    "min_tokens": 225,
+    "max_tokens": 267
+  },
+  "dense1b/natural_fourshot_transfer_inputs.json": {
+    "rows": 384,
+    "min_tokens": 224,
+    "max_tokens": 269
+  }
+}

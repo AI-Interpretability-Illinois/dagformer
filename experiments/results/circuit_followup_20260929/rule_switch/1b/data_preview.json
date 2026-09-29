@@ -1,0 +1,119 @@
+{
+  "arrows_0shot": {
+    "groups": 8,
+    "length": 33,
+    "sample": [
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "arrows_3shot": {
+    "groups": 8,
+    "length": 138,
+    "sample": [
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "arrows_6shot": {
+    "groups": 8,
+    "length": 243,
+    "sample": [
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Table:\nI -> E\nB -> K\nG -> I\nC -> M\nE -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "function_0shot": {
+    "groups": 8,
+    "length": 48,
+    "sample": [
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 0\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 1\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 2\nResult:"
+    ]
+  },
+  "function_3shot": {
+    "groups": 8,
+    "length": 198,
+    "sample": [
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 0\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 1\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 2\nResult:"
+    ]
+  },
+  "function_6shot": {
+    "groups": 8,
+    "length": 348,
+    "sample": [
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 0\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 1\nResult:",
+      "Function:\nf( I ) = E\nf( B ) = K\nf( G ) = I\nf( C ) = M\nf( E ) = H\nInput: G\nApplications: 2\nResult:"
+    ]
+  },
+  "chain_0shot": {
+    "groups": 8,
+    "length": 21,
+    "sample": [
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "chain_3shot": {
+    "groups": 8,
+    "length": 90,
+    "sample": [
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "chain_6shot": {
+    "groups": 8,
+    "length": 159,
+    "sample": [
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 0\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 1\nAnswer:",
+      "Chain: G -> I -> E -> H\nStart: G\nSteps: 2\nAnswer:"
+    ]
+  },
+  "index_0shot": {
+    "groups": 8,
+    "length": 14,
+    "sample": [
+      "List: G I E H\nIndex: 0\nValue:",
+      "List: G I E H\nIndex: 1\nValue:",
+      "List: G I E H\nIndex: 2\nValue:"
+    ]
+  },
+  "index_3shot": {
+    "groups": 8,
+    "length": 62,
+    "sample": [
+      "List: G I E H\nIndex: 0\nValue:",
+      "List: G I E H\nIndex: 1\nValue:",
+      "List: G I E H\nIndex: 2\nValue:"
+    ]
+  },
+  "index_6shot": {
+    "groups": 8,
+    "length": 110,
+    "sample": [
+      "List: G I E H\nIndex: 0\nValue:",
+      "List: G I E H\nIndex: 1\nValue:",
+      "List: G I E H\nIndex: 2\nValue:"
+    ]
+  },
+  "copy_query_0shot": {
+    "groups": 8,
+    "length": 207,
+    "sample": [
+      "three repeated 64-token blocks15-token key ending before block offset 15",
+      "three repeated 64-token blocks15-token key ending before block offset 31",
+      "three repeated 64-token blocks15-token key ending before block offset 47"
+    ]
+  }
+}
