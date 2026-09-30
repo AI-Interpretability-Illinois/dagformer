@@ -124,7 +124,7 @@ def plot(rows, states, output):
             if values:
                 pad = (max(values) - min(values)) * .08
                 ax.set_xlim(min(values) - pad, max(values) + pad)
-                ax.set_xticks(values, labels=[f"{v:g}" for v in values])
+                ax.set_xticks(values, labels=[f"{v:.2f}" if axis == "data" else f"{v:g}" for v in values])
         if axis in ("parameters", "compute"):
             ax.set_xscale("log")
     family_handles = [Line2D([], [], color=colors[f], label=labels[f], linestyle="--" if f == "dense" else "-") for f in colors]

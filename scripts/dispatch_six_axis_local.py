@@ -173,7 +173,10 @@ def main():
             "failed": failed,
             "active": {gpu: {"task": i, "pid": proc.pid} for gpu, (i, proc, _) in active.items()}}, indent=2) + "\n")
         report = root / "report/results.json"
-        if report.exists() and all(r["status"] == "complete" for r in json.loads(report.read_text())["runs"]):
+        uploaded = not args.remote_checkpoints or all(
+            (Path(r["metadata_dir"]) / "UPLOADED.json").exists()
+            for r in manifest["runs"] if (Path(r["metadata_dir"]) / "DONE.json").exists())
+        if uploaded and report.exists() and all(r["status"] == "complete" for r in json.loads(report.read_text())["runs"]):
             break
         time.sleep(30)
     for index, proc, log in active.values():
