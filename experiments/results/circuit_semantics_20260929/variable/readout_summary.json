@@ -1,0 +1,1349 @@
+{
+  "heldout": {
+    "original": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.6803385416666666,
+          "ci95": [
+            0.6736226399739583,
+            0.68731689453125
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 23.716243743896484,
+          "projection_sd": 11.986346244812012
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.6929829915364584,
+          "ci95": [
+            0.6874491373697916,
+            0.6987823486328125
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.9192708333333334,
+            "ci95": [
+              0.890625,
+              0.9479166666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.9192708333333334,
+            "ci95": [
+              0.890625,
+              0.9479166666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6929829915364584,
+          "ci95": [
+            0.6874491373697916,
+            0.6987823486328125
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.9192708333333334,
+            "ci95": [
+              0.890625,
+              0.9479166666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.9192708333333334,
+            "ci95": [
+              0.890625,
+              0.9479166666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 3.077258586883545,
+          "projection_sd": 2.6596851348876953
+        }
+      }
+    },
+    "adapted": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.7023111979166666,
+          "ci95": [
+            0.6961263020833334,
+            0.7078867594401042
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 24.038911819458008,
+          "projection_sd": 12.150784492492676
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.6608479817708334,
+          "ci95": [
+            0.6552085876464844,
+            0.666595458984375
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.9557291666666666,
+            "ci95": [
+              0.9296875,
+              0.9791666666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8697916666666666,
+            "ci95": [
+              0.828125,
+              0.9088541666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6608479817708334,
+          "ci95": [
+            0.6552085876464844,
+            0.666595458984375
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.9557291666666666,
+            "ci95": [
+              0.9296875,
+              0.9791666666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8697916666666666,
+            "ci95": [
+              0.828125,
+              0.9088541666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 3.0985865592956543,
+          "projection_sd": 2.6385176181793213
+        }
+      }
+    },
+    "repaired": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.6917724609375,
+          "ci95": [
+            0.6853434244791666,
+            0.6979176839192708
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 23.834701538085938,
+          "projection_sd": 12.057921409606934
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.69549560546875,
+          "ci95": [
+            0.6899103800455729,
+            0.7014470418294271
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.953125,
+            "ci95": [
+              0.9270833333333334,
+              0.9765625
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8854166666666666,
+            "ci95": [
+              0.84375,
+              0.9219401041666663
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.69549560546875,
+          "ci95": [
+            0.6899103800455729,
+            0.7014470418294271
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.953125,
+            "ci95": [
+              0.9270833333333334,
+              0.9765625
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8854166666666666,
+            "ci95": [
+              0.84375,
+              0.9219401041666663
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 3.0910089015960693,
+          "projection_sd": 2.6195106506347656
+        }
+      }
+    }
+  },
+  "transfer": {
+    "original": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.68560791015625,
+          "ci95": [
+            0.6801956176757813,
+            0.6909393310546875
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 23.509143829345703,
+          "projection_sd": 11.892449378967285
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.6917622884114584,
+          "ci95": [
+            0.6861869812011718,
+            0.6969408671061198
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.8020833333333334,
+            "ci95": [
+              0.765625,
+              0.8359375
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8020833333333334,
+            "ci95": [
+              0.765625,
+              0.8359375
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6510874430338541,
+          "ci95": [
+            0.6276372273763021,
+            0.6719470977783203
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5807291666666666,
+            "ci95": [
+              0.5416666666666666,
+              0.625
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.625,
+            "ci95": [
+              0.57265625,
+              0.6875
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5807291666666666,
+            "ci95": [
+              0.5416666666666666,
+              0.625
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.625,
+            "ci95": [
+              0.57265625,
+              0.6875
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 1.0202507972717285,
+          "projection_sd": 2.0135979652404785
+        }
+      }
+    },
+    "adapted": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.75201416015625,
+          "ci95": [
+            0.7462356567382813,
+            0.7576507568359375
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 25.05097198486328,
+          "projection_sd": 12.642448425292969
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.66046142578125,
+          "ci95": [
+            0.6529335021972655,
+            0.6672172546386719
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.7473958333333334,
+            "ci95": [
+              0.6979166666666666,
+              0.7916666666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.828125,
+            "ci95": [
+              0.7890625,
+              0.8645833333333334
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6072031656901041,
+          "ci95": [
+            0.5874224344889323,
+            0.6248828887939453
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5729166666666666,
+            "ci95": [
+              0.5364583333333334,
+              0.6171875
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.6666666666666666,
+            "ci95": [
+              0.609375,
+              0.7265625
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5859375,
+            "ci95": [
+              0.5442708333333334,
+              0.6354166666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.640625,
+            "ci95": [
+              0.5833333333333334,
+              0.703125
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 0.9652012586593628,
+          "projection_sd": 1.960066795349121
+        }
+      }
+    },
+    "repaired": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.703369140625,
+          "ci95": [
+            0.6982416788736979,
+            0.7085988362630208
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 24.557308197021484,
+          "projection_sd": 12.40571403503418
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.6947428385416666,
+          "ci95": [
+            0.6881909688313802,
+            0.7009384155273437
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.8203125,
+            "ci95": [
+              0.7864583333333334,
+              0.8541666666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.8307291666666666,
+            "ci95": [
+              0.796875,
+              0.8619791666666666
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6534220377604166,
+          "ci95": [
+            0.6359446207682292,
+            0.6692209879557292
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5859375,
+            "ci95": [
+              0.5442708333333334,
+              0.6328125
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.71875,
+            "ci95": [
+              0.6614583333333334,
+              0.7786458333333334
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5859375,
+            "ci95": [
+              0.5442708333333334,
+              0.6328125
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.6458333333333334,
+            "ci95": [
+              0.5885416666666666,
+              0.7083333333333334
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 0.996682345867157,
+          "projection_sd": 1.9927058219909668
+        }
+      }
+    }
+  },
+  "role": {
+    "original": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.7005615234375,
+          "ci95": [
+            0.6955960591634114,
+            0.7054651896158854
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.484375,
+            "ci95": [
+              0.46875,
+              0.4973958333333333
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.484375,
+            "ci95": [
+              0.46875,
+              0.4973958333333333
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 23.64887046813965,
+          "projection_sd": 11.974082946777344
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.6681111653645834,
+          "ci95": [
+            0.6626581827799479,
+            0.6734420776367187
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.7005615234375,
+          "ci95": [
+            0.6955960591634114,
+            0.7054651896158854
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.4635416666666667,
+            "ci95": [
+              0.44264322916666665,
+              0.4869791666666667
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.4635416666666667,
+            "ci95": [
+              0.44264322916666665,
+              0.4869791666666667
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": -0.9953179359436035,
+          "projection_sd": 2.6021101474761963
+        }
+      }
+    },
+    "adapted": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.6714274088541666,
+          "ci95": [
+            0.6659845987955729,
+            0.6766975402832032
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5026041666666666,
+            "ci95": [
+              0.4869791666666667,
+              0.5182291666666666
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.4817708333333333,
+            "ci95": [
+              0.4635416666666667,
+              0.4947916666666667
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 22.29645538330078,
+          "projection_sd": 11.311761856079102
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.66607666015625,
+          "ci95": [
+            0.6605010986328125,
+            0.6715510050455729
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.6714274088541666,
+          "ci95": [
+            0.6659845987955729,
+            0.6766975402832032
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.4583333333333333,
+            "ci95": [
+              0.4348958333333333,
+              0.4791666666666667
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.4583333333333333,
+            "ci95": [
+              0.4375,
+              0.4791666666666667
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": -0.36078739166259766,
+          "projection_sd": 2.2712674140930176
+        }
+      }
+    },
+    "repaired": {
+      "subject": {
+        "effective_alpha": {
+          "mean": 0.701019287109375,
+          "ci95": [
+            0.6967557271321614,
+            0.7051801045735677
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5416666666666666,
+            "ci95": [
+              0.5234375,
+              0.5625
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.484375,
+            "ci95": [
+              0.46875,
+              0.4973958333333333
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": 22.600784301757812,
+          "projection_sd": 11.469573020935059
+        }
+      },
+      "distractor": {
+        "effective_alpha": {
+          "mean": 0.66339111328125,
+          "ci95": [
+            0.6591786702473958,
+            0.6675420125325521
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {}
+      },
+      "last": {
+        "effective_alpha": {
+          "mean": 0.701019287109375,
+          "ci95": [
+            0.6967557271321614,
+            0.7051801045735677
+          ],
+          "blocks": 48
+        },
+        "own_readout": {
+          "subject": {
+            "mean": 0.421875,
+            "ci95": [
+              0.4010416666666667,
+              0.4427083333333333
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "original_readout": {
+          "subject": {
+            "mean": 0.4479166666666667,
+            "ci95": [
+              0.4270833333333333,
+              0.46875
+            ],
+            "blocks": 48
+          },
+          "distractor": {
+            "mean": 0.5,
+            "ci95": [
+              0.5,
+              0.5
+            ],
+            "blocks": 48
+          }
+        },
+        "learned_direction": {
+          "plural_minus_singular": -0.5734109878540039,
+          "projection_sd": 2.3646583557128906
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "disjoint_initial_prompts": 1344,
+  "disjoint_new_prompts": 768,
+  "baseline_max_margin_errors": {
+    "heldout/original": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "heldout/adapted": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "heldout/repaired": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "transfer/original": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "transfer/adapted": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "transfer/repaired": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "role/original": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "role/adapted": {
+      "variable": 0.0,
+      "trace": 0.0
+    },
+    "role/repaired": {
+      "variable": 0.0,
+      "trace": 0.0
+    }
+  },
+  "identity_max_logit_error": {
+    "alpha": 0.0,
+    "content": 0.0,
+    "message": 0.0
+  },
+  "checked": "All 3 x 3 test conditions in native, variable and trace: 384 rows x 7 verb-pair margins; finite candidate log probabilities; exact baselines across stages."
+}

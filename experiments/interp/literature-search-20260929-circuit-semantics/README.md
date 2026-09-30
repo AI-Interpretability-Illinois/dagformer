@@ -118,3 +118,5 @@ V/R 优先问“传了什么、怎么用”；Q/K 优先问“什么查询条件
 若以后比较架构优势，需要在任务能力、解释维数和搜索预算可比时评估 dense 与 DAG。之前的 LoRA 对照也在 DAG backbone 上，不能提供这种架构比较。
 
 文献详表：[papers.md](papers.md)；结构化记录：[papers.csv](papers.csv)；检索范围与核验程度：[search-notes.md](search-notes.md)。
+
+2026-09-30：第一轮信息互换、数方向、下游读取追踪及单 head 恢复已完成，见[实际结果](../../results/circuit_semantics_20260929/README.md)。

@@ -1,0 +1,3958 @@
+{
+  "reason": "Initial discovery showed all-stream content transfer much stronger than the V-only mask. Examine Q/K/R before selecting a semantic-variable experiment.",
+  "data": "Original discovery split only; no confirmation scores inspected.",
+  "arms": [
+    {
+      "name": "maskQ/content/subject/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/content/distractor/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/content/last/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/content/all/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/alpha/subject/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "alpha",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/alpha/distractor/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "alpha",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/alpha/last/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "alpha",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/alpha/all/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "alpha",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/message/subject/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "message",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/message/distractor/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "message",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/message/last/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "message",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/message/all/subject",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "message",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskQ/content/all/distractor",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "distractor"
+    },
+    {
+      "name": "maskQ/content/all/lexical",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "lexical"
+    },
+    {
+      "name": "edge/1016",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/447",
+      "edges": [
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/450",
+      "edges": [
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/q/L4H1",
+      "edges": [
+        {
+          "index": 447,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 1
+        },
+        {
+          "index": 450,
+          "stream": "q",
+          "layer": 4,
+          "head": 1,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/q/L6H5",
+      "edges": [
+        {
+          "index": 1016,
+          "stream": "q",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/content/subject/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/content/distractor/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/content/last/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/content/all/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/alpha/subject/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "alpha",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/alpha/distractor/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "alpha",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/alpha/last/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "alpha",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/alpha/all/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "alpha",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/message/subject/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "message",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/message/distractor/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "message",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/message/last/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "message",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/message/all/subject",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "message",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskK/content/all/distractor",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "distractor"
+    },
+    {
+      "name": "maskK/content/all/lexical",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        },
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        },
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        },
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "lexical"
+    },
+    {
+      "name": "edge/1133",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1128",
+      "edges": [
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1130",
+      "edges": [
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/870",
+      "edges": [
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1131",
+      "edges": [
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/869",
+      "edges": [
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/867",
+      "edges": [
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/871",
+      "edges": [
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/868",
+      "edges": [
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1132",
+      "edges": [
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1129",
+      "edges": [
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/595",
+      "edges": [
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/600",
+      "edges": [
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/37",
+      "edges": [
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/850",
+      "edges": [
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/592",
+      "edges": [
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L1H2",
+      "edges": [
+        {
+          "index": 37,
+          "stream": "k",
+          "layer": 1,
+          "head": 2,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L4H14",
+      "edges": [
+        {
+          "index": 595,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 592,
+          "stream": "k",
+          "layer": 4,
+          "head": 14,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L4H15",
+      "edges": [
+        {
+          "index": 600,
+          "stream": "k",
+          "layer": 4,
+          "head": 15,
+          "src": 4
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L5H11",
+      "edges": [
+        {
+          "index": 850,
+          "stream": "k",
+          "layer": 5,
+          "head": 11,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L5H14",
+      "edges": [
+        {
+          "index": 870,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 4
+        },
+        {
+          "index": 869,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 3
+        },
+        {
+          "index": 867,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 1
+        },
+        {
+          "index": 871,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 5
+        },
+        {
+          "index": 868,
+          "stream": "k",
+          "layer": 5,
+          "head": 14,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/k/L6H5",
+      "edges": [
+        {
+          "index": 1133,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 6
+        },
+        {
+          "index": 1128,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 1
+        },
+        {
+          "index": 1130,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 3
+        },
+        {
+          "index": 1131,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 4
+        },
+        {
+          "index": 1132,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 5
+        },
+        {
+          "index": 1129,
+          "stream": "k",
+          "layer": 6,
+          "head": 5,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/content/subject/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/content/distractor/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/content/last/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/content/all/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/alpha/subject/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "alpha",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/alpha/distractor/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "alpha",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/alpha/last/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "alpha",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/alpha/all/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "alpha",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/message/subject/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "message",
+      "site": "subject",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/message/distractor/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "message",
+      "site": "distractor",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/message/last/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "message",
+      "site": "last",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/message/all/subject",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "message",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "maskR/content/all/distractor",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "distractor"
+    },
+    {
+      "name": "maskR/content/all/lexical",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        },
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        },
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        },
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "lexical"
+    },
+    {
+      "name": "edge/977",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/440",
+      "edges": [
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/3766",
+      "edges": [
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1708",
+      "edges": [
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/2152",
+      "edges": [
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/1317",
+      "edges": [
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/2643",
+      "edges": [
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/243",
+      "edges": [
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/3182",
+      "edges": [
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "edge/976",
+      "edges": [
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L2H-1",
+      "edges": [
+        {
+          "index": 243,
+          "stream": "r",
+          "layer": 2,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L3H-1",
+      "edges": [
+        {
+          "index": 440,
+          "stream": "r",
+          "layer": 3,
+          "head": -1,
+          "src": 3
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L5H-1",
+      "edges": [
+        {
+          "index": 977,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 3
+        },
+        {
+          "index": 976,
+          "stream": "r",
+          "layer": 5,
+          "head": -1,
+          "src": 2
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L6H-1",
+      "edges": [
+        {
+          "index": 1317,
+          "stream": "r",
+          "layer": 6,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L7H-1",
+      "edges": [
+        {
+          "index": 1708,
+          "stream": "r",
+          "layer": 7,
+          "head": -1,
+          "src": 1
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L8H-1",
+      "edges": [
+        {
+          "index": 2152,
+          "stream": "r",
+          "layer": 8,
+          "head": -1,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L9H-1",
+      "edges": [
+        {
+          "index": 2643,
+          "stream": "r",
+          "layer": 9,
+          "head": -1,
+          "src": 7
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L10H-1",
+      "edges": [
+        {
+          "index": 3182,
+          "stream": "r",
+          "layer": 10,
+          "head": -1,
+          "src": 8
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    },
+    {
+      "name": "group/r/L11H-1",
+      "edges": [
+        {
+          "index": 3766,
+          "stream": "r",
+          "layer": 11,
+          "head": -1,
+          "src": 5
+        }
+      ],
+      "mode": "content",
+      "site": "all",
+      "contrast": "subject"
+    }
+  ]
+}

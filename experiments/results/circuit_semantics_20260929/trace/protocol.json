@@ -1,0 +1,15 @@
+{
+  "source_edge": {
+    "index": 440,
+    "stream": "r",
+    "layer": 3,
+    "head": -1,
+    "src": 3
+  },
+  "source_site": "subject",
+  "direction": "Frozen selected one-dimensional original-model subject direction.",
+  "search": "Restore each downstream head output before o_proj to its unpatched recipient value, at all positions. Select top three individually by removed signed is/are effect on original-model discovery.",
+  "confirmation": "Same selected heads in all predictor states and all test splits. Joint and individual head restoration; all-position vs last-position restoration; three random controls matched by layer and head count.",
+  "attention": "Read-only FP32 QK softmax at last query after native norm and RoPE; native SDPA still produces every model output. These probabilities are diagnostic, not a replacement attention forward.",
+  "limits": "Mediation of this injected number message, not unique necessity, a complete circuit, or architecture superiority."
+}

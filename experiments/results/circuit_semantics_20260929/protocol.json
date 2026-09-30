@@ -1,0 +1,30 @@
+{
+  "created_before_model_evaluation": true,
+  "checkpoint": "Complete 300M FourWay + local correction, step9000; native Q/K norm, no V norm.",
+  "adapter_seed": 20260930,
+  "states": "Original predictor; full trained predictor; exact functional rollback of the previously selected 75 predictor outputs. Local correction remains dynamic in all states.",
+  "source_mask": "Prior full_s20260930 all_masks.sva_75; this is a repair mask, not a set of independently labeled semantic circuits.",
+  "donor_design": "Eight-example blocks: two lexical frames, each with subject number x distractor number. Subject, distractor and same-number lexical interchanges are separate conditions.",
+  "positions": "Single-token noun forms; semantic-role positions recorded. Donors in each block have identical token lengths and positions. Padding is excluded from patches.",
+  "selection": "Discovery only; original-model is/are signed subject effect selects V groups and individual V edges. All verbs and states reported; no heldout selection.",
+  "metrics": "Plural-minus-singular logits, full-vocabulary candidate log probabilities, grammatical and counterfactual candidate accuracy, baseline donor recovery; block-bootstrap intervals.",
+  "limits": "Controlled sentences, one pretrained checkpoint and initially one adapter seed. Verb pairs are scored on the same prefix and are not seven independent input datasets.",
+  "counts": {
+    "discovery": {
+      "blocks": 24,
+      "prompts": 192
+    },
+    "heldout": {
+      "blocks": 48,
+      "prompts": 384
+    },
+    "transfer": {
+      "blocks": 48,
+      "prompts": 384
+    },
+    "role": {
+      "blocks": 48,
+      "prompts": 384
+    }
+  }
+}

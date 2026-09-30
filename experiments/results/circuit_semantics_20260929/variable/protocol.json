@@ -1,0 +1,21 @@
+{
+  "edge": {
+    "index": 440,
+    "stream": "r",
+    "layer": 3,
+    "head": -1,
+    "src": 3
+  },
+  "fit_state": "original",
+  "fit": "First 16 discovery blocks; remaining 8 select checkpoint by counterfactual/isolation KL.",
+  "sites": [
+    "subject",
+    "last"
+  ],
+  "projection": "Swap only the donor-recipient difference projected onto one unit vector in the native source content. Keep recipient effective coefficient and normal downstream computation.",
+  "labels": "Subject number for fit; distractor and lexical interchanges are isolation conditions.",
+  "controls": "Untrained mean-difference, shuffled-label mean-difference and 3 random rank-one directions. Shuffled mean is not a budget-matched learned-intervention control.",
+  "transfer": "The exact same direction learned on P0 is used on all three predictor states and all test sets.",
+  "readouts": "Separate ridge readouts of subject and distractor number at subject, distractor and last positions; fit each state plus frozen-original cross-state readout.",
+  "limitation": "This is a task-specific one-dimensional distribution-matching experiment, not a reproduction of the full DAS or ConceptDAS benchmark."
+}
