@@ -1,0 +1,306 @@
+{
+  "status": "proposed; no new training submitted",
+  "interpretation": "Six scaling axes from EBT Figures 4 and 5.",
+  "families": [
+    "dense",
+    "fourway_corrected"
+  ],
+  "architecture": {
+    "vocab_size": 100352,
+    "tie_word_embeddings": true,
+    "max_position_embeddings": 4096,
+    "predictor_encoder_dim": 256,
+    "predictor_encoder_layers": 2,
+    "predictor_encoder_heads": 4,
+    "predictor_max_seq_len": 4096,
+    "fourway_hidden": 512,
+    "predictor_causal": true,
+    "correction_hidden": 128,
+    "use_v_norm": false
+  },
+  "recipe": {
+    "training_corpus": "One fixed Dolma-v1.7 21B corpus manifest for all new runs",
+    "seq_len": 1024,
+    "first_seed": 42,
+    "backbone_lr": 0.0005,
+    "predictor_lr": 0.0003,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "weight_decay": 0.1,
+    "max_grad_norm": 1.0,
+    "lr_schedule": "linear",
+    "warmup_tokens": 104857600,
+    "schedule_rule": "Express warmup and decay in consumed tokens; each data budget ends its own schedule.",
+    "data_order": "Same sample stream per seed, regrouped into global batches.",
+    "primary_eval": "One source-balanced held-out Dolma cache from excluded documents",
+    "secondary_eval": [
+      "fixed wikitext2 cache",
+      "MathInstruct NLL",
+      "GSM8K gold-answer NLL"
+    ]
+  },
+  "existing_parameter_axis": {
+    "source_revision": "c9757183c3695ff2d688922d3a38fdc0dc70f7dd",
+    "reuse": "PR ladder as descriptive evidence; common evaluation required for additional 600M/1B checkpoints.",
+    "views": [
+      "all trainable parameters",
+      "all non-embedding parameters",
+      "backbone parameters"
+    ],
+    "fit_rule": "Group by training corpus and token budget policy; report distinct sizes, not just run count."
+  },
+  "compute_axis": {
+    "reuse": "Same evaluated checkpoints as parameter and data panels",
+    "accounting": "Include repeated source QKV projections, predictor and corrections; distinguish analytic FLOPs and measured GPU-hours.",
+    "claim": "Interpolated loss-vs-compute initially; direct matched-compute endpoints before claiming iso-compute superiority."
+  },
+  "new_small_sweep": [
+    {
+      "id": "L4_d512_D1572864000_B512",
+      "panels": [
+        "depth"
+      ],
+      "layers": 4,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 68166144,
+      "dag_total_params": 96957281,
+      "dag_routing_params": 28791137
+    },
+    {
+      "id": "L6_d512_D1572864000_B512",
+      "panels": [
+        "depth",
+        "width",
+        "data",
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L8_d512_D1572864000_B512",
+      "panels": [
+        "depth"
+      ],
+      "layers": 8,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 84951552,
+      "dag_total_params": 114421483,
+      "dag_routing_params": 29469931
+    },
+    {
+      "id": "L12_d512_D1572864000_B512",
+      "panels": [
+        "depth"
+      ],
+      "layers": 12,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 101736960,
+      "dag_total_params": 132142085,
+      "dag_routing_params": 30405125
+    },
+    {
+      "id": "L16_d512_D1572864000_B512",
+      "panels": [
+        "depth"
+      ],
+      "layers": 16,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 118522368,
+      "dag_total_params": 150119087,
+      "dag_routing_params": 31596719
+    },
+    {
+      "id": "L6_d384_D1572864000_B512",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 384,
+      "heads": 8,
+      "ffn_width": 1536,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 52700544,
+      "dag_total_params": 81717108,
+      "dag_routing_params": 29016564
+    },
+    {
+      "id": "L6_d640_D1572864000_B512",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 640,
+      "heads": 8,
+      "ffn_width": 2560,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 103562880,
+      "dag_total_params": 132743284,
+      "dag_routing_params": 29180404
+    },
+    {
+      "id": "L6_d768_D1572864000_B512",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 768,
+      "heads": 8,
+      "ffn_width": 3072,
+      "tokens": 1572864000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 3000,
+      "dense_total_params": 133712640,
+      "dag_total_params": 162974964,
+      "dag_routing_params": 29262324
+    },
+    {
+      "id": "L6_d512_D786432000_B512",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 786432000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 1500,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L6_d512_D3145728000_B512",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 3145728000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 6000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L6_d512_D6291456000_B512",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 6291456000,
+      "batch_sequences": 512,
+      "batch_tokens": 524288,
+      "optimizer_updates": 12000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L6_d512_D1572864000_B64",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 64,
+      "batch_tokens": 65536,
+      "optimizer_updates": 24000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L6_d512_D1572864000_B128",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 128,
+      "batch_tokens": 131072,
+      "optimizer_updates": 12000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    },
+    {
+      "id": "L6_d512_D1572864000_B256",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "heads": 8,
+      "ffn_width": 2048,
+      "tokens": 1572864000,
+      "batch_sequences": 256,
+      "batch_tokens": 262144,
+      "optimizer_updates": 6000,
+      "dense_total_params": 76558848,
+      "dag_total_params": 105657332,
+      "dag_routing_params": 29098484
+    }
+  ],
+  "unique_settings_per_family": 14,
+  "first_seed_training_runs": 28,
+  "seed_followup": "Two additional seeds on the shared center and any endpoint contrast used to claim a better scaling rate.",
+  "depthbench_followup": "Run existing depth diagnostics on the new depth checkpoints. A separate fixed-total-parameter depth/width scan answers a different question."
+}

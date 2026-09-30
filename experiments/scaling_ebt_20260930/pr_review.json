@@ -1,0 +1,149 @@
+{
+  "pr": "https://github.com/AI-Interpretability-Illinois/dagformer/pull/3",
+  "revision": "c9757183c3695ff2d688922d3a38fdc0dc70f7dd",
+  "metric": "PR common wikitext2 cache, mean nats/token",
+  "scope": "Committed PR results; no new evaluation performed.",
+  "pairs": [
+    {
+      "corpus": "shared12b",
+      "nominal_size": "75m",
+      "dense_run": "shared_75m_baseline",
+      "dag_run": "shared_75m_dagformer",
+      "dense_eval_step": 3000,
+      "dag_eval_step": 3000,
+      "dense_total_params": 76558848,
+      "dag_backbone_params": 76558848,
+      "dag_routing_params": 29098484,
+      "dag_total_params": 105657332,
+      "dense_recorded_tokens": 1572864000,
+      "dag_recorded_tokens": 1572864000,
+      "dense_wikitext_token_nll": 4.980341424333289,
+      "dag_wikitext_token_nll": 4.775157083010843,
+      "nll_improvement": 0.2051843413224459,
+      "relative_token_ppl_reduction": 0.18550284291151042,
+      "fit_dense_equivalent_params": 91841335.53498107,
+      "fit_multiplier_backbone": 1.1996175221312249,
+      "fit_multiplier_total": 0.8692376931776119
+    },
+    {
+      "corpus": "timan12b",
+      "nominal_size": "75m",
+      "dense_run": "timan_75m_dense",
+      "dag_run": "timan_75m_corrected",
+      "dense_eval_step": 3000,
+      "dag_eval_step": 3000,
+      "dense_total_params": 76558848,
+      "dag_backbone_params": 76558848,
+      "dag_routing_params": 29098484,
+      "dag_total_params": 105657332,
+      "dense_recorded_tokens": 1585152000,
+      "dag_recorded_tokens": 1585152000,
+      "dense_wikitext_token_nll": 4.996735809542608,
+      "dag_wikitext_token_nll": 4.71090813900562,
+      "nll_improvement": 0.285827670536988,
+      "relative_token_ppl_reduction": 0.24860790821399636,
+      "fit_dense_equivalent_params": 97402823.27855976,
+      "fit_multiplier_backbone": 1.2722608271033513,
+      "fit_multiplier_total": 0.921874719291225
+    },
+    {
+      "corpus": "shared12b",
+      "nominal_size": "150m",
+      "dense_run": "shared_150m_baseline",
+      "dag_run": "shared_150m_dagformer",
+      "dense_eval_step": 6000,
+      "dag_eval_step": 6000,
+      "dense_total_params": 152593152,
+      "dag_backbone_params": 152593152,
+      "dag_routing_params": 29968527,
+      "dag_total_params": 182561679,
+      "dense_recorded_tokens": 3145728000,
+      "dag_recorded_tokens": 3145728000,
+      "dense_wikitext_token_nll": 4.297423704296139,
+      "dag_wikitext_token_nll": 4.100284312633758,
+      "nll_improvement": 0.1971393916623807,
+      "relative_token_ppl_reduction": 0.17892382583734012,
+      "fit_dense_equivalent_params": 193190193.7692834,
+      "fit_multiplier_backbone": 1.2660475993659495,
+      "fit_multiplier_total": 1.0582187610647655
+    },
+    {
+      "corpus": "timan12b",
+      "nominal_size": "150m",
+      "dense_run": "timan_150m_dense",
+      "dag_run": "timan_150m_corrected",
+      "dense_eval_step": 6000,
+      "dag_eval_step": 6000,
+      "dense_total_params": 152593152,
+      "dag_backbone_params": 152593152,
+      "dag_routing_params": 29968527,
+      "dag_total_params": 182561679,
+      "dense_recorded_tokens": 3170304000,
+      "dag_recorded_tokens": 3170304000,
+      "dense_wikitext_token_nll": 4.268440172181907,
+      "dag_wikitext_token_nll": 4.084553136893198,
+      "nll_improvement": 0.1838870352887092,
+      "relative_token_ppl_reduction": 0.16797021147705937,
+      "fit_dense_equivalent_params": 197421023.54933655,
+      "fit_multiplier_backbone": 1.2937738093865219,
+      "fit_multiplier_total": 1.0813935576772196
+    },
+    {
+      "corpus": "delta21b",
+      "nominal_size": "300m",
+      "dense_run": "300m_dense",
+      "dag_run": "300m_fourway_corrected",
+      "dense_eval_step": 12000,
+      "dag_eval_step": 12000,
+      "dense_total_params": 304137216,
+      "dag_backbone_params": 304137216,
+      "dag_routing_params": 32321853,
+      "dag_total_params": 336459069,
+      "dense_recorded_tokens": 6291456000,
+      "dag_recorded_tokens": 6291456000,
+      "dense_wikitext_token_nll": 3.8077879290208747,
+      "dag_wikitext_token_nll": 3.5438556535869625,
+      "nll_improvement": 0.2639322754339122,
+      "relative_token_ppl_reduction": 0.2319744479073137,
+      "fit_dense_equivalent_params": 522550221.84917367,
+      "fit_multiplier_backbone": 1.7181396894524532,
+      "fit_multiplier_total": 1.5530870468204667
+    }
+  ],
+  "parameter_fit_coverage": {
+    "corrected": {
+      "runs": 6,
+      "distinct_backbone_sizes": 3,
+      "fit": {
+        "E": 1.8909027616486875,
+        "A": 2599.1314133830983,
+        "alpha": 0.3754008973903191,
+        "rss": 0.006488344273362045,
+        "n_points": 6
+      }
+    },
+    "dense": {
+      "runs": 7,
+      "distinct_backbone_sizes": 4,
+      "fit": {
+        "E": 2.804135497294944,
+        "A": 60707.56154381751,
+        "alpha": 0.563673223827889,
+        "rss": 0.0005790145636931508,
+        "n_points": 7
+      }
+    },
+    "modular": {
+      "runs": 4,
+      "distinct_backbone_sizes": 3,
+      "fit": {
+        "E": 2.1481170841087036,
+        "A": 3601.1779003583324,
+        "alpha": 0.398668858180482,
+        "rss": 0.00043758782802239086,
+        "n_points": 4
+      }
+    }
+  },
+  "equivalent_size_interpretation": "Derived from the PR dense fit, with both model size and token budget varying across the ladder. Not a directly trained matched-size dense model or a fixed-data parameter-efficiency experiment."
+}
