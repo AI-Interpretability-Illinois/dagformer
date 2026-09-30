@@ -105,7 +105,9 @@ def load_dense(ckpt_path: str, cfg: dict, device):
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     if "model_state_path" in ckpt:
         side = ckpt["model_state_path"]
-        if not Path(side).is_absolute():
+        if not Path(side).is_absolute() or not Path(side).exists():
+            # relative, or an absolute path from another host/dir (e.g. a run copied back
+            # from timan): use the side file sitting next to the checkpoint
             cand = Path(ckpt_path).parent / Path(side).name
             if cand.exists():
                 side = str(cand)
@@ -206,7 +208,9 @@ def _load_fourway_state(ckpt_path: str, base, fourway_model, fourway_predictor):
     state = None
     if "model_state_path" in ckpt:
         side = ckpt["model_state_path"]
-        if not Path(side).is_absolute():
+        if not Path(side).is_absolute() or not Path(side).exists():
+            # relative, or an absolute path from another host/dir (e.g. a run copied back
+            # from timan): use the side file sitting next to the checkpoint
             cand = Path(ckpt_path).parent / Path(side).name
             if cand.exists():
                 side = str(cand)
