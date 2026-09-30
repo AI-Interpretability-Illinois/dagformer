@@ -43,10 +43,22 @@ def main():
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--expected-updates", type=int)
     p.add_argument("--tokens-per-update", type=int)
+    p.add_argument("--staging-metadata", help="Export provenance containing the original optimizer update counts")
     p.add_argument("--device", default="cuda")
     args = p.parse_args()
     cfg = yaml.safe_load(Path(args.config).read_text())
     info = progress(args.checkpoint)
+    staging = None
+    if args.staging_metadata:
+        staging = json.loads(Path(args.staging_metadata).read_text())
+        if staging["checkpoint_step"] != info["checkpoint_step"]:
+            raise ValueError("Export metadata and checkpoint steps differ")
+        counts = staging.get("optimizer_update_counts", [])
+        if len(counts) == 1 and info["completed_updates"] is None:
+            info.update(completed_updates=counts[0], optimizer_updates=counts[0],
+                        progress_source="exported_optimizer_count")
+        if args.tokens_per_update is None:
+            args.tokens_per_update = staging.get("tokens_per_update")
     if args.expected_updates is not None and info["completed_updates"] != args.expected_updates:
         raise ValueError(f"Checkpoint training budget mismatch: {info}, expected {args.expected_updates}")
     if args.expected_updates is not None and info["optimizer_updates"] != args.expected_updates:
@@ -94,6 +106,7 @@ def main():
     tokens = (info["completed_updates"] * args.tokens_per_update
               if info["completed_updates"] is not None and args.tokens_per_update is not None else None)
     result = {"checkpoint": args.checkpoint, "config": args.config, **info,
+              "staging_metadata": staging,
               "total_params": total_params, "embedding_params": embedding_params,
               "non_embedding_params": total_params - embedding_params,
               "training_tokens": tokens, "analytic_flops": flops,

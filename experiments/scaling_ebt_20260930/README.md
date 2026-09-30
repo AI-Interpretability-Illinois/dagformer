@@ -1,7 +1,8 @@
 # EBT 六条 scaling 轴与 Xiaocong PR 结果
 
 2026-09-30。审阅 [PR #3](https://github.com/AI-Interpretability-Illinois/dagformer/pull/3)
-的 `c9757183c3695ff2d688922d3a38fdc0dc70f7dd`，没有 merge PR 或提交新训练。
+的 `c9757183c3695ff2d688922d3a38fdc0dc70f7dd`。PR 现已合入 `main`（`1919dbd`），
+六轴执行脚本与设置见 [EXECUTION.md](EXECUTION.md)。下面保留审阅时的已有结果。
 这里把“六个尺度”解释为 EBT 正文中的六条 scaling 轴。
 
 ## PR 中已经有什么
@@ -54,7 +55,7 @@ Dense 总参数 76.56M，FourWay 总参数 105.66M。完整 predictor 的 encode
 
 新增四组实验使用同一份 Dolma-v1.7 21B corpus manifest、同 tokenizer、1024 context。
 中心训练 1.572864B tokens；主干 LR=5e-4、predictor LR=3e-4，沿用 AdamW recipe。
-所有新实验使用相同 norm 设置。主指标为独立、按 source 配比构建的 held-out Dolma NLL，
+所有新实验使用相同 norm 设置。主指标为八个分词 worker 等量采样的 held-out Dolma NLL，
 共用 WikiText-2 作第二条曲线。GSM8K/MathInstruct 使用 gold-text NLL 作补充指标。
 
 | 轴 | 设置 | 保持什么不变 | 新训练需求 |
@@ -74,7 +75,7 @@ Dense 总参数 76.56M，FourWay 总参数 105.66M。完整 predictor 的 encode
 
 先执行 depth 组，再接 data、width、batch；首轮得到形状后，为中心点和支撑关键斜率
 结论的端点各补两个 seeds。具体配置、参数计数和 optimizer update 数在
-[six_axis_plan.json](six_axis_plan.json)，目前均为计划配置。
+[six_axis_plan.json](six_axis_plan.json)，已生成 28 份可执行配置。
 
 数据预算不同的 run 各自完成其 LR schedule；长 run 的中途 checkpoint 另外标为学习曲线，
 不替代短预算的训练终点。Batch 组固定总 tokens，调整 optimizer update 数；warmup 和
