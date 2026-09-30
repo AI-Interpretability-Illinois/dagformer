@@ -28,6 +28,17 @@ CKPTS = ROOT / "checkpoints/pr_sync_20260917"
 UPSTREAM = "edca05f8e5c62bd49f91b17461dadae822783eee"
 
 
+def portable_records(value):
+    """Use repository-relative references in shareable result metadata."""
+    if isinstance(value, dict):
+        return {key: portable_records(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [portable_records(item) for item in value]
+    if isinstance(value, str):
+        return value.replace(str(ROOT) + "/", "")
+    return value
+
+
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -316,6 +327,7 @@ def main():
                     replay="effective Q/K/V/R coefficients from unperturbed forward; external predictor always sees the unchanged input",
                     lens="final native norm/head on layer-written state; not a unique next-consumer Q/K/V input",
                     scope="native-checkpoint diagnostics adapted from DepthBench, not official matched-budget depth scaling")
+    protocol = portable_records(protocol)
     if args.resume and meta_path.exists():
         old = json.loads(meta_path.read_text())
         if old["protocol"] != protocol:

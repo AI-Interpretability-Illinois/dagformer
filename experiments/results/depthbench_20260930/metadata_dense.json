@@ -1,0 +1,91 @@
+{
+  "protocol": {
+    "model_dir": "checkpoints/pr_sync_20260917/300m-baseline",
+    "config": {
+      "hidden_size": 1024,
+      "num_hidden_layers": 12,
+      "num_attention_heads": 16,
+      "intermediate_size": 4096,
+      "vocab_size": 100352,
+      "tie_word_embeddings": true,
+      "max_position_embeddings": 4096,
+      "tokenizer_id": "allenai/OLMo-2-0425-1B",
+      "dataset": "allenai/dolma",
+      "dataset_name": "v1_7",
+      "data_source": "mmap",
+      "mmap_index_path": "/work/hdd/bfqt/data/pretok/dolma_v1_7_12b",
+      "seq_len": 1024,
+      "seed": 42,
+      "micro_batch_size": 8,
+      "gradient_accumulation_steps": 16,
+      "total_steps": 12000,
+      "lr": "5e-4",
+      "beta1": 0.9,
+      "beta2": 0.95,
+      "weight_decay": 0.1,
+      "warmup_steps": 300,
+      "max_grad_norm": 1.0,
+      "lr_schedule": "linear",
+      "eval_skip": 1000000,
+      "eval_size": 50,
+      "eval_every": 1000,
+      "wandb_project": "dagformer",
+      "wandb_run_name": "baseline-300m-chinchilla",
+      "log_every": 10,
+      "save_every": 3000,
+      "save_dir": "checkpoints/pretrain_300m_baseline_mmap"
+    },
+    "caches": [
+      "wikitext_test=checkpoints/pr_sync_20260917/eval_corpora/wikitext_test.pt",
+      "dolma_eval=checkpoints/pr_sync_20260917/eval_cache.pt"
+    ],
+    "upstream_commit": "edca05f8e5c62bd49f91b17461dadae822783eee",
+    "dtype": "native BF16 backbone / FP32 predictor and correction",
+    "state": "embedding and layer-written states, before final norm",
+    "scoring": "all valid cached next-token labels, including the last target of each window",
+    "causal": "mean_tokens ||delta_after_skip - delta|| / max(||delta||, 1e-8)",
+    "branch_causal": "same formula on output minus R mix (dense: output minus incoming state)",
+    "skip_bypass": "identity layer, original indexed source slot remains readable",
+    "skip_drop_source": "bypass plus zero coefficients to skipped source in every downstream Q/K/V/R mix; no reindexing or renormalization",
+    "replay": "effective Q/K/V/R coefficients from unperturbed forward; external predictor always sees the unchanged input",
+    "lens": "final native norm/head on layer-written state; not a unique next-consumer Q/K/V input",
+    "scope": "native-checkpoint diagnostics adapted from DepthBench, not official matched-budget depth scaling"
+  },
+  "git_commit": "86ce024547d2cc4ae1b05b80cb6d00140353987e",
+  "versions": {
+    "torch": "2.10.0",
+    "transformers": "4.57.1",
+    "numpy": "2.3.5"
+  },
+  "parameters": 304137216,
+  "complete": true,
+  "results": [
+    {
+      "corpus": "wikitext_test",
+      "windows": 128,
+      "tokens": 131072,
+      "nll": 3.8257959950715303,
+      "file": "dense_wikitext_test.npz",
+      "arms": [
+        "bypass_dynamic"
+      ]
+    },
+    {
+      "corpus": "dolma_eval",
+      "windows": 50,
+      "tokens": 51200,
+      "nll": 3.4558904457092283,
+      "file": "dense_dolma_eval.npz",
+      "arms": [
+        "bypass_dynamic"
+      ]
+    }
+  ],
+  "checkpoint_step": 9000,
+  "verification": {
+    "observer_max_logit_error": 0.0,
+    "final_readout_max_logit_error": 0.0,
+    "skip_logit_change": 4.5,
+    "baseline_nll": 4.467999458312988
+  }
+}
