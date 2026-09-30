@@ -295,7 +295,10 @@ def main():
     args = ap.parse_args()
     torch.set_num_threads(4)
     torch.backends.mha.set_fastpath_enabled(False)
-    torch.cuda.set_per_process_memory_fraction(args.memory_fraction, device=args.device)
+    memory_device = torch.device(args.device)
+    if memory_device.index is None:
+        memory_device = torch.cuda.current_device()
+    torch.cuda.set_per_process_memory_fraction(args.memory_fraction, device=memory_device)
     torch.manual_seed(20260930)
     model_dir = args.model_dir or CKPTS / ("300m-baseline" if args.kind == "dense" else "300m-dagformer")
     caches = args.cache or [f"wikitext_test={CKPTS}/eval_corpora/wikitext_test.pt", f"dolma_eval={CKPTS}/eval_cache.pt"]
