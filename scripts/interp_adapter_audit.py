@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 from collections import defaultdict
 import copy
+import gzip
 import json
 import math
 from pathlib import Path
@@ -25,7 +26,9 @@ from interp_audit_common import AuditModel, RESULT_ROOT, evaluate, metrics, pair
 
 def save_adapter(runner, method, path, metadata):
     if method == 'predictor':
-        state = {'predictor': {k:v.detach().cpu() for k,v in runner.predictor.state_dict().items()}}
+        scope=getattr(runner,'predictor_scope','all')
+        state = {'scope':scope,'predictor': {k:v.detach().cpu() for k,v in runner.predictor.state_dict().items()
+                    if scope=='all' or k.startswith(('layer_heads.','layer_biases.'))}}
     else:
         state = {'lora': {name: {'a':m.a.detach().cpu(), 'b':m.b.detach().cpu()}
                           for name,m in runner.loras}}
@@ -34,7 +37,12 @@ def save_adapter(runner, method, path, metadata):
 
 def load_adapter(runner, method, path):
     state = torch.load(path,map_location='cuda',weights_only=False)
-    if method == 'predictor': runner.predictor.load_state_dict(state['predictor'])
+    if method == 'predictor':
+        partial=state.get('scope','all')=='outputs'
+        if partial:
+            expected={n for n in runner.predictor.state_dict() if n.startswith(('layer_heads.','layer_biases.'))}
+            assert set(state['predictor'])==expected
+        runner.predictor.load_state_dict(state['predictor'],strict=not partial)
     else:
         for name,m in runner.loras:
             m.a.data.copy_(state['lora'][name]['a'])
@@ -42,10 +50,13 @@ def load_adapter(runner, method, path):
     return state['metadata']
 
 
-def prepare(runner, method, rank):
+def prepare(runner, method, rank, predictor_scope='all'):
     if method == 'predictor':
         runner.copy_baseline_predictor()
-        params = list(runner.predictor.parameters())
+        runner.predictor_scope=predictor_scope
+        runner.predictor.requires_grad_(False)
+        params = [p for n,p in runner.predictor.named_parameters()
+                  if predictor_scope=='all' or n.startswith(('layer_heads.','layer_biases.'))]
         for p in params: p.requires_grad_(True)
         return params
     return runner.add_lora(rank)
@@ -62,11 +73,12 @@ def train(args,runner,data,result):
     args.weights.mkdir(parents=True,exist_ok=True)
     weight_path = args.weights/f'{method}_best.pt'
     result['baseline_validation'] = evaluate(runner,data['validation'],args.eval_batch)
-    params = prepare(runner,method,args.rank)
+    params = prepare(runner,method,args.rank,args.predictor_scope)
     result['trainable_parameters'] = sum(p.numel() for p in params)
     result['backbone_original_parameters_frozen'] = all(not p.requires_grad for n,p in runner.model.named_parameters()
                                                         if '.parametrizations.' not in n)
     result['protocol'] = dict(
+        predictor_scope=args.predictor_scope,
         tasks=f'Controlled English subject-verb {args.sva_target} and indirect-object identification. For disagreement the canonical grammatical and ungrammatical targets are swapped. This is not a published benchmark-score reproduction.',
         objective='Full-vocabulary next-token CE; SVA 0.4 + IOI 0.4 + unrelated WikiText train tokens 0.2.',
         model_selection='Lowest mean SVA/IOI validation NLL among checkpoints whose retain NLL rises no more than 0.15 nats.',
@@ -134,7 +146,7 @@ def gates(runner,method,gate):
 
 
 def get_size(runner,method):
-    return len(runner.layout) if method=='predictor' else sum(m.a.shape[0] for _,m in runner.loras)
+    return len(runner.layout) if method=='predictor' else sum(m.b.shape[0] if runner.lora_unit=='row' else m.a.shape[0] for _,m in runner.loras)
 
 
 def evaluate_gate(runner,method,items,gate,batch_size):
@@ -154,8 +166,17 @@ def effects(base,adapted,edited):
 
 
 def audit(args,runner,data,result):
+    result['complete']=False
+    for stale in ['matched_controls_protocol','coefficient_change_rms']:
+        result.pop(stale,None)
     out=args.out/args.method
     method=args.method
+    if method=='lora' and runner.lora_unit=='row':
+        result['protocol']['rollback']='Zero selected LoRA B output rows; A and all other B rows remain unchanged. Equivalent to multiplicative output-row gates on the effective weight update.'
+        result['protocol']['units']='One LoRA output-row unit contains rank B parameters in a specified projection module.'
+    elif method=='predictor' and args.predictor_scope=='outputs':
+        result['protocol']['rollback']='Restore selected predictor output rows and biases; frozen embedding/encoder/trunk make this equivalent to baseline/adapted output selection. Local correction remains dynamic.'
+        result['protocol']['units']='One predictor output-coordinate unit contains hidden_dim output weights plus one bias, at all token positions.'
     size=get_size(runner,method)
     ones=torch.ones(size,device='cuda')
     zeros=torch.zeros_like(ones)
@@ -188,7 +209,16 @@ def audit(args,runner,data,result):
         gradients[task]=(-grad).cpu().numpy()
         print(method,'DISCOVERY gradients',task,flush=True)
     result['integrated_rollback_scores']={t:g.tolist() for t,g in gradients.items()}
-    budgets=sorted(set(max(1,round(size*f)) for f in [.005,.01,.02,.05,.1]))
+    if args.budget_unit=='trainable_fraction':
+        assert (method=='predictor' and args.predictor_scope=='outputs') or (method=='lora' and runner.lora_unit=='row')
+        cost=runner.predictor.layer_heads[0].in_features+1 if method=='predictor' else args.rank
+        scale=result['trainable_parameters']/cost
+        result['parameters_per_edit_unit']=cost
+        result['budget_definition']='Fraction of trained adapter parameters reset: output weight row+bias for predictor; B row for LoRA (pre-adaptation B is zero). LoRA A remains shared and unchanged.'
+    else:
+        scale=size
+        result['budget_definition']='Fraction of native editable units; different unit types are not equivalent.'
+    budgets=sorted(set(min(size,max(1,round(scale*f))) for f in args.budget_fractions))
     selected={}
     result['discovery_candidates']=[]
     for task,other in [('sva','ioi'),('ioi','sva')]:
@@ -219,9 +249,9 @@ def audit(args,runner,data,result):
         for repeat in range(3): choices[f'random_{k}_{repeat}']=rng.choice(size,k,replace=False).tolist()
     result['selected_masks']=selected
     result['all_masks']=choices
-    result['mask_unit_labels']=runner.layout if method=='predictor' else [dict(module=name,rank=i) for name,m in runner.loras for i in range(m.a.shape[0])]
+    result['mask_unit_labels']=runner.layout if method=='predictor' else [dict(module=name,**{runner.lora_unit:i}) for name,m in runner.loras for i in range(m.b.shape[0] if runner.lora_unit=='row' else m.a.shape[0])]
     result['stages']={}
-    for split in ['heldout','transfer']:
+    for split in args.test_splits:
         base=evaluate_gate(runner,method,data[split],zeros,args.eval_batch)
         adapted=evaluate_gate(runner,method,data[split],ones,args.eval_batch)
         stage=dict(base=base,adapted=adapted,arms={})
@@ -244,6 +274,13 @@ def main():
     p.add_argument('--steps',type=int,default=600)
     p.add_argument('--lr',type=float,default=3e-5)
     p.add_argument('--rank',type=int,default=8)
+    p.add_argument('--predictor-scope',choices=['all','outputs'],default='all')
+    p.add_argument('--lora-unit',choices=['rank','row'],default='rank')
+    p.add_argument('--budget-unit',choices=['native_fraction','trainable_fraction'],default='native_fraction')
+    p.add_argument('--budget-fractions',type=float,nargs='+',default=[.005,.01,.02,.05,.1])
+    p.add_argument('--data-root',type=Path,default=RESULT_ROOT)
+    p.add_argument('--extra-tests',type=Path)
+    p.add_argument('--test-splits',nargs='+',default=['heldout','transfer'])
     p.add_argument('--sva-target',choices=['agreement','disagreement'],default='disagreement')
     p.add_argument('--per-task-batch',type=int,default=4)
     p.add_argument('--eval-batch',type=int,default=16)
@@ -253,7 +290,12 @@ def main():
     p.add_argument('--train-only',action='store_true')
     args=p.parse_args()
     torch.manual_seed(args.seed)
-    data=copy.deepcopy(prepare_data(args.out.parent))
+    data=copy.deepcopy(prepare_data(args.data_root))
+    if args.extra_tests:
+        opener=gzip.open if args.extra_tests.suffix=='.gz' else open
+        with opener(args.extra_tests,'rt') as f: extra=json.load(f)
+        assert not set(extra).intersection(data)
+        data.update(extra)
     if args.sva_target=='disagreement':
         for items in data.values():
             for item in items:
@@ -261,6 +303,7 @@ def main():
                     item['target'],item['foil_id']=item['foil_id'],item['target']
                     item['answer'],item['foil']=item['foil'],item['answer']
     runner=AuditModel()
+    runner.lora_unit=args.lora_unit
     # Capture before either adaptation or LoRA parametrization is installed.
     with torch.no_grad():
         runner.original_check_logits=runner.forward(data['discovery'][:args.eval_batch]).cpu()
@@ -269,10 +312,12 @@ def main():
                 dataset_counts={s:{t:sum(x['task']==t for x in rows) for t in ['sva','ioi','retain']} for s,rows in data.items()})
     if args.audit_only:
         result=json.loads((args.out/args.method/'results.json').read_text())
-        params=prepare(runner,args.method,args.rank)
+        params=prepare(runner,args.method,args.rank,args.predictor_scope)
         for par in params: par.requires_grad_(False)
         result['selected_checkpoint']=load_adapter(runner,args.method,args.weights/f'{args.method}_best.pt')
     else: train(args,runner,data,result)
+    result['audit_args']={k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items()}
+    result['audit_dataset_counts']={s:{t:sum(x['task']==t for x in rows) for t in ['sva','ioi','retain']} for s,rows in data.items()}
     if not args.train_only: audit(args,runner,data,result)
 
 

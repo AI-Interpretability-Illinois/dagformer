@@ -1,0 +1,60 @@
+{
+  "created_before_followup_confirmation_evaluation": true,
+  "hypothesis": "Selective removal of learned grammatical disagreement while retaining learned recipient identification.",
+  "seeds": [
+    20260930,
+    20261001,
+    20261002
+  ],
+  "pretrained_models": "Same complete 300m-dagformer step9000 checkpoint and full forward as first audit. Three adapter seeds, not three pretraining seeds.",
+  "methods": {
+    "full_predictor": "Replicate original 30.39M-parameter adaptation; functional output-coordinate rollback.",
+    "output_predictor": "Freeze predictor embedding/encoder/trunk; train all 3773 output rows and biases (1,935,549 parameters). Revert rows for an exact single-predictor export.",
+    "lora": "Rank 7 on all attention/MLP projections (1,978,368 parameters). Audit output-row rollback by zeroing B rows; A stays shared."
+  },
+  "training": "600 steps; same full-vocabulary CE and 0.4/0.4/0.2 task/retain weights. Full predictor lr3e-5; output predictor choose 3e-4 or1e-3 on original validation only at first seed, then lock; LoRA lr3e-4.",
+  "localization": "Original discovery only. Same gradient and penalty selection as first audit; no masks selected on either test set.",
+  "primary_budget": "2% of trained adapter parameters reset for output predictor and LoRA B-row methods. Also 0.5%,1%,5%,10%; full predictor retains its old native-coordinate budgets.",
+  "primary_test": "New confirmation and hard_transfer prompts, 128 counterfactual pairs per task per split. Existing heldout/transfer also retained. Hard transfer has unseen names/nouns plus new, longer templates.",
+  "retain": "128 test-cache windows per additional split; partition by cache-chunk parity, not original articles.",
+  "deployment": "Compare materialized parameter rollback with functional gating on identical batches. Report single predictor inference and compact adapter size.",
+  "controls": "Within-layer/stream or projection-module matched random rollback, plus unfocused global shrinking of adapter updates. Report all seeds and budgets, including failures.",
+  "counts": {
+    "confirmation": {
+      "sva": 256,
+      "ioi": 256,
+      "retain": 128
+    },
+    "hard_transfer": {
+      "sva": 256,
+      "ioi": 256,
+      "retain": 128
+    }
+  },
+  "output_lr_selection": {
+    "candidates": [
+      {
+        "directory": "outputs_lr3e4",
+        "lr": 0.0003,
+        "score": 0.611386272255733,
+        "selected_step": 600
+      },
+      {
+        "directory": "outputs_lr1e3",
+        "lr": 0.001,
+        "score": 0.5819223929516935,
+        "selected_step": 500
+      }
+    ],
+    "selected": {
+      "directory": "outputs_lr1e3",
+      "lr": 0.001,
+      "score": 0.5819223929516935,
+      "selected_step": 500
+    },
+    "criterion": "Lowest eligible mean validation SVA/IOI NLL. No test scores used."
+  },
+  "hard_gate_implementation": "Exact p0/p1 selection at binary gates, with straight-through interpolation derivative; permits exact parameter-materialization parity.",
+  "secondary_compilation": "Added after first-seed output-only rollback proved weaker: fit original functional rollback into selected rows of the fully adapted predictor. Ridge fit on training inputs followed by 200 KL-distillation steps updating only those rows. Four ridge strengths and step0/50/100/150/200 selected by original-validation teacher KL. Same extra tests remain confirmation, with this secondary analysis identified as adaptive.",
+  "same_weights_edit_control": "Re-audit the original rank-8 LoRA checkpoint with output-row gating to isolate editing granularity from retraining."
+}

@@ -174,10 +174,11 @@ class LoRAWeight(nn.Module):
         self.a = nn.Parameter(torch.randn(rank,weight.shape[1],device=weight.device)*.02)
         self.b = nn.Parameter(torch.zeros(weight.shape[0],rank,device=weight.device))
         self.register_buffer('gate', torch.ones(rank,device=weight.device))
+        self.register_buffer('row_gate', torch.ones(weight.shape[0],device=weight.device))
         self.scale = 2.
 
     def forward(self, weight):
-        delta = (self.b * self.gate[None,:]) @ self.a
+        delta = (self.b * self.gate[None,:] * self.row_gate[:,None]) @ self.a
         return (weight.float() + self.scale*delta).to(weight.dtype)
 
 
@@ -203,6 +204,7 @@ class AuditModel:
         self.layout = alpha_layout(self.cfg['num_hidden_layers'],self.cfg['num_attention_heads'])
         self.baseline_predictor = None
         self.loras = []
+        self.lora_unit = 'rank'
         self.last_positions = None
         self.output_hook = self.base.lm_head.register_forward_pre_hook(self._select_positions)
 
@@ -228,7 +230,11 @@ class AuditModel:
                     with torch.no_grad():
                         p0 = flatten_alpha(self.baseline_predictor(ids))
                         p1 = flatten_alpha(self.predictor(ids))
-                    flat = p0 + alpha_gate.view(1,1,-1)*(p1-p0)
+                    gate=alpha_gate.view(1,1,-1)
+                    blended=p0+gate*(p1-p0)
+                    selected=torch.where(gate==0,p0,torch.where(gate==1,p1,blended))
+                    # Exact hard selection, retaining interpolation gradients at endpoints.
+                    flat=selected.detach()+(blended-blended.detach())
                     routing = unflatten_alpha(flat,self.cfg['num_hidden_layers'],self.cfg['num_attention_heads'])
                 else:
                     routing = self.predictor(ids)
@@ -249,8 +255,9 @@ class AuditModel:
     def set_lora_gate(self, gate):
         offset = 0
         for _,lora in self.loras:
-            size = lora.a.shape[0]
-            lora.gate = gate[offset:offset+size]
+            size = lora.b.shape[0] if self.lora_unit=='row' else lora.a.shape[0]
+            if self.lora_unit=='row': lora.row_gate = gate[offset:offset+size]
+            else: lora.gate = gate[offset:offset+size]
             offset += size
         assert offset == len(gate)
 
