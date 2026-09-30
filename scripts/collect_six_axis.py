@@ -134,7 +134,10 @@ def plot(rows, states, output):
     fig.legend(handles=family_handles + group_handles, loc="outside lower center", ncol=4, frameon=False, fontsize=9)
     fig.suptitle("Six-axis scaling: observed endpoints\nSeparate lines for each training corpus; first-seed new runs", fontsize=13)
     for extension in ("png", "pdf", "svg"):
-        fig.savefig(output / f"six_axes.{extension}", dpi=180)
+        path = output / f"six_axes.{extension}"
+        fig.savefig(path, dpi=180)
+        if extension == "svg":
+            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 

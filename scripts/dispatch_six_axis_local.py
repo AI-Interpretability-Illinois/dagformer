@@ -77,7 +77,7 @@ def sync_report(args, root):
                    check=True, timeout=90)
     subprocess.run(["rsync", "-a", *filters, str(root) + "/", f"{args.host}:{args.remote_root}/local_snapshot/"],
                    check=True, timeout=90)
-    subprocess.run(["rsync", "-a", "--include=*/", "--include=*.json", "--include=*.yaml", "--exclude=*",
+    subprocess.run(["rsync", "-a", "--include=*/", "--include=*.json", "--include=*.yaml", "--include=*.npz", "--exclude=*",
                     str(root / "legacy") + "/", f"{args.host}:{args.remote_root}/legacy/"], check=True, timeout=90)
     if args.remote_checkpoints:
         manifest = json.loads((root / "manifest.json").read_text())
