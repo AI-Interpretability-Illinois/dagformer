@@ -1,0 +1,52 @@
+# Experiment 1 / arm global: one predictor emits every layer's routing; no local routers.
+routing_mode: "fourway"
+predictor_encoder_dim: 256
+predictor_encoder_layers: 2
+predictor_encoder_heads: 4
+predictor_max_seq_len: 4096
+fourway_hidden: 512
+predictor_causal: true
+correction_hidden: 128
+hidden_size: 512
+num_hidden_layers: 6
+num_attention_heads: 8
+intermediate_size: 2048
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+replace_rmsnorm: true
+use_torch_compile: false
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b"
+seq_len: 1024
+seed: 42
+
+# 8 x 16 x 4 GPUs x 1024 = 524,288 tokens/step; 3000 steps = 1.57B tokens (same budget as the shared 75M models)
+micro_batch_size: 8
+gradient_accumulation_steps: 16
+total_steps: 3000
+lr: 5e-4
+predictor_lr: 3e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+# eval_cache.pt is copied into save_dir by the launcher (split off the corpus tail)
+eval_skip: 0
+eval_size: 200
+eval_every: 250
+
+wandb_project: "dagformer"
+log_every: 10
+save_every: 1000
+keep_last_n: 1
+wandb_run_name: locality-75m-global
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/global"

@@ -1073,6 +1073,80 @@ class FourWayPredictor(nn.Module):
         return list(self.parameters())
 
 
+class FourWayPerLayerPredictor(nn.Module):
+    """Router-locality control: one INDEPENDENT encoder per routed layer.
+
+    Same inputs (token ids), same output layout and identity init as
+    ``FourWayPredictor``, but layer l's routing comes from its own encoder +
+    trunk + head with no shared computation (only the token / position
+    embedding tables are shared, they are lookups). Separates "the router sees
+    the input before the backbone runs" from "one module plans all layers
+    jointly": FourWayPredictor has both, this has only the first, the
+    correction MLPs (local routers reading hidden states) have neither.
+    """
+
+    def __init__(
+        self,
+        vocab_size: int = 100352,
+        encoder_dim: int = 256,
+        encoder_layers: int = 2,
+        encoder_heads: int = 4,
+        max_seq_len: int = 4096,
+        num_layers: int = 12,
+        num_heads: int = 16,
+        hidden_dim: int = 512,
+        causal: bool = True,
+        dropout: float = 0.0,
+    ):
+        super().__init__()
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+        self.causal = causal
+        self.embed = nn.Embedding(vocab_size, encoder_dim)
+        self.pos_embed = nn.Embedding(max_seq_len, encoder_dim)
+        self.encoders = nn.ModuleList()
+        self.trunks = nn.ModuleList()
+        self.layer_heads = nn.ModuleList()
+        self.layer_biases = nn.ParameterList()
+        for l in range(1, num_layers):
+            enc_layer = nn.TransformerEncoderLayer(
+                d_model=encoder_dim, nhead=encoder_heads, dim_feedforward=encoder_dim * 4,
+                dropout=dropout, activation="gelu", batch_first=True, norm_first=True)
+            self.encoders.append(nn.TransformerEncoder(enc_layer, num_layers=encoder_layers))
+            self.trunks.append(nn.Sequential(nn.LayerNorm(encoder_dim), nn.Linear(encoder_dim, hidden_dim),
+                                             nn.GELU(), nn.Dropout(dropout)))
+            n_src = l + 1
+            out_dim = (3 * num_heads + 1) * n_src
+            head = nn.Linear(hidden_dim, out_dim, bias=False)
+            nn.init.zeros_(head.weight)
+            self.layer_heads.append(head)
+            bias = torch.zeros(out_dim)
+            for stream in range(3 * num_heads + 1):
+                bias[stream * n_src + (n_src - 1)] = 1.0
+            self.layer_biases.append(nn.Parameter(bias))
+
+    def forward(self, input_ids: torch.Tensor) -> dict[str, list[torch.Tensor]]:
+        B, T = input_ids.shape
+        H = self.num_heads
+        x0 = self.embed(input_ids) + self.pos_embed(torch.arange(T, device=input_ids.device))
+        mask = torch.triu(torch.ones(T, T, device=x0.device), diagonal=1).bool() if self.causal else None
+        result: dict[str, list[torch.Tensor]] = {'q': [], 'k': [], 'v': [], 'r': []}
+        for l in range(1, self.num_layers):
+            i = l - 1
+            x = self.encoders[i](x0, mask=mask) if mask is not None else self.encoders[i](x0)
+            raw = self.layer_heads[i](self.trunks[i](x)) + self.layer_biases[i]
+            n_src = l + 1
+            sz = H * n_src
+            result['q'].append(raw[:, :, :sz].view(B, T, H, n_src))
+            result['k'].append(raw[:, :, sz:2 * sz].view(B, T, H, n_src))
+            result['v'].append(raw[:, :, 2 * sz:3 * sz].view(B, T, H, n_src))
+            result['r'].append(raw[:, :, 3 * sz:])
+        return result
+
+    def get_trainable_parameters(self) -> list[nn.Parameter]:
+        return list(self.parameters())
+
+
 class FourWayStaticPredictor(nn.Module):
     """Static FourWay routing shared across all inputs and token positions.
 

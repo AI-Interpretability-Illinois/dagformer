@@ -1,0 +1,2 @@
+configs/prune/150m_dagformer_math.yaml target_sparsity=0.33 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_dagformer_math_mod_s33 wandb_run_name=prune-150m_dagformer_math_mod_s33
+configs/prune/150m_dagformer_math.yaml target_sparsity=0.5 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_dagformer_math_mod_s50 wandb_run_name=prune-150m_dagformer_math_mod_s50

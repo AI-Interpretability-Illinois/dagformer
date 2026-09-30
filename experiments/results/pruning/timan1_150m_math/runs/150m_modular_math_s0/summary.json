@@ -1,0 +1,77 @@
+{
+  "model": "fourway",
+  "model_dir": "/srv/local/xy51/prune/models/150m-modular",
+  "base_params_total": 152593152,
+  "base_params_remaining": 152593152,
+  "extra_params": 29691764,
+  "block_params_total": 75522048,
+  "block_params_remaining": 75522048,
+  "unit_counts": {
+    "head": [
+      0,
+      96
+    ],
+    "neuron": [
+      0,
+      24576
+    ]
+  },
+  "final_domain_nll": 1.754585921217542,
+  "final_general_nll": 4.400290955959911,
+  "initial_domain_nll": 3.438274740079127,
+  "steps": 2000,
+  "tokens": 65536000,
+  "config": {
+    "model_dir": "/srv/local/xy51/prune/models/150m-modular",
+    "model_config": "",
+    "checkpoint": "",
+    "train_index_path": "/srv/local/xy51/prune/data/mathinstruct/train",
+    "eval_cache_path": "/srv/local/xy51/prune/data/mathinstruct/eval_cache.pt",
+    "general_eval_cache_path": "/srv/local/xy51/prune/data/wikitext2/eval_cache.pt",
+    "seq_len": 1024,
+    "seed": 42,
+    "data_num_workers": 2,
+    "data_block_size": 256,
+    "micro_batch_size": 4,
+    "gradient_accumulation_steps": 8,
+    "total_steps": 2000,
+    "lr": 0.0001,
+    "predictor_lr": 0.0001,
+    "beta1": 0.9,
+    "beta2": 0.95,
+    "weight_decay": 0.1,
+    "warmup_steps": 100,
+    "max_grad_norm": 1.0,
+    "lr_schedule": "linear",
+    "lr_decay_steps": 0,
+    "freeze_predictor": false,
+    "freeze_base": false,
+    "label_smoothing": 0.0,
+    "prune_units": [
+      "head",
+      "neuron"
+    ],
+    "target_sparsity": 0.0,
+    "target_sparsity_by_type": {},
+    "initial_sparsity": 0.0,
+    "prune_start_step": 200,
+    "prune_end_step": 1400,
+    "prune_every": 100,
+    "importance": "taylor",
+    "min_alive_per_layer": {
+      "head": 1
+    },
+    "eval_after_prune": true,
+    "routing_sparsity_lambda": 0.0,
+    "routing_sparsity_kind": "l1",
+    "routing_sparsity_hyper_only": false,
+    "eval_every": 200,
+    "eval_max_batches": 0,
+    "log_every": 10,
+    "wandb_project": "",
+    "wandb_run_name": "prune-150m-modular-math-s0",
+    "save_dir": "/srv/local/xy51/prune/checkpoints/150m_modular_math_s0",
+    "save_every": 500,
+    "resume_from": ""
+  }
+}

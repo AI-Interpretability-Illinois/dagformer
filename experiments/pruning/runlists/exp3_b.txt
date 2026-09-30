@@ -1,0 +1,6 @@
+configs/prune/150m_muddformer_math.yaml target_sparsity=0.3 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_muddformer_math_s30 wandb_run_name=prune-150m_muddformer_math_s30
+configs/prune/150m_muddformer_math.yaml target_sparsity=0.7 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_muddformer_math_s70 wandb_run_name=prune-150m_muddformer_math_s70
+configs/prune/150m_dagformerst_math.yaml target_sparsity=0.3 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_dagformerst_math_s30 wandb_run_name=prune-150m_dagformerst_math_s30
+configs/prune/150m_dagformerst_math.yaml target_sparsity=0.7 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_dagformerst_math_s70 wandb_run_name=prune-150m_dagformerst_math_s70
+configs/prune/150m_baselinest_math.yaml target_sparsity=0.3 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_baselinest_math_s30 wandb_run_name=prune-150m_baselinest_math_s30
+configs/prune/150m_baselinest_math.yaml target_sparsity=0.7 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_baselinest_math_s70 wandb_run_name=prune-150m_baselinest_math_s70

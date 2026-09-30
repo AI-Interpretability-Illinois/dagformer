@@ -1,0 +1,47 @@
+# Manifest of pretraining runs for the scaling analysis (scripts/scaling_collect.py reads
+# the local entries on each machine, scripts/scaling_fit.py merges the collected JSONs).
+# family: dense | corrected (fourway_corrected) | modular (fourway_modular) | global (fourway,
+#         predictor only) | local (corrections only) | per_layer | modular_sparse
+# corpus: which Dolma-v1.7 tokenization the run trained on; training-curve evals are only
+#         comparable within a corpus, the common re-evaluation (common_eval_*.json) is not.
+# tokens_per_step = micro x accum x gpus x seq_len.
+runs:
+  # ---- Delta, 21B-token corpus (300M / 1B chains), 524,288 tokens/step ----
+  - {name: 300m_fourway_modular,   machine: delta, family: modular,   corpus: delta21b, size: 300m,
+     config: configs/pretrain_300m/300m_fourway_modular_mb4.yaml,   save_dir: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular,   tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: 300m_fourway_corrected, machine: delta, family: corrected, corpus: delta21b, size: 300m,
+     config: configs/pretrain_300m/300m_fourway_corrected_mb4.yaml, save_dir: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected, tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: 300m_dense,             machine: delta, family: dense,     corpus: delta21b, size: 300m,
+     config: configs/pretrain_300m/300m_dense_mb4.yaml,             save_dir: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense,             tokens_per_step: 524288, eval_col: eval/nll}
+  - {name: 1b_dense_5b,            machine: delta, family: dense,     corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_dense_5b_mb2.yaml,              save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b,               tokens_per_step: 524288, eval_col: eval/nll}
+  - {name: 1b_fourway_corrected_5b, machine: delta, family: corrected, corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml,  save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b,   tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: 1b_dense_10b,            machine: delta, family: dense,     corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_dense_10b_mb2.yaml,             save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b,              curve_prefix: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b,             tokens_per_step: 524288, eval_col: eval/nll, note: "continued from the 5B checkpoint, LR re-warmed"}
+  - {name: 1b_fourway_corrected_10b, machine: delta, family: corrected, corpus: delta21b, size: 1b,
+     config: configs/pretrain_1b/1b_fourway_corrected_10b_mb2.yaml, save_dir: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b,  curve_prefix: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b, tokens_per_step: 524288, eval_col: eval/nll_soft, note: "continued from the 5B checkpoint, LR re-warmed"}
+  # ---- Delta, 1.7B-token slice (75M router-locality arms), 524,288 tokens/step ----
+  - {name: loc75m_dense,     machine: delta, family: dense,          corpus: delta1p7b, size: 75m, config: configs/locality/75m_dense.yaml,     save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/dense,     tokens_per_step: 524288, eval_col: eval/nll}
+  - {name: loc75m_both,      machine: delta, family: corrected,      corpus: delta1p7b, size: 75m, config: configs/locality/75m_both.yaml,      save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/both,      tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: loc75m_modular,   machine: delta, family: modular,        corpus: delta1p7b, size: 75m, config: configs/locality/75m_modular.yaml,   save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/modular,   tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: loc75m_global,    machine: delta, family: global,         corpus: delta1p7b, size: 75m, config: configs/locality/75m_global.yaml,    save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/global,    tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: loc75m_local,     machine: delta, family: local,          corpus: delta1p7b, size: 75m, config: configs/locality/75m_local.yaml,     save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/local,     tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: loc75m_per_layer, machine: delta, family: per_layer,      corpus: delta1p7b, size: 75m, config: configs/locality/75m_per_layer.yaml, save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/per_layer, tokens_per_step: 524288, eval_col: eval/nll_soft}
+  - {name: loc75m_modular_sparse, machine: delta, family: modular_sparse, corpus: delta1p7b, size: 75m, config: configs/locality/75m_modular_sparse.yaml, save_dir: /work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/modular_sparse, tokens_per_step: 524288, eval_col: eval/nll_soft}
+  # ---- Delta, shared models (original 12B Dolma slice), Chinchilla budgets ----
+  - {name: shared_75m_baseline,   machine: delta, family: dense,     corpus: shared12b, size: 75m,  config: /work/hdd/bfqt/shared/dagformer-models/75m-baseline/config.yaml,   save_dir: /work/hdd/bfqt/shared/dagformer-models/75m-baseline,   tokens_per_step: 524288, eval_col: null, final_only: true}
+  - {name: shared_75m_dagformer,  machine: delta, family: corrected, corpus: shared12b, size: 75m,  config: /work/hdd/bfqt/shared/dagformer-models/75m-dagformer/config.yaml,  save_dir: /work/hdd/bfqt/shared/dagformer-models/75m-dagformer,  tokens_per_step: 524288, eval_col: null, final_only: true}
+  - {name: shared_150m_baseline,  machine: delta, family: dense,     corpus: shared12b, size: 150m, config: /work/hdd/bfqt/shared/dagformer-models/150m-baseline/config.yaml,  save_dir: /work/hdd/bfqt/shared/dagformer-models/150m-baseline,  tokens_per_step: 524288, eval_col: null, final_only: true}
+  - {name: shared_150m_dagformer, machine: delta, family: corrected, corpus: shared12b, size: 150m, config: /work/hdd/bfqt/shared/dagformer-models/150m-dagformer/config.yaml, save_dir: /work/hdd/bfqt/shared/dagformer-models/150m-dagformer, tokens_per_step: 524288, eval_col: null, final_only: true}
+  - {name: shared_300m_baseline,  machine: delta, family: dense,     corpus: shared12b, size: 300m, config: /work/hdd/bfqt/shared/dagformer-models/300m-baseline/config.yaml,  save_dir: /work/hdd/bfqt/shared/dagformer-models/300m-baseline,  tokens_per_step: 524288, eval_col: null, final_only: true}
+  - {name: shared_300m_dagformer, machine: delta, family: corrected, corpus: shared12b, size: 300m, config: /work/hdd/bfqt/shared/dagformer-models/300m-dagformer/config.yaml, save_dir: /work/hdd/bfqt/shared/dagformer-models/300m-dagformer, tokens_per_step: 524288, eval_col: null, final_only: true, steps_override: 9000, note: "stopped at 9000 of 12000 steps"}
+  - {name: shared_600m_baseline,  machine: delta, family: dense,     corpus: shared12b, size: 600m, config: /work/hdd/bfqt/shared/dagformer-models/600m-baseline/config.yaml,  save_dir: /work/hdd/bfqt/shared/dagformer-models/600m-baseline,  tokens_per_step: 524288, eval_col: null, final_only: true}
+  # ---- timan1 / timan108, locally rebuilt 12B corpus, 528,384 tokens/step (micro 4 x accum 43 x 3 GPUs) ----
+  - {name: timan_75m_dense,      machine: timan1, family: dense,     corpus: timan12b, size: 75m,  config: configs/pretrain_75m_baseline_timan1_dolma12b.yaml,           save_dir: /srv/local/xy51/checkpoints/pretrain_75m_baseline_dolma12b,           tokens_per_step: 528384, eval_col: eval/nll}
+  - {name: timan_75m_corrected,  machine: timan1, family: corrected, corpus: timan12b, size: 75m,  config: configs/pretrain_75m_dagformer_fourway_timan1_dolma12b.yaml,  save_dir: /srv/local/xy51/checkpoints/pretrain_75m_dagformer_fourway_dolma12b,  tokens_per_step: 528384, eval_col: eval/nll_soft}
+  - {name: timan_75m_modular,    machine: timan1, family: modular,   corpus: timan12b, size: 75m,  config: configs/pretrain_75m_dagformer_modular_timan1_dolma12b.yaml,  save_dir: /srv/local/xy51/checkpoints/pretrain_75m_dagformer_modular_dolma12b,  tokens_per_step: 528384, eval_col: eval/nll_soft}
+  - {name: timan_150m_dense,     machine: timan1, family: dense,     corpus: timan12b, size: 150m, config: configs/pretrain_150m_baseline_timan1_dolma12b.yaml,          save_dir: /srv/local/xy51/checkpoints/pretrain_150m_baseline_dolma12b,          tokens_per_step: 528384, eval_col: eval/nll}
+  - {name: timan_150m_corrected, machine: timan1, family: corrected, corpus: timan12b, size: 150m, config: configs/pretrain_150m_dagformer_fourway_timan1_dolma12b.yaml, save_dir: /srv/local/xy51/checkpoints/pretrain_150m_dagformer_fourway_dolma12b, tokens_per_step: 528384, eval_col: eval/nll_soft}
+  - {name: timan_150m_modular,   machine: timan1, family: modular,   corpus: timan12b, size: 150m, config: configs/pretrain_150m_dagformer_modular_timan1_dolma12b.yaml, save_dir: /srv/local/xy51/checkpoints/pretrain_150m_dagformer_modular_dolma12b, tokens_per_step: 528384, eval_col: eval/nll_soft}
+  - {name: timan_300m_modular,   machine: timan108, family: modular, corpus: timan12b, size: 300m, config: configs/pretrain_300m_dagformer_modular_timan108_dolma12b.yaml, save_dir: /srv/local/xy51/checkpoints/pretrain_300m_dagformer_modular_dolma12b, tokens_per_step: 524288, eval_col: eval/nll_soft}

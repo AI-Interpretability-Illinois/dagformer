@@ -1,0 +1,23 @@
+# gpua046: remaining 75M locality arms -> 1B dense baseline (5B tokens) -> the 300M-selected routed 1B (5B tokens).
+# The two routed items wait for experiments/pretrain_1b/CHOSEN (written by compare_300m.sh on gpua047); the loser is skipped.
+config=configs/locality/75m_modular.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/locality/75m_global.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/locality/75m_local.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/locality/75m_both.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/locality/75m_per_layer.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/locality/75m_dense.yaml script=scripts/pretrain_baseline.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/pretrain_1b/1b_dense_5b_mb2.yaml script=scripts/pretrain_baseline.py wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_dense_5b_mb1.yaml
+config=configs/pretrain_1b/1b_fourway_modular_5b_mb2.yaml wait=experiments/pretrain_1b/CHOSEN skipif=experiments/pretrain_1b/CHOSEN_NOT_fourway_modular eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_modular_5b_mb1.yaml
+config=configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml wait=experiments/pretrain_1b/CHOSEN skipif=experiments/pretrain_1b/CHOSEN_NOT_fourway_corrected eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_1b/1b_fourway_corrected_5b_mb1.yaml
+# Scaling analysis after the last pretraining item: common re-evaluation of every finished Delta run on the
+# shared caches, then collect + fit (experiments/scaling/). Waits for the 300M dense baseline on gpua047.
+task=bash scripts/scaling_common_eval.sh delta done=experiments/scaling/COMMON_EVAL_DELTA_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/DONE
+task=python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/scaling/FIT_DONE
+# 10B-token continuation of the routed 1B (after the 5B pair's scaling tasks): seed the 10B dir with the 5B checkpoint, train, re-run the scaling tasks.
+task=mkdir -p /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b && cp /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/checkpoint_step9540*.pt /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/ done=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/SEEDED wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/DONE
+config=configs/pretrain_1b/1b_fourway_corrected_10b_mb2.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b/SEEDED eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt
+task=bash scripts/scaling_common_eval.sh delta done=experiments/scaling/COMMON_EVAL_DELTA_10B_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b/DONE
+task=python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/scaling/FIT_10B_DONE
+# Fallback benchmark pass over the instruction-tuned 300M exports (the SFT fillers train them on idle GPUs; the
+# coordinator session may run this earlier on gpua047). Waits for the last of the six 300M SFT tasks.
+task=bash scripts/sft/eval_sft_exports.sh done=experiments/sft/EVAL_300M_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_fourway_modular_alpaca_dolly/DONE

@@ -8,7 +8,8 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.eval_lm_harness import build_base_model, load_fourway
 from src.model.olmo_graph import FourWayDAGFormer
-from src.model.predictor import FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor
+from src.model.predictor import (FourWayPredictor, FourWayPerLayerPredictor,
+                                 FourWayPositionalPredictor, FourWayStaticPredictor)
 
 
 CFG = dict(hidden_size=16, num_hidden_layers=2, num_attention_heads=2,
@@ -18,15 +19,16 @@ CFG = dict(hidden_size=16, num_hidden_layers=2, num_attention_heads=2,
            predictor_encoder_layers=1, predictor_max_seq_len=32, fourway_hidden=8)
 
 
-@pytest.mark.parametrize("variant", ["encoder", "static", "pos_table"])
+@pytest.mark.parametrize("variant", ["encoder", "static", "pos_table", "per_layer"])
 def test_checkpoint_roundtrip_preserves_variant_routing_and_logits(tmp_path, variant):
     torch.manual_seed(17)
     cfg = {**CFG, "fourway_predictor_variant": variant}
     base = build_base_model(cfg, "cpu")
     model = FourWayDAGFormer(base, num_layers=2, num_heads=2,
                             use_local_correction=True, correction_hidden=8).eval()
-    if variant == "encoder":
-        predictor = FourWayPredictor(vocab_size=32, encoder_dim=8, encoder_layers=1,
+    if variant in ("encoder", "per_layer"):
+        predictor_class = FourWayPerLayerPredictor if variant == "per_layer" else FourWayPredictor
+        predictor = predictor_class(vocab_size=32, encoder_dim=8, encoder_layers=1,
                                      encoder_heads=2, max_seq_len=32, num_layers=2,
                                      num_heads=2, hidden_dim=8)
     elif variant == "static":

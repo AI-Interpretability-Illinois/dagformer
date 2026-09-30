@@ -29,6 +29,7 @@ import torch
 import torch.nn.functional as F
 import yaml
 from transformers import AutoTokenizer, Olmo2Config, Olmo2ForCausalLM
+from transformers.modeling_outputs import CausalLMOutputWithPast
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -104,7 +105,7 @@ def load_dense(ckpt_path: str, cfg: dict, device):
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     if "model_state_path" in ckpt:
         side = ckpt["model_state_path"]
-        if not Path(side).is_absolute():
+        if not Path(side).is_absolute() or not Path(side).exists():
             cand = Path(ckpt_path).parent / Path(side).name
             if cand.exists():
                 side = str(cand)
@@ -155,8 +156,13 @@ def build_fourway_predictor_from_config(cfg: dict, device):
         predictor = FourWayStaticPredictor(**common)
     elif variant == "pos_table":
         predictor = FourWayPositionalPredictor(max_seq_len=cfg.get("seq_len", 1024), **common)
-    elif variant == "encoder":
-        predictor = FourWayPredictor(
+    elif variant in ("encoder", "per_layer"):
+        if variant == "per_layer":
+            from src.model.predictor import FourWayPerLayerPredictor
+            predictor_class = FourWayPerLayerPredictor
+        else:
+            predictor_class = FourWayPredictor
+        predictor = predictor_class(
             vocab_size=cfg["vocab_size"],
             encoder_dim=cfg.get("predictor_encoder_dim", 256),
             encoder_layers=cfg.get("predictor_encoder_layers", 2),
@@ -179,6 +185,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         replace_olmo_rmsnorm(base)
         base = base.to(device=device, dtype=torch.bfloat16)
 
+    if str(cfg.get("routing_mode", "")).startswith("fourway_modular"):
+        from src.model.modular_routing import build_modular_pair
+        fourway_model, fourway_predictor = build_modular_pair(cfg, base, device)
+        return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor, cfg)
+
     fourway_model = FourWayDAGFormer(
         model=base,
         num_layers=cfg["num_hidden_layers"],
@@ -191,6 +202,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
     ).to(device=device)
     fourway_predictor = build_fourway_predictor_from_config(cfg, device)
 
+    return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor, cfg)
+
+
+def _load_fourway_state(ckpt_path: str, base, fourway_model, fourway_predictor, cfg):
+    """Load predictor / base / routing state into an already-built pair."""
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     # Predictor
     ps = strip_prefixes(ckpt["predictor_state_dict"])
@@ -201,7 +217,7 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
     state = None
     if "model_state_path" in ckpt:
         side = ckpt["model_state_path"]
-        if not Path(side).is_absolute():
+        if not Path(side).is_absolute() or not Path(side).exists():
             cand = Path(ckpt_path).parent / Path(side).name
             if cand.exists():
                 side = str(cand)
@@ -380,8 +396,12 @@ class FourWayLMWrapper(torch.nn.Module):
     def forward(self, input_ids, **kwargs):
         routing = self.fourway_predictor(input_ids)
         logits = self.fourway_model(input_ids, routing)
-        # Match HF interface: return object with .logits
-        return type("Out", (), {"logits": logits})()
+        # Match HF interface: return object with .logits. Use a real output
+        # object, NOT `type("Out", (), {"logits": logits})()`: a class created
+        # per call keeps the logits alive in a reference cycle until the cyclic
+        # GC runs, so a full eval leaked ~1 batch of logits per step and OOM'd a
+        # 48 GB GPU after ~7 batches (2026-09-25).
+        return CausalLMOutputWithPast(logits=logits)
 
 
 def make_lm(model, tokenizer, batch_size: int = 8, max_length: int = 1024):

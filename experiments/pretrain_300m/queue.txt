@@ -1,0 +1,6 @@
+# gpua047: 300M fourway_modular -> fourway_corrected -> compare (report only; the 1B architecture is pinned to fourway_corrected) -> 300M dense baseline.
+config=configs/locality/75m_modular_sparse.yaml eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_1p7b/eval_cache.pt
+config=configs/pretrain_300m/300m_fourway_modular_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_modular_mb2.yaml
+config=configs/pretrain_300m/300m_fourway_corrected_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_corrected_mb2.yaml
+task=bash scripts/compare_300m.sh done=experiments/pretrain_300m/COMPARE_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/DONE
+config=configs/pretrain_300m/300m_dense_mb4.yaml script=scripts/pretrain_baseline.py wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_dense_mb2.yaml

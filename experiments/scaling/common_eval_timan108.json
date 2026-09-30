@@ -1,0 +1,13 @@
+{
+ "timan_300m_modular": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_300m_dagformer_modular_dolma12b/checkpoint_step12000.pt",
+  "step": 12000,
+  "family": "modular",
+  "size": "300m",
+  "corpus": "timan12b",
+  "dolma21b": 3.7043122482299804,
+  "wikitext2": 3.6574535014781544,
+  "mathinstruct": 3.051648678035911,
+  "gsm8k": 3.08996167137292
+ }
+}

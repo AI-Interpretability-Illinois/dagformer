@@ -1,0 +1,3 @@
+configs/prune/150m_baseline_math.yaml target_sparsity=0.3 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_baseline_math_s30 wandb_run_name=prune-150m_baseline_math_s30
+configs/prune/150m_baseline_math.yaml target_sparsity=0.5 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_baseline_math_s50 wandb_run_name=prune-150m_baseline_math_s50
+configs/prune/150m_baseline_math.yaml target_sparsity=0.7 save_dir=/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/150m_baseline_math_s70 wandb_run_name=prune-150m_baseline_math_s70

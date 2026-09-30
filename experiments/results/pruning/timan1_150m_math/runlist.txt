@@ -1,0 +1,20 @@
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_s50 wandb_run_name=prune-150m-modular-math-s50
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s50 wandb_run_name=prune-150m-fourway-math-s50
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_s50 wandb_run_name=prune-150m-dense-math-s50
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.5 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_mod_s50 wandb_run_name=prune-150m-modular-math-mod_s50
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.5 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_mod_s50 wandb_run_name=prune-150m-fourway-math-mod_s50
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.5 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_mod_s50 wandb_run_name=prune-150m-dense-math-mod_s50
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.5 prune_units=[attn,mlp] min_alive_per_layer={} importance=routing_column save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_mod_s50_rc wandb_run_name=prune-150m-modular-math-mod_s50_rc
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.0 save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_s0 wandb_run_name=prune-150m-modular-math-s0
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.0 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s0 wandb_run_name=prune-150m-fourway-math-s0
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.0 save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_s0 wandb_run_name=prune-150m-dense-math-s0
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_s70 wandb_run_name=prune-150m-modular-math-s70
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s70 wandb_run_name=prune-150m-fourway-math-s70
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_s70 wandb_run_name=prune-150m-dense-math-s70
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.33 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_mod_s33 wandb_run_name=prune-150m-modular-math-mod_s33
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.33 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_mod_s33 wandb_run_name=prune-150m-fourway-math-mod_s33
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.33 prune_units=[attn,mlp] min_alive_per_layer={} save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_mod_s33 wandb_run_name=prune-150m-dense-math-mod_s33
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.33 prune_units=[attn,mlp] min_alive_per_layer={} importance=routing_column save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_mod_s33_rc wandb_run_name=prune-150m-modular-math-mod_s33_rc
+configs/prune/150m_modular_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_modular_math_s30 wandb_run_name=prune-150m-modular-math-s30
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s30 wandb_run_name=prune-150m-fourway-math-s30
+configs/prune/150m_dense_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_dense_math_s30 wandb_run_name=prune-150m-dense-math-s30

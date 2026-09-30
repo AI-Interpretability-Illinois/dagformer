@@ -43,8 +43,13 @@ from src.model.olmo_graph import (
     DAGFormerOLMo, DynamicDenseHeadFormer, FourWayDAGFormer,
     LayerDWAGateFormer, create_all_ones_A,
 )
+from src.model.modular_routing import (
+    build_modular_pair, column_group_penalty, edge_sparsity_penalty,
+    edge_sparsity_stats, source_column_mass, threshold_routing,
+)
 from src.model.predictor import (
     ContextEmbedPredictor, FourWayAttentionBottleneckPredictor,
+    FourWayPerLayerPredictor,
     FourWayPredictor, FourWayPositionalPredictor, FourWayStaticPredictor,
     MiniEncoderPredictor,
     PerTokenSeq2MatrixPredictor, SeqToMatrixPredictor, SelfEmbedPredictor,
@@ -164,6 +169,11 @@ class DAGFormerPretrainConfig:
     max_grad_norm: float = 1.0
     lr_schedule: str = "linear"
     lr_decay_steps: int = 0              # steps over which LR decays to 0; 0 => use total_steps
+    # Continued pretraining: linearly re-warm the scheduled LR from 0 over lr_rewarm_steps steps
+    # starting at lr_rewarm_start (the resumed global step), e.g. when extending a finished run
+    # whose LR had decayed to 0. 0 disables.
+    lr_rewarm_start: int = 0
+    lr_rewarm_steps: int = 0
 
     # Eval
     eval_skip: int = 1_000_000
@@ -192,7 +202,7 @@ class DAGFormerPretrainConfig:
     use_torch_compile: bool = False      # torch.compile the fourway forward for speed
     use_triton_kernel: bool = False      # use fused Triton kernel for routing+proj
     predictor_causal: bool = True        # causal mask in FourWayPredictor encoder
-    fourway_predictor_variant: str = "encoder"  # "encoder", "static", or "attn_bottleneck" (single memory read over dense scout states)
+    fourway_predictor_variant: str = "encoder"  # "encoder", "per_layer" (independent encoder per routed layer), "static", or "attn_bottleneck"
     use_v_norm: bool = False             # add post-mix RMSNorm on V (symmetric with Q/K norm)
     freeze_predictor: bool = False       # freeze FourWayPredictor at identity init (local-only experiment)
     predictor_dropout: float = 0.0       # classical nn.Dropout inside FourWayPredictor encoder + trunk (regularizes input→α mapping)
@@ -221,6 +231,15 @@ class DAGFormerPretrainConfig:
     routing_delayed_start: int = 0       # don't use routing for first N steps (pure dense)
     routing_normalize: str = "none"      # "none", "softmax", "sinkhorn", "row_col" — normalize routing weights
     routing_sinkhorn_iters: int = 20     # Sinkhorn-Knopp iterations for sinkhorn normalize
+    routing_column_group_lambda: float = 0.0  # fourway_modular: group-lasso on source columns (module switch-off)
+    # fourway_modular: sparsity regularisation on the connection matrix itself
+    routing_sparsity_lambda: float = 0.0        # coefficient (0 = off)
+    routing_sparsity_kind: str = "l1"           # l1 | sqrt (edge dropped for all tokens) | column (module switch-off)
+    routing_sparsity_streams: str = "q,k,v,r,m,o"  # which reads are penalised
+    routing_sparsity_hyper_only: bool = False   # leave the sequential edges of the vanilla transformer free
+    routing_sparsity_start_frac: float = 0.0    # fraction of training before the penalty starts
+    routing_sparsity_warmup_frac: float = 0.0   # ... and reaches full strength (linear ramp)
+    routing_sparsity_eval_eps: float = 0.0      # >0: also eval with |alpha|<eps hard-zeroed (eval/nll_sparsified)
 
     # Checkpointing
     save_every: int = 2000
@@ -604,7 +623,7 @@ def predict_A(
 
 # ─── Schedules ───────────────────────────────────────────────────────────────
 
-def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+def _get_lr_base(step: int, config: DAGFormerPretrainConfig) -> float:
     """Compute learning rate with linear warmup + decay."""
     if step < config.warmup_steps:
         return config.lr * step / max(1, config.warmup_steps)
@@ -619,7 +638,7 @@ def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
         return config.lr * 0.5 * (1.0 + math.cos(math.pi * progress))
 
 
-def get_predictor_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+def _get_predictor_lr_base(step: int, config: DAGFormerPretrainConfig) -> float:
     """Compute predictor learning rate (same schedule shape, different base)."""
     if step < config.warmup_steps:
         return config.predictor_lr * step / max(1, config.warmup_steps)
@@ -662,6 +681,21 @@ def _atomic_torch_save(obj, path: str, **kwargs) -> None:
     os.replace(tmp, path)
 
 
+def _strip_compile_prefix(state: dict) -> dict:
+    """Drop the ``_orig_mod.`` prefixes torch.compile'd modules put on state-dict keys.
+
+    Makes checkpoints independent of whether the run used ``use_torch_compile``
+    (a compiled run can be resumed eagerly and vice versa), and lets the routing
+    filter below recognise the ``olmo.`` base-model keys under a compiled wrapper.
+    """
+    return {k.replace("_orig_mod.", ""): v for k, v in state.items()}
+
+
+def _uncompiled(module: nn.Module) -> nn.Module:
+    """Return the module underneath a ``torch.compile`` wrapper (or the module itself)."""
+    return getattr(module, "_orig_mod", module)
+
+
 def save_checkpoint(
     save_dir: str,
     step: int,
@@ -685,10 +719,13 @@ def save_checkpoint(
         "model_state_path": model_path,
     }
     if predictor is not None:
-        state["predictor_state_dict"] = predictor.state_dict()
+        state["predictor_state_dict"] = _strip_compile_prefix(predictor.state_dict())
     if routing_model is not None:
-        # Save only routing params (not base model, which is saved separately)
-        routing_state = {k: v for k, v in routing_model.state_dict().items()
+        # Save only routing params (not base model, which is saved separately).
+        # Strip the compile prefix first: under torch.compile the keys are
+        # "_orig_mod.olmo...." and the filter used to miss them, silently adding a
+        # second copy of the whole base model to every checkpoint.
+        routing_state = {k: v for k, v in _strip_compile_prefix(routing_model.state_dict()).items()
                          if not k.startswith("olmo.")}
         state["routing_state_dict"] = routing_state
     _atomic_torch_save(state, path)
@@ -936,14 +973,46 @@ def main() -> None:
 
     # ─── Routing mode ───
     use_routing_mode = config.routing_mode in ("dynamic_head", "layer_dwa_gate")
-    use_fourway = config.routing_mode in ("fourway", "fourway_corrected")
+    use_modular = config.routing_mode in ("fourway_modular", "fourway_modular_corrected")
+    use_fourway = config.routing_mode in ("fourway", "fourway_corrected") or use_modular
     routing_model = None
     fourway_model = None
     fourway_predictor = None
     predictor = None
     dagformer = None
 
-    if use_fourway:
+    if use_modular:
+        # Module-granular routing (src/model/modular_routing.py): sources are
+        # attention / MLP block outputs, identity init is all-ones. The legacy
+        # FourWay routing knobs assume a one-hot identity and are not supported.
+        for knob, default in (("routing_clamp", 0.0), ("routing_top_k", 0),
+                              ("routing_temperature", 1.0), ("routing_delayed_start", 0),
+                              ("routing_normalize", "none"), ("routing_dropout", 0.0),
+                              ("routing_l2_lambda", 0.0), ("routing_l1_lambda", 0.0),
+                              ("routing_entropy_lambda", 0.0), ("alpha_share_heads", False),
+                              ("routing_noise_std", 0.0)):
+            assert getattr(config, knob) == default, (
+                f"{knob} is not supported with routing_mode={config.routing_mode}")
+        assert config.route_q and config.route_k and config.route_v and config.route_r
+        assert config.fourway_predictor_variant == "encoder", config.fourway_predictor_variant
+        fourway_model, fourway_predictor = build_modular_pair(config.to_dict(), base_model, device)
+        if config.freeze_predictor:
+            for p in fourway_predictor.parameters():
+                p.requires_grad_(False)
+            fourway_predictor.eval()
+        if is_main:
+            pred_params = sum(p.numel() for p in fourway_predictor.parameters())
+            corr_params = sum(p.numel() for p in fourway_model.get_routing_parameters())
+            print(f"Mode: {config.routing_mode} (module-granular per-token routing)")
+            print(f"  Predictor [modular encoder]: {pred_params:,} params")
+            if corr_params:
+                print(f"  Correction MLPs / v_norms: {corr_params:,} params")
+            if config.routing_column_group_lambda > 0:
+                print(f"  column group penalty: lambda={config.routing_column_group_lambda}")
+        if config.use_torch_compile:
+            fourway_model = torch.compile(fourway_model)
+            fourway_predictor = torch.compile(fourway_predictor)
+    elif use_fourway:
         use_correction = (config.routing_mode == "fourway_corrected")
         fourway_model = FourWayDAGFormer(
             model=base_model,
@@ -976,6 +1045,19 @@ def main() -> None:
                 num_layers=config.num_hidden_layers,
                 num_heads=config.num_attention_heads,
             ).to(device)
+        elif config.fourway_predictor_variant == "per_layer":
+            fourway_predictor = FourWayPerLayerPredictor(
+                vocab_size=config.vocab_size,
+                encoder_dim=config.predictor_encoder_dim,
+                encoder_layers=config.predictor_encoder_layers,
+                encoder_heads=config.predictor_encoder_heads,
+                max_seq_len=config.predictor_max_seq_len,
+                num_layers=config.num_hidden_layers,
+                num_heads=config.num_attention_heads,
+                hidden_dim=config.fourway_hidden,
+                causal=config.predictor_causal,
+                dropout=config.predictor_dropout,
+            ).to(device)
         elif config.fourway_predictor_variant == "encoder":
             fourway_predictor = FourWayPredictor(
                 vocab_size=config.vocab_size,
@@ -992,7 +1074,7 @@ def main() -> None:
         else:
             raise ValueError(
                 f"Unknown fourway_predictor_variant: {config.fourway_predictor_variant}. "
-                "Expected 'encoder', 'static', 'pos_table', or 'attn_bottleneck'."
+                "Expected 'encoder', 'per_layer', 'static', 'pos_table', or 'attn_bottleneck'."
             )
         if config.freeze_predictor:
             # Freeze external predictor at identity. Only corrections learn.
@@ -1250,9 +1332,11 @@ def main() -> None:
             print(f"Resuming from {resume_path}")
         ckpt = torch.load(resume_path, map_location=device)
 
-        # Load predictor
+        # Load predictor (prefix-agnostic: works for checkpoints written with or
+        # without torch.compile, into a compiled or eager module)
         if "predictor_state_dict" in ckpt:
-            combined_raw.predictor.load_state_dict(ckpt["predictor_state_dict"])
+            _uncompiled(combined_raw.predictor).load_state_dict(
+                _strip_compile_prefix(ckpt["predictor_state_dict"]))
 
         # Load base model — FourWay wraps OLMo under .olmo, need to load into inner model
         model_state = None
@@ -1264,15 +1348,15 @@ def main() -> None:
         if model_state is not None:
             if use_fourway:
                 # FourWay: combined_raw.base_model is FourWayDAGFormer, real OLMo at .olmo
-                combined_raw.base_model.olmo.load_state_dict(model_state)
+                _uncompiled(combined_raw.base_model).olmo.load_state_dict(model_state)
             else:
                 combined_raw.base_model.load_state_dict(model_state)
             del model_state
 
         # Load routing state (correction MLPs, v_norms — may be empty for pure fourway)
         if use_fourway and "routing_state_dict" in ckpt and len(ckpt["routing_state_dict"]) > 0:
-            m, u = combined_raw.base_model.load_state_dict(
-                ckpt["routing_state_dict"], strict=False
+            m, u = _uncompiled(combined_raw.base_model).load_state_dict(
+                _strip_compile_prefix(ckpt["routing_state_dict"]), strict=False
             )
             if is_main:
                 print(f"  Routing state loaded: {len(ckpt['routing_state_dict'])} keys "
@@ -1346,24 +1430,27 @@ def main() -> None:
         print(f"CSV logging to: {csv_path}")
 
     # Signal handler for SLURM preemption
+    # Graceful stop: the handler only raises a flag. Saving inside the handler
+    # (mid-step, while other ranks exit and torchrun tears the group down) left
+    # truncated *_model.pt.tmp files on 2026-09-27. The training loop checks the
+    # flag after each optimizer step: rank 0 writes a checkpoint, every rank
+    # passes a barrier, and all exit 0 together.
+    stop_requested = {"flag": False, "signum": 0}
+
     def save_on_signal(signum: int, frame: Any) -> None:
+        stop_requested["flag"] = True
+        stop_requested["signum"] = signum
         if is_main:
-            print(f"\nSignal {signum}, saving checkpoint...")
-            if use_fourway:
-                save_checkpoint(
-                    config.save_dir, global_step,
-                    base_model, fourway_predictor,
-                    optimizer, best_eval_nll,
-                    routing_model=fourway_model,
-                )
-            else:
-                save_checkpoint(
-                    config.save_dir, global_step,
-                    base_model, predictor,
-                    optimizer, best_eval_nll,
-                    routing_model=routing_model if use_routing_mode else None,
-                )
-        raise SystemExit(0)
+            print(f"\nSignal {signum}: will checkpoint at the end of this step and exit", flush=True)
+
+    def _save_now() -> None:
+        if use_fourway:
+            save_checkpoint(config.save_dir, global_step, base_model, fourway_predictor,
+                            optimizer, best_eval_nll, routing_model=fourway_model)
+        else:
+            save_checkpoint(config.save_dir, global_step, base_model, predictor,
+                            optimizer, best_eval_nll,
+                            routing_model=routing_model if use_routing_mode else None)
 
     signal.signal(signal.SIGUSR1, save_on_signal)
     # SLURM sends SIGTERM on scancel/timeout by default (SIGUSR1 only if the batch
@@ -1407,6 +1494,8 @@ def main() -> None:
 
     # Consecutive steps with a non-finite gradient norm (see the guard below).
     nonfinite_steps = 0
+    last_column_mass: Optional[torch.Tensor] = None  # fourway_modular column stats
+    last_edge_stats: Optional[dict] = None           # fourway_modular edge sparsity stats
 
     while global_step < config.total_steps:
         # Compute schedules
@@ -1524,6 +1613,30 @@ def main() -> None:
                                 ent = -(p * (p + 1e-8).log()).sum(dim=-1).mean()
                                 reg_loss = reg_loss - config.routing_entropy_lambda * ent
 
+                    # Modular routing: group-lasso on source columns so the
+                    # predictor can switch whole modules off (see modular_routing.py).
+                    if use_modular and config.routing_column_group_lambda > 0:
+                        reg_loss = reg_loss + config.routing_column_group_lambda * \
+                            column_group_penalty(rw, config.num_hidden_layers)
+                    if use_modular and config.routing_sparsity_lambda > 0:
+                        frac = global_step / max(config.total_steps, 1)
+                        ramp = 0.0
+                        if frac >= config.routing_sparsity_start_frac:
+                            span = max(config.routing_sparsity_warmup_frac - config.routing_sparsity_start_frac, 1e-8)
+                            ramp = min(1.0, (frac - config.routing_sparsity_start_frac) / span) \
+                                if config.routing_sparsity_warmup_frac > config.routing_sparsity_start_frac else 1.0
+                        sparsity_coeff = config.routing_sparsity_lambda * ramp
+                        if sparsity_coeff > 0:
+                            reg_loss = reg_loss + sparsity_coeff * edge_sparsity_penalty(
+                                rw, config.num_hidden_layers, kind=config.routing_sparsity_kind,
+                                streams=tuple(config.routing_sparsity_streams.split(",")),
+                                hyper_only=config.routing_sparsity_hyper_only)
+                    if use_modular and is_last_micro:
+                        with torch.no_grad():
+                            last_column_mass = source_column_mass(rw, config.num_hidden_layers)
+                            last_edge_stats = edge_sparsity_stats(rw, config.num_hidden_layers,
+                                                                  eps=config.routing_sparsity_eval_eps or 1e-2)
+
                     # Apply deterministic transforms (clamp, top_k, temperature,
                     # delayed_start, normalize). Must match eval path exactly.
                     rw = apply_deterministic_routing_transforms(rw, config, global_step)
@@ -1605,6 +1718,9 @@ def main() -> None:
                 all_params = list(combined_raw.base_model.parameters()) + \
                     list(combined_raw.predictor.parameters())
             total_norm = torch.nn.utils.clip_grad_norm_(all_params, config.max_grad_norm)
+            if os.environ.get("DDP_DEBUG") and global_step <= 10:
+                print(f"[DDP_DEBUG rank {local_rank}] step {global_step} total_norm={float(total_norm):.6f} "
+                      f"n_params_with_grad={sum(1 for p in all_params if p.grad is not None)}/{len(all_params)}", flush=True)
 
             # NaN/Inf guard. One non-finite grad element is fatal AND permanent:
             # clip_grad_norm_ turns total_norm=inf into clip_coef=0, so inf*0=NaN
@@ -1635,11 +1751,18 @@ def main() -> None:
         # DDP sync check: verify all GPUs have identical parameters
         if world_size > 1 and global_step == 10:
             param = next(base_model.parameters())
-            param_sum = param.data.sum().clone()
+            # Accumulate in float64. With bf16 params a bf16 sum + bf16 all-reduce
+            # rounds (e.g. 3 x -38.75 = -116.25 is not representable in bf16 and
+            # becomes -116.0), reporting a spurious "divergence" while every rank
+            # holds bit-identical params. Seen 2026-09-25 on a 3-GPU 75M run.
+            local_sum = param.data.detach().double().sum()
+            param_sum = local_sum.clone()
             dist.all_reduce(param_sum, op=dist.ReduceOp.SUM)
             mean_val = param_sum.item() / world_size
-            local_val = next(base_model.parameters()).data.sum().item()
+            local_val = local_sum.item()
             diff = abs(local_val - mean_val)
+            if os.environ.get("DDP_DEBUG"):
+                print(f"[DDP CHECK rank {local_rank}] local_sum={local_val:.6f} mean={mean_val:.6f}", flush=True)
             if local_rank == 0:
                 if diff < 1e-6:
                     print(f"[DDP CHECK @ step 10] PASS — params identical across {world_size} GPUs (diff={diff:.2e})")
@@ -1702,6 +1825,24 @@ def main() -> None:
                 "train/use_dagformer": 1.0 if use_dagformer else 0.0,
             }
 
+            if last_column_mass is not None:
+                cm = last_column_mass[1:]          # skip the embedding column
+                metrics["routing/column_mass_mean"] = cm.mean().item()
+                metrics["routing/column_mass_min"] = cm.min().item()
+                metrics["routing/dead_sources"] = float((cm < 1e-3).sum().item())
+                metrics["routing/column_mass_attn_mean"] = cm[0::2].mean().item()
+                metrics["routing/column_mass_mlp_mean"] = cm[1::2].mean().item()
+            if last_edge_stats is not None:
+                metrics.update(last_edge_stats)
+                metrics["schedule/routing_sparsity_lambda"] = (
+                    config.routing_sparsity_lambda * (
+                        1.0 if config.routing_sparsity_warmup_frac <= config.routing_sparsity_start_frac
+                        else min(1.0, max(0.0, (global_step / max(config.total_steps, 1)
+                                                - config.routing_sparsity_start_frac)
+                                          / max(config.routing_sparsity_warmup_frac
+                                                - config.routing_sparsity_start_frac, 1e-8))))
+                    if global_step / max(config.total_steps, 1) >= config.routing_sparsity_start_frac else 0.0)
+
             # Topology metrics from last micro-batch's A
             if last_A is not None:
                 topo = compute_topology_metrics(last_A, config.num_attention_heads)
@@ -1727,6 +1868,7 @@ def main() -> None:
             combined.eval()
             eval_nll_routing_total = 0.0
             eval_nll_baseline_total = 0.0
+            eval_nll_sparsified_total = 0.0
             n_eval = 0
 
             with torch.no_grad():
@@ -1755,6 +1897,12 @@ def main() -> None:
                             elabels.contiguous().view(-1),
                         )
                         eval_nll_routing_total += nll_r.item()
+                        if use_modular and config.routing_sparsity_eval_eps > 0:
+                            logits_s = fourway_model(eids, threshold_routing(rw_eval, config.routing_sparsity_eval_eps))
+                            eval_nll_sparsified_total += F.cross_entropy(
+                                logits_s.contiguous().view(-1, vocab_size),
+                                elabels.contiguous().view(-1),
+                            ).item()
                     elif use_routing_mode:
                         logits_r = combined_raw(eids)
                         nll_r = F.cross_entropy(
@@ -1797,6 +1945,8 @@ def main() -> None:
                 "eval/nll_hard": eval_nll_routing,  # same for routing mode
                 "eval/nll_baseline": eval_nll_baseline,
             }
+            if use_modular and config.routing_sparsity_eval_eps > 0:
+                eval_metrics["eval/nll_sparsified"] = eval_nll_sparsified_total / max(n_eval, 1)
             log_metrics(eval_metrics, global_step, wandb_run)
             if csv_logger is not None:
                 csv_logger.log(global_step, eval_metrics)
@@ -1831,6 +1981,34 @@ def main() -> None:
                     routing_model=routing_model if use_routing_mode else None,
                 )
             cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
+
+        # Graceful stop: a signal flag on any rank OR a STOP_REQUEST file in
+        # save_dir (written by the SLURM orchestrator; signals are not delivered
+        # to Python handlers under torch.compile, observed 2026-09-27). The
+        # decision is all-reduced so every rank stops in the same step.
+        stop_now = stop_requested["flag"]
+        stop_file = os.path.join(config.save_dir, "STOP_REQUEST")
+        if is_main and os.path.exists(stop_file):
+            stop_now = True
+        if world_size > 1:
+            flag_t = torch.tensor([1 if stop_now else 0], device=device)
+            dist.all_reduce(flag_t, op=dist.ReduceOp.MAX)
+            stop_now = bool(flag_t.item())
+        if stop_now:
+            if is_main:
+                _save_now()
+                try:
+                    os.remove(stop_file)
+                except OSError:
+                    pass
+                print(f"Stopped on request (signal {stop_requested['signum']} / stop file) after step "
+                      f"{global_step}; resume with the same config.", flush=True)
+            if world_size > 1:
+                dist.barrier()
+            finish_wandb(wandb_run)
+            if world_size > 1:
+                dist.destroy_process_group()
+            return
 
         global_step += 1
 
@@ -1906,6 +2084,23 @@ def main() -> None:
     if is_main:
         print("Training complete.")
 
+
+def get_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+    """Scheduled LR, linearly re-warmed from 0 over [lr_rewarm_start, lr_rewarm_start + lr_rewarm_steps)
+    when a finished run is extended (continued pretraining); identity when lr_rewarm_steps == 0."""
+    lr = _get_lr_base(step, config)
+    if config.lr_rewarm_steps > 0 and config.lr_rewarm_start <= step < config.lr_rewarm_start + config.lr_rewarm_steps:
+        lr *= (step - config.lr_rewarm_start + 1) / config.lr_rewarm_steps
+    return lr
+
+
+def get_predictor_lr(step: int, config: DAGFormerPretrainConfig) -> float:
+    """Scheduled LR, linearly re-warmed from 0 over [lr_rewarm_start, lr_rewarm_start + lr_rewarm_steps)
+    when a finished run is extended (continued pretraining); identity when lr_rewarm_steps == 0."""
+    lr = _get_predictor_lr_base(step, config)
+    if config.lr_rewarm_steps > 0 and config.lr_rewarm_start <= step < config.lr_rewarm_start + config.lr_rewarm_steps:
+        lr *= (step - config.lr_rewarm_start + 1) / config.lr_rewarm_steps
+    return lr
 
 if __name__ == "__main__":
     main()
