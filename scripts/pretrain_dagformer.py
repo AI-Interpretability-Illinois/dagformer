@@ -244,6 +244,7 @@ class DAGFormerPretrainConfig:
     # Checkpointing
     save_every: int = 2000
     save_dir: str = "checkpoints/pretrain_300m_dagformer"
+    metadata_dir: str = ""  # small logs/eval caches; defaults to save_dir
     resume_from: str = ""
     resume_require_optimizer: bool = False  # fail instead of resetting momentum on resume
     resume_skip_samples: int = -1  # per-rank offset override for a frozen continuation corpus
@@ -704,6 +705,7 @@ def save_checkpoint(
     optimizer: torch.optim.Optimizer,
     best_eval_nll: float,
     routing_model: Optional[nn.Module] = None,
+    completed_updates: Optional[int] = None,
 ) -> str:
     os.makedirs(save_dir, exist_ok=True)
     path = os.path.join(save_dir, f"checkpoint_step{step}.pt")
@@ -714,6 +716,7 @@ def save_checkpoint(
 
     state: dict = {
         "step": step,
+        "completed_updates": step + 1 if completed_updates is None else completed_updates,
         "optimizer_state_dict": optimizer.state_dict(),
         "best_eval_nll": best_eval_nll,
         "model_state_path": model_path,
@@ -904,7 +907,9 @@ def main() -> None:
     # roughly simultaneously, so we let rank 0 build and all ranks wait.
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.makedirs(config.save_dir, exist_ok=True)
-    eval_cache_path = os.path.join(config.save_dir, "eval_cache.pt")
+    metadata_dir = config.metadata_dir or config.save_dir
+    os.makedirs(metadata_dir, exist_ok=True)
+    eval_cache_path = os.path.join(metadata_dir, "eval_cache.pt")
     if config.eval_size <= 0:
         if is_main:
             print("eval_size=0, skipping eval set construction.")
@@ -1372,7 +1377,7 @@ def main() -> None:
             if is_main:
                 print(f"  WARNING: could not restore optimizer state ({e})")
                 print("  Continuing with fresh optimizer momentum (model weights OK)")
-        global_step = ckpt["step"] + 1
+        global_step = int(ckpt.get("completed_updates", ckpt["step"] + 1))
         best_eval_nll = ckpt.get("best_eval_nll", float("inf"))
         del ckpt
         if is_main:
@@ -1425,7 +1430,7 @@ def main() -> None:
     csv_logger: Optional[CSVLogger] = None
     if is_main:
         os.makedirs(config.save_dir, exist_ok=True)
-        csv_path = os.path.join(config.save_dir, "metrics.csv")
+        csv_path = os.path.join(metadata_dir, "metrics.csv")
         csv_logger = CSVLogger(csv_path)
         print(f"CSV logging to: {csv_path}")
 
@@ -1987,7 +1992,7 @@ def main() -> None:
         # to Python handlers under torch.compile, observed 2026-09-27). The
         # decision is all-reduced so every rank stops in the same step.
         stop_now = stop_requested["flag"]
-        stop_file = os.path.join(config.save_dir, "STOP_REQUEST")
+        stop_file = os.path.join(metadata_dir, "STOP_REQUEST")
         if is_main and os.path.exists(stop_file):
             stop_now = True
         if world_size > 1:
@@ -1997,6 +2002,7 @@ def main() -> None:
         if stop_now:
             if is_main:
                 _save_now()
+                cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
                 try:
                     os.remove(stop_file)
                 except OSError:
@@ -2067,6 +2073,7 @@ def main() -> None:
                 base_model, fourway_predictor,
                 optimizer, best_eval_nll,
                 routing_model=fourway_model,
+                completed_updates=global_step,
             )
         else:
             save_checkpoint(
@@ -2074,7 +2081,10 @@ def main() -> None:
                 base_model, predictor,
                 optimizer, best_eval_nll,
                 routing_model=routing_model if use_routing_mode else None,
+                completed_updates=global_step,
             )
+
+        cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
 
     finish_wandb(wandb_run)
 

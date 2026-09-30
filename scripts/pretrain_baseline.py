@@ -153,6 +153,7 @@ class PretrainConfig:
     # Checkpointing
     save_every: int = 2000
     save_dir: str = "checkpoints/pretrain_300m_baseline"
+    metadata_dir: str = ""  # small logs/eval caches; defaults to save_dir
     resume_from: str = ""
     # Per-rank packed sequences to skip after resume. -1 infers the same-world-size
     # value from current batch settings: step * accum * micro_batch_size.
@@ -257,11 +258,13 @@ def save_checkpoint(
     model: Olmo2ForCausalLM,
     optimizer: torch.optim.Optimizer,
     best_eval_nll: float,
+    completed_updates: Optional[int] = None,
 ) -> str:
     os.makedirs(save_dir, exist_ok=True)
     path = os.path.join(save_dir, f"checkpoint_step{step}.pt")
     state = {
         "step": step,
+        "completed_updates": step + 1 if completed_updates is None else completed_updates,
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "best_eval_nll": best_eval_nll,
@@ -330,6 +333,8 @@ def main() -> None:
     args = parser.parse_args()
 
     config = PretrainConfig.from_yaml(args.config)
+    metadata_dir = config.metadata_dir or config.save_dir
+    os.makedirs(metadata_dir, exist_ok=True)
 
     # DDP setup
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
@@ -421,7 +426,7 @@ def main() -> None:
     # though the eval batches are never used (this stalled a 1B run on 8xH200).
     eval_batches: list[dict] = []
     if is_main and config.eval_size > 0:
-        cache_path = os.path.join(config.save_dir, "eval_cache.pt")
+        cache_path = os.path.join(metadata_dir, "eval_cache.pt")
         eval_batches = build_eval_dataloader(
             olmo_tokenizer=tokenizer,
             seq_len=config.seq_len,
@@ -443,7 +448,7 @@ def main() -> None:
         ckpt = torch.load(resume_path, map_location=device)
         model_raw.load_state_dict(ckpt["model_state_dict"])
         optimizer.load_state_dict(ckpt["optimizer_state_dict"])
-        global_step = ckpt["step"] + 1
+        global_step = int(ckpt.get("completed_updates", ckpt["step"] + 1))
         best_eval_nll = ckpt.get("best_eval_nll", float("inf"))
         del ckpt
         if is_main:
@@ -506,7 +511,7 @@ def main() -> None:
     csv_logger: Optional[CSVLogger] = None
     if is_main:
         os.makedirs(config.save_dir, exist_ok=True)
-        csv_path = os.path.join(config.save_dir, "metrics.csv")
+        csv_path = os.path.join(metadata_dir, "metrics.csv")
         csv_logger = CSVLogger(csv_path)
         print(f"CSV logging to: {csv_path}")
 
@@ -647,7 +652,7 @@ def main() -> None:
         # to Python handlers under torch.compile, observed 2026-09-27). The
         # decision is all-reduced so every rank stops in the same step.
         stop_now = stop_requested["flag"]
-        stop_file = os.path.join(config.save_dir, "STOP_REQUEST")
+        stop_file = os.path.join(metadata_dir, "STOP_REQUEST")
         if is_main and os.path.exists(stop_file):
             stop_now = True
         if world_size > 1:
@@ -657,6 +662,7 @@ def main() -> None:
         if stop_now:
             if is_main:
                 save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
+                cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
                 try:
                     os.remove(stop_file)
                 except OSError:
@@ -695,7 +701,9 @@ def main() -> None:
         final_nll = eval_loss_total / max(n_eval, 1)
         print(f"\nFinal eval NLL: {final_nll:.4f}")
 
-        save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll)
+        save_checkpoint(config.save_dir, global_step, model_raw, optimizer, best_eval_nll,
+                        completed_updates=global_step)
+        cleanup_old_checkpoints(config.save_dir, config.keep_last_n)
 
     finish_wandb(wandb_run)
 

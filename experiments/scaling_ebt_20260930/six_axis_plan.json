@@ -1,5 +1,5 @@
 {
-  "status": "proposed; no new training submitted",
+  "status": "execution authorized; runtime status is recorded separately in execution.json",
   "interpretation": "Six scaling axes from EBT Figures 4 and 5.",
   "families": [
     "dense",
@@ -34,7 +34,7 @@
     "warmup_tokens": 104857600,
     "schedule_rule": "Express warmup and decay in consumed tokens; each data budget ends its own schedule.",
     "data_order": "Same sample stream per seed, regrouped into global batches.",
-    "primary_eval": "One source-balanced held-out Dolma cache from excluded documents",
+    "primary_eval": "One worker-stratified Dolma cache from excluded document suffixes (512 windows, eight equal worker strata)",
     "secondary_eval": [
       "fixed wikitext2 cache",
       "MathInstruct NLL",
