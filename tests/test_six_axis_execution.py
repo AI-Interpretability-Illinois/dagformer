@@ -77,8 +77,9 @@ def test_checkpoint_final_and_intermediate_have_unambiguous_update_counts(tmp_pa
 
 @pytest.mark.parametrize("before,after,expected,last", [
     ("JobState=RUNNING", "", False, "show"),
-    ("JobState=PENDING", "JobState=PENDING Reason=JobHeldUser ArrayTaskId=2-27", False, "release"),
-    ("JobState=PENDING", "JobState=PENDING Reason=JobHeldUser ArrayTaskId=2 ", True, "scancel"),
+    ("JobState=PENDING Restarts=1 RunTime=00:00:00", "", False, "show"),
+    ("JobState=PENDING Restarts=0 RunTime=00:00:00", "JobState=PENDING Restarts=0 RunTime=00:00:00 Reason=JobHeldUser ArrayTaskId=2-27", False, "release"),
+    ("JobState=PENDING Restarts=0 RunTime=00:00:00", "JobState=PENDING Restarts=0 RunTime=00:00:00 Reason=JobHeldUser ArrayTaskId=2 ", True, "scancel"),
 ])
 def test_local_dispatch_only_cancels_an_individually_held_pending_task(monkeypatch, before, after, expected, last):
     from scripts import dispatch_six_axis_local as dispatcher

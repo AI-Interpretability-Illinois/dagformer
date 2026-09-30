@@ -47,11 +47,14 @@ def remote(host, *args):
 def take_pending(host, array, index):
     job = f"{array}_{index}"
     state = remote(host, "scontrol", "show", "job", job, "-o")
-    if not re.search(r"\bJobState=PENDING\b", state):
+    fresh = lambda s: (re.search(r"\bJobState=PENDING\b", s)
+                       and re.search(r"\bRestarts=0(?:\s|$)", s)
+                       and re.search(r"\bRunTime=00:00:00(?:\s|$)", s))
+    if not fresh(state):
         return False
     remote(host, "scontrol", "hold", job)
     state = remote(host, "scontrol", "show", "job", job, "-o")
-    if (re.search(r"\bJobState=PENDING\b", state)
+    if (fresh(state)
             and re.search(r"\bReason=JobHeldUser\b", state)
             and re.search(rf"\bArrayTaskId={index}(?:\s|$)", state)):
         remote(host, "scancel", job)

@@ -52,8 +52,9 @@ is a separate run; a restarted job continues its previous optimizer and stream.
 
 `scripts/dispatch_six_axis_local.py` runs two local workers while the other
 settings remain queued on Delta. When a local worker becomes available, it can
-hold and cancel one still-pending task from this study's array, then run that
-setting locally. Running Slurm tasks remain on Delta. The dispatcher synchronizes
+hold and cancel one never-started pending task from this study's array, then run
+that setting locally. Running tasks and checkpointed requeues remain on Delta.
+The dispatcher synchronizes
 small result files and regenerates the six-panel progress figure every five
 minutes. Completed local checkpoint groups are copied to the same biro study
 directory as the Delta runs, with the local copies retained. A `STOP_DISPATCH`

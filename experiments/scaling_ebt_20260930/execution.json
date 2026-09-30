@@ -36,7 +36,7 @@
   "validation": {
     "merged_pr_tests": 45,
     "execution_tests": 3,
-    "pending_job_dispatch_tests": 3,
+    "pending_job_dispatch_tests": 4,
     "full_configs_validated": 28
   },
   "runtime_location": "Delta home: dagformer-20260917/six_axis_20260930",
