@@ -720,6 +720,8 @@ class FourWayDAGFormer(nn.Module):
         self,
         olmo_ids: torch.Tensor,
         routing_weights: dict[str, list[torch.Tensor]],
+        *,
+        depth_probe=None,
     ) -> torch.Tensor:
         """4-way per-head forward pass with external routing weights.
 
@@ -729,6 +731,9 @@ class FourWayDAGFormer(nn.Module):
                 of tensors (one per layer l=1..num_layers-1):
                 - 'q'/'k'/'v': [B, T, H, l+1] — per-head per-source-layer
                 - 'r': [B, T, l+1] — shared across heads
+            depth_probe: optional evaluation observer/intervention implementing
+                record_state(index, state, residual=None), should_skip(layer),
+                and mix(layer, q, k, v, r). None preserves the normal forward.
 
         Returns:
             logits: [batch, seq_len, vocab_size]
@@ -749,8 +754,16 @@ class FourWayDAGFormer(nn.Module):
 
         # Accumulate layer outputs for weighted sum
         layer_outputs: list[torch.Tensor] = [embedding]  # X_0 = embedding
+        if depth_probe is not None:
+            depth_probe.record_state(0, embedding)
 
         for l in range(self.num_layers):
+            if depth_probe is not None and depth_probe.should_skip(l):
+                # Keep source indices fixed. The probe decides whether future
+                # readers may use this identity slot or must mask it out.
+                layer_outputs.append(layer_outputs[-1])
+                depth_probe.record_state(l + 1, layer_outputs[-1], layer_outputs[-2])
+                continue
             weights = self._get_head_weight_views(l)
             W_q, W_k, W_v, W_o = weights['W_q'], weights['W_k'], weights['W_v'], weights['W_o']
 
@@ -812,6 +825,9 @@ class FourWayDAGFormer(nn.Module):
                     α_k = α_k + ck
                     α_v = α_v + cv
                     α_r = α_r + cr
+
+                if depth_probe is not None:
+                    α_q, α_k, α_v, α_r = depth_probe.mix(l, α_q, α_k, α_v, α_r)
 
                 if self.use_triton_kernel:
                     # Fused Triton kernel: weighted-sum + projection in one pass
@@ -936,6 +952,8 @@ class FourWayDAGFormer(nn.Module):
             else:
                 X_next = R + attn_out + mlp_out
             layer_outputs.append(X_next)
+            if depth_probe is not None:
+                depth_probe.record_state(l + 1, X_next, embedding if l == 0 else R)
 
         # Final output
         final_state = self.olmo.model.norm(layer_outputs[-1])

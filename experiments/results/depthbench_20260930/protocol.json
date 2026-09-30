@@ -1,0 +1,55 @@
+{
+  "created_before_evaluation": true,
+  "scope": "Layer-level diagnostics adapted from DepthBench on existing full pretrained checkpoints; no fixed-budget depth-scaling claim.",
+  "reference": "https://arxiv.org/abs/2609.32534v1",
+  "reference_code_commit": "edca05f8e5c62bd49f91b17461dadae822783eee",
+  "models": {
+    "dense": "checkpoints/pr_sync_20260917/300m-baseline/checkpoint.pt",
+    "dag": "checkpoints/pr_sync_20260917/300m-dagformer/checkpoint.pt",
+    "checkpoint_step": 9000,
+    "backbone": "12 layers, width 1024, 16 attention heads, FFN width 4096, tied OLMo tokenizer embedding",
+    "training_updates": 9001,
+    "tokens_per_update": 524288,
+    "training_budget_audit": "../eval_20260917/provenance/training_budgets.json",
+    "comparison": "Same backbone shape and training-token budget; DAG includes the complete external predictor and local corrections, hence has more parameters. One pretraining seed per family.",
+    "adapters": "None; original pretrained weights only."
+  },
+  "corpora": {
+    "wikitext_test": {
+      "cache": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_test.pt",
+      "metadata": "checkpoints/pr_sync_20260917/eval_corpora/wikitext_cache_metadata.json",
+      "windows": 128,
+      "sequence_length": 1024,
+      "role": "Primary out-of-domain evaluation; full existing test cache."
+    },
+    "dolma_eval": {
+      "cache": "checkpoints/pr_sync_20260917/eval_cache.pt",
+      "windows": 50,
+      "sequence_length": 1024,
+      "role": "Secondary training-domain evaluation; full existing training-time evaluation cache. Its construction skips 1M streaming documents, but disjointness from the mmap pretraining corpus is not established by this experiment."
+    }
+  },
+  "metrics": [
+    "Per-sequence NLL over every valid cached next-token target",
+    "Angular distance between embedding/layer-written states, arccos cosine divided by pi",
+    "Logit lens CE, KL(final || intermediate), and top-5 overlap using the model's final norm and head",
+    "Single-layer identity bypass NLL increase",
+    "Downstream update causal score after each bypass, plus unnormalized change and original update norms",
+    "Supplementary causal score on attention+MLP branch updates, excluding DAG residual remix"
+  ],
+  "dag_interventions": {
+    "bypass_dynamic": "Identity in place of block s; its indexed source slot contains the previous state; downstream local corrections execute normally.",
+    "drop_source_dynamic": "Same bypass, and zero the coefficient for source s+1 in every later Q/K/V/R mix. Original indices and signed coefficient magnitudes on other sources remain unchanged.",
+    "bypass_replay": "Bypass with effective routing coefficients replayed from the unperturbed forward.",
+    "drop_source_replay": "Source-slot removal with effective coefficients replayed, then the skipped source masked.",
+    "scope": "These are declared DAG-specific interventions, not an assertion of identical semantics to official AttnRes skipping."
+  },
+  "aggregation": {
+    "unit": "Packed token window; paired across models and interventions. Windows are not guaranteed independent original documents.",
+    "uncertainty": "Paired bootstrap over windows, 2000 resamples, descriptive 95% intervals; no pretraining-seed uncertainty estimate.",
+    "late_depth": "Blocks s >= ceil(L/4), zero-based, with downstream l > s. Report the mean and fraction of matrix cells above the paper's causal threshold 0.45, alongside losses.",
+    "interpretation": "Neither greater representation change nor greater deletion sensitivity alone demonstrates useful computation."
+  },
+  "verification": "Before each model's full run, compare native and observed logits exactly, compare final-state readout, check identity skip and unchanged upstream states, and for DAG verify source masking and exact no-intervention replay.",
+  "deferred": "Permutation analysis requires an explicit convention for moving routing heads with unequal source dimensions. Fixed-budget shallow/middle/deep pretraining is a separate experiment."
+}
