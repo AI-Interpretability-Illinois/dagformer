@@ -23,10 +23,15 @@ class ExistingRunner:
     def poll(self):
         try:
             os.kill(self.pid, 0)
-            return None
+            stat = Path(f"/proc/{self.pid}/stat").read_text()
+            if stat.rsplit(")", 1)[1].split()[0] != "Z":
+                return None
         except ProcessLookupError:
-            self.returncode = 0 if (self.metadata / "DONE.json").exists() else 75
-            return self.returncode
+            pass
+        except FileNotFoundError:
+            pass
+        self.returncode = 0 if (self.metadata / "DONE.json").exists() else 75
+        return self.returncode
 
     def wait(self):
         while self.poll() is None:
@@ -71,6 +76,19 @@ def sync_report(args, root):
                    check=True, timeout=90)
     subprocess.run(["rsync", "-a", "--include=*/", "--include=*.json", "--include=*.yaml", "--exclude=*",
                     str(root / "legacy") + "/", f"{args.host}:{args.remote_root}/legacy/"], check=True, timeout=90)
+    if args.remote_checkpoints:
+        manifest = json.loads((root / "manifest.json").read_text())
+        for run in manifest["runs"]:
+            meta = Path(run["metadata_dir"])
+            if not (meta / "DONE.json").exists() or (meta / "UPLOADED.json").exists():
+                continue
+            destination = f"{args.remote_checkpoints}/{run['name']}"
+            remote(args.host, "mkdir", "-p", destination)
+            subprocess.run(["rsync", "-a", "--include=*.pt", "--exclude=*",
+                            run["checkpoint_dir"] + "/", f"{args.host}:{destination}/"],
+                           check=True, timeout=600)
+            (meta / "UPLOADED.json").write_text(json.dumps({
+                "destination": destination, "uploaded_unix": time.time()}) + "\n")
 
 
 def main():
@@ -81,6 +99,7 @@ def main():
     p.add_argument("--remote-root", required=True)
     p.add_argument("--gpus", default="3,1", help="First GPU prefers dense; second prefers FourWay")
     p.add_argument("--training-code", required=True)
+    p.add_argument("--remote-checkpoints", help="Upload completed local checkpoint groups here")
     p.add_argument("--small-second-gpu", action="store_true",
                    help="Limit routed tasks on the second GPU to L<=6, width<=512")
     args = p.parse_args()

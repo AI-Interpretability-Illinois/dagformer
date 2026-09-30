@@ -1,0 +1,52 @@
+{
+  "checkpoint": "1b-dagformer/checkpoint_step38160",
+  "checkpoint_step": 38160,
+  "completed_updates": 38160,
+  "optimizer_updates": 38160,
+  "progress_source": "exported_optimizer_count",
+  "staging_metadata": {
+    "checkpoint_step": 38160,
+    "optimizer_update_counts": [
+      38160
+    ],
+    "tokens_per_update": 524288,
+    "processed_tokens": 20006830080,
+    "includes_optimizer": false
+  },
+  "total_params": 1316049239,
+  "embedding_params": 232259584,
+  "non_embedding_params": 1083789655,
+  "training_tokens": 20006830080,
+  "analytic_flops": {
+    "dense_macs": 1346371584,
+    "routing_macs": 1521973632,
+    "train_flops_per_token": 17210071296
+  },
+  "analytic_training_flops": 344318972083757383680,
+  "evals": {
+    "wikitext2": {
+      "nll": 2.97998808377178,
+      "tokens": 288768,
+      "windows": 282,
+      "cache": "PR3 common wikitext2 cache"
+    },
+    "mathinstruct": {
+      "nll": 1.7686236176058787,
+      "tokens": 446464,
+      "windows": 436,
+      "cache": "PR3 common mathinstruct cache"
+    },
+    "gsm8k": {
+      "nll": 2.091051232871827,
+      "tokens": 214016,
+      "windows": 209,
+      "cache": "PR3 common gsm8k cache"
+    }
+  },
+  "eval_seconds": 77.34326767921448,
+  "gpu": "NVIDIA RTX A6000",
+  "torch": "2.10.0+cu128",
+  "evaluation_revision": "8f6338a",
+  "family": "fourway_corrected",
+  "training_corpus_group": "olmomix20b"
+}

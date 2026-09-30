@@ -1,0 +1,45 @@
+{
+  "updated_utc": "2026-09-30T20:05:04.448023+00:00",
+  "status": "running",
+  "merged_pr": 3,
+  "merge_commit": "1919dbd",
+  "training_revision": "f036b92",
+  "first_seed_runs": 28,
+  "slurm_array": 22580046,
+  "initial_slurm_tasks": "2-27",
+  "slurm_concurrency": 4,
+  "compute_account": "bfqt-delta-gpu",
+  "checkpoint_storage": "biro",
+  "local_runs": [
+    {
+      "task": 0,
+      "family": "dense",
+      "gpu": 3,
+      "reported_step": 100,
+      "tokens": 52953088,
+      "tokens_per_second": 73317.6308600069,
+      "estimated_remaining_hours": 5.758471333610081
+    },
+    {
+      "task": 1,
+      "family": "fourway_corrected",
+      "gpu": 0,
+      "reported_step": 40,
+      "tokens": 21495808,
+      "tokens_per_second": 55155.05920165102,
+      "estimated_remaining_hours": 7.813165557729819
+    }
+  ],
+  "completed_additional_common_evaluations": 4,
+  "backup_intermediates_bytes": 33442122806,
+  "source_data_copy_bytes": 83999206399,
+  "validation": {
+    "merged_pr_tests": 45,
+    "execution_tests": 3,
+    "pending_job_dispatch_tests": 3,
+    "full_configs_validated": 28
+  },
+  "runtime_location": "Delta home: dagformer-20260917/six_axis_20260930",
+  "runtime_report": "report/results.json and report/six_axes.pdf; updated every five minutes",
+  "queue_start": "Unknown at submission; local workers can take pending array tasks after finishing their current run."
+}

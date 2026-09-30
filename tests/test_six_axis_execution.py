@@ -73,3 +73,24 @@ def test_checkpoint_final_and_intermediate_have_unambiguous_update_counts(tmp_pa
     args[1] = 2  # Final filenames use number of completed updates, not zero-based loop step.
     final = module.save_checkpoint(*args, completed_updates=2)
     assert progress(final)["completed_updates"] == 2
+
+
+@pytest.mark.parametrize("before,after,expected,last", [
+    ("JobState=RUNNING", "", False, "show"),
+    ("JobState=PENDING", "JobState=PENDING Reason=JobHeldUser ArrayTaskId=2-27", False, "release"),
+    ("JobState=PENDING", "JobState=PENDING Reason=JobHeldUser ArrayTaskId=2 ", True, "scancel"),
+])
+def test_local_dispatch_only_cancels_an_individually_held_pending_task(monkeypatch, before, after, expected, last):
+    from scripts import dispatch_six_axis_local as dispatcher
+    calls = []
+    states = iter([before, after])
+
+    def remote(host, *args):
+        calls.append(args)
+        return next(states) if args[:2] == ("scontrol", "show") else ""
+
+    monkeypatch.setattr(dispatcher, "remote", remote)
+    assert dispatcher.take_pending("delta", 12345, 2) is expected
+    final_action = calls[-1][0] if calls[-1][0] == "scancel" else calls[-1][1]
+    assert final_action == last
+    assert all("12345_2" in call for call in calls)

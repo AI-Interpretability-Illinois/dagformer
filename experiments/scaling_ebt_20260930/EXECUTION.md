@@ -50,6 +50,20 @@ Global batch is implemented by accumulation and warmup is fixed at 104,857,600
 tokens. Every data-budget run uses its own linear decay endpoint. A new seed
 is a separate run; a restarted job continues its previous optimizer and stream.
 
+`scripts/dispatch_six_axis_local.py` runs two local workers while the other
+settings remain queued on Delta. When a local worker becomes available, it can
+hold and cancel one still-pending task from this study's array, then run that
+setting locally. Running Slurm tasks remain on Delta. The dispatcher synchronizes
+small result files and regenerates the six-panel progress figure every five
+minutes. Completed local checkpoint groups are copied to the same biro study
+directory as the Delta runs, with the local copies retained. A `STOP_DISPATCH`
+file stops dispatch and checkpoints active local work.
+
+The initial local center runs use GPUs 3 and 0. GPU 0 receives only the smaller
+routed shapes because another resident process reserves part of its memory.
+The DAGFormer run migrated after update 27; both checkpoint metadata and Adam
+state recorded 27, and resumption skipped exactly 13,824 consumed samples.
+
 Related validation: 45 merged-PR tests passed; three focused execution tests
 cover held-out separation, sample resume offsets and checkpoint update counts.
 All 28 generated configurations were accepted by their trainer dataclasses,
