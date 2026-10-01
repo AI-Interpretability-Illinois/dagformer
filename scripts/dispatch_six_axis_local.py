@@ -66,18 +66,36 @@ def take_pending(host, array, index):
 def sync_report(args, root):
     snapshot = root / "delta_snapshot"
     snapshot.mkdir(exist_ok=True)
+    rsync = ["rsync", "-a", "-e", "ssh -o BatchMode=yes -o ConnectTimeout=15"]
     filters = ["--include=/manifest.json", "--include=/runs/", "--include=/runs/*/",
                "--include=*.json", "--include=*.csv", "--include=*.yaml", "--exclude=*"]
-    subprocess.run(["rsync", "-a", *filters, f"{args.host}:{args.remote_root}/", str(snapshot) + "/"],
+    report = root / "report"
+    report.mkdir(exist_ok=True)
+    sync_path = report / "remote_sync.json"
+    sync = json.loads(sync_path.read_text()) if sync_path.exists() else {"last_successful_pull_unix": None}
+    sync.update(checked_unix=time.time(), remote_available=False, error=None)
+    try:
+        subprocess.run([*rsync, *filters, f"{args.host}:{args.remote_root}/", str(snapshot) + "/"],
+                       check=True, timeout=90)
+    except (subprocess.SubprocessError, OSError) as exc:
+        sync["error"] = str(exc)
+        print(f"Remote pull unavailable; refreshing local results: {exc}", flush=True)
+    else:
+        sync.update(remote_available=True, last_successful_pull_unix=time.time())
+    sync_path.write_text(json.dumps(sync, indent=2) + "\n")
+    collect = [sys.executable, str(ROOT / "scripts/collect_six_axis.py"),
+               "--manifest", str(root / "manifest.json")]
+    if (snapshot / "manifest.json").exists():
+        collect += ["--manifest", str(snapshot / "manifest.json")]
+    subprocess.run([*collect, "--legacy", str(root / "legacy"), "--out", str(report)],
                    check=True, timeout=90)
-    subprocess.run([sys.executable, str(ROOT / "scripts/collect_six_axis.py"),
-                    "--manifest", str(root / "manifest.json"), "--manifest", str(snapshot / "manifest.json"),
-                    "--legacy", str(root / "legacy"), "--out", str(root / "report")], check=True, timeout=90)
-    subprocess.run(["rsync", "-a", str(root / "report") + "/", f"{args.host}:{args.remote_root}/report/"],
+    if not sync["remote_available"]:
+        return False
+    subprocess.run([*rsync, str(report) + "/", f"{args.host}:{args.remote_root}/report/"],
                    check=True, timeout=90)
-    subprocess.run(["rsync", "-a", *filters, str(root) + "/", f"{args.host}:{args.remote_root}/local_snapshot/"],
+    subprocess.run([*rsync, *filters, str(root) + "/", f"{args.host}:{args.remote_root}/local_snapshot/"],
                    check=True, timeout=90)
-    subprocess.run(["rsync", "-a", "--include=*/", "--include=*.json", "--include=*.yaml", "--include=*.npz", "--exclude=*",
+    subprocess.run([*rsync, "--include=*/", "--include=*.json", "--include=*.yaml", "--include=*.npz", "--exclude=*",
                     str(root / "legacy") + "/", f"{args.host}:{args.remote_root}/legacy/"], check=True, timeout=90)
     if args.remote_checkpoints:
         manifest = json.loads((root / "manifest.json").read_text())
@@ -87,11 +105,12 @@ def sync_report(args, root):
                 continue
             destination = f"{args.remote_checkpoints}/{run['name']}"
             remote(args.host, "mkdir", "-p", destination)
-            subprocess.run(["rsync", "-a", "--include=*.pt", "--exclude=*",
+            subprocess.run([*rsync, "--include=*.pt", "--exclude=*",
                             run["checkpoint_dir"] + "/", f"{args.host}:{destination}/"],
                            check=True, timeout=600)
             (meta / "UPLOADED.json").write_text(json.dumps({
                 "destination": destination, "uploaded_unix": time.time()}) + "\n")
+    return True
 
 
 def main():
@@ -127,6 +146,7 @@ def main():
             attempted.add(index)
             print(f"GPU {gpu}: adopted task {index}, PID {proc.pid}", flush=True)
     last_sync = 0
+    remote_available = True
     while not (root / "STOP_DISPATCH").exists():
         for gpu, (index, proc, log) in list(active.items()):
             if proc.poll() is not None:
@@ -147,11 +167,17 @@ def main():
                 if index in attempted or (Path(run["metadata_dir"]) / "DONE.json").exists():
                     continue
                 if index not in taken:
+                    if not remote_available:
+                        continue
                     try:
                         if not take_pending(args.host, args.array, index):
                             continue
                     except (subprocess.SubprocessError, OSError) as exc:
                         print(f"Cannot claim task {index}: {exc}", flush=True)
+                        if (isinstance(exc, subprocess.TimeoutExpired)
+                                or getattr(exc, "returncode", None) == 255):
+                            remote_available = False
+                            break
                         continue
                     taken.append(index)
                     taken_path.write_text(json.dumps(taken) + "\n")
@@ -167,7 +193,7 @@ def main():
                 break
         if time.time() - last_sync > 300:
             try:
-                sync_report(args, root)
+                remote_available = sync_report(args, root)
             except (subprocess.SubprocessError, OSError) as exc:
                 print(f"Report sync: {exc}", flush=True)
             last_sync = time.time()

@@ -95,3 +95,35 @@ def test_local_dispatch_only_cancels_an_individually_held_pending_task(monkeypat
     final_action = calls[-1][0] if calls[-1][0] == "scancel" else calls[-1][1]
     assert final_action == last
     assert all("12345_2" in call for call in calls)
+
+
+@pytest.mark.parametrize("cached_remote", [False, True])
+def test_local_report_refreshes_when_remote_authentication_fails(tmp_path, monkeypatch, cached_remote):
+    from types import SimpleNamespace
+    from scripts import dispatch_six_axis_local as dispatcher
+
+    snapshot = tmp_path / "delta_snapshot"
+    snapshot.mkdir()
+    if cached_remote:
+        (snapshot / "manifest.json").write_text("{}")
+    report = tmp_path / "report"
+    report.mkdir()
+    (report / "remote_sync.json").write_text(json.dumps({"last_successful_pull_unix": 123}))
+    calls = []
+
+    def run(command, **kwargs):
+        calls.append(command)
+        if command[0] == "rsync":
+            raise dispatcher.subprocess.CalledProcessError(255, command)
+        (report / "results.json").write_text('{"updated": true}')
+
+    monkeypatch.setattr(dispatcher.subprocess, "run", run)
+    assert dispatcher.sync_report(
+        SimpleNamespace(host="delta", remote_root="/study", remote_checkpoints="/models"), tmp_path) is False
+    assert json.loads((report / "results.json").read_text())["updated"]
+    sync = json.loads((report / "remote_sync.json").read_text())
+    assert sync["remote_available"] is False
+    assert sync["last_successful_pull_unix"] == 123
+    assert sync["error"]
+    assert sum(command[0] == "rsync" for command in calls) == 1
+    assert (str(snapshot / "manifest.json") in calls[-1]) == cached_remote

@@ -60,6 +60,11 @@ minutes. Completed local checkpoint groups are copied to the same biro study
 directory as the Delta runs, with the local copies retained. A `STOP_DISPATCH`
 file stops dispatch and checkpoints active local work.
 
+If Delta authentication expires, local training and report generation continue.
+The report's `remote_sync.json` records the last successful pull and whether the
+latest attempt succeeded. Cached Delta states are historical while disconnected;
+new local work can only be claimed after the Slurm connection is restored.
+
 The initial local center runs use GPUs 3 and 0. GPU 0 receives only the smaller
 routed shapes because another resident process reserves part of its memory.
 The DAGFormer run migrated after update 27; both checkpoint metadata and Adam
