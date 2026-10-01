@@ -1,0 +1,156 @@
+{
+  "checked_utc": "2026-10-01T14:49:34.828412+00:00",
+  "training_revision": "f036b92",
+  "runs": [
+    {
+      "name": "dense_L4_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "layers": 4,
+      "width": 512,
+      "tokens": 1572864000,
+      "seed": 42,
+      "completed_updates": 3000,
+      "normalization_parameter_elements": 8704,
+      "normalization_elements_equal_initial_one": 8704,
+      "normalization_min": 1.0,
+      "normalization_max": 1.0,
+      "adam_moment_dtypes": [
+        "torch.bfloat16"
+      ],
+      "eval_curve": [
+        {
+          "logged_step": 500,
+          "completed_updates": 501,
+          "monitor_nll": 5.99560546875
+        },
+        {
+          "logged_step": 1000,
+          "completed_updates": 1001,
+          "monitor_nll": 5.4530029296875
+        },
+        {
+          "logged_step": 1500,
+          "completed_updates": 1501,
+          "monitor_nll": 5.14599609375
+        },
+        {
+          "logged_step": 2000,
+          "completed_updates": 2001,
+          "monitor_nll": 4.9378662109375
+        },
+        {
+          "logged_step": 2500,
+          "completed_updates": 2501,
+          "monitor_nll": 4.8343505859375
+        }
+      ]
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "layers": 6,
+      "width": 512,
+      "tokens": 1572864000,
+      "seed": 42,
+      "completed_updates": 3000,
+      "normalization_parameter_elements": 12800,
+      "normalization_elements_equal_initial_one": 12800,
+      "normalization_min": 1.0,
+      "normalization_max": 1.0,
+      "adam_moment_dtypes": [
+        "torch.bfloat16"
+      ],
+      "eval_curve": [
+        {
+          "logged_step": 500,
+          "completed_updates": 501,
+          "monitor_nll": 6.117431640625
+        },
+        {
+          "logged_step": 1000,
+          "completed_updates": 1001,
+          "monitor_nll": 5.5257568359375
+        },
+        {
+          "logged_step": 1500,
+          "completed_updates": 1501,
+          "monitor_nll": 5.20263671875
+        },
+        {
+          "logged_step": 2000,
+          "completed_updates": 2001,
+          "monitor_nll": 5.0001220703125
+        },
+        {
+          "logged_step": 2500,
+          "completed_updates": 2501,
+          "monitor_nll": 4.897216796875
+        }
+      ]
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "layers": 6,
+      "width": 512,
+      "tokens": 1572864000,
+      "seed": 42,
+      "completed_updates": 3000,
+      "normalization_parameter_elements": 12800,
+      "normalization_elements_equal_initial_one": 12800,
+      "normalization_min": 1.0,
+      "normalization_max": 1.0,
+      "adam_moment_dtypes": [
+        "torch.bfloat16",
+        "torch.float32"
+      ],
+      "eval_curve": [
+        {
+          "logged_step": 500,
+          "completed_updates": 501,
+          "monitor_nll": 5.8818359375
+        },
+        {
+          "logged_step": 1000,
+          "completed_updates": 1001,
+          "monitor_nll": 5.1737060546875
+        },
+        {
+          "logged_step": 1500,
+          "completed_updates": 1501,
+          "monitor_nll": 4.773193359375
+        },
+        {
+          "logged_step": 2000,
+          "completed_updates": 2001,
+          "monitor_nll": 4.592041015625
+        },
+        {
+          "logged_step": 2500,
+          "completed_updates": 2501,
+          "monitor_nll": 4.515869140625
+        }
+      ]
+    }
+  ],
+  "interpretation": "The depth reversal is present throughout training. BF16 storage of backbone parameters, gradients and Adam moments is a concrete numerical confound; it is not yet established as the cause of the depth reversal.",
+  "rounding_example": {
+    "fp32_one_minus_0_0005": 0.9994999766349792,
+    "bf16_one_minus_0_0005": 1.0
+  },
+  "normalization_update_probe": {
+    "description": "Counterfactual CPU AdamW step on copies of final normalization parameters and Adam moments, zero new gradient, lr=5e-4, betas=(0.9, 0.95), weight_decay=0.1, foreach=False. Measures rounding; not a retraining or a causal test of the depth reversal.",
+    "dense_L4": {
+      "total_elements": 8704,
+      "nonzero_saved_first_moments": 8704,
+      "bf16_elements_changed": 0,
+      "fp32_elements_changed": 8700
+    },
+    "dense_L6": {
+      "total_elements": 12800,
+      "nonzero_saved_first_moments": 12800,
+      "bf16_elements_changed": 0,
+      "fp32_elements_changed": 12798
+    }
+  }
+}

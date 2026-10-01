@@ -19,6 +19,18 @@ scaling exponent. Predictor parameters are included in the table. This sweep
 holds backbone width and token budget fixed; total parameters change with
 depth and differ between the two architectures.
 
+The [depth diagnostic](depth_diagnostic.json) records an unresolved training
+precision issue found on 2026-10-01. The Dense backbone parameters and Adam
+moments are BF16. All 8,704 normalization weights in the four-layer checkpoint
+and all 12,800 in the six-layer checkpoint still equal their initial value,
+exactly 1.0, after 3,000 updates. The inspected six-layer DAGFormer backbone
+has the same property; its predictor's Adam moments are FP32. Both Dense
+training loss and monitoring loss are higher at six layers throughout the
+recorded training. The depth reversal cannot yet be attributed to architecture:
+a comparison preserving FP32 weights and optimizer states is needed to separate
+optimization and precision effects. The stored results remain measurements of
+the original BF16 training recipe.
+
 Training and evaluation used revision `f036b92`. DAGFormer uses the complete
 causal encoder predictor and correction MLPs, with V normalization disabled.
 The 512-window Dolma split is held out from these new runs. WikiText2,
