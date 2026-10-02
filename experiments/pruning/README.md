@@ -191,7 +191,7 @@ Domain eval NLL on held-out MathInstruct after 2000 finetuning steps.
 
 | units | block sparsity | 75M base / DAG (gap) | 150M base / DAG (gap) | 300M base / DAG (gap) |
 |---|---|---|---|---|
-| unpruned finetune | 0% | 2.388 / 2.223 (+0.165) | 1.883 / 1.743 (+0.139) | queued |
+| unpruned finetune | 0% | 2.388 / 2.223 (+0.165) | 1.883 / 1.743 (+0.139) | 1.608 / 1.488 (+0.120) |
 | heads + neurons | 30% | 2.478 / 2.298 (+0.180) | 1.957 / 1.807 (+0.150) | 1.665 / 1.541 (+0.124) |
 | heads + neurons | 50% | 2.590 / 2.391 (+0.199) | 2.071 / 1.899 (+0.172) | 1.762 / 1.620 (+0.142) |
 | heads + neurons | 70% | 2.829 / 2.614 (+0.215) | 2.278 / 2.091 (+0.187) | 1.967 / 1.790 (+0.177) |
@@ -205,11 +205,26 @@ What the data says:
 - **The DAGFormer advantage grows with sparsity at every size.** The
   unpruned finetuning gap is 0.165 / 0.139 nats (75M / 150M); at 70% of
   block parameters removed it is 0.215 / 0.187, and at 300M it rises from
-  0.124 (30%) to 0.177 (70%). In compactness terms, DAGFormer with half its
+  0.120 (unpruned) to 0.177 (70%). In compactness terms, DAGFormer with half its
   heads and MLP channels removed matches or beats the unpruned finetuned
   baseline at 75M (2.391 vs 2.388) and 150M (1.899 vs 1.883). Post-prune
   ticks in the trajectory figure show smaller immediate damage for DAGFormer
   at high sparsity.
+- **Relative degradation** (minus the increase of held-out MathInstruct NLL
+  over the same model's unpruned finetune; the 300M unpruned controls ran
+  2026-10-01, outputs in /work/hdd/biro/xiaocong/dagformer_pruning, linked
+  into the checkpoint root):
+
+  | removed | 75M dense / DAG (adv.) | 150M dense / DAG (adv.) | 300M dense / DAG (adv.) |
+  |---|---|---|---|
+  | 30% | -3.7% / -3.4% (+0.4 pts) | -3.9% / -3.6% (+0.3 pts) | -3.6% / -3.5% (+0.0 pts) |
+  | 50% | -8.4% / -7.5% (+0.9 pts) | -10.0% / -8.9% (+1.1 pts) | -9.6% / -8.9% (+0.7 pts) |
+  | 70% | -18.5% / -17.6% (+0.9 pts) | -21.0% / -20.0% (+1.1 pts) | -22.3% / -20.3% (+2.1 pts) |
+
+  In relative terms the advantage is small at 30% (none at 300M) and grows
+  with sparsity; at 70% it is largest at 300M. DAGFormer starts 7.4% lower
+  at 300M (6.9% / 7.4% at 75M / 150M), so at 50% removed it is within 0.9%
+  of the unpruned dense finetune at every size (75M +0.1%, 150M +0.9%, 300M +0.8%).
 - **It is not the predictor re-routing.** Freezing the global predictor
   during prune-finetune changes nothing (75M: 2.388 vs 2.391; 150M: 1.899
   vs 1.899). Consistent with `experiments/coherence` (the predictor's

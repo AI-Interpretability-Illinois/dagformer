@@ -196,5 +196,27 @@
   "wikitext2": 3.4388124672233635,
   "mathinstruct": 2.86723164024703,
   "gsm8k": 2.8683630382045036
+ },
+ "1b_fourway_corrected_5b": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/checkpoint_step9540.pt",
+  "step": 9540,
+  "family": "corrected",
+  "size": "1b",
+  "corpus": "delta21b",
+  "dolma21b": 2.076322250366211,
+  "wikitext2": 3.3067704650527197,
+  "mathinstruct": 2.403121114870824,
+  "gsm8k": 2.755122459676277
+ },
+ "1b_dense_10b": {
+  "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b/checkpoint_step19080.pt",
+  "step": 19080,
+  "family": "dense",
+  "size": "1b",
+  "corpus": "delta21b",
+  "dolma21b": 2.116030702590942,
+  "wikitext2": 3.4460838940126677,
+  "mathinstruct": 2.4830266160702488,
+  "gsm8k": 2.9004173757927267
  }
 }

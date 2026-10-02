@@ -56,7 +56,7 @@
 - timan12b 150m dense - modular: +0.130 @ 0.53B, +0.101 @ 1.32B, +0.095 @ 2.11B, +0.088 @ 2.91B
 - delta21b 300m dense - corrected: +0.302 @ 1.31B, +0.188 @ 2.88B, +0.159 @ 4.46B, +0.152 @ 6.03B
 - delta21b 300m dense - modular: +0.277 @ 1.31B, +0.166 @ 2.88B, +0.113 @ 4.46B, +0.106 @ 6.03B
-- delta21b 1b dense - corrected: +0.516 @ 0.52B, +0.333 @ 1.05B, +0.238 @ 1.57B, +0.197 @ 2.10B
+- delta21b 1b dense - corrected: +0.333 @ 1.05B, +0.167 @ 2.62B, +0.136 @ 3.67B, +0.147 @ 5.24B
 
 ## Joint L(N, D) = E + A/N^alpha + B/D^beta per family and corpus (training-curve points, second half of each run)
 
@@ -65,10 +65,10 @@ Caveat: every size has ONE run with a cosine schedule, so intermediate points si
 | family | corpus | sizes | points | E | A | alpha | B | beta | rss |
 |---|---|---|---|---|---|---|---|---|---|
 | corrected | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
-| corrected | delta21b | 1b, 300m | 12 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| corrected | delta21b | 1b, 300m | 18 | 1.768 | 1.16e+03 | 0.410 | 1.65e+12 | 1.371 | 2.16e-03 |
 | corrected | timan12b | 150m, 75m | 9 | 1.001 | 129 | 0.209 | 3.71e+07 | 0.890 | 2.32e-04 |
 | dense | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
-| dense | delta21b | 1b, 300m | 17 | 1.775 | 1.25e+03 | 0.402 | 1.82e+11 | 1.250 | 8.95e-04 |
+| dense | delta21b | 1b, 300m | 27 | 1.400 | 37.2 | 0.197 | 1.21e+07 | 0.800 | 6.85e-03 |
 | dense | timan12b | 150m, 75m | 9 | 1.261 | 175 | 0.228 | 2.21e+09 | 1.087 | 6.18e-04 |
 | global | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | local | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
@@ -82,8 +82,8 @@ Caveat: every size has ONE run with a cosine schedule, so intermediate points si
 
 | family | points | E | K | gamma |
 |---|---|---|---|---|
-| corrected | 6 | 1.596 | 1.9e+03 | 0.155 |
-| dense | 8 | 2.800 | 2.2e+05 | 0.280 |
+| corrected | 7 | 2.606 | 7.95e+04 | 0.254 |
+| dense | 9 | 2.900 | 4.89e+05 | 0.300 |
 | global | 0 | - | - | - |
 | local | 0 | - | - | - |
 | modular | 4 | 2.574 | 1.51e+04 | 0.213 |
@@ -94,13 +94,14 @@ Compute multiplier: for each routed final, the dense compute C_eq that reaches t
 
 | routed run | C (PF) | L | C_eq dense (PF) | C_eq / C |
 |---|---|---|---|---|
-| shared_75m_dagformer | 926 | 4.7752 | 1131 | 1.22 |
-| timan_75m_corrected | 933 | 4.7109 | 1273 | 1.36 |
-| shared_150m_dagformer | 4135 | 4.1003 | 5043 | 1.22 |
-| timan_150m_corrected | 4167 | 4.0846 | 5268 | 1.26 |
-| shared_300m_dagformer | 15396 | 3.6366 | 24415 | 1.59 |
-| 300m_fourway_corrected | 20528 | 3.5439 | 37167 | 1.81 |
-| timan_75m_modular | 1047 | 4.7384 | 1209 | 1.15 |
-| timan_150m_modular | 5137 | 4.1157 | 4836 | 0.94 |
-| 300m_fourway_modular | 28619 | 3.6279 | 25349 | 0.89 |
-| timan_300m_modular | 28619 | 3.6575 | 22357 | 0.78 |
+| shared_75m_dagformer | 926 | 4.7752 | 1126 | 1.22 |
+| timan_75m_corrected | 933 | 4.7109 | 1264 | 1.36 |
+| shared_150m_dagformer | 4135 | 4.1003 | 4980 | 1.20 |
+| timan_150m_corrected | 4167 | 4.0846 | 5204 | 1.25 |
+| shared_300m_dagformer | 15396 | 3.6366 | 25353 | 1.65 |
+| 300m_fourway_corrected | 20528 | 3.5439 | 39704 | 1.93 |
+| 1b_fourway_corrected_5b | 86080 | 3.3068 | 183519 | 2.13 |
+| timan_75m_modular | 1047 | 4.7384 | 1203 | 1.15 |
+| timan_150m_modular | 5137 | 4.1157 | 4773 | 0.93 |
+| 300m_fourway_modular | 28619 | 3.6279 | 26380 | 0.92 |
+| timan_300m_modular | 28619 | 3.6575 | 23100 | 0.81 |

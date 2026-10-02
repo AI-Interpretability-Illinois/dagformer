@@ -540,7 +540,7 @@
     "routing_macs": 1521973632,
     "train_flops_per_token": 17210071296
    },
-   "done": false,
+   "done": true,
    "train_flops_total": 8.607974302093935e+19,
    "curve": [
     {
@@ -562,9 +562,34 @@
      "step": 4000,
      "tokens": 2097152000,
      "eval_nll": 2.2984375
+    },
+    {
+     "step": 5000,
+     "tokens": 2621440000,
+     "eval_nll": 2.18375
+    },
+    {
+     "step": 6000,
+     "tokens": 3145728000,
+     "eval_nll": 2.1378125
+    },
+    {
+     "step": 7000,
+     "tokens": 3670016000,
+     "eval_nll": 2.101875
+    },
+    {
+     "step": 8000,
+     "tokens": 4194304000,
+     "eval_nll": 2.0828125
+    },
+    {
+     "step": 9000,
+     "tokens": 4718592000,
+     "eval_nll": 2.0771875
     }
    ],
-   "final_eval_nll": 2.2984375
+   "final_eval_nll": 2.0771875
   },
   {
    "name": "1b_dense_10b",
@@ -593,7 +618,7 @@
     "routing_macs": 0,
     "train_flops_per_token": 8078229504
    },
-   "done": false,
+   "done": true,
    "train_flops_total": 8.080988251688534e+19,
    "curve": [
     {
@@ -640,9 +665,142 @@
      "step": 9000,
      "tokens": 4718592000,
      "eval_nll": 2.210625
+    },
+    {
+     "step": 10000,
+     "tokens": 5242880000,
+     "eval_nll": 2.259375
+    },
+    {
+     "step": 11000,
+     "tokens": 5767168000,
+     "eval_nll": 2.22375
+    },
+    {
+     "step": 12000,
+     "tokens": 6291456000,
+     "eval_nll": 2.1996875
+    },
+    {
+     "step": 13000,
+     "tokens": 6815744000,
+     "eval_nll": 2.1759375
+    },
+    {
+     "step": 14000,
+     "tokens": 7340032000,
+     "eval_nll": 2.1440625
+    },
+    {
+     "step": 15000,
+     "tokens": 7864320000,
+     "eval_nll": 2.13125
+    },
+    {
+     "step": 16000,
+     "tokens": 8388608000,
+     "eval_nll": 2.1253125
+    },
+    {
+     "step": 17000,
+     "tokens": 8912896000,
+     "eval_nll": 2.1184375
+    },
+    {
+     "step": 18000,
+     "tokens": 9437184000,
+     "eval_nll": 2.1178125
+    },
+    {
+     "step": 19000,
+     "tokens": 9961472000,
+     "eval_nll": 2.1159375
     }
    ],
-   "final_eval_nll": 2.210625
+   "final_eval_nll": 2.1159375
+  },
+  {
+   "name": "1b_fourway_corrected_10b",
+   "machine": "delta",
+   "family": "corrected",
+   "corpus": "delta21b",
+   "size": "1b",
+   "save_dir": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_10b",
+   "curve_prefix": "/work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b",
+   "tokens_per_step": 524288,
+   "eval_col": "eval/nll_soft",
+   "note": "continued from the 5B checkpoint, LR re-warmed",
+   "hidden_size": 2048,
+   "num_hidden_layers": 16,
+   "routing_mode": "fourway_corrected",
+   "total_steps": 19080,
+   "total_tokens": 10003415040,
+   "params": {
+    "embed": 205520896,
+    "non_embed": 1073874944,
+    "total": 1279395840
+   },
+   "routing_params": 36653399,
+   "flops": {
+    "dense_macs": 1346371584,
+    "routing_macs": 1521973632,
+    "train_flops_per_token": 17210071296
+   },
+   "done": false,
+   "train_flops_total": 1.721594860418787e+20,
+   "curve": [
+    {
+     "step": 1000,
+     "tokens": 524288000,
+     "eval_nll": 3.238125
+    },
+    {
+     "step": 2000,
+     "tokens": 1048576000,
+     "eval_nll": 2.586875
+    },
+    {
+     "step": 3000,
+     "tokens": 1572864000,
+     "eval_nll": 2.398125
+    },
+    {
+     "step": 4000,
+     "tokens": 2097152000,
+     "eval_nll": 2.2984375
+    },
+    {
+     "step": 5000,
+     "tokens": 2621440000,
+     "eval_nll": 2.18375
+    },
+    {
+     "step": 6000,
+     "tokens": 3145728000,
+     "eval_nll": 2.1378125
+    },
+    {
+     "step": 7000,
+     "tokens": 3670016000,
+     "eval_nll": 2.101875
+    },
+    {
+     "step": 8000,
+     "tokens": 4194304000,
+     "eval_nll": 2.0828125
+    },
+    {
+     "step": 9000,
+     "tokens": 4718592000,
+     "eval_nll": 2.0771875
+    },
+    {
+     "step": 10000,
+     "tokens": 5242880000,
+     "eval_nll": 2.1125
+    }
+   ],
+   "final_eval_nll": 2.1125
   },
   {
    "name": "loc75m_dense",
