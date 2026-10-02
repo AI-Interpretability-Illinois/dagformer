@@ -1,0 +1,64 @@
+# Judged chat eval: instruction-tuned exports (scripts/sft/sft_train.py, runs under
+# /work/hdd/bfqt/xiaocong/dagformer_sft/runs) and the pairwise comparisons the judge runs.
+# Models whose export does not exist yet (1b_corrected_10b until ~2026-10-03) are skipped and
+# picked up on a re-run. Each comparison is judged in both answer orders.
+models:
+- name: 300m_dense_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_dense_alpaca_dolly/final
+- name: 300m_corrected_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_fourway_corrected_alpaca_dolly/final
+- name: 300m_modular_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_fourway_modular_alpaca_dolly/final
+- name: 1b_dense_5b_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_dense_5b_alpaca_dolly/final
+- name: 1b_corrected_5b_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_fourway_corrected_5b_alpaca_dolly/final
+- name: 1b_dense_10b_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_dense_10b_alpaca_dolly/final
+- name: 1b_corrected_10b_alpaca_dolly
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_fourway_corrected_10b_alpaca_dolly/final
+- name: 300m_dense_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_dense_smol_smoltalk/final
+- name: 300m_corrected_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_fourway_corrected_smol_smoltalk/final
+- name: 300m_modular_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_300m-300m_fourway_modular_smol_smoltalk/final
+- name: 1b_dense_5b_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_dense_5b_smol_smoltalk/final
+- name: 1b_corrected_5b_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_fourway_corrected_5b_smol_smoltalk/final
+- name: 1b_dense_10b_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_dense_10b_smol_smoltalk/final
+- name: 1b_corrected_10b_smol_smoltalk
+  export: /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_fourway_corrected_10b_smol_smoltalk/final
+comparisons:
+- routed: 300m_corrected_alpaca_dolly
+  dense: 300m_dense_alpaca_dolly
+  note: 300M, equal tokens
+- routed: 300m_modular_alpaca_dolly
+  dense: 300m_dense_alpaca_dolly
+  note: 300M, equal tokens
+- routed: 1b_corrected_5b_alpaca_dolly
+  dense: 1b_dense_5b_alpaca_dolly
+  note: 1B, 5B tokens each
+- routed: 1b_corrected_5b_alpaca_dolly
+  dense: 1b_dense_10b_alpaca_dolly
+  note: 1B, about equal training compute
+- routed: 1b_corrected_10b_alpaca_dolly
+  dense: 1b_dense_10b_alpaca_dolly
+  note: 1B, 10B tokens each
+- routed: 300m_corrected_smol_smoltalk
+  dense: 300m_dense_smol_smoltalk
+  note: 300M, equal tokens
+- routed: 300m_modular_smol_smoltalk
+  dense: 300m_dense_smol_smoltalk
+  note: 300M, equal tokens
+- routed: 1b_corrected_5b_smol_smoltalk
+  dense: 1b_dense_5b_smol_smoltalk
+  note: 1B, 5B tokens each
+- routed: 1b_corrected_5b_smol_smoltalk
+  dense: 1b_dense_10b_smol_smoltalk
+  note: 1B, about equal training compute
+- routed: 1b_corrected_10b_smol_smoltalk
+  dense: 1b_dense_10b_smol_smoltalk
+  note: 1B, 10B tokens each

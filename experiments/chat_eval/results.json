@@ -1,0 +1,302 @@
+{
+ "comparisons": [
+  {
+   "routed": "300m_corrected_alpaca_dolly",
+   "dense": "300m_dense_alpaca_dolly",
+   "note": "300M, equal tokens",
+   "n": 80,
+   "win_rate": 0.56875,
+   "ci95": [
+    0.5,
+    0.6375
+   ],
+   "wtl": [
+    16,
+    54,
+    10
+   ],
+   "order_consistent": 38,
+   "frac_A": 0.275,
+   "by_category": {
+    "writing": 0.725,
+    "roleplay": 0.575,
+    "reasoning": 0.475,
+    "math": 0.4,
+    "coding": 0.6,
+    "extraction": 0.55,
+    "stem": 0.75,
+    "humanities": 0.475
+   }
+  },
+  {
+   "routed": "300m_modular_alpaca_dolly",
+   "dense": "300m_dense_alpaca_dolly",
+   "note": "300M, equal tokens",
+   "n": 80,
+   "win_rate": 0.5875,
+   "ci95": [
+    0.51875,
+    0.65625
+   ],
+   "wtl": [
+    19,
+    51,
+    10
+   ],
+   "order_consistent": 40,
+   "frac_A": 0.29375,
+   "by_category": {
+    "writing": 0.8,
+    "roleplay": 0.525,
+    "reasoning": 0.425,
+    "math": 0.5,
+    "coding": 0.5,
+    "extraction": 0.725,
+    "stem": 0.55,
+    "humanities": 0.675
+   }
+  },
+  {
+   "routed": "1b_corrected_5b_alpaca_dolly",
+   "dense": "1b_dense_5b_alpaca_dolly",
+   "note": "1B, 5B tokens each",
+   "n": 80,
+   "win_rate": 0.584375,
+   "ci95": [
+    0.50625,
+    0.6625
+   ],
+   "wtl": [
+    26,
+    42,
+    12
+   ],
+   "order_consistent": 45,
+   "frac_A": 0.38125,
+   "by_category": {
+    "writing": 0.55,
+    "roleplay": 0.6,
+    "reasoning": 0.425,
+    "math": 0.45,
+    "coding": 0.425,
+    "extraction": 0.625,
+    "stem": 0.75,
+    "humanities": 0.85
+   }
+  },
+  {
+   "routed": "1b_corrected_5b_alpaca_dolly",
+   "dense": "1b_dense_10b_alpaca_dolly",
+   "note": "1B, about equal training compute",
+   "n": 80,
+   "win_rate": 0.559375,
+   "ci95": [
+    0.478125,
+    0.640625
+   ],
+   "wtl": [
+    23,
+    40,
+    17
+   ],
+   "order_consistent": 45,
+   "frac_A": 0.375,
+   "by_category": {
+    "writing": 0.425,
+    "roleplay": 0.825,
+    "reasoning": 0.5,
+    "math": 0.275,
+    "coding": 0.525,
+    "extraction": 0.65,
+    "stem": 0.525,
+    "humanities": 0.75
+   }
+  },
+  {
+   "routed": "300m_corrected_smol_smoltalk",
+   "dense": "300m_dense_smol_smoltalk",
+   "note": "300M, equal tokens",
+   "n": 80,
+   "win_rate": 0.690625,
+   "ci95": [
+    0.63125,
+    0.75
+   ],
+   "wtl": [
+    27,
+    51,
+    2
+   ],
+   "order_consistent": 36,
+   "frac_A": 0.325,
+   "by_category": {
+    "writing": 0.825,
+    "roleplay": 0.825,
+    "reasoning": 0.525,
+    "math": 0.8,
+    "coding": 0.65,
+    "extraction": 0.575,
+    "stem": 0.6,
+    "humanities": 0.725
+   }
+  },
+  {
+   "routed": "300m_modular_smol_smoltalk",
+   "dense": "300m_dense_smol_smoltalk",
+   "note": "300M, equal tokens",
+   "n": 80,
+   "win_rate": 0.575,
+   "ci95": [
+    0.509375,
+    0.640625
+   ],
+   "wtl": [
+    19,
+    55,
+    6
+   ],
+   "order_consistent": 30,
+   "frac_A": 0.38125,
+   "by_category": {
+    "writing": 0.675,
+    "roleplay": 0.625,
+    "reasoning": 0.35,
+    "math": 0.5,
+    "coding": 0.55,
+    "extraction": 0.575,
+    "stem": 0.7,
+    "humanities": 0.625
+   }
+  },
+  {
+   "routed": "1b_corrected_5b_smol_smoltalk",
+   "dense": "1b_dense_5b_smol_smoltalk",
+   "note": "1B, 5B tokens each",
+   "n": 80,
+   "win_rate": 0.5875,
+   "ci95": [
+    0.515625,
+    0.659375
+   ],
+   "wtl": [
+    23,
+    49,
+    8
+   ],
+   "order_consistent": 34,
+   "frac_A": 0.38125,
+   "by_category": {
+    "writing": 0.775,
+    "roleplay": 0.625,
+    "reasoning": 0.55,
+    "math": 0.525,
+    "coding": 0.425,
+    "extraction": 0.575,
+    "stem": 0.7,
+    "humanities": 0.525
+   }
+  },
+  {
+   "routed": "1b_corrected_5b_smol_smoltalk",
+   "dense": "1b_dense_10b_smol_smoltalk",
+   "note": "1B, about equal training compute",
+   "n": 80,
+   "win_rate": 0.596875,
+   "ci95": [
+    0.51875,
+    0.671875
+   ],
+   "wtl": [
+    27,
+    43,
+    10
+   ],
+   "order_consistent": 42,
+   "frac_A": 0.39375,
+   "by_category": {
+    "writing": 0.825,
+    "roleplay": 0.625,
+    "reasoning": 0.5,
+    "math": 0.375,
+    "coding": 0.6,
+    "extraction": 0.675,
+    "stem": 0.65,
+    "humanities": 0.525
+   }
+  }
+ ],
+ "models": {
+  "300m_dense_alpaca_dolly": {
+   "mean_score": 1.9125,
+   "n": 80,
+   "answer_tokens": 108.7875,
+   "stopped_frac": 0.7375
+  },
+  "300m_corrected_alpaca_dolly": {
+   "mean_score": 2.15,
+   "n": 80,
+   "answer_tokens": 109.3625,
+   "stopped_frac": 0.725
+  },
+  "300m_modular_alpaca_dolly": {
+   "mean_score": 1.95,
+   "n": 80,
+   "answer_tokens": 113.8,
+   "stopped_frac": 0.7125
+  },
+  "1b_dense_5b_alpaca_dolly": {
+   "mean_score": 2.0625,
+   "n": 80,
+   "answer_tokens": 103.425,
+   "stopped_frac": 0.7375
+  },
+  "1b_corrected_5b_alpaca_dolly": {
+   "mean_score": 2.1375,
+   "n": 80,
+   "answer_tokens": 121.525,
+   "stopped_frac": 0.75
+  },
+  "1b_dense_10b_alpaca_dolly": {
+   "mean_score": 2.1875,
+   "n": 80,
+   "answer_tokens": 110.6625,
+   "stopped_frac": 0.7125
+  },
+  "300m_dense_smol_smoltalk": {
+   "mean_score": 2.125,
+   "n": 80,
+   "answer_tokens": 210.1875,
+   "stopped_frac": 0.3375
+  },
+  "300m_corrected_smol_smoltalk": {
+   "mean_score": 2.525,
+   "n": 80,
+   "answer_tokens": 210.4375,
+   "stopped_frac": 0.35
+  },
+  "300m_modular_smol_smoltalk": {
+   "mean_score": 2.3375,
+   "n": 80,
+   "answer_tokens": 207.575,
+   "stopped_frac": 0.375
+  },
+  "1b_dense_5b_smol_smoltalk": {
+   "mean_score": 2.0625,
+   "n": 80,
+   "answer_tokens": 209.6375,
+   "stopped_frac": 0.3375
+  },
+  "1b_corrected_5b_smol_smoltalk": {
+   "mean_score": 2.35,
+   "n": 80,
+   "answer_tokens": 200.4,
+   "stopped_frac": 0.4
+  },
+  "1b_dense_10b_smol_smoltalk": {
+   "mean_score": 2.125,
+   "n": 80,
+   "answer_tokens": 204.25,
+   "stopped_frac": 0.375
+  }
+ }
+}
