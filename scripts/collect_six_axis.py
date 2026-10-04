@@ -97,7 +97,7 @@ def plot(rows, states, output):
     colors = {"dense": "#666666", "fourway_corrected": "#0072B2"}
     labels = {"dense": "Dense", "fourway_corrected": "DAGFormer"}
     markers = {"shared12b": "o", "timan12b": "s", "delta21b": "^",
-               "dolma600m_continuation": "D", "olmomix20b": "P", "new21b": "o"}
+               "dolma600m_continuation": "D", "olmomix20b": "P", "new21b": "v"}
     for ax, (axis, key, divisor, xlabel) in zip(axes.flat, panels):
         selected = [r for r in rows if axis in r["panels"] and r.get("wikitext2_nll") is not None]
         if axis == "compute":
@@ -110,8 +110,9 @@ def plot(rows, states, output):
                 ax.plot([r[key] / divisor for r in points], [r["wikitext2_nll"] for r in points],
                         color=colors[family], marker=markers[group], markersize=6,
                         linestyle="--" if family == "dense" else "-", linewidth=1.3)
-        n = sum(axis in s["panels"] and s["status"] == "complete" for s in states)
-        total = sum(axis in s["panels"] for s in states)
+        progress_axis = "data" if axis == "compute" else axis
+        n = sum(progress_axis in s["panels"] and s["status"] == "complete" for s in states)
+        total = sum(progress_axis in s["panels"] for s in states)
         ax.set_title(axis.capitalize() + (f" · {n}/{total} complete" if total else " · existing ladder"))
         ax.set(xlabel=xlabel, ylabel="WikiText2 NLL (nats/token)")
         ax.grid(alpha=.18)
@@ -119,6 +120,7 @@ def plot(rows, states, output):
         if not selected:
             ax.text(.5, .5, "Training pending / in progress", ha="center", va="center", transform=ax.transAxes)
             ax.set_yticks([])
+        if axis not in ("parameters", "compute"):
             values = sorted({s["planned_tokens" if key == "training_tokens" else key] / divisor
                              for s in states if axis in s["panels"]})
             if values:
@@ -132,7 +134,7 @@ def plot(rows, states, output):
     group_handles = [Line2D([], [], color="black", marker=m, linestyle="none", label=g)
                      for g, m in markers.items() if g in used]
     fig.legend(handles=family_handles + group_handles, loc="outside lower center", ncol=4, frameon=False, fontsize=9)
-    fig.suptitle("Six-axis scaling: observed endpoints\nSeparate lines for each training corpus; first-seed new runs", fontsize=13)
+    fig.suptitle("Six-axis scaling: observed endpoints\nSeparate corpora; new sweep uses BF16 backbone updates and one seed", fontsize=13)
     for extension in ("png", "pdf", "svg"):
         path = output / f"six_axes.{extension}"
         fig.savefig(path, dpi=180)
@@ -154,7 +156,7 @@ def main():
     (output / "results.json").write_text(json.dumps(payload, indent=2) + "\n")
     keys = list(dict.fromkeys(k for r in rows for k in r))
     with (output / "endpoints.csv").open("w") as f:
-        writer = csv.DictWriter(f, fieldnames=keys)
+        writer = csv.DictWriter(f, fieldnames=keys, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     plot(rows, states, output)

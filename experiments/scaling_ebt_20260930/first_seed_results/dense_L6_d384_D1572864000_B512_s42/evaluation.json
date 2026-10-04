@@ -1,0 +1,54 @@
+{
+  "checkpoint": "checkpoint_step3000.pt",
+  "config": "training_settings.json",
+  "checkpoint_step": 3000,
+  "completed_updates": 3000,
+  "optimizer_updates": 3000,
+  "progress_source": "completed_updates",
+  "total_params": 52700544,
+  "embedding_params": 38535168,
+  "non_embedding_params": 14165376,
+  "training_tokens": 1572864000,
+  "analytic_flops": {
+    "dense_macs": 57409536,
+    "routing_macs": 0,
+    "train_flops_per_token": 344457216
+  },
+  "analytic_training_flops": 541784354586624000,
+  "evals": {
+    "dolma_heldout": {
+      "nll": 5.079753194004297,
+      "tokens": 524288,
+      "windows": 512,
+      "cache": "dolma_heldout.pt"
+    },
+    "wikitext2": {
+      "nll": 5.719105135464499,
+      "tokens": 288768,
+      "windows": 282,
+      "cache": "wikitext2.pt"
+    },
+    "mathinstruct": {
+      "nll": 4.561731397558789,
+      "tokens": 446464,
+      "windows": 436,
+      "cache": "mathinstruct.pt"
+    },
+    "gsm8k": {
+      "nll": 5.1083737583251665,
+      "tokens": 214016,
+      "windows": 209,
+      "cache": "gsm8k.pt"
+    }
+  },
+  "eval_seconds": 9.055221796035767,
+  "gpu": "NVIDIA RTX A6000",
+  "torch": "2.10.0+cu128",
+  "run": "dense_L6_d384_D1572864000_B512_s42",
+  "family": "dense",
+  "layers": 6,
+  "width": 384,
+  "seed": 42,
+  "training_revision": "f036b92",
+  "finished_utc": "2026-10-02T15:21:42.100621+00:00"
+}

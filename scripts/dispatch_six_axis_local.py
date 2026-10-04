@@ -1,4 +1,4 @@
-"""Keep local GPUs busy; move only held, pending tasks from this study's Slurm array."""
+"""Keep local GPUs busy; transfer only held, pending tasks from this study's Slurm array."""
 from __future__ import annotations
 
 import argparse
@@ -14,6 +14,7 @@ import time
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 
 class ExistingRunner:
@@ -44,20 +45,28 @@ def remote(host, *args):
                                     host, shlex.join(args)], text=True, timeout=60)
 
 
-def take_pending(host, array, index):
+def take_pending(host, array, index, stage_checkpoint=None):
     job = f"{array}_{index}"
     state = remote(host, "scontrol", "show", "job", job, "-o")
     fresh = lambda s: (re.search(r"\bJobState=PENDING\b", s)
                        and re.search(r"\bRestarts=0(?:\s|$)", s)
                        and re.search(r"\bRunTime=00:00:00(?:\s|$)", s))
-    if not fresh(state):
+    eligible = lambda s: (re.search(r"\bJobState=PENDING\b", s)
+                          and (fresh(s) or stage_checkpoint is not None))
+    if not eligible(state):
         return False
     remote(host, "scontrol", "hold", job)
     state = remote(host, "scontrol", "show", "job", job, "-o")
-    if (fresh(state)
+    if (eligible(state)
             and re.search(r"\bReason=JobHeldUser\b", state)
             and re.search(rf"\bArrayTaskId={index}(?:\s|$)", state)):
-        remote(host, "scancel", job)
+        try:
+            if not fresh(state):
+                stage_checkpoint()
+            remote(host, "scancel", job)
+        except Exception:
+            remote(host, "scontrol", "release", job)
+            raise
         return True
     remote(host, "scontrol", "release", job)
     return False
@@ -68,7 +77,7 @@ def sync_report(args, root):
     snapshot.mkdir(exist_ok=True)
     rsync = ["rsync", "-a", "-e", "ssh -o BatchMode=yes -o ConnectTimeout=15"]
     filters = ["--include=/manifest.json", "--include=/runs/", "--include=/runs/*/",
-               "--include=*.json", "--include=*.csv", "--include=*.yaml", "--exclude=*"]
+               "--include=*.json", "--include=*.csv", "--include=*.yaml", "--include=*.npz", "--exclude=*"]
     report = root / "report"
     report.mkdir(exist_ok=True)
     sync_path = report / "remote_sync.json"
@@ -124,6 +133,8 @@ def main():
     p.add_argument("--remote-checkpoints", help="Upload completed local checkpoint groups here")
     p.add_argument("--small-second-gpu", action="store_true",
                    help="Limit routed tasks on the second GPU to L<=6, width<=512")
+    p.add_argument("--resume-checkpointed", action="store_true",
+                   help="Copy and validate held requeues before transferring them to local GPUs")
     args = p.parse_args()
     root = Path(args.manifest).resolve().parent
     manifest = json.loads(Path(args.manifest).read_text())
@@ -164,15 +175,22 @@ def main():
                 if (slot == 1 and args.small_second_gpu and run["family"] == "fourway_corrected"
                         and (run["layers"] > 6 or run["width"] > 512)):
                     continue
-                if index in attempted or (Path(run["metadata_dir"]) / "DONE.json").exists():
+                if (index in attempted or (Path(run["metadata_dir"]) / "DONE.json").exists()
+                        or (root / "delta_snapshot/runs" / run["name"] / "DONE.json").exists()):
                     continue
                 if index not in taken:
                     if not remote_available:
                         continue
                     try:
-                        if not take_pending(args.host, args.array, index):
+                        stage = None
+                        if args.resume_checkpointed:
+                            from scripts.stage_six_axis_checkpoint import stage_remote_checkpoint
+                            remote_manifest = json.loads((root / "delta_snapshot/manifest.json").read_text())
+                            remote_run = next(r for r in remote_manifest["runs"] if r["name"] == run["name"])
+                            stage = lambda: stage_remote_checkpoint(args.host, run, remote_run)
+                        if not take_pending(args.host, args.array, index, stage):
                             continue
-                    except (subprocess.SubprocessError, OSError) as exc:
+                    except (subprocess.SubprocessError, OSError, ValueError) as exc:
                         print(f"Cannot claim task {index}: {exc}", flush=True)
                         if (isinstance(exc, subprocess.TimeoutExpired)
                                 or getattr(exc, "returncode", None) == 255):

@@ -53,7 +53,12 @@ is a separate run; a restarted job continues its previous optimizer and stream.
 `scripts/dispatch_six_axis_local.py` runs two local workers while the other
 settings remain queued on Delta. When a local worker becomes available, it can
 hold and cancel one never-started pending task from this study's array, then run
-that setting locally. Running tasks and checkpointed requeues remain on Delta.
+that setting locally. Running tasks remain on Delta. With `--resume-checkpointed`,
+the dispatcher can also hold a pending requeue, copy its full checkpoint group,
+verify matching optimizer updates and training budgets, and then cancel the held
+array element. Companion model paths are adjusted to the local copy; model weights,
+optimizer state and token position are preserved. A failed staging attempt releases
+the held job. Completed remote runs are skipped when looking for local work.
 The dispatcher synchronizes
 small result files and regenerates the six-panel progress figure every five
 minutes. Completed local checkpoint groups are copied to the same biro study

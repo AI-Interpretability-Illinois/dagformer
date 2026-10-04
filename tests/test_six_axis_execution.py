@@ -127,3 +127,62 @@ def test_local_report_refreshes_when_remote_authentication_fails(tmp_path, monke
     assert sync["error"]
     assert sum(command[0] == "rsync" for command in calls) == 1
     assert (str(snapshot / "manifest.json") in calls[-1]) == cached_remote
+
+
+@pytest.mark.parametrize("stage_fails", [False, True])
+def test_requeue_is_copied_before_cancellation_and_released_if_copy_fails(monkeypatch, stage_fails):
+    from scripts import dispatch_six_axis_local as dispatcher
+    calls = []
+    states = iter(["JobState=PENDING Restarts=1 RunTime=00:00:00",
+                   "JobState=PENDING Restarts=1 RunTime=00:00:00 Reason=JobHeldUser ArrayTaskId=2 "])
+
+    def remote(host, *args):
+        calls.append(args[0] if args[0] == "scancel" else args[1])
+        return next(states) if args[:2] == ("scontrol", "show") else ""
+
+    def stage():
+        calls.append("copy_and_validate")
+        if stage_fails:
+            raise ValueError("Missing companion checkpoint")
+
+    monkeypatch.setattr(dispatcher, "remote", remote)
+    if stage_fails:
+        with pytest.raises(ValueError, match="Missing companion"):
+            dispatcher.take_pending("delta", 12345, 2, stage)
+    else:
+        assert dispatcher.take_pending("delta", 12345, 2, stage)
+    assert calls == ["show", "hold", "show", "copy_and_validate", "release" if stage_fails else "scancel"]
+
+
+def test_running_job_is_not_transferred_even_when_checkpoint_migration_is_enabled(monkeypatch):
+    from scripts import dispatch_six_axis_local as dispatcher
+    monkeypatch.setattr(dispatcher, "remote", lambda *args: "JobState=RUNNING Restarts=1 RunTime=00:02:00")
+    assert not dispatcher.take_pending("delta", 12345, 2, lambda: pytest.fail("Running job was staged"))
+
+
+@pytest.mark.parametrize("bad_progress", [False, True])
+def test_checkpoint_relocation_preserves_optimizer_and_resolves_companion(tmp_path, bad_progress):
+    from scripts.stage_six_axis_checkpoint import relocate_resume_checkpoint
+    companion = tmp_path / "checkpoint_step6_model.pt"
+    torch.save({"weight": torch.arange(4, dtype=torch.bfloat16)}, companion)
+    checkpoint = tmp_path / "checkpoint_step6.pt"
+    moment = torch.tensor([.5, .25, .125, .0625], dtype=torch.bfloat16)
+    state = {"step": 6, "completed_updates": 7,
+             "optimizer_state_dict": {"state": {0: {"step": torch.tensor(8. if bad_progress else 7.),
+                                                        "exp_avg": moment, "exp_avg_sq": moment.square()}},
+                                      "param_groups": [{"params": [0], "lr": .0001}]},
+             "model_state_path": "/remote/models/checkpoint_step6_model.pt",
+             "predictor_state_dict": {"weight": torch.ones(2)},
+             "routing_state_dict": {"weight": torch.ones(3)}}
+    torch.save(state, checkpoint)
+    if bad_progress:
+        with pytest.raises(ValueError, match="Invalid resume progress"):
+            relocate_resume_checkpoint(checkpoint, 10, "fourway_corrected")
+        return
+    assert relocate_resume_checkpoint(checkpoint, 10, "fourway_corrected") == 7
+    loaded = torch.load(checkpoint, weights_only=False)
+    assert loaded["model_state_path"] == str(companion)
+    assert loaded["completed_updates"] == 7
+    assert loaded["optimizer_state_dict"]["param_groups"] == state["optimizer_state_dict"]["param_groups"]
+    assert torch.equal(loaded["optimizer_state_dict"]["state"][0]["exp_avg"], moment)
+    assert torch.equal(torch.load(loaded["model_state_path"], weights_only=False)["weight"], torch.arange(4, dtype=torch.bfloat16))
