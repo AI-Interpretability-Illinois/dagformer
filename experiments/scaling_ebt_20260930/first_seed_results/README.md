@@ -1,7 +1,7 @@
 # First-seed results
 
-Sixteen completed runs are archived as of 2026-10-04. See the
-[current progress tables](../PROGRESS_20261004.md) for all completed axes.
+Twenty-three completed runs are archived as of 2026-10-05. See the
+[current progress tables](../PROGRESS_20261005.md) for all completed axes.
 The table below records the initial four endpoints and their precision audit.
 
 Four runs completed by 2026-10-01 14:21 UTC. All use width 512, seed 42,

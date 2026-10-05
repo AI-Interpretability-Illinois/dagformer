@@ -1,0 +1,1141 @@
+{
+  "updated_utc": "2026-10-05T16:26:42.484831+00:00",
+  "remote_sync": {
+    "last_successful_pull_unix": 1791217593.3474522,
+    "checked_unix": 1791217590.477644,
+    "remote_available": true,
+    "error": null
+  },
+  "runs": [
+    {
+      "name": "dense_L6_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth",
+        "width",
+        "data",
+        "batch"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth",
+        "width",
+        "data",
+        "batch"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L4_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 4,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L4_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 4,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L8_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 8,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L8_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "gpua066.delta.ncsa.illinois.edu",
+      "job": "22622063",
+      "planned_tokens": 1572864000,
+      "layers": 8,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L12_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 12,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L12_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 12,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L16_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 16,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L16_d512_D1572864000_B512_s42",
+      "panels": [
+        "depth"
+      ],
+      "status": "running",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 16,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1353187328,
+      "last_step": 2580
+    },
+    {
+      "name": "dense_L6_d384_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 384,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L6_d384_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 384,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L6_d640_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "complete",
+      "host": "gpua083.delta.ncsa.illinois.edu",
+      "job": "22622091",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 640,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L6_d640_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "complete",
+      "host": "gpua045.delta.ncsa.illinois.edu",
+      "job": "22625745",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 640,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "dense_L6_d768_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 768,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1568145408,
+      "last_step": 2990
+    },
+    {
+      "name": "fourway_corrected_L6_d768_D1572864000_B512_s42",
+      "panels": [
+        "width"
+      ],
+      "status": "checkpointed",
+      "host": "gpub082.delta.ncsa.illinois.edu",
+      "job": "22625900",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 768,
+      "batch_sequences": 512,
+      "optimizer_updates": 3000,
+      "last_tokens": 1316487168,
+      "last_step": 2510
+    },
+    {
+      "name": "dense_L6_d512_D786432000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "gpua018.delta.ncsa.illinois.edu",
+      "job": "22625901",
+      "planned_tokens": 786432000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 1500,
+      "last_tokens": 781713408,
+      "last_step": 1490
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D786432000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 786432000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 1500,
+      "last_tokens": 781713408,
+      "last_step": 1490
+    },
+    {
+      "name": "dense_L6_d512_D3145728000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 3145728000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 6000,
+      "last_tokens": 3141009408,
+      "last_step": 5990
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D3145728000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 3145728000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 6000,
+      "last_tokens": 3141009408,
+      "last_step": 5990
+    },
+    {
+      "name": "dense_L6_d512_D6291456000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 6291456000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 12000,
+      "last_tokens": 6286737408,
+      "last_step": 11990
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D6291456000_B512_s42",
+      "panels": [
+        "data"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 6291456000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "optimizer_updates": 12000,
+      "last_tokens": 6286737408,
+      "last_step": 11990
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B64_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "complete",
+      "host": "gpub046.delta.ncsa.illinois.edu",
+      "job": "22631681",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 64,
+      "optimizer_updates": 24000,
+      "last_tokens": 1567686656,
+      "last_step": 23920
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B64_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "running",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 64,
+      "optimizer_updates": 24000,
+      "last_tokens": 1347485696,
+      "last_step": 20560
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B128_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "complete",
+      "host": "gpub094.delta.ncsa.illinois.edu",
+      "job": "22632106",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 128,
+      "optimizer_updates": 12000,
+      "last_tokens": 1567752192,
+      "last_step": 11960
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B128_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "checkpointed",
+      "host": "gpub079.delta.ncsa.illinois.edu",
+      "job": "22632154",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 128,
+      "optimizer_updates": 12000,
+      "last_tokens": 1321336832,
+      "last_step": 10080
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B256_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "complete",
+      "host": "timan1.cs.illinois.edu",
+      "job": null,
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 256,
+      "optimizer_updates": 6000,
+      "last_tokens": 1567883264,
+      "last_step": 5980
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B256_s42",
+      "panels": [
+        "batch"
+      ],
+      "status": "checkpointed",
+      "host": "gpub017.delta.ncsa.illinois.edu",
+      "job": "22580046",
+      "planned_tokens": 1572864000,
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 256,
+      "optimizer_updates": 6000,
+      "last_tokens": 1316225024,
+      "last_step": 5020
+    }
+  ],
+  "endpoints": [
+    {
+      "name": "shared_75m_baseline",
+      "family": "dense",
+      "group": "shared12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 76558848,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 7.81752767348736e+17,
+      "wikitext2_nll": 4.980341424333289
+    },
+    {
+      "name": "shared_75m_dagformer",
+      "family": "fourway_corrected",
+      "group": "shared12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 105657332,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 9.25553104257024e+17,
+      "wikitext2_nll": 4.775157083010843
+    },
+    {
+      "name": "timan_75m_dense",
+      "family": "dense",
+      "group": "timan12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 76558848,
+      "training_tokens": 1585152000,
+      "analytic_training_flops": 787860210843648000,
+      "wikitext2_nll": 4.996735809542608
+    },
+    {
+      "name": "timan_75m_corrected",
+      "family": "fourway_corrected",
+      "group": "timan12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 105657332,
+      "training_tokens": 1585152000,
+      "analytic_training_flops": 932783987884032000,
+      "wikitext2_nll": 4.71090813900562
+    },
+    {
+      "name": "shared_150m_baseline",
+      "family": "dense",
+      "group": "shared12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 152593152,
+      "training_tokens": 3145728000,
+      "analytic_training_flops": 3.11711546474496e+18,
+      "wikitext2_nll": 4.297423704296139
+    },
+    {
+      "name": "shared_150m_dagformer",
+      "family": "fourway_corrected",
+      "group": "shared12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 182561679,
+      "training_tokens": 3145728000,
+      "analytic_training_flops": 4.134862457929728e+18,
+      "wikitext2_nll": 4.100284312633758
+    },
+    {
+      "name": "timan_150m_dense",
+      "family": "dense",
+      "group": "timan12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 152593152,
+      "training_tokens": 3170304000,
+      "analytic_training_flops": 3141467929313280000,
+      "wikitext2_nll": 4.268440172181907
+    },
+    {
+      "name": "timan_150m_corrected",
+      "family": "fourway_corrected",
+      "group": "timan12b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 182561679,
+      "training_tokens": 3170304000,
+      "analytic_training_flops": 4167166070882304000,
+      "wikitext2_nll": 4.084553136893198
+    },
+    {
+      "name": "300m_dense",
+      "family": "dense",
+      "group": "delta21b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 304137216,
+      "training_tokens": 6291456000,
+      "analytic_training_flops": 1.2428879440379904e+19,
+      "wikitext2_nll": 3.8077879290208747
+    },
+    {
+      "name": "300m_fourway_corrected",
+      "family": "fourway_corrected",
+      "group": "delta21b",
+      "source": "PR #3",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 336459069,
+      "training_tokens": 6291456000,
+      "analytic_training_flops": 2.052758627470541e+19,
+      "wikitext2_nll": 3.5438556535869625
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth",
+        "width",
+        "data",
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 781752767348736000,
+      "dolma_heldout_nll": 4.876486608991399,
+      "wikitext2_nll": 5.458102297275625,
+      "mathinstruct_nll": 4.259971742236286,
+      "gsm8k_nll": 4.837791114332573
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth",
+        "width",
+        "data",
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 105657332,
+      "non_embedding_params": 27538420,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 925553104257024000,
+      "dolma_heldout_nll": 4.487872474594042,
+      "wikitext2_nll": 4.850497490970801,
+      "mathinstruct_nll": 3.650344504128902,
+      "gsm8k_nll": 4.177074896661859
+    },
+    {
+      "name": "dense_L4_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L4_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 4,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 68166144,
+      "non_embedding_params": 16785920,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 682796720848896000,
+      "dolma_heldout_nll": 4.815648265415803,
+      "wikitext2_nll": 5.349737415922449,
+      "mathinstruct_nll": 4.1547274693436576,
+      "gsm8k_nll": 4.716941308747068
+    },
+    {
+      "name": "fourway_corrected_L4_d512_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L4_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 4,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 96957281,
+      "non_embedding_params": 18838369,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 756691230523392000,
+      "dolma_heldout_nll": 4.608517301734537,
+      "wikitext2_nll": 5.018962785707298,
+      "mathinstruct_nll": 3.796538273949142,
+      "gsm8k_nll": 4.370693288921739
+    },
+    {
+      "name": "dense_L8_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L8_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 8,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 84951552,
+      "non_embedding_params": 33571328,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 880708813848576000,
+      "dolma_heldout_nll": 4.908980248495936,
+      "wikitext2_nll": 5.522188912046716,
+      "mathinstruct_nll": 4.364355716683449,
+      "gsm8k_nll": 4.96796168779072
+    },
+    {
+      "name": "dense_L12_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L12_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 12,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 101736960,
+      "non_embedding_params": 50356736,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1078620906848256000,
+      "dolma_heldout_nll": 4.966281558852643,
+      "wikitext2_nll": 5.627031177493698,
+      "mathinstruct_nll": 4.460506903469016,
+      "gsm8k_nll": 5.080045499299702
+    },
+    {
+      "name": "fourway_corrected_L12_d512_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L12_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 12,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 132142085,
+      "non_embedding_params": 54023173,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1614347344281600000,
+      "dolma_heldout_nll": 4.358242308720946,
+      "wikitext2_nll": 4.670027626321671,
+      "mathinstruct_nll": 3.479439481135902,
+      "gsm8k_nll": 3.921065074975411
+    },
+    {
+      "name": "dense_L16_d512_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L16_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 16,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 118522368,
+      "non_embedding_params": 67142144,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1276532999847936000,
+      "dolma_heldout_nll": 5.023415439296514,
+      "wikitext2_nll": 5.74398131742545,
+      "mathinstruct_nll": 4.611791734301716,
+      "gsm8k_nll": 5.362687720066052
+    },
+    {
+      "name": "dense_L6_d384_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d384_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 384,
+      "batch_sequences": 512,
+      "total_params": 52700544,
+      "non_embedding_params": 14165376,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 541784354586624000,
+      "dolma_heldout_nll": 5.079753194004297,
+      "wikitext2_nll": 5.719105135464499,
+      "mathinstruct_nll": 4.561731397558789,
+      "gsm8k_nll": 5.1083737583251665
+    },
+    {
+      "name": "fourway_corrected_L6_d384_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d384_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 384,
+      "batch_sequences": 512,
+      "total_params": 81717108,
+      "non_embedding_params": 16443252,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 636010031480832000,
+      "dolma_heldout_nll": 4.741526857484132,
+      "wikitext2_nll": 5.130296252298017,
+      "mathinstruct_nll": 3.9659763607410117,
+      "gsm8k_nll": 4.546699300337066
+    },
+    {
+      "name": "dense_L6_d768_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d768_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 768,
+      "batch_sequences": 512,
+      "total_params": 133712640,
+      "non_embedding_params": 56642304,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1350750034722816000,
+      "dolma_heldout_nll": 4.614715630188584,
+      "wikitext2_nll": 5.190769455957074,
+      "mathinstruct_nll": 4.022851612589775,
+      "gsm8k_nll": 4.70921309941123
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D786432000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d512_D786432000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 105657332,
+      "non_embedding_params": 27538420,
+      "training_tokens": 786432000,
+      "analytic_training_flops": 462776552128512000,
+      "dolma_heldout_nll": 5.081027210690081,
+      "wikitext2_nll": 5.565425953966506,
+      "mathinstruct_nll": 4.390895181292787,
+      "gsm8k_nll": 4.881499263088099
+    },
+    {
+      "name": "dense_L6_d512_D3145728000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D3145728000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 3145728000,
+      "analytic_training_flops": 1563505534697472000,
+      "dolma_heldout_nll": 4.3729978420306,
+      "wikitext2_nll": 4.74476078807885,
+      "mathinstruct_nll": 3.5524844297575293,
+      "gsm8k_nll": 4.16971475427801
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D3145728000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d512_D3145728000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 105657332,
+      "non_embedding_params": 27538420,
+      "training_tokens": 3145728000,
+      "analytic_training_flops": 1851106208514048000,
+      "dolma_heldout_nll": 4.1359843297395855,
+      "wikitext2_nll": 4.411465218726625,
+      "mathinstruct_nll": 3.241943626775654,
+      "gsm8k_nll": 3.8026442333842008
+    },
+    {
+      "name": "dense_L6_d512_D6291456000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D6291456000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 6291456000,
+      "analytic_training_flops": 3127011069394944000,
+      "dolma_heldout_nll": 4.090034916764125,
+      "wikitext2_nll": 4.373591235343446,
+      "mathinstruct_nll": 3.196038009650117,
+      "gsm8k_nll": 3.76939051915584
+    },
+    {
+      "name": "fourway_corrected_L6_d512_D6291456000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d512_D6291456000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 105657332,
+      "non_embedding_params": 27538420,
+      "training_tokens": 6291456000,
+      "analytic_training_flops": 3702212417028096000,
+      "dolma_heldout_nll": 3.91632845136337,
+      "wikitext2_nll": 4.129326394263734,
+      "mathinstruct_nll": 2.983998999956551,
+      "gsm8k_nll": 3.4886819745935322
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B256_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D1572864000_B256_s42/evaluation.json",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 256,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 781752767348736000,
+      "dolma_heldout_nll": 4.544796485453844,
+      "wikitext2_nll": 4.9686142197737455,
+      "mathinstruct_nll": 3.778562100655442,
+      "gsm8k_nll": 4.387797373903996
+    },
+    {
+      "name": "fourway_corrected_L8_d512_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L8_d512_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "depth"
+      ],
+      "layers": 8,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 114421483,
+      "non_embedding_params": 36302571,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1124783081127936000,
+      "dolma_heldout_nll": 4.465675126062706,
+      "wikitext2_nll": 4.820183179902692,
+      "mathinstruct_nll": 3.6408179298453374,
+      "gsm8k_nll": 4.169711667384828
+    },
+    {
+      "name": "dense_L6_d640_D1572864000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d640_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 640,
+      "batch_sequences": 512,
+      "total_params": 103562880,
+      "non_embedding_params": 39337600,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1051407994060800000,
+      "dolma_heldout_nll": 4.622855472378433,
+      "wikitext2_nll": 5.102598596126475,
+      "mathinstruct_nll": 3.9423822350458266,
+      "gsm8k_nll": 4.533005689319811
+    },
+    {
+      "name": "fourway_corrected_L6_d640_D1572864000_B512_s42",
+      "family": "fourway_corrected",
+      "group": "new21b",
+      "source": "first_seed_results/fourway_corrected_L6_d640_D1572864000_B512_s42/evaluation.json",
+      "panels": [
+        "width"
+      ],
+      "layers": 6,
+      "width": 640,
+      "batch_sequences": 512,
+      "total_params": 132743284,
+      "non_embedding_params": 41779316,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 1258698685022208000,
+      "dolma_heldout_nll": 4.324787326389924,
+      "wikitext2_nll": 4.644568311407211,
+      "mathinstruct_nll": 3.450233192072002,
+      "gsm8k_nll": 3.952916655243869
+    },
+    {
+      "name": "dense_L6_d512_D786432000_B512_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D786432000_B512_s42/evaluation.json",
+      "panels": [
+        "data"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 512,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 786432000,
+      "analytic_training_flops": 390876383674368000,
+      "dolma_heldout_nll": 5.432302620261908,
+      "wikitext2_nll": 6.1950966703130845,
+      "mathinstruct_nll": 5.125674008776288,
+      "gsm8k_nll": 5.668638160924592
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B64_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D1572864000_B64_s42/evaluation.json",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 64,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 781752767348736000,
+      "dolma_heldout_nll": 4.166325400350615,
+      "wikitext2_nll": 4.470347687707725,
+      "mathinstruct_nll": 3.282194595271294,
+      "gsm8k_nll": 3.767393576471429
+    },
+    {
+      "name": "dense_L6_d512_D1572864000_B128_s42",
+      "family": "dense",
+      "group": "new21b",
+      "source": "first_seed_results/dense_L6_d512_D1572864000_B128_s42/evaluation.json",
+      "panels": [
+        "batch"
+      ],
+      "layers": 6,
+      "width": 512,
+      "batch_sequences": 128,
+      "total_params": 76558848,
+      "non_embedding_params": 25178624,
+      "training_tokens": 1572864000,
+      "analytic_training_flops": 781752767348736000,
+      "dolma_heldout_nll": 4.266582582844421,
+      "wikitext2_nll": 4.610180334841951,
+      "mathinstruct_nll": 3.3917979587108715,
+      "gsm8k_nll": 3.9328921103591554
+    },
+    {
+      "name": "1b-baseline",
+      "family": "dense",
+      "group": "olmomix20b",
+      "source": "completed_checkpoints/1b-baseline/evaluation.json",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 1279395840,
+      "non_embedding_params": 1073874944,
+      "training_tokens": 20006830080,
+      "analytic_training_flops": 161619765033770680320,
+      "wikitext2_nll": 3.13557312928193,
+      "mathinstruct_nll": 1.8825155008550083,
+      "gsm8k_nll": 2.2519623725608207
+    },
+    {
+      "name": "1b-dagformer",
+      "family": "fourway_corrected",
+      "group": "olmomix20b",
+      "source": "completed_checkpoints/1b-dagformer/evaluation.json",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 1316049239,
+      "non_embedding_params": 1083789655,
+      "training_tokens": 20006830080,
+      "analytic_training_flops": 344318972083757383680,
+      "wikitext2_nll": 2.97998808377178,
+      "mathinstruct_nll": 1.7686236176058787,
+      "gsm8k_nll": 2.091051232871827
+    },
+    {
+      "name": "600m-baseline",
+      "family": "dense",
+      "group": "dolma600m_continuation",
+      "source": "completed_checkpoints/600m-baseline/evaluation.json",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 682710528,
+      "non_embedding_params": 528569856,
+      "training_tokens": 12006195200,
+      "analytic_training_flops": 52346759037950361600,
+      "wikitext2_nll": 3.206834674726987,
+      "mathinstruct_nll": 2.340125611889253,
+      "gsm8k_nll": 2.5466889262769783
+    },
+    {
+      "name": "600m-dagformer",
+      "family": "fourway_corrected",
+      "group": "dolma600m_continuation",
+      "source": "completed_checkpoints/600m-dagformer/evaluation.json",
+      "panels": [
+        "parameters",
+        "compute"
+      ],
+      "total_params": 717003240,
+      "non_embedding_params": 536123880,
+      "training_tokens": 12006195200,
+      "analytic_training_flops": 99408400938015129600,
+      "wikitext2_nll": 3.0686596048639174,
+      "mathinstruct_nll": 2.2213283974096316,
+      "gsm8k_nll": 2.44249895200775
+    }
+  ]
+}

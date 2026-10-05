@@ -5,6 +5,9 @@
 六轴执行脚本与设置见 [EXECUTION.md](EXECUTION.md)。下面保留审阅时的已有结果。
 这里把“六个尺度”解释为 EBT 正文中的六条 scaling 轴。
 
+最新进度（2026-10-05）：第一 seed 已完成 23/28，数据量轴已跑齐。
+[完整表格与训练状态](PROGRESS_20261005.md)记录了新结果，以及 Dense 对 batch size 的明显敏感性。
+
 ## PR 中已经有什么
 
 结果在 [experiments/scaling/](https://github.com/AI-Interpretability-Illinois/dagformer/tree/c9757183c3695ff2d688922d3a38fdc0dc70f7dd/experiments/scaling)，
