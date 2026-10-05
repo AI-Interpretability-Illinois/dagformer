@@ -8,6 +8,13 @@
 最新进度（2026-10-05）：第一 seed 已完成 23/28，数据量轴已跑齐。
 [完整表格与训练状态](PROGRESS_20261005.md)记录了新结果，以及 Dense 对 batch size 的明显敏感性。
 
+数据量轴的 [NLL–log(data) 直线拟合](data_log_linear_fit.png)保留原始 NLL，
+只对训练 tokens 取 log2。四点 OLS 斜率（每翻倍数据的 NLL 变化）为：
+Dolma Dense −0.453、DAGFormer −0.385；WikiText2 Dense −0.618、DAGFormer −0.475。
+DAGFormer 在这段范围内 loss 更低，Dense 的下降斜率更陡。
+拟合参数与残差见 [JSON](data_log_linear_fit.json)，
+运行 `python experiments/scaling_ebt_20260930/fit_data_log_linear.py` 可复现。
+
 ## PR 中已经有什么
 
 结果在 [experiments/scaling/](https://github.com/AI-Interpretability-Illinois/dagformer/tree/c9757183c3695ff2d688922d3a38fdc0dc70f7dd/experiments/scaling)，
