@@ -1,0 +1,62 @@
+[1] keys=['he2016resnet', 'vaswani2017']
+\end{abstract} \section{Introduction} A transformer \citep{vaswani2017} composes its layers through residual connections \citep{he2016resnet}: every attention head and MLP reads the same running sum and writes back into it.
+
+[2] keys=['elhage2021']
+Mechanistic analyses describe this residual stream as the communication channel between components \citep{elhage2021}, and its capacity is shared by every layer, so the cross-layer connectivity of a transformer is both fixed and crowded.
+
+[3] keys=['huang2017densenet', 'mhc2026', 'muddformer2025', 'pagliardini2024denseformer', 'zhu2024hyperconnections']
+A line of work relaxes this by letting a layer read earlier layers' outputs directly: dense connections \citep{huang2017densenet}, depth-weighted averaging with learned static weights \citep{pagliardini2024denseformer}, and, most recently, hyper-connections \citep{zhu2024hyperconnections,mhc2026}, which make the mixing weights input-dependent, and multiway dynamic dense connections \citep{muddformer2025}, which also make them separate for the query, key, value and residual inputs of a block.
+
+[4] keys=['muddformer2025']
+These models reach the loss of transformers trained with substantially more compute \citep{muddformer2025}.
+
+[5] keys=['olmo2']
+The backbone is an unchanged OLMo-2 \citep{olmo2} whose per-layer input is replaced by these mixtures; at initialization the weights select only the previous layer, so \dagf{} starts as exactly the dense model and learns to deviate from it.
+
+[6] keys=['soldaini2024dolma']
+We pretrain dense OLMo-2 and \dagf{} pairs at 75M, 150M, 300M and 1B parameters on Dolma \citep{soldaini2024dolma} at about 21 tokens per parameter (the 1B pair at 4 and 8), re-evaluate every final checkpoint on common held-out sets, and fit loss against size and against compute with the routing cost charged (Section~\ref{sec:scaling}).
+
+[7] keys=['olmo2']
+At initialization only $X_2$ is read, so the model starts as the dense transformer.} \label{fig:arch} \end{figure} \section{\dagf{}} \label{sec:method} \paragraph{Backbone.} We use the OLMo-2 decoder \citep{olmo2}: pre-attention and pre-MLP inputs are not normalized; instead RMSNorm is applied to the outputs of the attention and MLP sub-layers, and queries and keys are normalized (QK-norm).
+
+[8] keys=['muddformer2025']
+This is the same four-stream decomposition as MUDDFormer \citep{muddformer2025}, whose weight for a source layer is one scalar per position broadcast over all channels; here the $q$, $k$ and $v$ weights are per attention head.
+
+[9] keys=['hoffmann2022chinchilla']
+The 75M, 150M and 300M runs train for 3K, 6K and 12K steps (1.57B, 3.15B and 6.29B tokens, about 21 tokens per parameter, the compute-optimal ratio implied by the fits of \citet{hoffmann2022chinchilla}); the 1B pair trains for 5B tokens and is then continued to 10B tokens with a re-warmed schedule, giving matched pairs at both budgets.
+
+[10] keys=['soldaini2024dolma']
+Downstream evaluations of the 10B-token \dagf{} were still running at submission time, so Tables~\ref{tab:downstream} and \ref{tab:chat} use the 5B-token \dagf{} and both dense checkpoints.\footnote{\todo{Add the 10B-token \dagf{} rows when its benchmark and chat evaluations finish.}} \paragraph{Data.} All pretraining uses Dolma v1.7 \citep{soldaini2024dolma}.
+
+[11] keys=['cobbe2021gsm8k', 'merity2016wikitext', 'yue2023mammoth']
+Because held-out tails of different tokenizations are not comparable, every final checkpoint is re-evaluated on the same four held-out sets: WikiText-2 \citep{merity2016wikitext}, a held-out slice of MathInstruct \citep{yue2023mammoth}, GSM8K solutions \citep{cobbe2021gsm8k} and the Dolma tail (Appendix~\ref{app:cache}).
+
+[12] keys=['gao2024lmeval']
+\paragraph{Downstream.} Base and instruction-tuned models are evaluated with the lm-evaluation-harness \citep{gao2024lmeval} on twelve multiple-choice tasks (ARC-Easy/Challenge, HellaSwag, PIQA, WinoGrande, OpenBookQA, SciQ, BoolQ, LAMBADA, CommonsenseQA, Social IQa, MathQA; \citealp{clark2018arc,zellers2019hellaswag,bisk2020piqa,sakaguchi2020winogrande,mihaylov2018openbookqa,welbl2017sciq,clark2019boolq,paperno2016lambada,talmor2019commonsenseqa,sap2019socialiqa,amini2019mathqa}), plus bits per byte on WikiText and on the gold GSM8K chain-of-thought solutions, which has no floor at these sizes (exact-match GSM8K is at 1 to 4\ \section{Pretraining and scaling} \label{sec:scaling} \begin{figure*}[t] \centering \includegraphics[width=\textwidth]{figures/fig_scaling.pdf} \caption{Scaling of \dagf{} against matched dense OLMo-2 on a common WikiText-2 held-out set. (a) Final loss against backbone parameters for runs at 16 to 21 tokens per parameter, with power-law fits $L = E + A N^{-\alpha}$ per family (dense: 7 runs from 77M to 683M; \dagf{}: 6 runs from 77M to 304M, two corpora each).
+
+[13] keys=['meng2022rome', 'vig2020causal', 'zhang2024patching']
+Patching \citep{vig2020causal,meng2022rome,zhang2024patching} says the same: swapping the predictor's per-token output between windows, consistently across layers or independently per layer, changes the loss by at most 0.007 nats on 75M, 150M and 300M checkpoints, while the same swap on the local channel costs 0.56 to 1.29 nats, growing with size, with a negative coherence gap (independent donors partially average out, as expected of independent per-layer routers).
+
+[14] keys=['michel2019heads', 'molchanov2019taylor', 'xia2022cofi', 'yue2023mammoth', 'zhu2017prune']
+We test this with gradual structured pruning during domain finetuning \citep{zhu2017prune}: the model is finetuned on MathInstruct \citep{yue2023mammoth} for 2000 steps of 32K tokens, and between steps 200 and 1400 attention heads and MLP channels are removed permanently on a cubic sparsity schedule using first-order Taylor importance on unit gates \citep{michel2019heads,molchanov2019taylor}, followed by 600 recovery steps; heads, channels and whole blocks are the unit types of CoFi \citep{xia2022cofi}, minus its shared hidden dimensions.
+
+[15] keys=['muddformer2025']
+At 30\ \paragraph{Against per-layer routers.} To separate the architecture from the routing source, we pruned a 150M MUDDFormer \citep{muddformer2025} trained on the same corpus as a 150M \dagf{} and dense pair (Figure~\ref{fig:pruning}b).
+
+[16] keys=['he2016resnet', 'huang2017densenet', 'srivastava2015highway']
+Unpruned, the two routed models are equivalent on this domain (1.935 vs 1.924 nats); under pruning the \dagf{} advantage grows monotonically to 0.10 nats at 70\ \paragraph{Routers do not re-plan.} Freezing the predictor during prune-finetune changes nothing (75M: 2.388 vs 2.391 at 50\ \section{Related work} \label{sec:related} \paragraph{Cross-layer connectivity.} Highway networks \citep{srivastava2015highway} and residual networks \citep{he2016resnet} established gated and identity skips; DenseNet \citep{huang2017densenet} connected every layer to every earlier layer.
+
+[17] keys=['bapna2018transparent', 'menghani2024laurel', 'pagliardini2024denseformer', 'peters2018elmo']
+In NLP, transparent attention \citep{bapna2018transparent} and ELMo's scalar mixture \citep{peters2018elmo} learn static weights over layer outputs, as does DenseFormer's depth-weighted averaging for decoder-only transformers \citep{pagliardini2024denseformer} and LAuReL \citep{menghani2024laurel}.
+
+[18] keys=['mhc2026', 'zhu2024hyperconnections']
+Hyper-connections \citep{zhu2024hyperconnections} widen the residual stream into several streams with learnable, optionally input-dependent, depth and width connections; mHC \citep{mhc2026} shows that the product of unconstrained mixing matrices across depth lets forward and backward signals explode or vanish, and projects the residual-mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp to stabilize training at scale; in both, the coefficients of a layer are a function of that layer's incoming hidden state.
+
+[19] keys=['muddformer2025']
+MUDDFormer \citep{muddformer2025} generates per-position dense connection weights for the query, key, value and residual streams from the hidden state at each layer and reports matching transformers trained with 1.8 to 2.4$\times$ the compute.
+
+[20] keys=['fedus2022switch', 'raposo2024mod', 'shazeer2017moe']
+\paragraph{Per-token routing.} Mixture-of-experts layers route tokens to experts with a per-layer gate on the current representation \citep{shazeer2017moe,fedus2022switch}, and Mixture-of-Depths routes tokens around blocks the same way \citep{raposo2024mod}.
+
+[21] keys=['michel2019heads', 'molchanov2019taylor', 'xia2022cofi', 'xia2023sheared', 'zhu2017prune']
+\paragraph{Structured pruning.} We prune heads \citep{michel2019heads} and MLP channels with Taylor importance \citep{molchanov2019taylor} on a gradual schedule \citep{zhu2017prune}, the unit set of CoFi \citep{xia2022cofi}; Sheared LLaMA \citep{xia2023sheared} shows that structured pruning plus continued training is a competitive way to obtain small models.

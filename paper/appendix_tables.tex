@@ -1,0 +1,186 @@
+\subsection{Training hyperparameters}
+\label{app:hparams}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}\toprule
+size & 75M & 150M & 300M & 1B \\\midrule
+layers / width / heads & 6 / 512 / 8 & 8 / 768 / 12 & 12 / 1024 / 16 & 16 / 2048 / 16 \\
+MLP width & 2048 & 3072 & 4096 & 8192 \\
+backbone params (M) & 76.6 & 152.6 & 304.1 & 1279.4 \\
+routing params (M) & 29.1 & 30.0 & 32.3 & 36.7 \\
+steps & 3000 & 6000 & 12000 & 9540 (+9540) \\
+tokens (B) & 1.57 & 3.15 & 6.29 & 5.0 (10.0) \\
+peak LR backbone / predictor & $5\mathrm{e}{-4}$ / $3\mathrm{e}{-4}$ & $5\mathrm{e}{-4}$ / $3\mathrm{e}{-4}$ & $5\mathrm{e}{-4}$ / $3\mathrm{e}{-4}$ & $4\mathrm{e}{-4}$ / $2\mathrm{e}{-4}$ \\
+warmup steps & 300 & 300 & 300 & 500 \\
+routed FLOPs / dense & 1.18 & 1.33 & 1.65 & 2.13 \\
+\bottomrule\end{tabular}
+\caption{Pretraining configurations. Common to all: 1024-token sequences, 512 sequences (524K tokens) per step, AdamW $(0.9, 0.95)$, weight decay 0.1, gradient clipping 1.0, linear decay to zero, bf16, tied embeddings, vocabulary 100,352 (the OLMo-2 tokenizer). Predictor: 256-d token and position embeddings, 2 causal encoder layers with 4 heads, trunk width 512, correction MLP width 128. The 1B runs were continued from 5B to 10B tokens with the schedule re-stretched and the learning rate re-warmed over 500 steps. Instruction tuning: global batch 64 sequences of 1024 tokens, cosine learning rate $2{\times}10^{-4}$ ($10^{-4}$ at 1B), assistant-only loss, ChatML format.}
+\label{tab:hparams}\end{table*}
+
+\subsection{Matched pairs on all held-out sets}
+\label{app:pairs}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llcccccccc}\toprule
+size & corpus & \multicolumn{2}{c}{WikiText-2} & \multicolumn{2}{c}{MathInstruct} & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{balanced Dolma} \\
+ & & dense & \dagf{} & dense & \dagf{} & dense & \dagf{} & dense & \dagf{} \\\midrule
+75M & 12B & 4.980 & 4.775 & 4.267 & 4.053 & 4.216 & 3.998 & 5.175 & 4.992 \\
+75M & 12B' & 4.997 & 4.711 & 4.271 & 3.984 & 4.242 & 3.973 & 5.167 & 4.937 \\
+150M & 12B & 4.297 & 4.100 & 3.630 & 3.424 & 3.626 & 3.465 & 4.514 & 4.334 \\
+150M & 12B' & 4.268 & 4.085 & 3.599 & 3.383 & 3.608 & 3.402 & 4.471 & 4.305 \\
+300M & 21B & 3.808 & 3.544 & 2.742 & 2.565 & 3.232 & 2.937 & 3.832 & 3.606 \\
+300M, seed 2 & 21B & 3.835 & 3.530 & 2.774 & 2.562 & 3.308 & 2.897 & 3.855 & 3.608 \\
+1B, 5B tok & 21B & 3.569 & 3.307 & 2.586 & 2.403 & 3.058 & 2.755 & 3.617 & 3.404 \\
+1B, 10B tok & 21B & 3.446 & 3.219 & 2.483 & 2.321 & 2.900 & 2.644 & 3.501 & 3.314 \\
+\bottomrule\end{tabular}
+\caption{Held-out NLL (nats per token) of every matched pair on the four cross-corpus sets (final checkpoints): WikiText-2, MathInstruct, GSM8K and a source-balanced Dolma set (64 windows from each of 14 Dolma sources, drawn from files that no training corpus consumed; books, Wikipedia and open-web-math could not be represented). \dagf{} is lower in every cell; ``seed 2'' is the 300M pair repeated with a second pretraining seed.}
+\label{tab:pairs_all}\end{table*}
+
+\subsection{Gap along training}
+\label{app:gapcurve}
+The dense-minus-\dagf{} gap on each run's own held-out cache at matched steps (nats): 
+75M (12B'): +0.096 @ 0.26B, +0.178 @ 0.53B, +0.175 @ 0.79B, +0.141 @ 1.32B; 150M (12B'): +0.160 @ 0.53B, +0.114 @ 1.32B, +0.107 @ 2.11B, +0.103 @ 2.91B; 300M (21B): +0.343 @ 1.31B, +0.207 @ 2.88B, +0.167 @ 4.46B, +0.161 @ 6.03B; 1B (21B): +0.197 @ 2.10B, +0.133 @ 4.72B, +0.116 @ 7.34B, +0.110 @ 9.96B. The gap opens within the first quarter of each run, peaks, and narrows slowly; the 1B entry is the 5B-token run.
+
+\subsection{Router-locality ablation on all metrics}
+\label{app:locality}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lccccc}\toprule
+routing source & own cache & WikiText-2 & MathInstruct & GSM8K & MC w/o BoolQ \\
+ & & & & & base / Alpaca / SmolTalk \\\midrule
+none (dense) & 4.213 & 6.593 & 5.373 & 5.404 & 0.269 / 0.278 / 0.293 \\
+static learned table (no token input) & 4.176 & 6.529 & 5.243 & 5.279 & - \\
+per-layer predictors (unshared) & 4.058 & 6.256 & 5.025 & 5.148 & 0.271 / 0.290 / 0.304 \\
+shared predictor only & 4.031 & 6.207 & 4.981 & 5.116 & 0.274 / 0.289 / 0.301 \\
+local routers only & 4.018 & 6.176 & 4.959 & 5.142 & 0.275 / 0.290 / 0.294 \\
+shared + local (\dagf{}) & 4.014 & 6.163 & 4.932 & 5.080 & 0.276 / 0.290 / 0.302 \\
+modular variant & 3.926 & 6.068 & 4.861 & 4.989 & 0.281 / 0.295 / 0.300 \\
+modular + sparsity penalty & 4.091 & 6.274 & 5.139 & 5.229 & 0.273 / 0.286 / 0.300 \\
+\bottomrule\end{tabular}
+\caption{The 75M router-locality arms (1.57B tokens of a 1.7B-token Dolma slice, 4 GPUs each) on every held-out set, and the 11-task multiple-choice mean (without BoolQ, whose majority-class flips move the 12-task mean by up to 20 points at this size) before and after instruction tuning. The modular variant, which also routes the intra-layer edge, is best on loss at 75M; its routing cost is 1.33$\times$ dense here and it is not better than FourWay routing at 150M or 300M (Appendix~\ref{app:modular}).}
+\label{tab:locality_all}\end{table*}
+
+\subsection{Shared-slice 75M, 150M and 300M pairs downstream}
+\label{app:shared_down}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llcccc}\toprule
+size & model & stage & MC acc. (12) & GSM8K bpb & WikiText bpb \\\midrule
+75M & dense & base & 0.304 & 0.010 & 1.840 \\
+75M & dense & +Alpaca & 0.309 & 0.010 & 1.801 \\
+75M & dense & +SmolTalk & 0.309 & 0.015 & 1.613 \\
+75M & \dagf{} & base & 0.316 & 0.025 & 1.759 \\
+75M & \dagf{} & +Alpaca & 0.319 & 0.015 & 1.733 \\
+75M & \dagf{} & +SmolTalk & 0.336 & 0.010 & 1.502 \\
+150M & dense & base & 0.336 & 0.010 & 1.593 \\
+150M & dense & +Alpaca & 0.337 & 0.015 & 1.560 \\
+150M & dense & +SmolTalk & 0.340 & 0.020 & 1.337 \\
+150M & \dagf{} & base & 0.361 & 0.005 & 1.519 \\
+150M & \dagf{} & +Alpaca & 0.366 & 0.005 & 1.491 \\
+150M & \dagf{} & +SmolTalk & 0.361 & 0.010 & 1.219 \\
+300M & dense & base & 0.379 & 0.025 & 1.402 \\
+300M & dense & +Alpaca & 0.367 & 0.025 & 1.403 \\
+300M & dense & +SmolTalk & 0.368 & 0.015 & 1.145 \\
+300M & \dagf{} & base & 0.397 & 0.015 & 1.331 \\
+300M & \dagf{} & +Alpaca & 0.395 & 0.015 & 1.324 \\
+300M & \dagf{} & +SmolTalk & 0.393 & 0.010 & 1.055 \\
+\bottomrule\end{tabular}
+\caption{The original 12B-slice pairs before and after instruction tuning (the 300M \dagf{} of this slice stopped at 9000 of 12000 steps, so its margin is a lower bound). Same metrics as Table~\ref{tab:downstream}.}
+\label{tab:shared_down}\end{table*}
+
+\subsection{Pruning: absolute losses, controls and immediate damage}
+\label{app:prune}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llcccc}\toprule
+size & setting & dense & \dagf{} & peak post-prune dense & peak post-prune \dagf{} \\\midrule
+75M & unpruned finetune & 2.388 & 2.223 & - & - \\
+75M & 30\% heads+channels & 2.478 & 2.298 & 2.749 & 2.578 \\
+75M & 50\% heads+channels & 2.590 & 2.391 & 2.841 & 2.604 \\
+75M & 70\% heads+channels & 2.829 & 2.614 & 3.199 & 2.913 \\
+75M & 50\%, random importance & 3.029 & 2.935 & 4.513 & 4.729 \\
+75M & 33\% whole blocks & 2.610 & 2.547 & 4.760 & 4.377 \\
+75M & 50\% whole blocks & 2.832 & 3.452 & 6.232 & 7.981 \\
+150M & unpruned finetune & 1.883 & 1.743 & - & - \\
+150M & 30\% heads+channels & 1.957 & 1.807 & 2.199 & 2.050 \\
+150M & 50\% heads+channels & 2.071 & 1.899 & 2.286 & 2.068 \\
+150M & 70\% heads+channels & 2.278 & 2.091 & 2.547 & 2.317 \\
+150M & 50\%, random importance & 2.280 & 2.128 & 3.240 & 3.590 \\
+150M & 33\% whole blocks & 2.200 & 2.170 & 3.945 & 3.726 \\
+150M & 50\% whole blocks & 2.380 & 2.245 & 5.707 & 7.929 \\
+300M & unpruned finetune & 1.608 & 1.488 & - & - \\
+300M & 30\% heads+channels & 1.665 & 1.541 & 1.888 & 1.762 \\
+300M & 50\% heads+channels & 1.762 & 1.620 & 1.904 & 1.772 \\
+300M & 70\% heads+channels & 1.967 & 1.790 & 2.087 & 2.176 \\
+\bottomrule\end{tabular}
+\caption{Final held-out MathInstruct NLL after 2000 finetuning steps for every pruning run of the shared-slice pairs, and the highest NLL observed immediately after a pruning update (before recovery). Whole-block pruning removes entire attention or MLP blocks; the 75M \dagf{} at half the blocks is the one setting where it loses (Section~\ref{sec:pruning}). With random unit selection both families lose far more than with Taylor importance and the \dagf{} edge shrinks at 75M.}
+\label{tab:prune_all}\end{table*}
+
+\subsection{Static substitution on all held-out sets}
+\label{app:static}
+\begin{table*}[h]\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llccccc}\toprule
+model & set & intact & predictor $\to$ position mean & predictor $\to$ global mean & local $\to$ mean & both $\to$ mean \\\midrule
+75M (locality arm, both) & wikitext2 & 6.164 & 6.161 & 6.162 & 6.582 & 6.595 \\
+75M (locality arm, both) & mathinstruct & 4.933 & 4.928 & 4.934 & 5.267 & 5.272 \\
+75M (locality arm, both) & gsm8k & 5.080 & 5.075 & 5.076 & 5.353 & 5.353 \\
+75M (locality arm, both) & own & 4.009 & 4.012 & 4.038 & 4.465 & 4.502 \\
+300M & wikitext2 & 3.544 & 3.547 & 3.604 & 4.251 & 4.297 \\
+300M & mathinstruct & 2.565 & 2.556 & 2.600 & 3.065 & 3.065 \\
+300M & gsm8k & 2.937 & 2.903 & 2.961 & 3.550 & 3.527 \\
+300M & dolma21b & 2.222 & 2.223 & 2.261 & 2.920 & 2.962 \\
+1B, 5B tok & wikitext2 & 3.307 & 3.310 & 3.364 & 3.996 & 4.027 \\
+1B, 5B tok & mathinstruct & 2.403 & 2.405 & 2.446 & 2.940 & 2.959 \\
+1B, 5B tok & gsm8k & 2.755 & 2.760 & 2.811 & 3.388 & 3.419 \\
+1B, 5B tok & dolma21b & 2.076 & 2.077 & 2.117 & 2.782 & 2.812 \\
+1B, 10B tok & wikitext2 & 3.219 & 3.221 & 3.281 & 3.916 & 3.950 \\
+1B, 10B tok & mathinstruct & 2.321 & 2.322 & 2.366 & 2.849 & 2.868 \\
+1B, 10B tok & gsm8k & 2.644 & 2.649 & 2.704 & 3.264 & 3.295 \\
+1B, 10B tok & dolma21b & 2.005 & 2.005 & 2.049 & 2.758 & 2.791 \\
+\bottomrule\end{tabular}
+\caption{Held-out NLL when one routing channel is replaced by its mean over 128 held-out windows of the model's own corpus (`own' / `dolma21b' is that corpus's cache). The predictor's per-token output is replaceable at every size and on every set; the local correction channel's is not.}
+\label{tab:static_all}\end{table*}
+
+\subsection{Judged chat evaluation: categories and scores}
+\label{app:chat}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{2.2pt}
+\begin{tabular}{llcccccccc}\toprule
+SFT & comparison & writing & roleplay & reasoning & math & coding & extraction & stem & humanities \\\midrule
+Alpaca & 300M vs.\ 300M & 0.72 & 0.57 & 0.47 & 0.40 & 0.60 & 0.55 & 0.75 & 0.47 \\
+Alpaca & 300M mod. vs.\ 300M & 0.80 & 0.53 & 0.42 & 0.50 & 0.50 & 0.72 & 0.55 & 0.68 \\
+Alpaca & 1B@5B vs.\ 1B@5B & 0.55 & 0.60 & 0.42 & 0.45 & 0.42 & 0.62 & 0.75 & 0.85 \\
+Alpaca & 1B@5B vs.\ 1B@10B & 0.42 & 0.82 & 0.50 & 0.28 & 0.53 & 0.65 & 0.53 & 0.75 \\
+Alpaca & 1B@10B vs.\ 1B@10B & 0.40 & 0.75 & 0.42 & 0.33 & 0.65 & 0.65 & 0.53 & 0.75 \\
+SmolTalk & 300M vs.\ 300M & 0.82 & 0.82 & 0.53 & 0.80 & 0.65 & 0.57 & 0.60 & 0.72 \\
+SmolTalk & 300M mod. vs.\ 300M & 0.68 & 0.62 & 0.35 & 0.50 & 0.55 & 0.57 & 0.70 & 0.62 \\
+SmolTalk & 1B@5B vs.\ 1B@5B & 0.78 & 0.62 & 0.55 & 0.53 & 0.42 & 0.57 & 0.70 & 0.53 \\
+SmolTalk & 1B@5B vs.\ 1B@10B & 0.82 & 0.62 & 0.50 & 0.38 & 0.60 & 0.68 & 0.65 & 0.53 \\
+SmolTalk & 1B@10B vs.\ 1B@10B & 0.80 & 0.60 & 0.78 & 0.55 & 0.50 & 0.65 & 0.57 & 0.70 \\
+Alpaca & 300M s2 vs.\ 300M s2 & 0.55 & 0.47 & 0.68 & 0.60 & 0.60 & 0.60 & 0.72 & 0.62 \\
+Alpaca & 300M mod. s2 vs.\ 300M s2 & 0.90 & 0.57 & 0.57 & 0.53 & 0.42 & 0.65 & 0.70 & 0.47 \\
+SmolTalk & 300M s2 vs.\ 300M s2 & 0.78 & 0.68 & 0.50 & 0.68 & 0.65 & 0.47 & 0.50 & 0.88 \\
+SmolTalk & 300M mod. s2 vs.\ 300M s2 & 0.53 & 0.60 & 0.50 & 0.78 & 0.62 & 0.57 & 0.50 & 0.50 \\
+\bottomrule\end{tabular}
+\caption{Per-category win rate of \dagf{} (10 prompts per category, so $\pm 0.15$ is noise). ``300M mod.'' is the modular variant.}
+\label{tab:chat_cats}\end{table*}
+\begin{table*}[h]\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccc}\toprule
+model & mean score (1--10) & answer tokens & ended on end-of-turn \\\midrule
+300M dense / Alpaca & 1.91 & 109 & 0.74 \\
+300M \dagf{} / Alpaca & 2.15 & 109 & 0.72 \\
+300M modular / Alpaca & 1.95 & 114 & 0.71 \\
+1B dense 5B / Alpaca & 2.06 & 103 & 0.74 \\
+1B \dagf{} 5B / Alpaca & 2.14 & 122 & 0.75 \\
+1B dense 10B / Alpaca & 2.19 & 111 & 0.71 \\
+1B \dagf{} 10B / Alpaca & 2.33 & 122 & 0.70 \\
+300M dense / SmolTalk & 2.12 & 210 & 0.34 \\
+300M \dagf{} / SmolTalk & 2.52 & 210 & 0.35 \\
+300M modular / SmolTalk & 2.34 & 208 & 0.38 \\
+1B dense 5B / SmolTalk & 2.06 & 210 & 0.34 \\
+1B \dagf{} 5B / SmolTalk & 2.35 & 200 & 0.40 \\
+1B dense 10B / SmolTalk & 2.12 & 204 & 0.38 \\
+1B \dagf{} 10B / SmolTalk & 2.52 & 210 & 0.38 \\
+300M dense seed 2 / Alpaca & 1.99 & 117 & 0.66 \\
+300M \dagf{} seed 2 / Alpaca & 2.14 & 112 & 0.71 \\
+300M modular seed 2 / Alpaca & 2.01 & 107 & 0.74 \\
+300M dense seed 2 / SmolTalk & 2.16 & 211 & 0.31 \\
+300M \dagf{} seed 2 / SmolTalk & 2.45 & 199 & 0.41 \\
+300M modular seed 2 / SmolTalk & 2.40 & 206 & 0.38 \\
+\bottomrule\end{tabular}
+\caption{Single-answer judge scores (MT-Bench single-answer prompt, same judge), mean answer length and the fraction of answers that stopped on the end-of-turn token rather than the 256-token cap. Scores sit near 2 of 10 for every model at this scale; the pairwise win rate is the informative number.}
+\label{tab:chat_scores}\end{table*}

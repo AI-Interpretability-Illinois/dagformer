@@ -1,0 +1,493 @@
+% NAACL 2026 submission draft. Built on the ACL style files (acl.sty, acl_natbib.bst).
+% Change "review" to "final" for the camera-ready version.
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+% entity colors shared with the data figures (Okabe-Ito): ours, baseline, per-layer routers
+\definecolor{cDag}{HTML}{D55E00}
+\definecolor{cDense}{HTML}{6E6E6E}
+\definecolor{cLocal}{HTML}{009E73}
+
+\newcommand{\dagf}{DAGFormer}
+\newcommand{\dense}{dense OLMo-2}
+\newcommand{\todo}[1]{\textcolor{red}{[#1]}}
+\newcommand{\valpha}{\boldsymbol{\alpha}}
+\newcommand{\pend}{\textcolor{black!45}{\textit{run.}}}
+
+\title{One Predictor, One Graph: Learning a Transformer's\\Cross-Layer Topology from Its Tokens}
+%alternative title: small topology predictors learn to route dynamic attention of large language models across layers and heads
+
+\author{Anonymous NAACL submission}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A layer in a Transformer model transmit information to deeper layers through a shared residual stream during the forward pass. Recent architectures improve on this standard design with per-token routing: every layer reads all earlier layers' outputs through weights that depend on the input. They share one defect: each layer chooses its inputs with a router of its own, so no module takes a global view of the routing structure throughout the model. In this work, we propose \dagf{}, in which a small predictor, jointly pretrained with the Transformer, reads only the input tokens and plans the cross-layer graph of the whole model before the backbone runs. On matched OLMo-2 pairs from 75M to 1B parameters, \dagf{} lowers held-out loss at every size and at equal compute with the routing cost charged, by a margin that grows with size; a 1B \dagf{} trained on half the tokens beats the dense 1B model, and the gain is consistent across benchmarks and carries to evaluations after instruction tuning. The learned graph also makes models degrade more gracefully under structured pruning, without any re-routing.
+\end{abstract}
+
+\section{Introduction}
+
+A Transformer \citep{vaswani2017} composes its layers through residual connections \citep{he2016resnet}: every attention head and MLP reads the same running sum and writes back into it. Mechanistic analyses describe this residual stream as the communication channel between components \citep{elhage2021}. Its width is shared by every layer, so which earlier computation a layer can read is fixed by design: a late layer sees an early result only inside a sum to which every intermediate layer has added its own.
+
+A line of work relaxes this fixed connectivity. Dense connections \citep{huang2017densenet} and depth-weighted averaging with learned static weights \citep{pagliardini2024denseformer} let a layer read earlier layers' outputs directly. Hyper-connections \citep{zhu2024hyperconnections} widen the residual stream into several streams whose mixing weights are learned and, in the dynamic variant, input-dependent, and mHC \citep{mhc2026} constrains those mixing matrices so the scheme trains stably at scale. Multiway dynamic dense connections \citep{muddformer2025} compute input-dependent weights over all earlier layers' outputs, separately for the query, key, value and residual inputs of a block. These models reach the loss of Transformers trained with substantially more compute \citep{zhu2024hyperconnections,muddformer2025}.
+
+All of the dynamic variants make the same design decision: routing is \emph{local}. Each layer carries its own router, which reads that layer's current hidden state and decides what that layer reads. The cross-layer graph is therefore assembled greedily, one layer at a time, and no component of the model holds it. Three things follow. The graph cannot be planned jointly from the input. It cannot be inspected, frozen or replaced as an object. And one cannot tell whether the gain comes from per-token re-routing or from the connections themselves, because removing a per-layer router removes its connections too.
+
+We propose to predict the whole topology with one separate module that reads only the input, before the backbone runs. One module then serves every layer, so its parameters are shared across depth. The topology exists as an object before the first layer is computed, so it can be read, averaged over tokens, frozen or swapped between inputs. And the local design remains available as an optional second channel, which lets the two sources of routing be compared inside one model. A topology computed before the backbone runs also serves a broader aim. Post-hoc interpretability explains a computation only after it has produced its output, whereas generative interpretability asks that a model's inference pass expose checkpoints that humans can understand and that can be causally intervened on before the output is committed \citep{yang2026generative}. A predicted topology meets the second requirement by construction, since the backbone depends on it and replacing it is a well-defined intervention; whether it can also be made understandable to humans is a question this design opens.
+
+\dagf{} implements this design with a small causal encoder over the token ids (Figure~\ref{fig:arch}). For every layer and attention head it emits mixing weights over the embedding and all earlier layer outputs for the head's query, key and value inputs, and for every layer a mixing for its residual input. The backbone is an unchanged OLMo-2 \citep{olmo2} whose per-layer inputs are replaced by these mixtures. At initialization the weights select only the previous layer, so training starts from exactly the dense model; a variant adds zero-initialized per-layer routers on the hidden state, the local design of prior work.
+
+We train matched pairs of dense OLMo-2 and \dagf{} from 75M to 1B parameters on Dolma \citep{soldaini2024dolma} and charge the routing cost in every compute comparison. \dagf{} is better at every size and at equal compute, by a margin that grows with size, and the gain survives instruction tuning and a judged chat comparison; dense models given the routing parameters as extra width close most of the gap at the smallest size and less than half of it at the next. Trained with the same pipeline, static cross-layer weights recover little of the gain, and a per-layer-router baseline is behind at two sizes and ahead at one. Ablations show that a shared predictor matches per-layer routers and beats unshared per-layer predictors with fewer parameters. Under structured pruning during finetuning, \dagf{} degrades more gracefully than dense models in all but one setting and than the per-layer-router baselines, and freezing its predictor changes nothing. 
+
+\textbf{Our contributions are as follows:}
+\begin{itemize}\setlength\itemsep{0pt}
+\item \dagf{}, a Transformer whose per-head cross-layer topology is emitted by one separate predictor over the tokens, trained jointly from the dense model (Section~\ref{sec:method}).
+\item A matched scaling study from 75M to 1B with the routing cost charged and with DenseFormer, hyper-connection, mHC and MUDDFormer baselines on the same pipeline, carried through instruction tuning and judged chat (Section~\ref{sec:experiments}).
+\item Ablations of the routing source and a structured-pruning study showing that the learned graph makes models degrade more gracefully, without re-planning by the predictor (Sections~\ref{sec:analysis}, \ref{sec:pruning} and~\ref{sec:discussion}).
+\end{itemize}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig1_architecture.pdf}
+% \resizebox{0.86\textwidth}{!}{\input{figures/method}}  % previous TikZ figure
+\caption{\dagf{}. (a) The topology predictor reads the input sequence and emits, for token $x_t$, the planned graph as four triangular matrices $\hat{A}^{Q}$, $\hat{A}^{K}$, $\hat{A}^{V}$ and $\hat{A}^{R}$, with a row for every read of every routed layer (the query, key and value of each head; the residual) and a column for every earlier output (the embedding and the layers before it). The backbone reads along this graph: the outlined rows are the edges into layer 5, shown above that layer after the local refinement has added $\Delta\valpha$, and drawn as rings on its heads (value in front; key, query and residual behind) with edge width equal to the matrix entry. (b) In the trained 300M model the graph changes token by token: the share of the value read of layer 2, head 4 taken from the embedding $X_0$ (share: $|\alpha_j|\,\|W X_j\|$ normalized over sources), per token of the example (color, 0 to 1), from the planned graph alone and after refinement. The bars average the same share over 3,066 held-out WikiText tokens, where refinement raises it from below 0.01 to 0.47 on content words, 0.07 on function words and 0.08 on punctuation. (c) The graph the same model learned, averaged over held-out text: the mean share of every read (rows: layer $\times$ head, layers 2 to 12) taken from every earlier output (columns); 33 to 59\% of each matrix's mass lies on non-adjacent sources.}
+\label{fig:arch}
+\end{figure*}
+
+\section{\dagf{}}
+\label{sec:method}
+
+\dagf{} pairs a Transformer backbone with a small \emph{topology predictor} that reads the input tokens and emits a weighted directed acyclic graph assigning every attention head and every layer its sources among the earlier outputs; the backbone computes along this graph (Figure~\ref{fig:arch}). The predictor has two parts: a causal encoder over the tokens that plans the graph for the whole depth at once, and a tiny network at each layer that refines the planned graph from that layer's own input.
+
+\subsection{Setup}
+\label{sec:setup}
+
+Let $X_0(t)\in\mathbb{R}^D$ be the embedding of token $t$ and $X_l(t)$ the output of layer $l$ in an $L$-layer decoder of width $D$ with $H$ attention heads; we omit $t$ when it is clear from context. A dense OLMo-2 layer \citep{olmo2} reads $X_{l-1}$ $3H{+}1$ times: head $h$ forms $q_h = W_q^h X_{l-1}$, $k_h = W_k^h X_{l-1}$ and $v_h = W_v^h X_{l-1}$, and the residual $R_l = X_{l-1}$ carries the stream forward, with the update
+\begin{align*}
+X_l &= R_l + a_l + m_l,\\
+a_l &= \mathrm{Norm}\big(\mathrm{Attn}_l(q,k,v)\big),\\
+m_l &= \mathrm{Norm}\big(\mathrm{MLP}_l(R_l + a_l)\big).
+\end{align*}
+All $3H{+}1$ reads see the same vector, and an earlier layer's output reaches them only inside the sum $X_{l-1}$. \dagf{} instead gives every read of a routed layer ($l\ge2$) its own weight on each earlier output $X_0,\dots,X_{l-1}$; the $(3H{+}1)\,l$ weights of layer $l$, written $\valpha^{(l)}(t)$, together over all routed layers make up the graph of token $t$, and they fill the four triangular matrices of Figure~\ref{fig:arch}, one row per read and one column per source.
+
+\subsection{Topology predictor}
+\label{sec:predictor}
+
+The input sequence first goes into a small network, called the topology predictor, that generates the connection graph for the backbone LLM. The predictor embeds the tokens with its own token and position embeddings of width 256, encodes them with two causal Transformer layers with four heads, passes each output vector $z$ through a shared trunk $u=\mathrm{GELU}(W_u\,\mathrm{LN}(z))\in\mathbb{R}^{512}$, and ends in one linear head per routed layer, which produces that layer's adjacency matrix, with rows for the query, key and value reads of every head and for the residual (Figure~\ref{fig:arch}a, top):
+\begin{equation}
+\hat{\valpha}^{(l)} = W^{(l)} u + b^{(l)},
+\label{eq:predictor}
+\end{equation}
+where $W^{(l)}\in\mathbb{R}^{(3H+1)l\times 512}$ and $b^{(l)}\in\mathbb{R}^{(3H+1)l}$ are the head's weight and bias; the $(3H{+}1)\,l$ outputs are reshaped into the matrix. The graph thus depends on the input and changes as the sequence grows during generation.
+
+Each layer adds a local term to its planned matrix, computed by a tiny network from the layer input $X_{l-1}$:
+\begin{equation}
+\valpha^{(l)} = \hat{\valpha}^{(l)} + W_2^{(l)}\,\mathrm{GELU}\big(W_1^{(l)}\,\mathrm{LN}(X_{l-1})\big),
+\label{eq:refine}
+\end{equation}
+where $W_1^{(l)}\in\mathbb{R}^{128\times D}$ and $W_2^{(l)}\in\mathbb{R}^{(3H+1)l\times 128}$. The local term lets a layer adjust its reads with what the backbone has computed so far.
+
+Since the encoder is causal, the graph of a token never depends on later tokens, and \dagf{} generates left to right like any decoder. All layers are planned from the same encoding of the sequence, because the trunk is shared; a deeper backbone only adds linear heads. The planned term never sees the backbone and is fixed before the first layer runs, which is what lets Section~\ref{sec:analysis} read the graph, average it over inputs, freeze it, and swap it between inputs with the backbone unchanged.
+
+\subsection{Routed layers}
+\label{sec:routed}
+
+The backbone LLM then runs along this graph. In routed layer $l$, each head forms its query, key and value from weighted sums of the earlier outputs, and so does the residual:
+\begin{equation}
+\begin{aligned}
+q_h &= \sum_{j<l}\alpha^{(l)}_{q,h,j}\,W_q^h X_j, & k_h &= \sum_{j<l}\alpha^{(l)}_{k,h,j}\,W_k^h X_j,\\
+v_h &= \sum_{j<l}\alpha^{(l)}_{v,h,j}\,W_v^h X_j, & R_l &= \sum_{j<l}\alpha^{(l)}_{r,j}\,X_j,
+\end{aligned}
+\label{eq:mix}
+\end{equation}
+where $\alpha^{(l)}_{q,h,j}$ is the entry of $\valpha^{(l)}$ in the row of head $h$'s query read and the column of source $X_j$, and likewise for $k$, $v$ and $r$. Other modules, attention with QK-norm on $q_h$, $k_h$, $v_h$, the MLP on $R_l+a_l$, and the layer output $X_l=R_l+a_l+m_l$, remain unchanged from the standard Transformer. In practice, each layer runs its fused query, key and value projection once over the stacked sources and then takes the weighted sums of Eq.~\ref{eq:mix} in head space. Layer 1 has the embedding as its only source and is not routed.
+
+Mixing per head lets two heads of the same layer attend from different depths, and mixing the residual once per layer sets the stream that the MLP reads and the layer writes to. The weights are unconstrained reals, so a read can amplify a source, or take the difference $X_j - X_{j-1}$, which no convex combination of the sums can isolate.
+
+\subsection{Initialization}
+\label{sec:init}
+
+If every row of $\valpha^{(l)}$ is the one-hot vector that selects $X_{l-1}$, Eq.~\ref{eq:mix} reduces to the dense layer. We therefore start training there: $W^{(l)}$ and $W_2^{(l)}$ are initialized to zero and every row of $b^{(l)}$ to that one-hot vector, so \dagf{} at step 0 is exactly the dense OLMo-2 model. Predictor and backbone are then trained jointly from scratch on the language-modeling loss.
+
+% ---- previous Section 2, kept for reference while the section is rewritten ----
+% \dagf{} learns the cross-layer topology of a Transformer from its input tokens. Its topology predictor maps the tokens to a directed acyclic graph (DAG) that connects every attention head and layer to the embedding and all earlier layers, which gives \dagf{} its name. A local correction in each layer refines this graph per token from the hidden state, and the backbone Transformer computes along the result (Figure~\ref{fig:arch}). Section~\ref{sec:notation} sets up notation, Section~\ref{sec:mixing} describes how the backbone reads from the graph, and Sections~\ref{sec:predictor} to~\ref{sec:efficiency} cover the topology predictor, the local correction, initialization and efficiency.
+%
+% \dagf{} separates a Transformer into a backbone that computes and a small topology predictor that decides how the backbone's layers are connected (Figure~\ref{fig:arch}). Let $X_0$ be the token embedding and $X_l$ the output of layer $l$. In a standard Transformer, layer $l$ reads only $X_{l-1}$, for its queries, keys, values and residual alike. In \dagf{}, the predictor reads the input tokens and, before the backbone runs, emits for every token $t$ and every layer $l$ a set of routing weights $\valpha^{(l)}(t)$; layer $l$ then reads each of these four inputs as a weighted mixture of all earlier outputs $X_0,\dots,X_{l-1}$. The cross-layer graph of the whole model is thus planned by one module from the input, and the backbone executes it.
+%
+% The predictor sees only the token ids. It embeds them with a 256-dimensional token and position embedding, contextualizes them with a 2-layer causal Transformer encoder with 4 heads, passes the result through a shared trunk (LayerNorm, a linear map to 512, GELU) and ends in one linear head per layer $l$ that emits that layer's routing weights. Because the encoder is causal, the model stays autoregressive, and because the predictor depends on the tokens alone, the whole topology is computed before the first backbone layer. Its output heads are initialized to zero and each layer's bias to the one-hot vector that selects $X_{l-1}$, so \dagf{} is exactly the dense model at step 0; from there predictor and backbone are trained jointly, and the weights are unconstrained reals (no softmax).
+%
+% The routing weights follow the four inputs of a layer. For layer $l\ge2$, head $h$ and source $X_j$, $j<l$, the predictor emits a query weight $\alpha^{(l)}_{q,h,j}(t)$, a key weight $\alpha^{(l)}_{k,h,j}(t)$ and a value weight $\alpha^{(l)}_{v,h,j}(t)$, and for the layer as a whole a residual weight $\alpha^{(l)}_{r,j}(t)$: $(3H{+}1)\,l$ coefficients for a layer with $H$ heads. Layer 1 has the single source $X_0$ and is not routed. This four-stream decomposition is MUDDFormer's \citep{muddformer2025}, whose weight for a source layer is one scalar per position broadcast over all channels; here the query, key and value weights are per attention head.
+%
+% The backbone is the OLMo-2 decoder \citep{olmo2}, which applies RMSNorm to the outputs of the attention and MLP sub-layers rather than to their inputs and normalizes queries and keys (QK-norm). In the dense model $X_l = X_{l-1} + \mathrm{Attn}_l(X_{l-1}) + \mathrm{MLP}_l(X_{l-1} + \mathrm{Attn}_l(X_{l-1}))$. \dagf{} replaces each of the four reads of $X_{l-1}$ by its mixture,
+% \begin{align}
+% q_h &= \textstyle\sum_{j=0}^{l-1} \alpha^{(l)}_{q,h,j}(t)\; W^{h}_{q}\, X_j(t), \label{eq:mix}\\
+% R_l(t) &= \textstyle\sum_{j=0}^{l-1} \alpha^{(l)}_{r,j}(t)\; X_j(t), \nonumber
+% \end{align}
+% with $k_h$ and $v_h$ defined like $q_h$, and updates the layer as $X_l = R_l + \mathrm{Attn}_l + \mathrm{MLP}_l(R_l + \mathrm{Attn}_l)$. The query and key mixtures pass through QK-norm after mixing and the value mixture through an added RMSNorm, which keeps the value stream from developing outliers. The mixing is applied to the \emph{projected} sources, so each layer runs its fused QKV projection once over the stacked sources and then takes an $l$-way weighted sum in head space; attention and the MLP are unchanged.
+%
+% \paragraph{Local correction.} To compare routing sources inside one model, the \emph{corrected} variant adds at every routed layer a correction MLP ($D\to 128\to(3H{+}1)\,l$, zero-initialized) that reads the hidden state $X_{l-1}(t)$ and adds its output to $\valpha^{(l)}(t)$. The correction MLP is the local, hidden-state router of hyper-connections and MUDDFormer at our granularity. Unless stated otherwise \dagf{} means the corrected variant; Section~\ref{sec:static} and Table~\ref{tab:locality} separate the two channels.
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Data}
+\label{sec:data}
+
+All pretraining uses Dolma v1.7 \citep{soldaini2024dolma}. Three tokenizations were used (a 12B-token slice for the 75M to 600M pairs, a local rebuild of it, and a 21B-token one for the 300M and 1B pairs), so every final checkpoint is re-evaluated on the same held-out sets: WikiText-2 \citep{merity2016wikitext}, a held-out slice of MathInstruct \citep{yue2023mammoth}, GSM8K solutions \citep{cobbe2021gsm8k}, and a source-balanced Dolma set drawn from files no training corpus consumed (Appendix~\ref{app:cache}). WikiText-2 is the primary metric; the balanced set gives the same orderings with gaps 10 to 25\% smaller.
+
+\subsection{Setup and baselines}
+\label{sec:setup}
+
+\paragraph{Matched pairs.} Every comparison is between a dense OLMo-2 and a \dagf{} with the identical backbone, tokenizer, data order, token budget and optimizer. Sizes are 75M (6 layers, $D{=}512$, 8 heads), 150M (8, 768, 12), 300M (12, 1024, 16) and 1B (16, 2048, 16), counting backbone parameters with tied embeddings; routing adds 29M to 37M parameters, 25.7M of them the predictor's token embedding. Sequences are 1024 tokens, 524K tokens per step (Table~\ref{tab:hparams}). The 75M, 150M and 300M runs train for about 21 tokens per parameter, close to the compute-optimal ratio of about 20 implied by \citet{hoffmann2022chinchilla}; the 1B pair trains for 5B tokens and is continued to 10B with a re-warmed schedule, giving matched pairs at both budgets. Seed 42 fixes initialization and data order; the 300M pair is repeated with a second seed.
+
+\paragraph{Compute.} Per token, the dominant extra cost of \dagf{} is projecting $l$ sources instead of one at layer $l$, $\sum_{l\ge2} (l{-}1)\cdot 3D^2$ extra multiply-accumulates over the dense $\sum_l (4D^2 + 3DI)$, plus the mixing sums, the predictor and the corrections: 1.18$\times$ the dense FLOPs per token at 75M, rising to 2.13$\times$ at 1B (Appendix~\ref{app:flops}). Measured at inference (Table~\ref{tab:main}, bottom), a \dagf{} token takes 1.3 to 1.9$\times$ the dense time, the predictor 1 to 3\% of it: less than hyper-connections, mHC and MUDDFormer up to 300M, between them at 1B, and more than DenseFormer from 150M. No implementation is fused, unlike mHC's, which reports a 6.7\% training-time overhead with four streams \citep{mhc2026}. Training costs are in Appendix~\ref{app:flops}; compute-matched comparisons charge the analytic training FLOPs.
+
+\paragraph{Baselines.} Besides the matched dense model, we train post hoc, with the recipe, data, tokens and seed of the pair of the same size: DenseFormer \citep{pagliardini2024denseformer}, whose cross-layer weights do not depend on the input; hyper-connections in their recommended dynamic form with four streams \citep{zhu2024hyperconnections} and manifold-constrained hyper-connections (mHC; \citealp{mhc2026}), both with one connection module per attention and MLP sub-layer as in their papers; and MUDDFormer \citep{muddformer2025}, whose per-layer routers read the hidden state, the closest dynamic design. Hyper-connections have no official code release (the paper gives PyTorch-style pseudocode), so we use a widely used open implementation\footnote{\url{https://github.com/lucidrains/hyper-connections}} with the paper's LayerNorm and initialization; mHC uses DeepSeek's official PyTorch reference operations\footnote{\url{https://github.com/deepseek-ai/TileKernels}} with the paper's settings (4 streams, gating factors initialized to 0.01, 20 Sinkhorn-Knopp iterations). Appendix~\ref{app:posthoc} adds dense models given \dagf{}'s routing parameters as extra width, which separate capacity from routing, and static hyper-connections. We do not compare with mixture-of-experts or mixture-of-depths models, which route computation rather than connectivity, or with published numbers from other training pipelines.
+
+\paragraph{Evaluation tasks.} Base and instruction-tuned models are evaluated with the lm-evaluation-harness \citep{gao2024lmeval} on twelve tasks, eleven multiple-choice and one last-word prediction (ARC-Easy/Challenge, HellaSwag, PIQA, WinoGrande, OpenBookQA, SciQ, BoolQ, LAMBADA, CommonsenseQA, Social IQa, MathQA; \citealp{clark2018arc,zellers2019hellaswag,bisk2020piqa,sakaguchi2020winogrande,mihaylov2018openbookqa,welbl2017sciq,clark2019boolq,paperno2016lambada,talmor2019commonsenseqa,sap2019socialiqa,amini2019mathqa}) and on GSM8K (3-shot exact match on the first 200 problems); bits per byte of the gold GSM8K solutions and of WikiText are reported in the appendix. Instruction tuning uses Alpaca \citep{taori2023alpaca} in its cleaned release\footnote{\url{https://huggingface.co/datasets/yahma/alpaca-cleaned}} plus Dolly \citep{conover2023dolly}, or the smol-smoltalk subset of SmolTalk \citep{allal2025smollm2}, with assistant-only loss (Appendix~\ref{app:hparams}). Chat quality is judged on the 80 MT-Bench first turns \citep{zheng2023judge}: Qwen3-Coder-30B-A3B-Instruct \citep{qwen3,qwen3coder} compares each \dagf{} answer with the dense answer using the MT-Bench pairwise prompts (with the reference answer for math, reasoning and coding) in both orders; ties count as half and intervals are a bootstrap over prompts.
+
+\subsection{Main results}
+\label{sec:main}
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.6pt}
+\begin{tabular}{l rrrrr r r}
+\toprule
+& \multicolumn{5}{c}{baselines (WikiText-2 NLL $\downarrow$)} & & \\
+\cmidrule(lr){2-6}
+size & dense & DenseFormer & hyper-conn. & mHC & MUDDFormer & \dagf{} & \textbf{gap to dense} \\
+\midrule
+75M & 4.997 & 5.027 & 4.964 & \pend{} & 4.974 & \textbf{4.711} & \textbf{+0.29} \\
+150M & 4.268 & 4.246 & \pend{} & \pend{} & \textbf{4.041} & 4.085 & \textbf{+0.18} \\
+300M & 3.808 & 3.745 & \pend{} & \pend{} & 3.649 & \textbf{3.544} & \textbf{+0.26} \\
+1B, 5B tokens & 3.569 & \pend{} & -- & \pend{} & \pend{} & \textbf{3.307} & \textbf{+0.26} \\
+1B, 10B tokens & 3.446 & -- & -- & -- & -- & \textbf{3.219} & \textbf{+0.23} \\
+\midrule
+& \multicolumn{6}{c}{inference time per token relative to dense $\downarrow$} & \\
+\cmidrule(lr){2-7}
+\input{table_cost_rows}
+\end{tabular}
+\caption{Held-out WikiText-2 NLL (nats per token) at equal size, data and tokens; every model of a row shares recipe, data, token budget and seed. Hyper-conn.: dynamic hyper-connections with four streams (DHC$\times$4); mHC: manifold-constrained hyper-connections; both with one connection module per sub-layer as in their papers. Gap to dense: dense $-$ \dagf{}. Bottom: measured inference time per token relative to dense (bf16 forward pass over 8 sequences of 1024 tokens on one A100-40GB, median of 15; no implementation uses fused kernels); training cost is in Appendix~\ref{app:flops}. Bold: best per row. \pend{}: training; --: baselines are trained at 5B tokens only, and hyper-connections not at 1B, due to limit of computing. 75M and 150M use the local rebuild of the 12B slice; parameter-matched dense models, static hyper-connections, the other slice, the second 300M seed and the other held-out sets are in Appendix~\ref{app:posthoc} and~\ref{app:pairs}.}
+\label{tab:main}
+\end{table*}
+
+
+
+\dagf{} is better than the matched dense model at every size. On WikiText-2 it is 0.18 to 0.29 nats ahead from 75M to 300M and 0.26 and 0.23 nats ahead at 1B after 5B and 10B tokens (Table~\ref{tab:main}); the gap does not close over a 17$\times$ range of size and opens early in every run (Figure~\ref{fig:scaling}c). The same ordering holds on MathInstruct, GSM8K and the balanced set, on the second 12B slice, for the second 300M seed (Appendix~\ref{app:pairs}) and at every rate of a 75M learning-rate sweep from 2.5e-4 to 2e-3 (gap 0.23 to 0.32 nats, 0.23 best against best; Table~\ref{tab:lrsweep}). Of the routed baselines, only MUDDFormer at 150M is ahead of \dagf{}; Section~\ref{sec:discussion} discusses these comparisons.
+
+The gain holds on every evaluation task and survives instruction tuning. Before tuning \dagf{} is ahead on the 13-task mean at both sizes (36.2 against 34.2\% at 300M and 39.1 against 36.6\% at 1B; Table~\ref{tab:downstream}) and on 11 and 13 of the 13 tasks, although GSM8K accuracy is near the floor for every model (1.0 to 2.5\%). After either instruction-tuning recipe it stays ahead on the mean by 1.2 to 2.2 points and on 9 to 11 of the 13 tasks. In the judged chat comparison \dagf{} wins against the dense model of the same size and recipe in every case, with win rates of 0.57 and 0.69 at 300M and 0.56 and 0.64 at 1B (Alpaca and SmolTalk tuning; the 95\% interval excludes 0.5 after SmolTalk), and a second tuning run at 300M reproduces it (0.61 and 0.64). After 5B tokens the 1B \dagf{} also wins against the dense model trained on twice the tokens (0.56 and 0.60; Appendix~\ref{app:downstream}). In bits per byte, its margin on the gold GSM8K solutions is about 1.7$\times$ its WikiText margin (Appendix~\ref{app:downstream}).
+
+
+
+
+
+
+
+\begin{table*}[t]
+\centering\fontsize{8.1pt}{9.8pt}\selectfont
+\setlength{\tabcolsep}{1.4pt}
+\input{table_downstream}
+\caption{Evaluation tasks. Accuracy (\%) of the base models (base) and after instruction tuning on Alpaca-cleaned plus Dolly (+Alpaca) or SmolTalk (+SmolTalk), on twelve tasks, eleven multiple-choice and LAMBADA last-word prediction (normalized accuracy for ARC, HellaSwag, PIQA, OpenBookQA and MathQA, accuracy otherwise) and on GSM8K (3-shot exact match, first 200 problems); Mean: over the 13 tasks. Bold: better of the pair. 1B: after 10B tokens; the 1B models after 5B tokens, bits per byte and a second tuning seed are in Appendix~\ref{app:downstream}.}
+\label{tab:downstream}
+\end{table*}
+
+
+
+\section{Analysis}
+\label{sec:analysis}
+
+\subsection{Scaling with compute and parameters}
+\label{sec:scaling}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_scaling.pdf}
+\caption{Scaling of \dagf{} against matched dense OLMo-2. (a) Final WikiText-2 loss against backbone parameters for runs at 16 to 21 tokens per parameter, with power-law fits $L = E + A N^{-\alpha}$ per family (dense: 7 runs from 77M to 683M; \dagf{}: 6 runs from 77M to 304M, two corpora each); the 1B runs (hollow) are at 4 to 8 tokens per parameter and not fitted. (b) The same checkpoints and the 1B runs against training FLOPs with the routing cost included: the 1B \dagf{} at 5B tokens sits below the 1B dense model at 10B tokens at about the same compute. (c) Held-out loss along training for the four matched pairs, each on its own corpus's cache: the gap opens early in every run and persists.}
+\label{fig:scaling}
+\end{figure*}
+
+At equal training compute the margin grows with size. For each \dagf{} run we read off the dense compute that reaches its loss on the fit $L=E+KC^{-\gamma}$ (Figure~\ref{fig:scaling}b) and divide by \dagf{}'s compute: this compute multiplier is 1.22 to 1.36 at 75M, 1.20 to 1.25 at 150M, 1.65 to 1.93 at 300M and 2.13 (5B tokens) to 2.39 (10B tokens) at 1B, although \dagf{}'s cost per token grows from 1.18$\times$ to 2.13$\times$. The cleanest comparison needs no fit: the 1B \dagf{} trained on 5B tokens ($8.6{\times}10^{19}$ FLOPs) beats the 1B dense model trained on 10B tokens ($8.1{\times}10^{19}$) on WikiText-2 (3.307 vs 3.446), MathInstruct (2.403 vs 2.483) and GSM8K (2.755 vs 2.900).
+
+Extra parameters explain most of the gain at the smallest size and less than half at the next. Read through the dense curve of Figure~\ref{fig:scaling}a, a \dagf{} run is worth a dense model 1.20 to 1.27$\times$ its backbone size at 75M, 1.27 to 1.29$\times$ at 150M and 1.39 to 1.72$\times$ at 300M; counting the predictor's 29M to 32M parameters, the dense equivalent is 0.9 to 1.1$\times$ \dagf{}'s total size at 75M and 150M and 1.6$\times$ at 300M. The direct test agrees: the dense model with the routing parameters as extra width closes 70 to 89\% of the 75M gap and 4 to 42\% of the 150M gap across held-out sets, and \dagf{} stays ahead of it on every set at both sizes (Appendix~\ref{app:posthoc}).
+
+\subsection{The predictor learns a static graph}
+\label{sec:static}
+
+What the predictor contributes is one graph per position, not per-token re-routing. Because it is a separate module, we can replace its per-token output by its mean over held-out windows (Table~\ref{tab:static_all}). At 300M and 1B the per-position mean costs at most 0.005 nats on WikiText-2 (3.544 vs 3.547; 3.219 vs 3.221 for the 1B at 10B tokens) and a single global mean 0.04 to 0.06, while the same replacement of the local correction channel costs 0.4 to 0.7 nats, more than the whole gap over dense. Swapping the predictor's output between windows (activation patching; \citealp{vig2020causal,meng2022rome,zhang2024patching}) changes the loss by at most 0.007 nats from 75M to 300M (the local channel: 0.56 to 1.29).
+
+The token input is needed to learn the graph, not to apply it. In the predictor-only arm the per-token output carries 0.03 to 0.08 nats, yet replacing it by its position mean costs only 0.01 to 0.02, so the model routes per-token variation through a local channel when it has one. A table of the same weights trained from scratch with no input recovers only 17 to 23\% of the predictor-only arm's gain over dense (0.04 of 0.18 nats on the own cache, 0.06 of 0.39 on WikiText-2; Table~\ref{tab:locality}), and DenseFormer's learned static weights recover as little from 75M to 300M (at most 24\%; Table~\ref{tab:main}). The predictor is thus a parameterization that finds a good static graph, which Figure~\ref{fig:arch} shows for the 300M model and Appendix~\ref{app:topology} analyses.
+
+
+
+\section{Structured pruning}
+\label{sec:pruning}
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{2pt}
+\input{table_pruning}
+\caption{Pruning during domain finetuning on MathInstruct, every model of Table~\ref{tab:main} from its own checkpoint (75M and 150M: 12B' corpus; 300M: 21B corpus): held-out NLL of the unpruned finetune (0\%) and the loss increase relative to it with 50\% and 70\% of attention heads and MLP channels removed by Taylor importance. Bold: best per column. \pend{}: running. All sparsities and the frozen-router controls are in Table~\ref{tab:pruning_full}.}
+\label{tab:pruning}
+\end{table*}
+
+If the benefit is structural, a model whose heads read many earlier layers should lose less when units are removed, and the loss should not depend on the routers re-planning. We finetune each model on MathInstruct \citep{yue2023mammoth} for 2000 steps of 32K tokens; between steps 200 and 1400, attention heads and MLP channels are removed permanently on a cubic schedule \citep{zhu2017prune} by first-order Taylor importance on unit gates \citep{michel2019heads,molchanov2019taylor}, followed by 600 recovery steps. These are two of CoFi's unit types \citep{xia2022cofi}; every model of Table~\ref{tab:main} up to 300M is pruned from its own checkpoint with the same recipe, routers are never pruned, and we report backbone sparsity.
+
+\dagf{} degrades more gracefully than dense in all but one setting (Table~\ref{tab:pruning}): relative to its own unpruned finetune it loses less with half the heads and channels removed at every size and with 70\% removed at 150M and 300M, while at 75M it loses 22.2 against 17.9\%, though its NLL stays 0.15 nats lower. Because it starts lower, with half its units removed it is better than the unpruned dense finetune at 75M and 300M and within 1.5\% of it at 150M.
+
+The routed baselines degrade faster: at 300M, DenseFormer and MUDDFormer lose more than dense at both budgets, MUDDFormer most, and an earlier 150M comparison with MUDDFormer on a common corpus agrees (Table~\ref{tab:pruning_shared}).
+
+The predictor does not re-plan. Freezing it during prune-finetune changes the 300M result by 0.003 nats at 50\%, as on the earlier pairs at 75M and 150M (Table~\ref{tab:pruning_shared}); freezing the local correction as well costs 0.025, so the local channel adapts a little, while freezing DenseFormer's depth weights or MUDDFormer's routers changes their results by at most 0.004 (Table~\ref{tab:pruning_full}). The advantage lies in the set of sources each head can draw on (Appendix~\ref{app:prunewhy} discusses why). It is not immunity: with units removed at random, both families lose much more and the gap shrinks at 75M (Appendix~\ref{app:prune}).
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Is per-token routing necessary?} Dynamic cross-layer architectures motivate their routers by input dependence. Our separation shows that the gain of a token-reading predictor survives replacing its output by a per-position mean (Section~\ref{sec:static}), and that a model without hidden-state routers reaches nearly the same loss as one with them. The routing-source ablation (Table~\ref{tab:locality}, Appendix~\ref{app:locality}) varies only where $\valpha$ comes from in one 75M backbone: the shared predictor alone is within 0.017 nats of the full model and of the arm with local routers only. The benefit therefore lies mostly in the graph, a set of cross-layer connections and their weights, rather than in re-planning it per token. The graph is hard to learn without the input, though: static cross-layer weights trained directly recover little of the gain. Besides the input-free table of Section~\ref{sec:static}, DenseFormer is 0.01 to 0.03 nats worse than dense at 75M on every held-out set, closes 6 to 19\% of the gap at 150M and 16 to 24\% at 300M on every set but GSM8K, where it is 0.02 nats worse than dense, and static hyper-connections are up to 0.05 nats worse than dense at 75M and within 0.04 nats of it at 150M (Appendix~\ref{app:posthoc}). The separation does not show that a static graph is enough at inference for our shipped models: once a local channel is present the model comes to rely on its per-token output, and post-hoc sparsification of the learned graph costs a lot (Appendix~\ref{app:topology}). Distilling the learned graph into a fixed topology that a dense kernel can execute is a direction for future work.
+
+\paragraph{One global predictor or routers distributed across layers?} At equal parameters a shared predictor matches per-layer routers at 75M (Table~\ref{tab:locality}), and sharing is what makes a token-reading predictor work: it beats independent per-layer predictors that see the same tokens but share nothing by 0.027 nats on the own cache and 0.049 on WikiText-2, with 7M fewer parameters, and the ordering holds on MathInstruct and GSM8K and after tuning (Appendix~\ref{app:locality}). Against MUDDFormer, whose per-layer routers read the hidden state, \dagf{} is ahead at two sizes and behind at one: MUDDFormer is 0.16 to 0.29 nats worse than \dagf{} at 75M and 0.05 to 0.10 nats worse at 300M on all five held-out sets, and 0.04 nats better at 150M on four of five, single seeds each. Loss alone does not separate the two designs at this scale. What separates them is what a separate module allows: the graph can be averaged, frozen and patched, which is how Section~\ref{sec:static} could locate the gain, and the pruned models degrade more gracefully. Whether a predictor can also beat per-layer routers on loss at larger scale, for instance by planning routing that no single layer can see, is untested.
+
+\paragraph{Is the learned graph interpretable?} The predictor decides, before the backbone runs, which earlier results every head and layer combine, so its output is a natural place to audit or steer an inference pass: averaging, freezing and patching it are the causal interventions that generative interpretability asks of intermediate checkpoints \citep{yang2026generative}. We read the graph only in aggregate (Figure~\ref{fig:arch}, Appendix~\ref{app:topology}), and in the shipped models the per-token routing lives in the local channel, so we have not shown that the graph is meaningful to a human for a given input. A predictor-only \dagf{} at larger scale whose graph varies with the input in nameable ways, for instance by task or domain, could make the topology such a checkpoint, and routing among the outputs of specialised modules, which the modular variant begins to do (Appendix~\ref{app:modular}), points toward modular networks whose module outputs are themselves readable.
+
+\section{Related work}
+\label{sec:related}
+
+\paragraph{Cross-layer connectivity.} After highway and residual skips \citep{srivastava2015highway,he2016resnet}, DenseNet \citep{huang2017densenet} connected every layer to every earlier one, and transparent attention \citep{bapna2018transparent}, ELMo \citep{peters2018elmo}, DenseFormer \citep{pagliardini2024denseformer} and LAuReL \citep{menghani2024laurel} learn static weights over layer outputs. Hyper-connections \citep{zhu2024hyperconnections} widen the residual stream into several streams with learnable, optionally input-dependent, depth and width connections; mHC \citep{mhc2026} constrains the residual-mixing matrices to be doubly stochastic so that their product across depth stays bounded; in the dynamic variants of both, a layer's coefficients depend on its incoming hidden state. MUDDFormer \citep{muddformer2025} generates per-position weights for the query, key, value and residual streams from each layer's hidden state. \dagf{} shares MUDDFormer's four-stream decomposition (per head for $q,k,v$) and differs in the source of the weights: one separate predictor over the tokens for all layers, with hidden-state routers as an optional correction.
+
+\paragraph{Conditional computation.} Mixture-of-experts and mixture-of-depths models \citep{shazeer2017moe,fedus2022switch,raposo2024mod} route tokens to computation with a gate inside each routed layer. They choose which computation runs; \dagf{} chooses which earlier results a layer reads, for all layers at once.
+
+\paragraph{Structured pruning.} Head and channel pruning with Taylor importance on a gradual schedule \citep{michel2019heads,molchanov2019taylor,zhu2017prune} covers two of CoFi's unit types \citep{xia2022cofi}; Sheared LLaMA \citep{xia2023sheared} prunes and then retrains. We use pruning as a probe of how a learned topology distributes information, not to propose a pruning method.
+
+\section{Conclusion}
+
+\dagf{} plans the cross-layer topology of a Transformer with one predictor that reads only the tokens. On matched pairs from 75M to 1B it improves loss at every size and at equal compute, its gain carries downstream, and it degrades more gracefully under structured pruning. Because the predictor is separate, the topology becomes an object that can be inspected and intervened on.
+
+\section*{Limitations}
+\label{sec:limitations}
+
+\emph{Scale and seeds.} Our largest model has 1B parameters and is trained on 5 to 10B tokens, below its compute-optimal budget, and the fits pool runs from three tokenizations of Dolma. All pretraining runs but the 300M pair are single seeds; a second 300M seed moves each model by about 0.03 nats on WikiText-2 and MathInstruct and up to 0.08 on GSM8K, and the gap ranges from 0.26 to 0.31 nats over the four seed pairings, so differences below these are noise. The pruning cells are single runs. \emph{Cost.} Routing costs 1.18 to 2.13$\times$ dense FLOPs per token (measured 1.3 to 1.9$\times$ in inference and 1.3 to 2.2$\times$ in training); fused kernels would reduce this, and the predictor's 25.7M-parameter embedding could be tied to the backbone's. The shipped models rely on the local channel's per-token routing and cannot run with a fixed topology without retraining. \emph{Comparisons.} MUDDFormer trained with our recipe is 0.04 nats better than \dagf{} at 150M and 0.05 to 0.29 worse at 75M and 300M, each a single seed, so loss alone does not settle the comparison and the case for the separate predictor also rests on separability and pruning; the post-hoc baselines were trained at 1B for 5B tokens only and without hyper-connections, the parameter-matched dense models only at 75M and 150M, and only the 75M pair was swept over learning rates, where both models were still improving at the largest rate. \emph{Evaluation.} Models of this size sit near chance on harder benchmarks, and one LLM judge scored the chat comparison. \emph{Interpretability and scale.} We intervene on the learned graph only as a whole and inspect it only in aggregate. Whether its input-dependent part can be named, and whether the gains persist beyond 1B parameters, are left to follow-up work that scales \dagf{} up and analyses the predictor as the controller of the inference pass.
+
+\bibliography{references}
+% acl.sty already issues \bibliographystyle{acl_natbib}; a second one makes BibTeX complain.
+
+\appendix
+
+\section{Compute accounting}
+\label{app:flops}
+Forward MACs per token for the dense backbone are $\sum_{l=1}^{L}(4D^2 + 3DI) + VD$ plus attention over the context ($2TD$ per layer at sequence length $T$), with $D$ the model width, $I$ the MLP width and $V$ the vocabulary. \dagf{} adds, at every routed layer $l\ge2$, the projection of $l{-}1$ extra sources through the fused $q,k,v$ weights ($(l{-}1)\cdot 3D^2$), the per-head mixing sums ($l(3D + D)$), the predictor (embedding lookup, 2 encoder layers of width 256, trunk and per-layer heads) and the correction MLPs ($D\cdot 128 + 128\cdot(3H{+}1)\,l$ per layer). Training FLOPs are $6\times$ the forward MACs times tokens: the $C \approx 6N$ per token estimate of \citet{kaplan2020scaling} (a backward pass costs about twice the forward), applied to all the forward MACs above, so the unembedding, attention-context and routing terms that $6N$ leaves out are included. The ratios are 1.18 (75M), 1.33 (150M), 1.65 (300M) and 2.13 (1B); the predictor itself is under 2\% of the total, the source projections dominate. Table~\ref{tab:traincost} gives the measured training cost of every model of Table~\ref{tab:main}: forward and backward passes over 2 sequences of 1024 tokens with bf16 weights, as in pretraining, on one A100-40GB (median of 9 iterations after warm-up, no optimizer step). The baselines are measured at random initialization, since the weights do not change the speed. \dagf{} trains at 1.30 to 2.20$\times$ the dense time, close to its analytic ratio at 300M and 1B; mHC's reference operations, which run the Sinkhorn iterations unfused, are the slowest to train. Replacing the predictor by a constant table changes \dagf{}'s time by 1 to 3\%. At inference \dagf{} keeps every layer's output for the later layers to mix, so its peak memory for 8 sequences of 1024 tokens is 2.3 vs 1.9 GB (75M) to 7.8 vs 5.3 GB (1B). The 75M timings are dominated by per-kernel overhead (a dense forward pass takes 14 ms) and vary by up to 20\% between runs.
+
+\begin{table*}[h]
+\centering\footnotesize
+\input{table_traincost}
+\caption{Measured training cost: time per token of a forward and backward pass relative to the dense model of the same size (bf16 weights, 2 sequences of 1024 tokens, one A100-40GB, median of 9 iterations), with dense throughput in tokens per second for training and inference. Inference ratios are in Table~\ref{tab:main}.}
+\label{tab:traincost}
+\end{table*} The modular variant projects $2l{-}1$ sources per layer and costs 1.33 to 2.30$\times$.
+
+\section{Held-out sets}
+\label{app:cache}
+The 21B-token tokenization's held-out tail is the last windows of its last shard, and the eight tokenization workers each took a contiguous block of Dolma's source-sorted file list, so that tail is templated instruction and Wikipedia text only; 21B-corpus runs score about 2.2 nats on it while scoring about 3.5 on WikiText-2. The tail is used only to compare runs within that corpus (the 300M three-way and the 1B pairs, where all models see the same training mix). The 1.7B-token slice used by the locality ablation has a similar single-source tail. All cross-corpus numbers in the paper are on WikiText-2, MathInstruct and GSM8K.
+
+\section{Additional tables}
+\label{app:tables}
+
+\subsection{Downstream and chat per stage}
+\label{app:downstream}
+\begin{table*}[h]
+\centering\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\input{table_downstream_1b5b}
+\caption{Table~\ref{tab:downstream} for the 1B models after 5B tokens. \dagf{} wins the chat comparison against the dense model after 5B tokens (0.58 and 0.59 after Alpaca and SmolTalk tuning) and against the dense model after 10B tokens (0.56 and 0.60).}
+\label{tab:downstream_1b5b}
+\end{table*}
+Table~\ref{tab:downstream_full} gives every stage of Table~\ref{tab:downstream} and Table~\ref{tab:chat_full} every chat comparison, including the second instruction-tuning seed of the 300M pair. Repeating the 300M instruction tuning with a second seed moves the 12-task mean by at most 0.001 and the routed-minus-dense gaps by at most 0.003. Alpaca tuning leaves the multiple-choice mean within 0.002, SmolTalk lowers it by 0.7 to 1.4 points for every model, and GSM8K bits per byte improve by 0.13 to 0.25 after SmolTalk. Absolute judge scores are about 2 of 10 for every model; judging both orders cancels the judge's position bias (answer A wins 28 to 42\% of verdicts) at the cost of many ties.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{llrrr}
+\toprule
+ & & MC acc. & \multicolumn{2}{c}{bits per byte $\downarrow$} \\
+model & stage & $\uparrow$ & GSM8K & WikiText \\
+\midrule
+\multicolumn{5}{l}{\emph{300M, 21B corpus}} \\
+dense & base & 0.369 & 1.458 & 1.128 \\
+\dagf{} & base & \textbf{0.391} & \textbf{1.344} & \textbf{1.057} \\
+dense & +Alpaca & 0.371 & 1.452 & 1.184 \\
+\dagf{} & +Alpaca & \textbf{0.390} & \textbf{1.295} & \textbf{1.108} \\
+dense & +SmolTalk & 0.364 & 1.269 & 1.309 \\
+\dagf{} & +SmolTalk & \textbf{0.377} & \textbf{1.097} & \textbf{1.207} \\
+\midrule
+\multicolumn{5}{l}{\emph{1B, 21B corpus}} \\
+dense 5B & base & 0.385 & 1.375 & 1.058 \\
+dense 10B & base & 0.395 & 1.323 & 1.022 \\
+\dagf{} 5B & base & 0.411 & 1.242 & 0.990 \\
+\dagf{} 10B & base & \textbf{0.421} & \textbf{1.239} & \textbf{0.963} \\
+dense 5B & +Alpaca & 0.385 & 1.348 & 1.090 \\
+dense 10B & +Alpaca & 0.394 & 1.290 & 1.052 \\
+\dagf{} 5B & +Alpaca & 0.410 & 1.200 & 1.021 \\
+\dagf{} 10B & +Alpaca & \textbf{0.421} & \textbf{1.182} & \textbf{0.993} \\
+dense 5B & +SmolTalk & 0.377 & 1.202 & 1.150 \\
+dense 10B & +SmolTalk & 0.388 & 1.153 & 1.106 \\
+\dagf{} 5B & +SmolTalk & 0.402 & 1.038 & 1.067 \\
+\dagf{} 10B & +SmolTalk & \textbf{0.407} & \textbf{1.020} & \textbf{1.036} \\
+\bottomrule
+\end{tabular}
+\caption{Downstream evaluation before (base) and after each instruction-tuning recipe, summarized (Table~\ref{tab:downstream} and Table~\ref{tab:downstream_1b5b} give per-task accuracy). MC acc.: mean accuracy over the twelve tasks (eleven multiple-choice and LAMBADA); GSM8K and WikiText: bits per byte on the gold GSM8K solutions and on WikiText (lower is better). One pretraining run per model. Repeating the 300M instruction tuning with a second seed moves the 12-task mean by at most 0.001 and WikiText bpb by less than 0.001 (BoolQ alone by up to 0.02), and the routed-minus-dense gaps reproduce within 0.003, so the tuning stage adds little noise; pretraining-seed variance is not measured. Shared-slice 75M and 150M pairs show the same pattern (Appendix~\ref{app:tables}).}
+\label{tab:downstream_full}
+\end{table}
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabular}{llrc}
+\toprule
+SFT & \dagf{} vs.\ dense & win rate $\uparrow$ [CI] & W/L \\
+\midrule
+Alpaca & 300M vs.\ 300M, seed 1 & 0.57 [0.50, 0.64] & 16/10 \\
+Alpaca & 300M vs.\ 300M, seed 2 & 0.61 [0.54, 0.67] & 19/8 \\
+Alpaca & 1B@5B vs.\ 1B@5B & 0.58 [0.51, 0.66] & 26/12 \\
+Alpaca & 1B@5B vs.\ 1B@10B & 0.56 [0.48, 0.64] & 23/17 \\
+Alpaca & 1B@10B vs.\ 1B@10B & 0.56 [0.48, 0.63] & 19/14 \\
+SmolTalk & 300M vs.\ 300M, seed 1 & \textbf{0.69} [0.63, 0.75] & 27/2 \\
+SmolTalk & 300M vs.\ 300M, seed 2 & 0.64 [0.57, 0.71] & 30/5 \\
+SmolTalk & 1B@5B vs.\ 1B@5B & 0.59 [0.52, 0.66] & 23/8 \\
+SmolTalk & 1B@5B vs.\ 1B@10B & 0.60 [0.52, 0.67] & 27/10 \\
+SmolTalk & 1B@10B vs.\ 1B@10B & 0.64 [0.57, 0.72] & 30/9 \\
+\bottomrule
+\end{tabular}
+\caption{Judged chat quality on the 80 MT-Bench first turns. Win rate of \dagf{} with ties counted as half, averaged over both answer orders, with a 95\% bootstrap interval; W/L counts prompts where both orders agree. ``Seed 1/2'' are two independent instruction-tuning runs of both models from the same pretrained checkpoints. The judge prefers \dagf{} in every comparison; the interval excludes 0.5 in seven of ten.}
+\label{tab:chat_full}
+\end{table}
+
+\subsection{Post-hoc baselines and learning rates}
+\label{app:posthoc}
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llrrrr}
+\toprule
+run & size & WikiText-2 & MathInstruct & GSM8K & balanced \\
+\midrule
+dense & 75M & 4.997 & 4.271 & 4.242 & 5.167 \\
+dense, hidden 656 & 75M & 4.769 & 4.057 & 4.052 & 4.961 \\
+dense, 13 layers & 75M & 4.871 & 4.215 & 4.174 & 5.094 \\
+DenseFormer & 75M & 5.027 & 4.303 & 4.249 & 5.196 \\
+hyper-connections (static) & 75M & 5.042 & 4.301 & 4.246 & 5.191 \\
+hyper-connections (DHC$\times$4) & 75M & 4.964 & 4.202 & 4.157 & 5.114 \\
+MUDDFormer & 75M & 4.974 & 4.269 & 4.130 & 5.166 \\
+\dagf{} & 75M & \textbf{4.711} & \textbf{3.984} & \textbf{3.973} & \textbf{4.937} \\
+\midrule
+dense & 150M & 4.268 & 3.599 & 3.608 & 4.471 \\
+dense, hidden 864 & 150M & 4.199 & 3.537 & 3.599 & 4.409 \\
+DenseFormer & 150M & 4.246 & 3.581 & 3.579 & 4.460 \\
+hyper-connections (static) & 150M & 4.247 & 3.595 & 3.587 & 4.471 \\
+MUDDFormer & 150M & \textbf{4.041} & \textbf{3.377} & \textbf{3.357} & \textbf{4.269} \\
+\dagf{} & 150M & 4.085 & 3.383 & 3.402 & 4.305 \\
+\midrule
+dense & 300M & 3.808 & 2.742 & 3.232 & 3.832 \\
+DenseFormer & 300M & 3.745 & 2.714 & 3.249 & 3.782 \\
+MUDDFormer & 300M & 3.649 & 2.648 & 3.032 & 3.703 \\
+\dagf{} & 300M & \textbf{3.544} & \textbf{2.565} & \textbf{2.937} & \textbf{3.606} \\
+\bottomrule
+\end{tabular}
+\caption{Post-hoc baselines of Table~\ref{tab:main} on every common held-out set (NLL, nats per token). The parameter-matched dense models carry \dagf{}'s routing parameters as extra width (hidden 656 and 864; 107M and 182M parameters) or, at 75M, as extra depth (13 layers, 106M); hyper-connections are the static 4-stream variant. All runs of a size share recipe, data, tokens and seed; the 75M and 150M runs use the 12B' corpus and the 300M runs the 21B corpus.}
+\label{tab:posthoc_sets}
+\end{table*}
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrr}
+\toprule
+75M, WikiText-2 NLL $\downarrow$ & 2.5e-4 & 5e-4 & 1e-3 & 2e-3 \\
+\midrule
+dense & 5.878 & 4.997 & 4.654 & 4.563 \\
+\dagf{} & 5.558 & 4.711 & 4.413 & 4.329 \\
+gap & 0.32 & 0.29 & 0.24 & 0.23 \\
+\bottomrule
+\end{tabular}
+\caption{Learning-rate sweep at 75M (12B' corpus, 1.58B tokens; the predictor's learning rate is 0.6$\times$ the backbone's). Both models improve up to the largest rate; the matched-rate gap moves from 0.32 to 0.23 nats and the best-against-best gap is 0.23. The same holds on MathInstruct, GSM8K and the balanced set (best-against-best narrows the 5e-4 gap by 5 to 19\%; 30\% on the Dolma tail).}
+\label{tab:lrsweep}
+\end{table}
+
+\begin{table}[h]
+\centering\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lrrrr}
+\toprule
+routing source (75M) & routing & own & WikiText-2 & MC acc. \\
+ & params & cache $\downarrow$ & NLL $\downarrow$ & w/o BoolQ $\uparrow$ \\
+\midrule
+none (dense) & 0 & 4.213 & 6.593 & 0.269 \\
+static table, no token input & 500 & 4.171 & 6.529 & -- \\
+per-layer predictors (unshared) & 35.6M & 4.058 & 6.256 & 0.271 \\
+shared predictor only & 28.7M & 4.031 & 6.207 & 0.274 \\
+local routers only & 29.1M & 4.018 & 6.176 & 0.275 \\
+shared + local (\dagf{}) & 29.1M & \textbf{4.014} & \textbf{6.163} & \textbf{0.276} \\
+\bottomrule
+\end{tabular}
+\caption{Routing-source ablation. Same 75M backbone, granularity and 1.57B tokens of a 1.7B-token Dolma slice; only the source of $\valpha$ changes. Static table: one weight per (layer, stream, head, source), no input; per-layer predictors: an encoder over the token ids per layer, nothing shared; local routers only: the correction MLPs with the predictor frozen at identity. Own cache: the run's held-out Dolma tail; MC: 11-task mean before tuning.}
+\label{tab:locality}
+\end{table}
+
+\input{appendix_tables}
+
+\section{Topology analysis}
+\label{app:topology}
+Over 128 held-out windows of each model's own corpus we record the predictor's and the correction channel's outputs. Averaged over tokens, most mixing mass sits on skip sources rather than the previous layer: the previous layer carries 17 to 61\% of the $|\alpha|$ mass for queries, 12 to 45\% for keys, only 2 to 24\% for values and 4 to 68\% for the residual (300M and 1B), and 2 to 5 sources per head exceed 5\% of the head's largest weight. Per-token spread relative to the mean is 0.05 to 0.19 for the predictor and 0.5 to 1.4 for the corrections. The graph is used densely: zeroing at inference the quarter of hyperconnection entries with the smallest mean $|\alpha|$ (both channels, per-token routing otherwise intact) costs 0.27 nats at 300M and 0.15 to 0.22 at 1B on WikiText-2, half of them costs about 1.8 nats, and removing every skip so that each layer reads only its predecessor raises the loss to 9 to 10 nats; sparsifying the topology for inference would need retraining rather than post-hoc masking.
+
+\section{Pruning: all runs}
+\label{app:prunefull}
+Table~\ref{tab:pruning_full} lists every matched-corpus pruning run behind Table~\ref{tab:pruning}, and Table~\ref{tab:pruning_shared} the earlier study on the original 12B-slice pairs, which Figure~\ref{fig:pruning} plots.
+
+\begin{table*}[h]
+\centering\small
+\setlength{\tabcolsep}{2pt}
+\input{table_pruning_full}
+\caption{All matched-corpus pruning runs of Table~\ref{tab:pruning}: held-out MathInstruct NLL after 2000 steps at 0 to 70\% sparsity, and at 50\% with every router frozen during finetuning (DenseFormer's depth weights, the hyper-connection modules, MUDDFormer's routers, \dagf{}'s predictor and local correction) or, for \dagf{}, only the predictor. Bold: best per size and column. \pend{}: running.}
+\label{tab:pruning_full}
+\end{table*}
+
+\begin{table*}[h]
+\centering\small
+\setlength{\tabcolsep}{2pt}
+\input{table_pruning_shared}
+\caption{The earlier pruning study on the original 12B-slice pairs (75M to 300M) and a 150M comparison with MUDDFormer on a common corpus (150M$^\ast$): held-out NLL, the loss increase relative to the same model's unpruned finetune, and the NLL at 50\% with the predictor (\dagf{}) or every router (MUDDFormer) frozen. Bold: best per block and column.}
+\label{tab:pruning_shared}
+\end{table*}
+
+\section{Why reading many layers may soften pruning}
+\label{app:prunewhy}
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/fig_pruning.pdf}
+\caption{Pruning during domain finetuning on MathInstruct. (a) Held-out NLL relative to the same model's unpruned finetune with 30/50/70\% of heads and MLP channels removed, the original 12B-slice pairs at three sizes: \dagf{} loses less at every budget, more so at higher sparsity. (b) 150M, common corpus: \dagf{} against MUDDFormer and dense, equal unpruned; \dagf{} ahead by 0.05/0.07/0.10 nats at 30/50/70\%; frozen routers (crosses) change neither.}
+\label{fig:pruning}
+\end{figure*}
+Figure~\ref{fig:pruning} plots the results of Table~\ref{tab:pruning_shared}. A head that reads several earlier layers has several routes to the information it needs, so removing one unit removes one route rather than the only one. The frozen-router result is consistent with this reading: the gain needs no re-routing, only the connections that training put in place. The random-pruning control shows its limit, since the advantage shrinks when the removed units are not the least important ones. We have not tested the redundancy hypothesis directly, for instance by counting alternative paths around removed heads.
+
+\section{The modular variant}
+\label{app:modular}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{figures/fig_scaling_modular.pdf}
+\caption{The modular variant against \dagf{} (FourWay routing) and dense OLMo-2, as in Figure~\ref{fig:scaling}a and~b: (a) final WikiText-2 loss against backbone parameters, (b) against training FLOPs with the routing cost included. On the same corpus, modular routing is 0.03 nats behind FourWay at 75M and 150M and 0.08 behind at 300M, and per FLOP it does not repay its extra cost above 75M.}
+\label{fig:modular}
+\end{figure*}
+Figure~\ref{fig:modular} places the modular variant in the scaling plots of Figure~\ref{fig:scaling}. In FourWay routing the sources are layer outputs, so the attention-to-MLP edge inside a layer, the block-to-everything-downstream edges and the final read-out are fixed. A \emph{modular} variant makes the sources the module outputs (embedding, then each layer's attention and MLP outputs) and adds a routed MLP input and a routed final read-out, so every intermodular edge is predicted; its routing is $2l{-}1$ sources per layer and costs 1.33$\times$ (75M) to 2.30$\times$ (300M) dense FLOPs. At 300M on the 21B corpus, FourWay beats modular on every held-out set (WikiText-2 3.544 vs 3.628, Dolma tail 2.221 vs 2.268, MathInstruct 2.565 vs 2.616, GSM8K 2.937 vs 3.093), and the modular compute multiplier is 1.15 at 75M and 0.81 to 0.93 at 150M to 300M (its extra FLOPs are not repaid). Modular routing is better in one setting: whole-block pruning scored by the mass of a module's routing column, where it beats FourWay's Taylor-pruned blocks at 150M (2.015 vs 2.044 nats at a third of the blocks removed, 2.130 vs 2.229 at half). We therefore ship FourWay and leave modular routing as an ablation.
+
+\end{document}

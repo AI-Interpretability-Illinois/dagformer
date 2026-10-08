@@ -1,0 +1,112 @@
+% figures/method.tex -- Figure 1: the DAGFormer method, drawn in TikZ (vector; no raster).
+% Used from main.tex as   \resizebox{0.86\textwidth}{!}{\input{figures/method}}
+% Needs: tikz (arrows.meta, calc), xcolor; \valpha (bold alpha) from main.tex.
+%
+% Layout (top-down data flow): the token row at the top feeds the topology predictor (top left) and the
+% backbone embedding X_0 (right). The predictor is a horizontal pipeline ending in four colored outputs
+% (q, k, v, R); the lower-left panel shows the weights a trained model learned, averaged over tokens. In the backbone (right),
+% each layer's mixer (four colored strips: q, k, v, R) reads every earlier output X_j through colored
+% curves that loop through the corridor left of the layer bands; the band output is X_l.
+\providecommand{\valpha}{\boldsymbol{\alpha}}
+\definecolor{cQ}{HTML}{0072B2}
+\definecolor{cK}{HTML}{E69F00}
+\definecolor{cV}{HTML}{009E73}
+\definecolor{cR}{HTML}{CC79A7}
+% The lower-left grids are the learned routing weights of DAGFormer-300M, generated from data by
+% figures/gen_method_alpha.py into figures/method_alpha.tex (cells, outlines and frames).
+\begin{tikzpicture}[x=1cm, y=1cm, font=\footnotesize, >=Stealth, line cap=round, line join=round,
+  box/.style={draw=black!70, fill=white, rounded corners=1.5pt, inner sep=2pt, align=center},
+  pbox/.style={box, fill=black!4, font=\scriptsize, minimum height=10.5mm},
+  ob/.style={draw=none, rounded corners=1pt, minimum width=3mm, minimum height=2.4mm, inner sep=0pt, font=\tiny},
+  src/.style={draw=black!70, fill=black!9, rounded corners=1.5pt, inner sep=1.5pt, minimum width=13mm, minimum height=4mm},
+  band/.style={draw=black!70, fill=white, rounded corners=2pt, minimum width=39.5mm, minimum height=7.2mm, inner sep=0pt},
+  head/.style={draw=black!60, fill=black!3, rounded corners=1pt, minimum width=4.2mm, minimum height=4mm, inner sep=0pt, font=\scriptsize},
+  strip/.style={draw=none, inner sep=0pt, outer sep=0pt, minimum width=6mm, minimum height=1.8mm, font=\tiny},
+  panel/.style={draw=black!50, rounded corners=3pt, line width=0.5pt, fill=black!2},
+  ptitle/.style={font=\footnotesize\bfseries, inner sep=0pt},
+  note/.style={font=\scriptsize, color=black!65, align=left, inner sep=1pt},
+  flow/.style={->, black!75, line width=0.6pt},
+  wire/.style={line width=0.45pt, opacity=0.85}]
+
+% ---------------------------------------------------------------- panels
+\draw[panel] (0.3,5.45) rectangle (8.05,8.1);
+\draw[panel] (0.3,1.25) rectangle (8.05,5.15);
+\draw[panel] (9.0,1.1) rectangle (16.3,8.1);
+\node[ptitle, anchor=north east] at (7.9,7.98) {Topology predictor \normalfont(reads only the token ids)};
+\node[ptitle, anchor=north west] at (0.45,5.03) {Learned routing weights $\valpha^{(l)}$ \normalfont(DAGFormer-300M)};
+\node[ptitle, anchor=north east] at (16.15,7.98) {Backbone \normalfont(OLMo-2 decoder)};
+
+% ---------------------------------------------------------------- input tokens (top)
+\foreach \i/\t in {0/$x_1$,1/$x_2$,2/$x_3$,3/$\cdots$,4/$x_T$}
+  \node[box, minimum width=7.5mm, minimum height=4.5mm, inner sep=1pt] (tok\i) at (10.35+0.85*\i, 8.75) {\t};
+\node[note, anchor=east] at (9.85,8.75) {input tokens};
+
+% ---------------------------------------------------------------- backbone sources + bands (right)
+\node[src] (x0) at (12.05,7.42) {$X_0$ {\tiny(embedding)}};
+\draw[flow] (12.05,8.5) -- (x0.north);
+\fill[black!75] (12.05,8.35) circle (0.5pt);
+\foreach \l/\yb in {1/6.7, 2/5.2, 3/3.7, L/2.2} {
+  \node[band, anchor=west] (b\l) at (11.4,\yb) {};
+  \node[strip, fill=cQ, text=white, anchor=north west] at (11.4,\yb+0.36) {q};
+  \node[strip, fill=cK, text=black, anchor=north west] at (11.4,\yb+0.18) {k};
+  \node[strip, fill=cV, text=white, anchor=north west] at (11.4,\yb) {v};
+  \node[strip, fill=cR, text=white, anchor=north west] at (11.4,\yb-0.18) {R};
+  \draw[flow] (12.03,\yb) -- (12.33,\yb);
+  \node[head] at (12.6,\yb) {$h_1$};
+  \node[head] at (13.08,\yb) {$h_2$};
+  \node[inner sep=0pt] at (13.55,\yb) {$\cdots$};
+  \node[head] at (14.02,\yb) {$h_H$};
+  \draw[flow] (14.23,\yb) -- (14.5,\yb);
+  \node[box, minimum height=4mm, inner sep=1.5pt, font=\scriptsize] at (14.85,\yb) {MLP};
+  \node[anchor=east, inner sep=0pt, font=\scriptsize, color=black!60] at (16.22,\yb) {layer $\l$};
+  \node[src] (x\l) at (12.05,\yb-0.75) {$X_{\l}$};
+  \draw[flow] (12.05,\yb-0.36) -- (x\l.north);
+}
+\node at (14.3,2.95) {$\vdots$};
+% source edges: every earlier output X_j feeds the q, k, v and R mixers of layer l (four strands per source)
+\foreach \l/\yb/\srcs in {L/2.2/{0,1,2,3}, 3/3.7/{0,1,2}, 2/5.2/{0,1}, 1/6.7/{0}}
+  \foreach \j in \srcs
+    \foreach \s/\c in {0/cQ, 1/cK, 2/cV, 3/cR}
+      \draw[wire, \c] ([yshift={(0.12-0.08*\s)*1cm}]x\j.west) to[out=180, in=180, looseness=1.2] (11.4,{\yb+0.27-0.18*\s});
+% output
+\node[box, minimum width=14mm, minimum height=4mm] (lm) at (12.05,0.7) {LM head};
+\draw[flow] (xL.south) -- (lm.north);
+\node[anchor=west, inner sep=1pt] (y) at (13.25,0.7) {$y_{t+1}$};
+\draw[flow] (lm) -- (y);
+% corrected variant
+\node[note, anchor=east, align=right] at (16.15,5.95) {corrected variant:\\ $+\,\mathrm{MLP}_l(X_{l-1}(t))$};
+
+% ---------------------------------------------------------------- predictor pipeline (top left)
+\node[pbox, minimum width=13mm] (emb) at (1.1,6.65) {token + pos.\\embedding\\(256-d)};
+\node[pbox, minimum width=15mm] (enc) at (2.75,6.65) {2-layer causal\\transformer\\encoder};
+\node[pbox, minimum width=14mm] (trunk) at (4.42,6.65) {LayerNorm,\\linear${\to}512$,\\GELU};
+\node[pbox, minimum width=18mm] (heads) at (6.6,6.65) {per-layer linear\\heads: $W{=}0$,\\bias one-hot $X_{l-1}$};
+\draw[flow] (12.05,8.35) -- (1.1,8.35) -- (emb.north);
+\draw[flow] (emb) -- (enc); \draw[flow] (enc) -- (trunk); \draw[flow] (trunk) -- (heads);
+\foreach \s/\c/\lab/\tc in {0/cQ/q/white, 1/cK/k/black, 2/cV/v/white, 3/cR/R/white} {
+  \node[ob, fill=\c, text=\tc] (o\s) at (7.78,{7.05-0.27*\s}) {\lab};
+  \draw[black!60, line width=0.4pt] (heads.east) -- (o\s.west);
+  \draw[wire, \c, opacity=1, -{Stealth[length=1.2mm]}] (o\s.east) -- (9.2,{7.05-0.27*\s});
+}
+\node[font=\tiny, inner sep=0pt] at (8.5,7.27) {$\valpha^{(l)}(t)$};
+\draw[flow] (4.2,5.45) -- (4.2,5.15);
+\node[note, anchor=west] at (4.3,5.3) {mean over held-out tokens};
+
+% ---------------------------------------------------------------- the four grids (bottom left): real learned weights
+\input{figures/method_alpha}
+\foreach \x/\c/\lab in {1.3/cQ/$\valpha_q$, 2.97/cK/$\valpha_k$, 4.64/cV/$\valpha_v$, 6.31/cR/$\valpha_r$} {
+  \node[anchor=south, color=\c!85!black, inner sep=1pt, font=\scriptsize] at (\x+0.75,4.34) {\lab};
+  \node[font=\tiny, anchor=north, inner sep=1pt] at (\x+0.0625,2.9) {0};
+  \node[font=\tiny, anchor=north, inner sep=1pt] at (\x+1.4375,2.9) {11};
+  \node[font=\tiny, anchor=north, inner sep=1pt, color=black!60] at (\x+0.75,2.9) {$j$};
+}
+\node[font=\tiny, anchor=east, inner sep=1pt] at (1.26,4.2375) {$l{=}2$};
+\node[font=\tiny, anchor=east, inner sep=1pt] at (1.26,2.9875) {$l{=}12$};
+\node[note, anchor=north west] at (0.45,2.5) {rows: target layer $l$; columns: source $X_j$, $j<l$ (earlier layers only)\\ shade: share of layer $l$'s $|\alpha|$ on $X_j$, mean over heads and tokens\\ outlined: $X_{l-1}$, the only source at initialization ($=$ dense model)};
+
+% ---------------------------------------------------------------- legend
+\foreach \x/\y/\c/\lab/\txt in {0.35/0.85/cQ/$\valpha_q$/query routing, 3.6/0.85/cK/$\valpha_k$/key routing, 0.35/0.55/cV/$\valpha_v$/value routing, 3.6/0.55/cR/$\valpha_r$/residual routing} {
+  \draw[\c, line width=1.2pt] (\x,\y) -- (\x+0.3,\y);
+  \node[anchor=west, inner sep=1pt, font=\scriptsize] at (\x+0.33,\y) {\lab: \txt};
+}
+\end{tikzpicture}
