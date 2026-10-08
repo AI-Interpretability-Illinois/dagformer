@@ -1,0 +1,118 @@
+{
+  "config": "configs/locality/75m_local.yaml",
+  "ckpt": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/local/checkpoint_step3000.pt",
+  "eval_cache": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/local/eval_cache.pt",
+  "n_windows": 64,
+  "seq_len": 256,
+  "n_perms": 3,
+  "intact_nll": 4.282993249595165,
+  "channels": {
+    "pred": {
+      "coherent_nll": 4.282993249595165,
+      "incoherent_nll": 4.282993249595165,
+      "posmean_nll": 4.282993249595165,
+      "specificity(coherent-intact)": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "se": 0.0
+      },
+      "coherence_gap(incoherent-coherent)": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "se": 0.0
+      },
+      "posmean-intact": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "se": 0.0
+      }
+    },
+    "corr": {
+      "coherent_nll": 5.099798536549011,
+      "incoherent_nll": 5.039928796390692,
+      "posmean_nll": 4.76075541973114,
+      "specificity(coherent-intact)": {
+        "mean": 0.8168052869538467,
+        "ci95": [
+          0.7651810405775905,
+          0.8693148270249368
+        ],
+        "se": 0.027318627055886124
+      },
+      "coherence_gap(incoherent-coherent)": {
+        "mean": -0.059869740158319515,
+        "ci95": [
+          -0.08819478830943504,
+          -0.032167421095073284
+        ],
+        "se": 0.014876252299752977
+      },
+      "posmean-intact": {
+        "mean": 0.4777621701359749,
+        "ci95": [
+          0.4403338087722659,
+          0.5173786283470689
+        ],
+        "se": 0.019892071555934948
+      }
+    },
+    "both": {
+      "coherent_nll": 5.096695760885875,
+      "incoherent_nll": 5.047367200255394,
+      "posmean_nll": 4.76075541973114,
+      "specificity(coherent-intact)": {
+        "mean": 0.8137025112907093,
+        "ci95": [
+          0.7665789292193949,
+          0.8616485313822826
+        ],
+        "se": 0.024729103450988242
+      },
+      "coherence_gap(incoherent-coherent)": {
+        "mean": -0.04932856063048044,
+        "ci95": [
+          -0.08233624162773293,
+          -0.013636077940463998
+        ],
+        "se": 0.017155928928983634
+      },
+      "posmean-intact": {
+        "mean": 0.4777621701359749,
+        "ci95": [
+          0.4395459689199924,
+          0.5153935354202985
+        ],
+        "se": 0.019892071555934948
+      }
+    }
+  },
+  "deviation_norm_cross_layer_corr": {
+    "pred": NaN,
+    "corr": 0.4295386349122989
+  },
+  "deviation_norm_mean_per_layer": {
+    "pred": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "corr": [
+      5.7816057205200195,
+      1.9000662565231323,
+      1.9215446710586548,
+      5.212451457977295,
+      2.2018580436706543
+    ]
+  }
+}

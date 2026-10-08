@@ -127,7 +127,7 @@ def main() -> None:
 
     # ---------- table of runs ----------
     rows = ["| run | machine | corpus | family | size | N backbone (M) | non-embed (M) | routing (M) | D tokens (B) | tok/param | FLOPs/token (G) | train C (PF) | done | own-curve final | "
-            + " | ".join(f"common {k}" for k in ("dolma21b", "wikitext2", "mathinstruct", "gsm8k")) + " |",
+            + " | ".join(f"common {k}" for k in ("dolma21b", "wikitext2", "mathinstruct", "gsm8k", "dolma_balanced")) + " |",
             "|" + "---|" * 19]
     for n, r in sorted(runs.items(), key=lambda kv: (kv[1]["corpus"], Nof(kv[1]), kv[1]["family"])):
         c = r["common"]
@@ -135,7 +135,7 @@ def main() -> None:
                     f"{(r['routing_params'] or 0)/1e6:.1f} | {r['total_tokens']/1e9:.2f} | {r['total_tokens']/r['params']['total']:.1f} | "
                     f"{r['flops']['train_flops_per_token']/1e9:.2f} | {r['train_flops_total']/1e15:.0f} | {'y' if r['done'] else 'n'} | "
                     f"{r['final_eval_nll'] if r['final_eval_nll'] is not None else '-'} | "
-                    + " | ".join(f"{c[k]:.4f}" if k in c else "-" for k in ("dolma21b", "wikitext2", "mathinstruct", "gsm8k")) + " |")
+                    + " | ".join(f"{c[k]:.4f}" if k in c else "-" for k in ("dolma21b", "wikitext2", "mathinstruct", "gsm8k", "dolma_balanced")) + " |")
     open(os.path.join(root, "runs_table.md"), "w").write("\n".join(rows) + "\n")
 
     fits: dict = {"eval_key": ek, "params": args.params, "chinchilla_band": [lo, hi], "fit_corpora": sorted(fit_corpora), "L_of_N": {}, "joint": {},

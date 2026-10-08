@@ -4,24 +4,44 @@
 
 | family | points (N, tok/param) | E | A | alpha | rss |
 |---|---|---|---|---|---|
-| corrected | 77M@21, 77M@21, 153M@21, 153M@21, 304M@21, 304M@16 | 1.891 | 2.6e+03 | 0.375 | 6.49e-03 |
-| dense | 77M@21, 77M@21, 153M@21, 153M@21, 304M@21, 304M@21, 683M@18 | 2.804 | 6.07e+04 | 0.564 | 5.79e-04 |
-| modular | 77M@21, 153M@21, 304M@21, 304M@21 | 2.148 | 3.6e+03 | 0.399 | 4.38e-04 |
+| corrected | 77M@21, 77M@21, 153M@21, 153M@21, 304M@21, 304M@21, 304M@16 | 1.446 | 1.07e+03 | 0.319 | 8.90e-03 |
+| corrected_lr | 77M@21, 77M@21 | - | - | - | (need >= 3 points) |
+| dense | 77M@21, 77M@21, 153M@21, 153M@21, 304M@21, 304M@21, 304M@21, 683M@18 | 2.794 | 5.25e+04 | 0.555 | 1.16e-03 |
+| dense_lr | 77M@21, 77M@21 | - | - | - | (need >= 3 points) |
+| dense_pm | 107M@15, 182M@17 | - | - | - | (need >= 3 points) |
+| dense_pmdeep | 106M@15 | - | - | - | (need >= 3 points) |
+| denseformer | 153M@21, 304M@21 | - | - | - | (need >= 3 points) |
+| hc_paper | 304M@21 | - | - | - | (need >= 3 points) |
+| modular | 77M@21, 153M@21, 304M@21, 304M@21 | 2.149 | 3.61e+03 | 0.399 | 4.37e-04 |
+| muddformer | 153M@21, 304M@21 | - | - | - | (need >= 3 points) |
 
 ### Effective parameters: dense size that matches each routed run's loss (from the dense L(N) fit)
 
 | run | family | N (M) | L | N_eff dense (M) | N_eff / N | tok/param |
 |---|---|---|---|---|---|---|
-| timan_75m_corrected | corrected | 77 | 4.7109 | 97 | 1.27 | 21 |
+| timan_75m_corrected | corrected | 77 | 4.7109 | 98 | 1.27 | 21 |
 | shared_75m_dagformer | corrected | 77 | 4.7752 | 92 | 1.20 | 21 |
-| timan_150m_corrected | corrected | 153 | 4.0846 | 197 | 1.29 | 21 |
-| shared_150m_dagformer | corrected | 153 | 4.1003 | 193 | 1.27 | 21 |
-| 300m_fourway_corrected | corrected | 304 | 3.5439 | 523 | 1.72 | 21 |
-| shared_300m_dagformer | corrected | 304 | 3.6366 | 424 | 1.39 | 16 |
-| timan_75m_modular | modular | 77 | 4.7384 | 95 | 1.24 | 21 |
-| timan_150m_modular | modular | 153 | 4.1157 | 189 | 1.24 | 21 |
-| 300m_fourway_modular | modular | 304 | 3.6279 | 432 | 1.42 | 21 |
-| timan_300m_modular | modular | 304 | 3.6575 | 406 | 1.33 | 21 |
+| timan_150m_corrected | corrected | 153 | 4.0845 | 199 | 1.30 | 21 |
+| shared_150m_dagformer | corrected | 153 | 4.1003 | 195 | 1.28 | 21 |
+| 300m_fourway_corrected_pseed2 | corrected | 304 | 3.5301 | 546 | 1.80 | 21 |
+| 300m_fourway_corrected | corrected | 304 | 3.5439 | 528 | 1.74 | 21 |
+| shared_300m_dagformer | corrected | 304 | 3.6366 | 428 | 1.41 | 16 |
+| extras_75m_dagformer_lr1e3 | corrected_lr | 77 | 4.4130 | 132 | 1.73 | 21 |
+| extras_75m_dagformer_lr25e4 | corrected_lr | 77 | 5.5584 | 50 | 0.66 | 21 |
+| extras_75m_dense_lr1e3 | dense_lr | 77 | 4.6543 | 103 | 1.34 | 21 |
+| extras_75m_dense_lr25e4 | dense_lr | 77 | 5.8775 | 41 | 0.54 | 21 |
+| extras_75m_dense_w656 | dense_pm | 107 | 4.7692 | 92 | 0.86 | 15 |
+| extras_150m_dense_w864 | dense_pm | 182 | 4.1989 | 171 | 0.94 | 17 |
+| extras_75m_dense_d13 | dense_pmdeep | 106 | 4.8708 | 84 | 0.80 | 15 |
+| extras_150m_denseformer | denseformer | 153 | 4.2456 | 161 | 1.05 | 21 |
+| extras_300m_denseformer_21b | denseformer | 304 | 3.7450 | 345 | 1.13 | 21 |
+| extras_300m_hc_paper_21b | hc_paper | 304 | 3.6918 | 382 | 1.26 | 21 |
+| timan_75m_modular | modular | 77 | 4.7383 | 95 | 1.24 | 21 |
+| timan_150m_modular | modular | 153 | 4.1156 | 191 | 1.25 | 21 |
+| 300m_fourway_modular | modular | 304 | 3.6279 | 437 | 1.44 | 21 |
+| timan_300m_modular | modular | 304 | 3.6574 | 410 | 1.35 | 21 |
+| extras_150m_muddformer | muddformer | 153 | 4.0412 | 211 | 1.39 | 21 |
+| extras_300m_muddformer_21b | muddformer | 304 | 3.6488 | 417 | 1.37 | 21 |
 
 ## Dense - routed at matched corpus, size and tokens (common-eval NLL of the final checkpoints)
 
@@ -33,14 +53,26 @@
 | delta1p7b | 75m | 77 | 1.57 | 6.5930 | modular | 6.0676 | +0.5254 | 1.33 |
 | delta1p7b | 75m | 77 | 1.57 | 6.5930 | modular_sparse | 6.2737 | +0.3193 | 1.33 |
 | delta1p7b | 75m | 77 | 1.57 | 6.5930 | per_layer | 6.2558 | +0.3372 | 1.18 |
+| delta1p7b | 75m | 77 | 1.57 | 6.5930 | static | 6.5288 | +0.0642 | 1.18 |
 | shared12b | 75m | 77 | 1.57 | 4.9803 | corrected | 4.7752 | +0.2052 | 1.18 |
 | timan12b | 75m | 77 | 1.59 | 4.9967 | corrected | 4.7109 | +0.2858 | 1.18 |
-| timan12b | 75m | 77 | 1.59 | 4.9967 | modular | 4.7384 | +0.2584 | 1.33 |
+| timan12b | 75m | 77 | 1.59 | 4.9967 | corrected_lr | 4.4130 | +0.5838 | 1.18 |
+| timan12b | 75m | 77 | 1.59 | 4.9967 | dense_lr | 4.6543 | +0.3424 | 1.00 |
+| timan12b | 75m | 77 | 1.59 | 4.9967 | dense_pm | 4.7692 | +0.2276 | 1.39 |
+| timan12b | 75m | 77 | 1.59 | 4.9967 | dense_pmdeep | 4.8708 | +0.1259 | 1.44 |
+| timan12b | 75m | 77 | 1.59 | 4.9967 | modular | 4.7383 | +0.2584 | 1.33 |
 | shared12b | 150m | 153 | 3.15 | 4.2974 | corrected | 4.1003 | +0.1971 | 1.33 |
-| timan12b | 150m | 153 | 3.17 | 4.2684 | corrected | 4.0846 | +0.1839 | 1.33 |
-| timan12b | 150m | 153 | 3.17 | 4.2684 | modular | 4.1157 | +0.1528 | 1.64 |
-| delta21b | 300m | 304 | 6.29 | 3.8078 | corrected | 3.5439 | +0.2639 | 1.65 |
-| delta21b | 300m | 304 | 6.29 | 3.8078 | modular | 3.6279 | +0.1799 | 2.30 |
+| timan12b | 150m | 153 | 3.17 | 4.2684 | corrected | 4.0845 | +0.1839 | 1.33 |
+| timan12b | 150m | 153 | 3.17 | 4.2684 | dense_pm | 4.1989 | +0.0696 | 1.19 |
+| timan12b | 150m | 153 | 3.17 | 4.2684 | denseformer | 4.2456 | +0.0228 | 1.00 |
+| timan12b | 150m | 153 | 3.17 | 4.2684 | modular | 4.1156 | +0.1528 | 1.64 |
+| timan12b | 150m | 153 | 3.17 | 4.2684 | muddformer | 4.0412 | +0.2272 | 1.00 |
+| delta21b | 300m | 304 | 6.29 | 3.8348 | corrected | 3.5301 | +0.3047 | 1.65 |
+| delta21b | 300m | 304 | 6.29 | 3.8348 | denseformer | 3.7450 | +0.0897 | 1.00 |
+| delta21b | 300m | 304 | 6.29 | 3.8348 | hc_paper | 3.6918 | +0.1430 | 1.00 |
+| delta21b | 300m | 304 | 6.29 | 3.8348 | modular | 3.6279 | +0.2069 | 2.30 |
+| delta21b | 300m | 304 | 6.29 | 3.8348 | muddformer | 3.6488 | +0.1860 | 1.00 |
+| delta21b | 1b | 1279 | 10.00 | 3.4461 | corrected | 3.2191 | +0.2270 | 2.13 |
 
 ## Dense - routed along training (training-time eval on the run's own corpus cache; same cache within a corpus)
 
@@ -50,13 +82,25 @@
 - delta1p7b 75m dense - modular: +0.251 @ 0.26B, +0.449 @ 0.66B, +0.317 @ 1.05B, +0.287 @ 1.44B
 - delta1p7b 75m dense - modular_sparse: +0.058 @ 0.26B, +0.190 @ 0.66B, +0.131 @ 1.05B, +0.122 @ 1.44B
 - delta1p7b 75m dense - per_layer: +0.027 @ 0.26B, +0.179 @ 0.66B, +0.167 @ 1.05B, +0.155 @ 1.44B
+- delta1p7b 75m dense - static: +0.031 @ 0.26B, +0.026 @ 0.66B, +0.035 @ 1.05B, +0.037 @ 1.44B
 - timan12b 75m dense - corrected: +0.096 @ 0.26B, +0.178 @ 0.53B, +0.175 @ 0.79B, +0.141 @ 1.32B
+- timan12b 75m dense - corrected_lr: +0.452 @ 0.26B, +0.456 @ 0.53B, +0.417 @ 0.79B, +0.380 @ 1.32B
+- timan12b 75m dense - dense_lr: +0.224 @ 0.26B, +0.276 @ 0.53B, +0.232 @ 0.79B, +0.266 @ 1.32B
+- timan12b 75m dense - dense_pm: +0.123 @ 0.26B, +0.180 @ 0.53B, +0.156 @ 0.79B, +0.180 @ 1.32B
+- timan12b 75m dense - dense_pmdeep: -0.077 @ 0.26B, -0.007 @ 0.53B, +0.055 @ 0.79B, +0.088 @ 1.32B
 - timan12b 75m dense - modular: +0.209 @ 0.26B, +0.244 @ 0.53B, +0.191 @ 0.79B, +0.157 @ 1.32B
 - timan12b 150m dense - corrected: +0.160 @ 0.53B, +0.114 @ 1.32B, +0.107 @ 2.11B, +0.103 @ 2.91B
+- timan12b 150m dense - dense_pm: +0.061 @ 0.53B, +0.060 @ 1.32B, +0.054 @ 2.11B, +0.060 @ 2.91B
+- timan12b 150m dense - denseformer: +0.010 @ 0.53B, +0.012 @ 1.32B, +0.018 @ 2.11B, +0.019 @ 2.91B
 - timan12b 150m dense - modular: +0.130 @ 0.53B, +0.101 @ 1.32B, +0.095 @ 2.11B, +0.088 @ 2.91B
-- delta21b 300m dense - corrected: +0.302 @ 1.31B, +0.188 @ 2.88B, +0.159 @ 4.46B, +0.152 @ 6.03B
-- delta21b 300m dense - modular: +0.277 @ 1.31B, +0.166 @ 2.88B, +0.113 @ 4.46B, +0.106 @ 6.03B
-- delta21b 1b dense - corrected: +0.333 @ 1.05B, +0.167 @ 2.62B, +0.136 @ 3.67B, +0.147 @ 5.24B
+- timan12b 150m dense - muddformer: +0.066 @ 0.53B, +0.103 @ 1.32B, +0.126 @ 2.11B, +0.127 @ 2.91B
+- delta21b 300m dense - corrected: +0.343 @ 1.31B, +0.207 @ 2.88B, +0.167 @ 4.46B, +0.161 @ 6.03B
+- delta21b 300m dense - denseformer: +0.112 @ 1.31B, +0.081 @ 2.88B, +0.048 @ 4.46B, +0.048 @ 6.03B
+- delta21b 300m dense - hc_paper: +0.197 @ 1.31B, +0.140 @ 2.88B, +0.092 @ 4.46B, +0.092 @ 6.03B
+- delta21b 300m dense - modular: +0.322 @ 1.31B, +0.192 @ 2.88B, +0.123 @ 4.46B, +0.119 @ 6.03B
+- delta21b 300m dense - muddformer: +0.172 @ 1.31B, +0.147 @ 2.88B, +0.114 @ 4.46B, +0.113 @ 6.03B
+- delta21b 1b dense - corrected: +0.197 @ 2.10B, +0.133 @ 4.72B, +0.116 @ 7.34B, +0.110 @ 9.96B
+- delta21b 1b dense - muddformer: +0.204 @ 1.05B, +0.108 @ 2.10B, +0.077 @ 3.15B, +0.077 @ 4.19B
 
 ## Joint L(N, D) = E + A/N^alpha + B/D^beta per family and corpus (training-curve points, second half of each run)
 
@@ -65,43 +109,64 @@ Caveat: every size has ONE run with a cosine schedule, so intermediate points si
 | family | corpus | sizes | points | E | A | alpha | B | beta | rss |
 |---|---|---|---|---|---|---|---|---|---|
 | corrected | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
-| corrected | delta21b | 1b, 300m | 18 | 1.768 | 1.16e+03 | 0.410 | 1.65e+12 | 1.371 | 2.16e-03 |
+| corrected | delta21b | 1b, 300m | 39 | 1.396 | 29.1 | 0.191 | 3.26e+07 | 0.860 | 8.23e-03 |
 | corrected | timan12b | 150m, 75m | 9 | 1.001 | 129 | 0.209 | 3.71e+07 | 0.890 | 2.32e-04 |
+| corrected_lr | timan12b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | dense | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
-| dense | delta21b | 1b, 300m | 27 | 1.400 | 37.2 | 0.197 | 1.21e+07 | 0.800 | 6.85e-03 |
+| dense | delta21b | 1b, 300m | 39 | 1.389 | 33.3 | 0.188 | 2.2e+09 | 1.045 | 1.03e-02 |
 | dense | timan12b | 150m, 75m | 9 | 1.261 | 175 | 0.228 | 2.21e+09 | 1.087 | 6.18e-04 |
+| dense_lr | timan12b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| dense_pm | timan12b | 150m, 75m | 9 | 1.077 | 101 | 0.194 | 1.47e+10 | 1.176 | 8.09e-04 |
+| dense_pmdeep | timan12b | 75m | 3 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| denseformer | delta21b | 300m | 12 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| denseformer | timan12b | 150m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | global | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| hc_paper | delta21b | 300m | 12 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | local | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | modular | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | modular | delta21b | 300m | 12 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | modular | timan12b | 150m, 300m, 75m | 15 | 2.540 | 6.7e+03 | 0.472 | 6.39e+05 | 0.683 | 6.30e-04 |
 | modular_sparse | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| muddformer | delta21b | 1b, 300m | 16 | 1.406 | 32.7 | 0.192 | 6.91e+11 | 1.317 | 6.75e-04 |
+| muddformer | timan12b | 150m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 | per_layer | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
+| static | delta1p7b | 75m | 6 | - | - | - | - | - | (need >= 2 sizes, >= 6 points) |
 
 ## L(C) with C = training FLOPs (6 x MACs/token x tokens, routing cost included), common-eval finals
 
 | family | points | E | K | gamma |
 |---|---|---|---|---|
-| corrected | 7 | 2.606 | 7.95e+04 | 0.254 |
-| dense | 9 | 2.900 | 4.89e+05 | 0.300 |
+| corrected | 9 | 2.739 | 2.54e+05 | 0.284 |
+| corrected_lr | 2 | - | - | - |
+| dense | 10 | 2.885 | 3.98e+05 | 0.295 |
+| dense_lr | 2 | - | - | - |
+| dense_pm | 2 | - | - | - |
+| dense_pmdeep | 1 | - | - | - |
+| denseformer | 2 | - | - | - |
 | global | 0 | - | - | - |
+| hc_paper | 1 | - | - | - |
+| hyperconnection | 0 | - | - | - |
 | local | 0 | - | - | - |
-| modular | 4 | 2.574 | 1.51e+04 | 0.213 |
+| modular | 4 | 2.574 | 1.52e+04 | 0.213 |
 | modular_sparse | 0 | - | - | - |
+| muddformer | 2 | - | - | - |
 | per_layer | 0 | - | - | - |
+| static | 0 | - | - | - |
 
 Compute multiplier: for each routed final, the dense compute C_eq that reaches the same loss on the dense L(C) fit, and C_eq / C_routed (>1 means the routed model is compute-efficient, <1 means the extra routing FLOPs are not repaid).
 
 | routed run | C (PF) | L | C_eq dense (PF) | C_eq / C |
 |---|---|---|---|---|
-| shared_75m_dagformer | 926 | 4.7752 | 1126 | 1.22 |
-| timan_75m_corrected | 933 | 4.7109 | 1264 | 1.36 |
-| shared_150m_dagformer | 4135 | 4.1003 | 4980 | 1.20 |
-| timan_150m_corrected | 4167 | 4.0846 | 5204 | 1.25 |
-| shared_300m_dagformer | 15396 | 3.6366 | 25353 | 1.65 |
-| 300m_fourway_corrected | 20528 | 3.5439 | 39704 | 1.93 |
-| 1b_fourway_corrected_5b | 86080 | 3.3068 | 183519 | 2.13 |
-| timan_75m_modular | 1047 | 4.7384 | 1203 | 1.15 |
-| timan_150m_modular | 5137 | 4.1157 | 4773 | 0.93 |
-| 300m_fourway_modular | 28619 | 3.6279 | 26380 | 0.92 |
-| timan_300m_modular | 28619 | 3.6575 | 23100 | 0.81 |
+| shared_75m_dagformer | 926 | 4.7752 | 1128 | 1.22 |
+| timan_75m_corrected | 933 | 4.7109 | 1268 | 1.36 |
+| shared_150m_dagformer | 4135 | 4.1003 | 5041 | 1.22 |
+| timan_150m_corrected | 4167 | 4.0845 | 5269 | 1.26 |
+| shared_300m_dagformer | 15396 | 3.6366 | 25696 | 1.67 |
+| 300m_fourway_corrected | 20528 | 3.5439 | 40153 | 1.96 |
+| 300m_fourway_corrected_pseed2 | 20528 | 3.5301 | 43136 | 2.10 |
+| 1b_fourway_corrected_5b | 86080 | 3.3068 | 182019 | 2.11 |
+| 1b_fourway_corrected_10b | 172159 | 3.2191 | 400783 | 2.33 |
+| timan_75m_modular | 1047 | 4.7383 | 1206 | 1.15 |
+| timan_150m_modular | 5137 | 4.1156 | 4831 | 0.94 |
+| 300m_fourway_modular | 28619 | 3.6279 | 26734 | 0.93 |
+| timan_300m_modular | 28619 | 3.6574 | 23423 | 0.82 |

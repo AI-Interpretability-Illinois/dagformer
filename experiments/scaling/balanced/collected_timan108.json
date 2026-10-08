@@ -170,7 +170,7 @@
     "routing_macs": 0,
     "train_flops_per_token": 717225984
    },
-   "done": true,
+   "done": false,
    "train_flops_total": 1.136912202989568e+18,
    "curve": [
     {
@@ -284,7 +284,7 @@
     "routing_macs": 0,
     "train_flops_per_token": 497025024
    },
-   "done": true,
+   "done": false,
    "train_flops_total": 7.87860210843648e+17,
    "curve": [
     {
@@ -341,7 +341,7 @@
     "routing_macs": 15237632,
     "train_flops_per_token": 588450816
    },
-   "done": true,
+   "done": false,
    "train_flops_total": 9.32783987884032e+17,
    "curve": [
     {
@@ -382,125 +382,6 @@
    "tokens_per_step": 528384,
    "eval_col": "eval/nll_soft",
    "note": "post hoc (D4: lr 1e-3, predictor 6e-4), added 2026-10-04",
-   "hidden_size": 512,
-   "num_hidden_layers": 6,
-   "routing_mode": "fourway_corrected",
-   "total_steps": 3000,
-   "total_tokens": 1585152000,
-   "params": {
-    "embed": 51380224,
-    "non_embed": 25178624,
-    "total": 76558848
-   },
-   "routing_params": 29098484,
-   "flops": {
-    "dense_macs": 82837504,
-    "routing_macs": 15237632,
-    "train_flops_per_token": 588450816
-   },
-   "done": true,
-   "train_flops_total": 9.32783987884032e+17,
-   "curve": [
-    {
-     "step": 500,
-     "tokens": 264192000,
-     "eval_nll": 5.012019230769231
-    },
-    {
-     "step": 1000,
-     "tokens": 528384000,
-     "eval_nll": 4.287259615384615
-    },
-    {
-     "step": 1500,
-     "tokens": 792576000,
-     "eval_nll": 4.128605769230769
-    },
-    {
-     "step": 2000,
-     "tokens": 1056768000,
-     "eval_nll": 4.0204326923076925
-    },
-    {
-     "step": 2500,
-     "tokens": 1320960000,
-     "eval_nll": 3.972355769230769
-    }
-   ],
-   "final_eval_nll": 3.972355769230769
-  },
-  {
-   "name": "extras_150m_hyperconnection",
-   "machine": "timan108",
-   "family": "hyperconnection",
-   "corpus": "timan12b",
-   "size": "150m",
-   "save_dir": "/srv/local/xy51/checkpoints/extras_150m_hyperconnection_dolma12b",
-   "tokens_per_step": 528384,
-   "eval_col": "eval/nll",
-   "note": "post hoc (D2: hyper-connections), added 2026-10-04",
-   "hidden_size": 768,
-   "num_hidden_layers": 8,
-   "routing_mode": "dense",
-   "total_steps": 6000,
-   "total_tokens": 3170304000,
-   "params": {
-    "embed": 77070336,
-    "non_embed": 75522816,
-    "total": 152593152
-   },
-   "routing_params": 0,
-   "flops": {
-    "dense_macs": 165150720,
-    "routing_macs": 0,
-    "train_flops_per_token": 990904320
-   },
-   "done": false,
-   "train_flops_total": 3.14146792931328e+18,
-   "curve": [],
-   "final_eval_nll": null
-  },
-  {
-   "name": "extras_75m_dense_lr2e3",
-   "machine": "timan108",
-   "family": "dense_lr",
-   "corpus": "timan12b",
-   "size": "75m",
-   "save_dir": "/srv/local/xy51/checkpoints/extras_75m_dense_lr2e3_dolma12b",
-   "tokens_per_step": 528384,
-   "eval_col": "eval/nll",
-   "note": "post hoc (D4 extension): lr 2e-3",
-   "hidden_size": 512,
-   "num_hidden_layers": 6,
-   "routing_mode": "dense",
-   "total_steps": 3000,
-   "total_tokens": 1585152000,
-   "params": {
-    "embed": 51380224,
-    "non_embed": 25178624,
-    "total": 76558848
-   },
-   "routing_params": 0,
-   "flops": {
-    "dense_macs": 82837504,
-    "routing_macs": 0,
-    "train_flops_per_token": 497025024
-   },
-   "done": false,
-   "train_flops_total": 7.87860210843648e+17,
-   "curve": [],
-   "final_eval_nll": null
-  },
-  {
-   "name": "extras_75m_dagformer_lr2e3",
-   "machine": "timan108",
-   "family": "corrected_lr",
-   "corpus": "timan12b",
-   "size": "75m",
-   "save_dir": "/srv/local/xy51/checkpoints/extras_75m_dagformer_lr2e3_dolma12b",
-   "tokens_per_step": 528384,
-   "eval_col": "eval/nll_soft",
-   "note": "post hoc (D4 extension): lr 2e-3, predictor 1.2e-3",
    "hidden_size": 512,
    "num_hidden_layers": 6,
    "routing_mode": "fourway_corrected",

@@ -1,0 +1,38 @@
+{
+ "timan_300m_modular": {
+  "checkpoint": "/srv/local/xy51/checkpoints/pretrain_300m_dagformer_modular_dolma12b/checkpoint_step12000.pt",
+  "step": 12000,
+  "family": "modular",
+  "size": "300m",
+  "corpus": "timan12b",
+  "dolma21b": 3.7043278336524965,
+  "wikitext2": 3.6574199757677444,
+  "mathinstruct": 3.051661538421561,
+  "gsm8k": 3.08999730183177,
+  "dolma_balanced": 3.9185768200882842
+ },
+ "extras_75m_dense_w656": {
+  "checkpoint": "/srv/local/xy51/checkpoints/extras_75m_dense_w656_dolma12b/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "dense_pm",
+  "size": "75m",
+  "corpus": "timan12b",
+  "dolma21b": 4.747499361038208,
+  "wikitext2": 4.769177780083731,
+  "mathinstruct": 4.056733739485434,
+  "gsm8k": 4.052409124146238,
+  "dolma_balanced": 4.9612967148423195
+ },
+ "extras_75m_dense_lr25e4": {
+  "checkpoint": "/srv/local/xy51/checkpoints/extras_75m_dense_lr25e4_dolma12b/checkpoint_step3000.pt",
+  "step": 3000,
+  "family": "dense_lr",
+  "size": "75m",
+  "corpus": "timan12b",
+  "dolma21b": 5.782609000205993,
+  "wikitext2": 5.877528731704603,
+  "mathinstruct": 5.062075951777467,
+  "gsm8k": 4.973558028919275,
+  "dolma_balanced": 5.893250812377248
+ }
+}

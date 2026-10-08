@@ -1,0 +1,52 @@
+{
+  "config": "configs/locality/75m_per_layer.yaml",
+  "ckpt": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/per_layer/checkpoint_step3000.pt",
+  "eval_cache": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/per_layer/eval_cache.pt",
+  "n_windows": 64,
+  "seq_len": 256,
+  "n_perms": 3,
+  "intact_nll": 4.329508326947689,
+  "channels": {
+    "pred": {
+      "coherent_nll": 4.422097296764454,
+      "incoherent_nll": 4.404431991279125,
+      "posmean_nll": 4.355378724634647,
+      "specificity(coherent-intact)": {
+        "mean": 0.09258896981676423,
+        "ci95": [
+          0.08529117647558455,
+          0.0999154193326831
+        ],
+        "se": 0.003889261432220557
+      },
+      "coherence_gap(incoherent-coherent)": {
+        "mean": -0.017665305485328096,
+        "ci95": [
+          -0.024063600972294874,
+          -0.011770204051087406
+        ],
+        "se": 0.003131452641908383
+      },
+      "posmean-intact": {
+        "mean": 0.025870397686958313,
+        "ci95": [
+          0.021090144477784633,
+          0.03071638187393545
+        ],
+        "se": 0.002577842911514728
+      }
+    }
+  },
+  "deviation_norm_cross_layer_corr": {
+    "pred": 0.6916584433144375
+  },
+  "deviation_norm_mean_per_layer": {
+    "pred": [
+      2.222625494003296,
+      1.0980252027511597,
+      0.9691430330276489,
+      3.056852340698242,
+      1.1601600646972656
+    ]
+  }
+}

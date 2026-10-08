@@ -1,0 +1,81 @@
+{
+ "gpu": "NVIDIA A100-SXM4-40GB",
+ "torch": "2.9.0+cu128",
+ "host": "gpua038.delta.ncsa.illinois.edu",
+ "environment": {
+  "nvidia_smi": "index, name, memory.used [MiB], utilization.gpu [%]\n0, NVIDIA A100-SXM4-40GB, 5 MiB, 0 %\n",
+  "node_jobs": "JOBID NAME USER TRES_PER_NODE TIME\n22638947 static_eval xiaocong gres/gpu:1 0:17\n22638949 throughput xiaocong gres/gpu:1 0:17\n22639239 sft-eval-pt_dagformer_1b_seed2-1b_dense_5b_ xiaocong gres/gpu:1 0:17\n22638939 resv-filler-gpua038 xiaocong gres/gpu:1 0:17\n"
+ },
+ "runs": [
+  {
+   "size": "300m",
+   "kind": "dense",
+   "seq_len": 1024,
+   "bs_train": 2,
+   "bs_infer": 8,
+   "dense": {
+    "infer_tok_per_s": 157508.8013925862,
+    "infer_ms": 52.00979200890288,
+    "train_tok_per_s": 36130.97904426764,
+    "train_ms": 56.682659982470796,
+    "peak_mem_gb": 6.0462464
+   }
+  },
+  {
+   "size": "300m",
+   "kind": "dag",
+   "seq_len": 1024,
+   "bs_train": 2,
+   "bs_infer": 8,
+   "dag": {
+    "infer_tok_per_s": 98714.73104801358,
+    "infer_ms": 82.98660101718269,
+    "train_tok_per_s": 20155.0024041761,
+    "train_ms": 101.61249098018743,
+    "peak_mem_gb": 7.432336384
+   },
+   "dag_static_predictor": {
+    "infer_tok_per_s": 101399.76355970824,
+    "infer_ms": 80.78914301586337,
+    "train_tok_per_s": 21498.638151890875,
+    "train_ms": 95.26184800779447,
+    "peak_mem_gb": 7.375685632
+   }
+  },
+  {
+   "size": "1b",
+   "kind": "dense",
+   "seq_len": 1024,
+   "bs_train": 2,
+   "bs_infer": 8,
+   "dense": {
+    "infer_tok_per_s": 52072.854626735345,
+    "infer_ms": 157.31805100222118,
+    "train_tok_per_s": 14044.546711782326,
+    "train_ms": 145.82172298105434,
+    "peak_mem_gb": 13.158958592
+   }
+  },
+  {
+   "size": "1b",
+   "kind": "dag",
+   "seq_len": 1024,
+   "bs_train": 2,
+   "bs_infer": 8,
+   "dag": {
+    "infer_tok_per_s": 26190.436128257563,
+    "infer_ms": 312.7859329979401,
+    "train_tok_per_s": 6362.32594451539,
+    "train_ms": 321.8948569847271,
+    "peak_mem_gb": 17.618458624
+   },
+   "dag_static_predictor": {
+    "infer_tok_per_s": 26463.442075475283,
+    "infer_ms": 309.5591260062065,
+    "train_tok_per_s": 6518.48045101986,
+    "train_ms": 314.18365298304707,
+    "peak_mem_gb": 17.561199616
+   }
+  }
+ ]
+}

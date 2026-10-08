@@ -1,0 +1,14 @@
+{
+  "static": {
+    "checkpoint": "/projects/biro/xiaocong/dagformer_locality/static/checkpoint_step3000.pt",
+    "step": 3000,
+    "routing_mode": "fourway",
+    "own": 4.170846815109253
+  },
+  "global": {
+    "checkpoint": "/work/hdd/bfqt/xiaocong/dagformer_pruning/checkpoints/locality/global/checkpoint_step3000.pt",
+    "step": 3000,
+    "routing_mode": "fourway",
+    "own": 4.027937240600586
+  }
+}

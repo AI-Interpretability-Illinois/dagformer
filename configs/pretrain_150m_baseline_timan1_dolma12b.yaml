@@ -1,0 +1,45 @@
+# Machine-local copy of pretrain_150m_baseline_mmap.yaml (dense OLMo-2 150M) for timan1 (3x A6000, GPUs 1,2,3), local 12B corpus.
+# Identical to the original except mmap_index_path / save_dir; micro_batch_size 8 -> 4 and gradient_accumulation_steps 16 -> 43
+# (same 516-seq global batch and eval-cache batching as the DAGFormer runs); save_every 6000 -> 1500 (mid-run checkpoints).
+
+# Dense OLMo-2 150M baseline for scaling law
+# ~153M unique params, Chinchilla-optimal 3B tokens
+# Tokens/step: 8 × 16 accum × 4 GPUs × 1024 = 524K
+# Wall time estimate: ~5h on 4× A40
+
+hidden_size: 768
+num_hidden_layers: 8
+num_attention_heads: 12
+intermediate_size: 3072
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/srv/local/xy51/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 43
+total_steps: 6000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "baseline-150m-dolma12b"
+log_every: 10
+save_every: 1500
+save_dir: "/srv/local/xy51/checkpoints/pretrain_150m_baseline_dolma12b"

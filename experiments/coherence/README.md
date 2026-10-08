@@ -123,3 +123,43 @@ pipeline from the shared models).
   DAGFormer `freeze_predictor` freezes the global predictor while the
   correction MLPs remain trainable; the MUDDFormer arm freezes all of its
   routers.
+
+## Experiment 2 on the locality arms (2026-10-03, job 22636494; `results/locality/`)
+
+Same patching test on the 75M router-locality arms (64 windows x 256 tokens, own-corpus cache / WikiText-2).
+
+| arm | channel | specificity (own / wikitext2) | coherence gap | posmean − intact | dev-norm corr across layers |
+|---|---|---|---|---|---|
+| global (predictor only) | pred | +0.077 / +0.034 | −0.011 / −0.005 | +0.022 / +0.008 | 0.98 |
+| per_layer (unshared predictors) | pred | +0.093 / +0.038 | −0.018 / −0.007 | +0.026 / +0.006 | 0.69 |
+| local (correction MLPs only) | corr | +0.817 / +0.585 | −0.060 / −0.027 | +0.478 / +0.399 | 0.43 |
+| both (shipped DAGFormer) | pred | +0.005 / −0.001 | −0.001 / −0.000 | +0.003 / −0.002 | 0.92 |
+| both | corr | +0.718 / +0.519 | −0.071 / −0.038 | +0.394 / +0.320 | 0.35 |
+
+What it adds to the shipped-checkpoint result:
+- The predictor's per-token output is inert only when a local channel is present. Alone (`global`), it carries
+  0.03-0.08 nats of token-specific routing, and its output is near-perfectly coordinated across layers
+  (0.98), though nothing relies on the coordination (gap <= 0). So the inertness in the corrected models is
+  competition (the local channel is the cheaper path to per-token variation), not a property of the
+  predictor by construction.
+- Even in the predictor-only model, replacing its output by the per-position mean costs just 0.008-0.022
+  nats, a small fraction of the arm's advantage over dense (about 0.18-0.4 nats on these caches): most of
+  what the predictor contributes is a static topology.
+- Local routers are far more token-specific (0.5-0.8 nats) and only weakly coordinated across layers
+  (0.35-0.44), with a negative coherence gap, i.e. they behave as independent per-layer routers.
+
+## Experiment 1 addendum: static-table arm (2026-10-03, job 22638614; eval 22638947)
+
+`configs/locality/75m_static.yaml` (`fourway_predictor_variant: static`): the FourWay routing weights are one
+learned table per layer (500 parameters in total), no token input, same backbone, data and recipe as the arms.
+
+| arm | own cache | wikitext2 | mathinstruct | gsm8k |
+|---|---|---|---|---|
+| dense | 4.213 | 6.593 | 5.373 | 5.404 |
+| static table | 4.171 | 6.529 | 5.243 | 5.280 |
+| global (predictor only) | 4.028 | 6.207 | 4.981 | 5.116 |
+
+The static table recovers only about a quarter of the predictor-only arm's gain over dense (0.04 of 0.19 nats on
+the own cache; 0.06 of 0.39 on wikitext2). Read with the patching results (the trained predictor's output can be
+replaced by its mean at <= 0.02 nats): the token-conditioned predictor is needed to *learn* the topology, not to
+apply it. Single run; the table has 500 parameters against the predictor's 29M.

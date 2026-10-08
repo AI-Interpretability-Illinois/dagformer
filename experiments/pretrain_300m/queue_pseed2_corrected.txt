@@ -1,0 +1,3 @@
+# Second pretraining seed (43) of the 300M fourway_corrected model on the rebuilt 21B corpus; gpua047 chain.
+config=configs/pretrain_300m/300m_fourway_corrected_pseed2_mb4.yaml wait=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/pretrain_300m/300m_fourway_corrected_pseed2_mb2.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/scaling/PSEED2_CORRECTED_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected_pseed2/DONE

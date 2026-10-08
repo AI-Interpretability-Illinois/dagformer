@@ -1,0 +1,248 @@
+{
+ "gpu": "NVIDIA A100-SXM4-40GB",
+ "seq": 1024,
+ "bs_infer": 8,
+ "bs_train": 2,
+ "runs": [
+  {
+   "family": "dense",
+   "size": "75m",
+   "infer_tok_per_s": 566907.507519747,
+   "infer_ms": 14.450329006649554,
+   "infer_peak_gb": 2.237925888,
+   "train_tok_per_s": 70393.53706299173,
+   "train_ms": 29.09357997123152,
+   "n_params": 76558848
+  },
+  {
+   "family": "denseformer",
+   "size": "75m",
+   "infer_tok_per_s": 403468.46984225203,
+   "infer_ms": 20.303940982557833,
+   "infer_peak_gb": 2.263225856,
+   "train_tok_per_s": 57306.58698638765,
+   "train_ms": 35.73760204017162,
+   "n_params": 76558875
+  },
+  {
+   "family": "hc_paper",
+   "size": "75m",
+   "infer_tok_per_s": 215286.07343585216,
+   "infer_ms": 38.051694980822504,
+   "infer_peak_gb": 2.146077184,
+   "train_tok_per_s": 39244.35981598694,
+   "train_ms": 52.18584300018847,
+   "n_params": 76608312
+  },
+  {
+   "family": "mhc",
+   "size": "75m",
+   "infer_tok_per_s": 205807.2362380501,
+   "infer_ms": 39.804236963391304,
+   "infer_peak_gb": 2.148187648,
+   "train_tok_per_s": 21730.54228042452,
+   "train_ms": 94.24523205962032,
+   "n_params": 77157193
+  },
+  {
+   "family": "muddformer",
+   "size": "75m",
+   "infer_tok_per_s": 265344.066643975,
+   "infer_ms": 30.873122974298894,
+   "infer_peak_gb": 2.342514688,
+   "train_tok_per_s": 47800.75667486748,
+   "train_ms": 42.84451005514711,
+   "n_params": 76604712
+  },
+  {
+   "family": "dagformer",
+   "size": "75m",
+   "infer_tok_per_s": 370043.54674482235,
+   "infer_ms": 22.13793504051864,
+   "infer_peak_gb": 2.369147392,
+   "train_tok_per_s": 57123.418533974465,
+   "train_ms": 35.852196044288576,
+   "n_params": 105657332
+  },
+  {
+   "family": "dense",
+   "size": "150m",
+   "infer_tok_per_s": 299431.3794821081,
+   "infer_ms": 27.35852205660194,
+   "infer_peak_gb": 2.825309696,
+   "train_tok_per_s": 52295.654148429734,
+   "train_ms": 39.161953958682716,
+   "n_params": 152593152
+  },
+  {
+   "family": "denseformer",
+   "size": "150m",
+   "infer_tok_per_s": 232412.62430722537,
+   "infer_ms": 35.2476550033316,
+   "infer_peak_gb": 2.85074176,
+   "train_tok_per_s": 42447.41782656009,
+   "train_ms": 48.24792896397412,
+   "n_params": 152593196
+  },
+  {
+   "family": "hc_paper",
+   "size": "150m",
+   "infer_tok_per_s": 118023.34651076919,
+   "infer_ms": 69.40999592188746,
+   "infer_peak_gb": 2.621804032,
+   "train_tok_per_s": 27711.42640862439,
+   "train_ms": 73.90453200787306,
+   "n_params": 152691872
+  },
+  {
+   "family": "mhc",
+   "size": "150m",
+   "infer_tok_per_s": 120066.78592751,
+   "infer_ms": 68.22869402822107,
+   "infer_peak_gb": 2.627588608,
+   "train_tok_per_s": 16372.477957208097,
+   "train_ms": 125.0879680737853,
+   "n_params": 153785525
+  },
+  {
+   "family": "muddformer",
+   "size": "150m",
+   "infer_tok_per_s": 132975.63435609674,
+   "infer_ms": 61.605271068401635,
+   "infer_peak_gb": 2.989968384,
+   "train_tok_per_s": 32780.113424097275,
+   "train_ms": 62.47690401505679,
+   "n_params": 152710550
+  },
+  {
+   "family": "dagformer",
+   "size": "150m",
+   "infer_tok_per_s": 226912.8000585205,
+   "infer_ms": 36.10197396483272,
+   "infer_peak_gb": 2.89019136,
+   "train_tok_per_s": 39829.24998126062,
+   "train_ms": 51.41949700191617,
+   "n_params": 182561679
+  },
+  {
+   "family": "dense",
+   "size": "300m",
+   "infer_tok_per_s": 150399.05603547147,
+   "infer_ms": 54.46842696983367,
+   "infer_peak_gb": 3.940045312,
+   "train_tok_per_s": 33555.5795592451,
+   "train_ms": 61.03306892327964,
+   "n_params": 304137216
+  },
+  {
+   "family": "denseformer",
+   "size": "300m",
+   "infer_tok_per_s": 123500.63642778216,
+   "infer_ms": 66.3316419813782,
+   "infer_peak_gb": 3.973605888,
+   "train_tok_per_s": 27706.704919893647,
+   "train_ms": 73.91712605021894,
+   "n_params": 304137306
+  },
+  {
+   "family": "hc_paper",
+   "size": "300m",
+   "infer_tok_per_s": 61468.02862909195,
+   "infer_ms": 133.27253505121917,
+   "infer_peak_gb": 3.538522624,
+   "train_tok_per_s": 17315.851734461517,
+   "train_ms": 118.27313096728176,
+   "n_params": 304334448
+  },
+  {
+   "family": "mhc",
+   "size": "300m",
+   "infer_tok_per_s": 65004.574070853996,
+   "infer_ms": 126.02190102916211,
+   "infer_peak_gb": 3.546920448,
+   "train_tok_per_s": 10464.053222590686,
+   "train_ms": 195.71765896398574,
+   "n_params": 306513549
+  },
+  {
+   "family": "muddformer",
+   "size": "300m",
+   "infer_tok_per_s": 64205.88667160401,
+   "infer_ms": 127.58954707533121,
+   "infer_peak_gb": 4.24228864,
+   "train_tok_per_s": 18360.630750772852,
+   "train_ms": 111.54300894122571,
+   "n_params": 304476282
+  },
+  {
+   "family": "dagformer",
+   "size": "300m",
+   "infer_tok_per_s": 98229.2793114044,
+   "infer_ms": 83.39672302827239,
+   "infer_peak_gb": 3.89639424,
+   "train_tok_per_s": 20466.65862002603,
+   "train_ms": 100.06518592126667,
+   "n_params": 336459069
+  },
+  {
+   "family": "dense",
+   "size": "1b",
+   "infer_tok_per_s": 50104.57740872166,
+   "infer_ms": 163.49803598131984,
+   "infer_peak_gb": 10.512851456,
+   "train_tok_per_s": 12858.178355452375,
+   "train_ms": 159.27606099285185,
+   "n_params": 1279395840
+  },
+  {
+   "family": "denseformer",
+   "size": "1b",
+   "infer_tok_per_s": 44498.6298231908,
+   "infer_ms": 184.0955560328439,
+   "infer_peak_gb": 10.579968512,
+   "train_tok_per_s": 10788.38487744257,
+   "train_ms": 189.8337909951806,
+   "n_params": 1279395992
+  },
+  {
+   "family": "hc_paper",
+   "size": "1b",
+   "infer_tok_per_s": 22779.43168974337,
+   "infer_ms": 359.62266800925136,
+   "infer_peak_gb": 9.442058752,
+   "train_tok_per_s": 6869.749407459531,
+   "train_ms": 298.1185889802873,
+   "n_params": 1279920960
+  },
+  {
+   "family": "mhc",
+   "size": "1b",
+   "infer_tok_per_s": 25539.226143109736,
+   "infer_ms": 320.7614809507504,
+   "infer_peak_gb": 9.46444032,
+   "train_tok_per_s": 6107.426791851224,
+   "train_ms": 335.32943902537227,
+   "n_params": 1285720933
+  },
+  {
+   "family": "muddformer",
+   "size": "1b",
+   "infer_tok_per_s": 26993.1663225309,
+   "infer_ms": 303.484219009988,
+   "infer_peak_gb": 11.250981376,
+   "train_tok_per_s": 7718.47676216125,
+   "train_ms": 265.3373279608786,
+   "n_params": 1280561342
+  },
+  {
+   "family": "dagformer",
+   "size": "1b",
+   "infer_tok_per_s": 26317.52097704074,
+   "infer_ms": 311.2755189649761,
+   "infer_peak_gb": 9.072395776,
+   "train_tok_per_s": 6512.683528393898,
+   "train_ms": 314.46330703329295,
+   "n_params": 1316049239
+  }
+ ]
+}
