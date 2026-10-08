@@ -102,6 +102,8 @@ class PruneFinetuneConfig:
     lr_decay_steps: int = 0                # 0 => total_steps
     freeze_predictor: bool = False         # routed models: freeze the router(s) (DAGFormer predictor / MUDDFormer dense_bs + dynamic_dense)
     freeze_base: bool = False              # DAGFormer only: recovery through routing alone
+    freeze_routing: bool = False           # DAGFormer: freeze the predictor AND the local correction MLPs (all routers,
+                                           # as freeze_predictor does for the per-layer-router baselines)
     label_smoothing: float = 0.0
 
     # Pruning
@@ -130,6 +132,7 @@ class PruneFinetuneConfig:
     # Checkpointing
     save_dir: str = "checkpoints/prune_finetune"
     save_every: int = 0                    # 0 = final only
+    save_final: bool = True                # False: write metrics/summary only, no final weights (quota-tight runs)
     resume_from: str = ""
 
     @classmethod
@@ -208,7 +211,8 @@ class PruneModule(nn.Module):
         self.is_fourway = fourway is not None
         self.is_modular = str(model_cfg.get("routing_mode", "")).startswith("fourway_modular")
         self.kind = ("fourway" if self.is_fourway else
-                     "muddformer" if type(base).__name__ == "MUDDFormerForCausalLM" else "dense")
+                     "muddformer" if type(base).__name__ == "MUDDFormerForCausalLM" else
+                     model_cfg.get("model_type", "") or "dense")
         self.base = base                # Olmo2ForCausalLM (shared with fourway.olmo)
         self.fourway = fourway
         self.predictor = predictor
@@ -260,7 +264,25 @@ def build_model(cfg: PruneFinetuneConfig, device: torch.device, is_main: bool) -
         router_keys = ("dense_bs", "dynamic_dense")
         for n, p in base.named_parameters():
             is_router = any(k in n for k in router_keys)
-            p.requires_grad_(not (cfg.freeze_predictor and is_router))
+            p.requires_grad_(not ((cfg.freeze_predictor or cfg.freeze_routing) and is_router))
+        module.train()
+        return module, model_cfg
+    if model_cfg.get("model_type", "") in ("denseformer", "hc_paper", "mhc", "hyperconnection"):
+        # post-hoc baselines (Table 1): OLMo-2 decoder layers, so the default ArchAdapter's head / MLP-channel gates apply;
+        # loaded with the same family loaders as the common eval. "Routers" (frozen in the frozen-router control) are the
+        # connection parameters: hyper-connection / mHC modules, DenseFormer's depth-weighted-average taps.
+        from scripts.eval_lm_harness import load_denseformer, load_hc_paper, load_hyperconnection, load_mhc
+        mt = model_cfg["model_type"]
+        assert cfg.checkpoint_path, f"{mt} needs a checkpoint"
+        if is_main:
+            print(f"Loading {mt} from {cfg.checkpoint_path}")
+        base = {"denseformer": load_denseformer, "hc_paper": load_hc_paper, "mhc": load_mhc,
+                "hyperconnection": load_hyperconnection}[mt](cfg.checkpoint_path, model_cfg, device)
+        module = PruneModule(model_cfg, base, None, None)
+        router_keys = {"denseformer": ("dwa_modules",), "hc_paper": ("connections",), "mhc": ("connections", "mhc_head"),
+                       "hyperconnection": ("hyper_connections",)}[mt]
+        for n_, p in base.named_parameters():
+            p.requires_grad_(not ((cfg.freeze_predictor or cfg.freeze_routing) and any(k in n_ for k in router_keys)))
         module.train()
         return module, model_cfg
     if is_fourway:
@@ -318,9 +340,12 @@ def build_model(cfg: PruneFinetuneConfig, device: torch.device, is_main: bool) -
         for p in fourway.get_routing_parameters():
             p.requires_grad_(not cfg.freeze_base)
         for p in predictor.parameters():
-            p.requires_grad_(not cfg.freeze_predictor)
+            p.requires_grad_(not (cfg.freeze_predictor or cfg.freeze_routing))
+        if cfg.freeze_routing and getattr(fourway, "use_local_correction", False):
+            for p in fourway.correction_mlps.parameters():
+                p.requires_grad_(False)
     module.train()
-    if is_fourway and cfg.freeze_predictor:
+    if is_fourway and (cfg.freeze_predictor or cfg.freeze_routing):
         predictor.eval()
     return module, model_cfg
 
@@ -705,8 +730,9 @@ def main() -> None:
         masker.enabled = True
         assert abs(baked - final["eval/domain_nll"]) < 1e-2, (
             f"baked weights disagree with masks: {baked} vs {final['eval/domain_nll']}")
-        out = os.path.join(cfg.save_dir, "final")
-        save_checkpoint(out, module, masker, None, global_step, model_cfg, cfg, final=True)
+        if cfg.save_final:
+            save_checkpoint(os.path.join(cfg.save_dir, "final"), module, masker, None, global_step, model_cfg, cfg,
+                            final=True)
         summary = {
             "model": module.kind,
             "model_dir": cfg.model_dir or cfg.model_config_path,
