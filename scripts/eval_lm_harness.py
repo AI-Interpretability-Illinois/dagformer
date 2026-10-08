@@ -178,6 +178,11 @@ def load_fourway(ckpt_path: str, cfg: dict, device):
         use_v_norm=cfg.get("use_v_norm", False),
         correction_pool=cfg.get("correction_pool", "none"),
     ).to(device=device)
+    if cfg.get("fourway_predictor_variant", "encoder") == "static":
+        from src.model.predictor import FourWayStaticPredictor
+        fourway_predictor = FourWayStaticPredictor(num_layers=cfg["num_hidden_layers"],
+                                                   num_heads=cfg["num_attention_heads"]).to(device=device)
+        return _load_fourway_state(ckpt_path, base, fourway_model, fourway_predictor)
     if cfg.get("fourway_predictor_variant", "encoder") == "per_layer":
         from src.model.predictor import FourWayPerLayerPredictor as FourWayPredictor  # noqa: F811
     fourway_predictor = FourWayPredictor(
@@ -344,6 +349,29 @@ def load_hyperconnection(ckpt_path: str, cfg: dict, device):
     for p in model.parameters():
         p.requires_grad_(False)
     return model
+
+
+def _load_paper_hc(ckpt_path: str, cfg: dict, device, mode: str):
+    """Paper-exact HC / mHC (src/model/hyperconnection/paper_exact.py): build the real model, load, confirm the
+    connection parameters loaded."""
+    from src.model.hyperconnection.paper_exact import build_hc_paper, build_mhc
+
+    model = (build_hc_paper if mode == "hc_paper" else build_mhc)(_cfg_to_namespace(cfg))
+    model = model.to(device=device, dtype=torch.bfloat16)
+    state = _load_method_checkpoint_state(ckpt_path)
+    _report_load(f"load_{mode}", model, state, routing_substrings=("connections", "mhc_head"))
+    model.eval()
+    for p in model.parameters():
+        p.requires_grad_(False)
+    return model
+
+
+def load_hc_paper(ckpt_path: str, cfg: dict, device):
+    return _load_paper_hc(ckpt_path, cfg, device, "hc_paper")
+
+
+def load_mhc(ckpt_path: str, cfg: dict, device):
+    return _load_paper_hc(ckpt_path, cfg, device, "mhc")
 
 
 def load_muddformer(ckpt_path: str, cfg: dict, device):

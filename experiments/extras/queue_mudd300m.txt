@@ -1,0 +1,3 @@
+# D2 (post hoc, 2026-10-04): MUDDFormer 300M on the 21B corpus, the 300M pair's recipe; gpua047 chain after the seed-43 corrected run.
+config=configs/extras/300m_muddformer_delta_dolma21b.yaml script=scripts/pretrain_muddformer.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/MUDD300M_EVAL_DONE wait=/work/hdd/bfqt/xiaocong/dagformer_extras/300m_muddformer_21b/DONE

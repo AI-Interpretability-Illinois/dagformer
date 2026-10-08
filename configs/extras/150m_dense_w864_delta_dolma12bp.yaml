@@ -1,0 +1,42 @@
+# D1 (post hoc, 2026-10-04): PARAMETER-MATCHED dense for the timan 150M pair (12B' corpus). The 150M DAGFormer has
+# 152.6M backbone + ~30.0M routing parameters = 182.6M; this dense OLMo-2 widens hidden 768 -> 864 (12 heads of 72,
+# MLP 3072 -> 3456): 100352*864 + 8*16*864^2 = 182.3M (matched within 0.2%). Same recipe as the pair: 528,384 tokens/step
+# (1 GPU: micro 4 x accum 129), 6000 steps, seed 42, lr 5e-4, warmup 300, linear. Delta, 1x A100-40GB.
+
+hidden_size: 864
+num_hidden_layers: 8
+num_attention_heads: 12
+intermediate_size: 3456
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/biro/xiaocong/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 129
+total_steps: 6000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "extras-150m-dense-w864-dolma12b"
+log_every: 10
+save_every: 1500
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_extras/150m_dense_w864"
+keep_last_n: 1

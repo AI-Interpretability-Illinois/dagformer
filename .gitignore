@@ -18,3 +18,18 @@ ssmfloss/
 
 # lm-eval per-document generation dumps (regenerate with run_eval.py --save-samples)
 experiments/results/lmeval/*/samples/
+
+# runtime chain markers (Slurm/timan queues read them; not part of the record)
+experiments/**/STOP
+experiments/**/STOP_*
+experiments/**/*_DONE
+experiments/**/jobids*.txt
+experiments/**/pseed2_jobids.txt
+# paper build outputs (sources and figures are tracked; Overleaf is the master copy)
+paper/*.zip
+paper/main.pdf
+paper/*.log
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out

@@ -1,0 +1,7 @@
+# Table 1 fill (owner, 2026-10-06; 19:52 "use all GPUs"): gpua038 chain. 1B MUDDFormer first (critical path, ~45 h), then 1B
+# static hyper-connections, then 300M static HC as a fallback (skipped if its save_dir already holds DONE, i.e. if the timan1
+# copy finished and was synced back); then the common eval. All on the 21B corpus with the pair's recipe.
+config=configs/extras/1b_muddformer_5b_delta_dolma21b_mb2.yaml script=scripts/pretrain_muddformer.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/1b_muddformer_5b_delta_dolma21b_mb1.yaml
+config=configs/extras/1b_hyperconnection_5b_delta_dolma21b_mb2.yaml script=scripts/pretrain_hyperconnection.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/1b_hyperconnection_5b_delta_dolma21b_mb1.yaml
+config=configs/extras/300m_hyperconnection_delta_dolma21b_mb4.yaml script=scripts/pretrain_hyperconnection.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/300m_hyperconnection_delta_dolma21b_mb2.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1FILL_A_EVAL_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_hyperconnection/DONE

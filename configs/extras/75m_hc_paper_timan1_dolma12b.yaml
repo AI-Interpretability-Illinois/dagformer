@@ -1,0 +1,39 @@
+# Table 1 (owner, 2026-10-06 22:37): paper-exact dynamic Hyper-Connections (DHCx4, one module per sub-layer, LayerNorm; arXiv:2409.19606)
+# at 75M on the timan pair's corpus (local 12B' rebuild) with that pair's recipe: 1 GPU x micro 4 x accum 129 x 1024
+# = 528,384 tokens/step, 3000 steps, seed 42. Trainer: scripts/pretrain_hc_paper.py. timan1 (RTX A6000 48GB), one GPU.
+hidden_size: 512
+num_hidden_layers: 6
+num_attention_heads: 8
+intermediate_size: 2048
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/srv/local/xy51/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 129
+total_steps: 3000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "extras-75m-hc_paper-dolma12b"
+log_every: 10
+save_every: 500
+save_dir: "/srv/local/xy51/checkpoints/extras_75m_hc_paper_dolma12b"

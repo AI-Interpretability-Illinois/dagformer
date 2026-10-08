@@ -1,0 +1,46 @@
+# Table 4 baselines on the Table 1 checkpoints (timan1 12B' corpus), owner 2026-10-07. Same protocol as the dense/fourway
+# *_math_s{0,30,50,70} runs already in /srv/local/xy51/prune/checkpoints. Worker: scripts/timan/prune_worker_scaling.sh
+configs/prune/75m_denseformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_denseformer_math_s50 wandb_run_name=prune-75m-denseformer-math-s50
+configs/prune/75m_muddformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_muddformer_math_s50 wandb_run_name=prune-75m-muddformer-math-s50
+configs/prune/75m_hc_paper_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_hc_paper_math_s50 wandb_run_name=prune-75m-hc-paper-math-s50
+configs/prune/75m_mhc_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_mhc_math_s50 wandb_run_name=prune-75m-mhc-math-s50
+configs/prune/150m_denseformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_denseformer_math_s50 wandb_run_name=prune-150m-denseformer-math-s50
+configs/prune/150m_muddformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_muddformer_math_s50 wandb_run_name=prune-150m-muddformer-math-s50
+configs/prune/150m_hc_paper_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_hc_paper_math_s50 wandb_run_name=prune-150m-hc-paper-math-s50
+configs/prune/150m_mhc_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_mhc_math_s50 wandb_run_name=prune-150m-mhc-math-s50
+configs/prune/75m_denseformer_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/75m_denseformer_math_s70 wandb_run_name=prune-75m-denseformer-math-s70
+configs/prune/75m_muddformer_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/75m_muddformer_math_s70 wandb_run_name=prune-75m-muddformer-math-s70
+configs/prune/75m_hc_paper_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/75m_hc_paper_math_s70 wandb_run_name=prune-75m-hc-paper-math-s70
+configs/prune/75m_mhc_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/75m_mhc_math_s70 wandb_run_name=prune-75m-mhc-math-s70
+configs/prune/150m_denseformer_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_denseformer_math_s70 wandb_run_name=prune-150m-denseformer-math-s70
+configs/prune/150m_muddformer_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_muddformer_math_s70 wandb_run_name=prune-150m-muddformer-math-s70
+configs/prune/150m_hc_paper_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_hc_paper_math_s70 wandb_run_name=prune-150m-hc-paper-math-s70
+configs/prune/150m_mhc_math_timan1.yaml target_sparsity=0.7 save_dir=/srv/local/xy51/prune/checkpoints/150m_mhc_math_s70 wandb_run_name=prune-150m-mhc-math-s70
+configs/prune/75m_denseformer_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/75m_denseformer_math_s0 wandb_run_name=prune-75m-denseformer-math-s0
+configs/prune/75m_muddformer_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/75m_muddformer_math_s0 wandb_run_name=prune-75m-muddformer-math-s0
+configs/prune/75m_hc_paper_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/75m_hc_paper_math_s0 wandb_run_name=prune-75m-hc-paper-math-s0
+configs/prune/75m_mhc_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/75m_mhc_math_s0 wandb_run_name=prune-75m-mhc-math-s0
+configs/prune/150m_denseformer_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/150m_denseformer_math_s0 wandb_run_name=prune-150m-denseformer-math-s0
+configs/prune/150m_muddformer_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/150m_muddformer_math_s0 wandb_run_name=prune-150m-muddformer-math-s0
+configs/prune/150m_hc_paper_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/150m_hc_paper_math_s0 wandb_run_name=prune-150m-hc-paper-math-s0
+configs/prune/150m_mhc_math_timan1.yaml target_sparsity=0 save_dir=/srv/local/xy51/prune/checkpoints/150m_mhc_math_s0 wandb_run_name=prune-150m-mhc-math-s0
+configs/prune/75m_denseformer_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/75m_denseformer_math_s30 wandb_run_name=prune-75m-denseformer-math-s30
+configs/prune/75m_muddformer_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/75m_muddformer_math_s30 wandb_run_name=prune-75m-muddformer-math-s30
+configs/prune/75m_hc_paper_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/75m_hc_paper_math_s30 wandb_run_name=prune-75m-hc-paper-math-s30
+configs/prune/75m_mhc_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/75m_mhc_math_s30 wandb_run_name=prune-75m-mhc-math-s30
+configs/prune/150m_denseformer_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_denseformer_math_s30 wandb_run_name=prune-150m-denseformer-math-s30
+configs/prune/150m_muddformer_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_muddformer_math_s30 wandb_run_name=prune-150m-muddformer-math-s30
+configs/prune/150m_hc_paper_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_hc_paper_math_s30 wandb_run_name=prune-150m-hc-paper-math-s30
+configs/prune/150m_mhc_math_timan1.yaml target_sparsity=0.3 save_dir=/srv/local/xy51/prune/checkpoints/150m_mhc_math_s30 wandb_run_name=prune-150m-mhc-math-s30
+configs/prune/75m_denseformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_denseformer_math_s50_frozenall wandb_run_name=prune-75m-denseformer-math-s50-frozenall freeze_routing=true
+configs/prune/75m_muddformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_muddformer_math_s50_frozenall wandb_run_name=prune-75m-muddformer-math-s50-frozenall freeze_routing=true
+configs/prune/75m_hc_paper_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_hc_paper_math_s50_frozenall wandb_run_name=prune-75m-hc-paper-math-s50-frozenall freeze_routing=true
+configs/prune/75m_mhc_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_mhc_math_s50_frozenall wandb_run_name=prune-75m-mhc-math-s50-frozenall freeze_routing=true
+configs/prune/75m_fourway_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_fourway_math_s50_frozenall wandb_run_name=prune-75m-fourway-math-s50-frozenall freeze_routing=true
+configs/prune/75m_fourway_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/75m_fourway_math_s50_frozenpred wandb_run_name=prune-75m-fourway-math-s50-frozenpred freeze_predictor=true
+configs/prune/150m_denseformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_denseformer_math_s50_frozenall wandb_run_name=prune-150m-denseformer-math-s50-frozenall freeze_routing=true
+configs/prune/150m_muddformer_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_muddformer_math_s50_frozenall wandb_run_name=prune-150m-muddformer-math-s50-frozenall freeze_routing=true
+configs/prune/150m_hc_paper_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_hc_paper_math_s50_frozenall wandb_run_name=prune-150m-hc-paper-math-s50-frozenall freeze_routing=true
+configs/prune/150m_mhc_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_mhc_math_s50_frozenall wandb_run_name=prune-150m-mhc-math-s50-frozenall freeze_routing=true
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s50_frozenall wandb_run_name=prune-150m-fourway-math-s50-frozenall freeze_routing=true
+configs/prune/150m_fourway_math_timan1.yaml target_sparsity=0.5 save_dir=/srv/local/xy51/prune/checkpoints/150m_fourway_math_s50_frozenpred wandb_run_name=prune-150m-fourway-math-s50-frozenpred freeze_predictor=true

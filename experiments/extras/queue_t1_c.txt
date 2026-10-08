@@ -1,0 +1,9 @@
+# Table 1 (owner 2026-10-06 22:37: paper-exact HC and mHC at every size; dense+width dropped): gpua047 chain after chain b.
+task=python3 scripts/inference_bench.py --out experiments/scaling/inference_cost.json done=experiments/extras/INFER_BENCH_DONE
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_C_EVAL0_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_denseformer/DONE
+task=bash scripts/slurm/prune_parallel.sh experiments/extras/delta_prune300m_A.txt done=experiments/extras/PRUNE300M_A_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_denseformer/DONE
+task=python3 scripts/inference_bench.py --out experiments/scaling/inference_cost.json done=experiments/extras/INFER_BENCH2_DONE
+config=configs/extras/300m_hc_paper_delta_dolma21b_mb4.yaml script=scripts/pretrain_hc_paper.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/300m_hc_paper_delta_dolma21b_mb2.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_C_EVAL1_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_hc_paper/DONE
+config=configs/extras/1b_mhc_5b_delta_dolma21b_mb2.yaml script=scripts/pretrain_mhc.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/1b_mhc_5b_delta_dolma21b_mb1.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_C_EVAL2_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/1b_mhc_5b/DONE

@@ -8,4 +8,8 @@ MACHINE=${1:-delta}
 D=${EVAL_ROOT:-/work/hdd/bfqt/xiaocong/dagformer_pruning/data}
 "${PYTHON:-python3}" scripts/scaling_common_eval.py --machine "$MACHINE" \
     --eval dolma21b=$D/dolma_v1_7_21b/eval_cache.pt --eval wikitext2=$D/wikitext2/eval_cache.pt \
-    --eval mathinstruct=$D/mathinstruct/eval_cache.pt --eval gsm8k=$D/gsm8k/eval_cache.pt "${@:2}"
+    --eval mathinstruct=$D/mathinstruct/eval_cache.pt --eval gsm8k=$D/gsm8k/eval_cache.pt \
+    --eval dolma_balanced=$D/dolma_balanced/eval_cache.pt "${@:2}"
+# dolma_balanced: source-balanced Dolma held-out set from files no training corpus consumed (D3, 2026-10-04;
+# scripts/build_balanced_heldout.py). Adding a key re-evaluates every finished run once (the script skips a run only
+# when all keys are present).

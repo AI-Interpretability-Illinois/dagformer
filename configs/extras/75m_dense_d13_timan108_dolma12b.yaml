@@ -1,0 +1,42 @@
+# D1 (post hoc, 2026-10-04): PARAMETER-MATCHED dense baseline, DEPTH variant, for the timan 75M pair.
+# Each 512-wide OLMo-2 layer has 16*512^2 = 4.19M parameters; 7 extra layers (6 -> 13) add 29.4M, matching the
+# 29.1M routing parameters of the 75M DAGFormer: total 100352*512 + 13*4.19M = 105.9M vs DAGFormer 105.7M.
+# Same recipe as the timan 75M dense run; on ONE GPU: micro 4 x accum 129 = 528,384 tokens/step (identical global
+# batch and data order to the 3-GPU runs). Runs on timan108 GPU 3 (RTX A5000 24GB).
+
+hidden_size: 512
+num_hidden_layers: 13
+num_attention_heads: 8
+intermediate_size: 2048
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "allenai/OLMo-2-0425-1B"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/srv/local/xy51/data/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 129
+total_steps: 3000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 200
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "extras-75m-dense-d13-dolma12b"
+log_every: 10
+save_every: 1500
+save_dir: "/srv/local/xy51/checkpoints/extras_75m_dense_d13_dolma12b"

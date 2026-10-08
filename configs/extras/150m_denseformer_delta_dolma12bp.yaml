@@ -1,0 +1,40 @@
+# D2 (post hoc, 2026-10-04): DenseFormer (depth-weighted averaging taps) at 150M on the timan 150M pair's corpus (12B'),
+# tokens/step, steps and schedule (scripts/pretrain_denseformer.py; DWA knobs are the builder defaults). 1 GPU: micro 4 x accum 129.
+
+hidden_size: 768
+num_hidden_layers: 8
+num_attention_heads: 12
+intermediate_size: 3072
+vocab_size: 100352
+tie_word_embeddings: true
+max_position_embeddings: 4096
+tokenizer_id: "/work/hdd/bfqt/shared/dagformer-models/tokenizer"
+
+dataset: "allenai/dolma"
+dataset_name: "v1_7"
+data_source: "mmap"
+mmap_index_path: "/work/hdd/biro/xiaocong/pretok/dolma_v1_7_12b"
+seq_len: 1024
+seed: 42
+
+micro_batch_size: 4
+gradient_accumulation_steps: 129
+total_steps: 6000
+lr: 5e-4
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+warmup_steps: 300
+max_grad_norm: 1.0
+lr_schedule: "linear"
+
+eval_skip: 1000000
+eval_size: 50
+eval_every: 500
+
+wandb_project: "dagformer"
+wandb_run_name: "extras-150m-denseformer-dolma12b"
+log_every: 10
+save_every: 1500
+save_dir: "/work/hdd/bfqt/xiaocong/dagformer_extras/150m_denseformer"
+keep_last_n: 1

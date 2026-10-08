@@ -1,0 +1,4 @@
+# timan1 GPU1 (grant #50, to Oct 9 12:00), after the 75M DenseFormer
+configs/extras/75m_muddformer_timan1_dolma12b.yaml scripts/pretrain_muddformer.py t1fill_75m_muddformer
+configs/extras/150m_hc_paper_timan1_dolma12b.yaml scripts/pretrain_hc_paper.py t1_150m_hc_paper
+configs/extras/75m_mhc_timan1_dolma12b.yaml scripts/pretrain_mhc.py t1_75m_mhc

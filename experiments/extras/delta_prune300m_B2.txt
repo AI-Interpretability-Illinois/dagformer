@@ -1,0 +1,7 @@
+# 300M pruning on the Table 1 checkpoints (21B corpus), owner 2026-10-07: same protocol as the shared-slice 300M runs.
+# Run by scripts/slurm/prune_parallel.sh as a task of a reserved_train.slurm chain; no final weights (biro quota).
+configs/prune/300m_mhc_21b_math.yaml target_sparsity=0.5 save_dir=/work/hdd/biro/xiaocong/dagformer_pruning2/checkpoints/300m_mhc_21b_math_s50 wandb_run_name=prune-300m-mhc-21b-math-s50 save_final=false
+configs/prune/300m_mhc_21b_math.yaml target_sparsity=0.7 save_dir=/work/hdd/biro/xiaocong/dagformer_pruning2/checkpoints/300m_mhc_21b_math_s70 wandb_run_name=prune-300m-mhc-21b-math-s70 save_final=false
+configs/prune/300m_mhc_21b_math.yaml target_sparsity=0 save_dir=/work/hdd/biro/xiaocong/dagformer_pruning2/checkpoints/300m_mhc_21b_math_s0 wandb_run_name=prune-300m-mhc-21b-math-s0 save_final=false
+configs/prune/300m_mhc_21b_math.yaml target_sparsity=0.3 save_dir=/work/hdd/biro/xiaocong/dagformer_pruning2/checkpoints/300m_mhc_21b_math_s30 wandb_run_name=prune-300m-mhc-21b-math-s30 save_final=false
+configs/prune/300m_mhc_21b_math.yaml target_sparsity=0.5 save_dir=/work/hdd/biro/xiaocong/dagformer_pruning2/checkpoints/300m_mhc_21b_math_s50_frozenall wandb_run_name=prune-300m-mhc-21b-math-s50-frozenall save_final=false freeze_routing=true

@@ -1,0 +1,3 @@
+# timan1 GPU2 (grant #51, to Oct 9 12:00), after the 75M static hyper-connections
+configs/extras/75m_hc_paper_timan1_dolma12b.yaml scripts/pretrain_hc_paper.py t1_75m_hc_paper
+configs/extras/150m_mhc_timan1_dolma12b.yaml scripts/pretrain_mhc.py t1_150m_mhc

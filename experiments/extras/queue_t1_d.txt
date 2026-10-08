@@ -1,0 +1,8 @@
+# Table 1 (owner 2026-10-06 22:37): gpua038 chain after chain a (1B MUDDFormer).
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_D_EVAL0_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/1b_muddformer_5b/DONE
+task=bash scripts/slurm/prune_parallel.sh experiments/extras/delta_prune300m_B1.txt done=experiments/extras/PRUNE300M_B1_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_hc_paper/DONE
+config=configs/extras/300m_mhc_delta_dolma21b_mb4.yaml script=scripts/pretrain_mhc.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/300m_mhc_delta_dolma21b_mb2.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_D_EVAL2_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_mhc/DONE
+task=bash scripts/slurm/prune_parallel.sh experiments/extras/delta_prune300m_B2.txt done=experiments/extras/PRUNE300M_B2_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/300m_mhc/DONE
+config=configs/extras/1b_denseformer_5b_delta_dolma21b_mb2.yaml script=scripts/pretrain_denseformer.py eval=/work/hdd/bfqt/xiaocong/dagformer_pruning/data/dolma_v1_7_21b/eval_cache.pt fallback=configs/extras/1b_denseformer_5b_delta_dolma21b_mb1.yaml
+task=bash scripts/scaling_common_eval.sh delta && python3 scripts/scaling_collect.py --machine delta && python3 scripts/scaling_fit.py done=experiments/extras/T1_D_EVAL3_DONE wait=/work/hdd/biro/xiaocong/dagformer_extras2/1b_denseformer_5b/DONE

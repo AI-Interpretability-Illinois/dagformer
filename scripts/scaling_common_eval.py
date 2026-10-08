@@ -23,7 +23,13 @@ import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from scripts.eval_lm_harness import load_dense, load_fourway  # noqa: E402
+from scripts.eval_lm_harness import (load_dense, load_denseformer, load_fourway,  # noqa: E402
+                                     load_hyperconnection, load_muddformer, load_hc_paper, load_mhc)
+
+# Baseline families with their own architecture: loading them through load_dense would silently drop their
+# routing parameters (the 2026-10-05 DenseFormer re-eval was 0.45 nats off for that reason).
+FAMILY_LOADERS = {"denseformer": load_denseformer, "muddformer": load_muddformer,
+                  "hyperconnection": load_hyperconnection, "hc_paper": load_hc_paper, "mhc": load_mhc}
 from scripts.eval_pretrained import latest_checkpoint, nll_on_cache  # noqa: E402
 from scripts.scaling_collect import is_done  # noqa: E402
 
@@ -64,6 +70,9 @@ def main() -> None:
         if str(cfg.get("routing_mode", "")).startswith("fourway"):
             fw, pred = load_fourway(ckpt, cfg, device)
             fwd = lambda x: fw(x, pred(x))  # noqa: E731
+        elif r.get("family") in FAMILY_LOADERS:
+            model = FAMILY_LOADERS[r["family"]](ckpt, cfg, device)
+            fwd = lambda x: model(input_ids=x).logits  # noqa: E731
         else:
             model = load_dense(ckpt, cfg, device)
             fwd = lambda x: model(input_ids=x).logits  # noqa: E731
