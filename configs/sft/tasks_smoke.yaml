@@ -1,0 +1,5 @@
+# 60-step smoke test of the SFT worker (alpaca_dolly is small to prepare).
+defaults: {seq_len: 1024, micro_batch: 8, grad_accum: 2, lr: 2.0e-4, predictor_lr: 2.0e-4, save_every: 20, eval_every: 30}
+tasks:
+  - {name: smoke_75m-dagformer_alpaca, model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-dagformer, dataset: alpaca_dolly, epochs: 1, max_steps: 60}
+  - {name: smoke_75m-baseline_alpaca,  model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-baseline,  dataset: alpaca_dolly, epochs: 1, max_steps: 40}

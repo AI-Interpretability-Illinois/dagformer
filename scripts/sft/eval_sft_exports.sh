@@ -9,7 +9,12 @@ export PYTHONPATH="$PWD:${PYTHONPATH:-}" HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 PYTHON=${PYTHON:-/u/xiaocong/anaconda3/envs/modularity/bin/python}
 FILTER=${1:-pt_dagformer_300m}; SUITES=${2:-"reasoning core"}
 RUNS=/work/hdd/bfqt/xiaocong/dagformer_sft/runs; EXPORTS=/work/hdd/bfqt/xiaocong/dagformer_sft/exports
+# run_eval.py --model all takes every model under --models-root, so each filter gets its own link set:
+# with one shared directory, two passes with different filters evaluated each other's models at the
+# same time and wrote the same result files concurrently (2026-10-01: 4 locality JSONs corrupted)
+EXPORTS="$EXPORTS/_sets/$(printf '%s' "$FILTER" | md5sum | cut -c1-12)"
 mkdir -p "$EXPORTS" experiments/results/lmeval/sft
+find "$EXPORTS" -maxdepth 1 -type l -delete
 n=0
 for d in "$RUNS"/*/; do
     t=$(basename "$d"); [[ "$t" =~ $FILTER ]] || continue

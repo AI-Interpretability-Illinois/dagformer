@@ -113,6 +113,34 @@
    }
   },
   {
+   "routed": "1b_corrected_10b_alpaca_dolly",
+   "dense": "1b_dense_10b_alpaca_dolly",
+   "note": "1B, 10B tokens each",
+   "n": 80,
+   "win_rate": 0.559375,
+   "ci95": [
+    0.484375,
+    0.634375
+   ],
+   "wtl": [
+    19,
+    47,
+    14
+   ],
+   "order_consistent": 39,
+   "frac_A": 0.35,
+   "by_category": {
+    "writing": 0.4,
+    "roleplay": 0.75,
+    "reasoning": 0.425,
+    "math": 0.325,
+    "coding": 0.65,
+    "extraction": 0.65,
+    "stem": 0.525,
+    "humanities": 0.75
+   }
+  },
+  {
    "routed": "300m_corrected_smol_smoltalk",
    "dense": "300m_dense_smol_smoltalk",
    "note": "300M, equal tokens",
@@ -223,6 +251,146 @@
     "stem": 0.65,
     "humanities": 0.525
    }
+  },
+  {
+   "routed": "1b_corrected_10b_smol_smoltalk",
+   "dense": "1b_dense_10b_smol_smoltalk",
+   "note": "1B, 10B tokens each",
+   "n": 80,
+   "win_rate": 0.64375,
+   "ci95": [
+    0.56875,
+    0.715625
+   ],
+   "wtl": [
+    30,
+    41,
+    9
+   ],
+   "order_consistent": 42,
+   "frac_A": 0.425,
+   "by_category": {
+    "writing": 0.8,
+    "roleplay": 0.6,
+    "reasoning": 0.775,
+    "math": 0.55,
+    "coding": 0.5,
+    "extraction": 0.65,
+    "stem": 0.575,
+    "humanities": 0.7
+   }
+  },
+  {
+   "routed": "300m_corrected_seed2_alpaca_dolly",
+   "dense": "300m_dense_seed2_alpaca_dolly",
+   "note": "300M, equal tokens, SFT seed 2",
+   "n": 80,
+   "win_rate": 0.60625,
+   "ci95": [
+    0.540625,
+    0.671875
+   ],
+   "wtl": [
+    19,
+    53,
+    8
+   ],
+   "order_consistent": 38,
+   "frac_A": 0.38125,
+   "by_category": {
+    "writing": 0.55,
+    "roleplay": 0.475,
+    "reasoning": 0.675,
+    "math": 0.6,
+    "coding": 0.6,
+    "extraction": 0.6,
+    "stem": 0.725,
+    "humanities": 0.625
+   }
+  },
+  {
+   "routed": "300m_modular_seed2_alpaca_dolly",
+   "dense": "300m_dense_seed2_alpaca_dolly",
+   "note": "300M, equal tokens, SFT seed 2",
+   "n": 80,
+   "win_rate": 0.603125,
+   "ci95": [
+    0.534375,
+    0.671875
+   ],
+   "wtl": [
+    20,
+    52,
+    8
+   ],
+   "order_consistent": 39,
+   "frac_A": 0.3125,
+   "by_category": {
+    "writing": 0.9,
+    "roleplay": 0.575,
+    "reasoning": 0.575,
+    "math": 0.525,
+    "coding": 0.425,
+    "extraction": 0.65,
+    "stem": 0.7,
+    "humanities": 0.475
+   }
+  },
+  {
+   "routed": "300m_corrected_seed2_smol_smoltalk",
+   "dense": "300m_dense_seed2_smol_smoltalk",
+   "note": "300M, equal tokens, SFT seed 2",
+   "n": 80,
+   "win_rate": 0.640625,
+   "ci95": [
+    0.56875,
+    0.709375
+   ],
+   "wtl": [
+    30,
+    45,
+    5
+   ],
+   "order_consistent": 43,
+   "frac_A": 0.425,
+   "by_category": {
+    "writing": 0.775,
+    "roleplay": 0.675,
+    "reasoning": 0.5,
+    "math": 0.675,
+    "coding": 0.65,
+    "extraction": 0.475,
+    "stem": 0.5,
+    "humanities": 0.875
+   }
+  },
+  {
+   "routed": "300m_modular_seed2_smol_smoltalk",
+   "dense": "300m_dense_seed2_smol_smoltalk",
+   "note": "300M, equal tokens, SFT seed 2",
+   "n": 80,
+   "win_rate": 0.575,
+   "ci95": [
+    0.503125,
+    0.64375
+   ],
+   "wtl": [
+    20,
+    51,
+    8
+   ],
+   "order_consistent": 30,
+   "frac_A": 0.3584905660377358,
+   "by_category": {
+    "writing": 0.525,
+    "roleplay": 0.6,
+    "reasoning": 0.5,
+    "math": 0.775,
+    "coding": 0.625,
+    "extraction": 0.575,
+    "stem": 0.5,
+    "humanities": 0.5
+   }
   }
  ],
  "models": {
@@ -262,6 +430,12 @@
    "answer_tokens": 110.6625,
    "stopped_frac": 0.7125
   },
+  "1b_corrected_10b_alpaca_dolly": {
+   "mean_score": 2.325,
+   "n": 80,
+   "answer_tokens": 121.9125,
+   "stopped_frac": 0.7
+  },
   "300m_dense_smol_smoltalk": {
    "mean_score": 2.125,
    "n": 80,
@@ -296,6 +470,48 @@
    "mean_score": 2.125,
    "n": 80,
    "answer_tokens": 204.25,
+   "stopped_frac": 0.375
+  },
+  "1b_corrected_10b_smol_smoltalk": {
+   "mean_score": 2.525,
+   "n": 80,
+   "answer_tokens": 209.7625,
+   "stopped_frac": 0.375
+  },
+  "300m_dense_seed2_alpaca_dolly": {
+   "mean_score": 1.9875,
+   "n": 80,
+   "answer_tokens": 116.625,
+   "stopped_frac": 0.6625
+  },
+  "300m_corrected_seed2_alpaca_dolly": {
+   "mean_score": 2.1375,
+   "n": 80,
+   "answer_tokens": 111.5375,
+   "stopped_frac": 0.7125
+  },
+  "300m_modular_seed2_alpaca_dolly": {
+   "mean_score": 2.0125,
+   "n": 80,
+   "answer_tokens": 107.3375,
+   "stopped_frac": 0.7375
+  },
+  "300m_dense_seed2_smol_smoltalk": {
+   "mean_score": 2.1625,
+   "n": 80,
+   "answer_tokens": 211.1375,
+   "stopped_frac": 0.3125
+  },
+  "300m_corrected_seed2_smol_smoltalk": {
+   "mean_score": 2.45,
+   "n": 80,
+   "answer_tokens": 198.675,
+   "stopped_frac": 0.4125
+  },
+  "300m_modular_seed2_smol_smoltalk": {
+   "mean_score": 2.4,
+   "n": 80,
+   "answer_tokens": 205.525,
    "stopped_frac": 0.375
   }
  }

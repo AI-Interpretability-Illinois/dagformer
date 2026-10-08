@@ -1,0 +1,80 @@
+# Instruction-tuning tasks for the reservation filler jobs (scripts/sft/sft_train.py).
+# Explicit tasks are claimed in this order by whichever filler is free; after them come
+# tasks discovered from FINISHED pretraining runs (see `discover`). Each task runs on one
+# A100-40GB and is resumable. `python scripts/sft/sft_train.py --list` shows the resolved list. Datasets: smol_smoltalk = HuggingFaceTB/smol-smoltalk
+# (the SFT mix used for SmolLM2-135M/360M, ~460k conversations); alpaca_dolly =
+# yahma/alpaca-cleaned + databricks-dolly-15k (~67k). Global batch = 64 x 1024 tokens.
+defaults:
+  seq_len: 1024
+  micro_batch: 16
+  grad_accum: 4
+  lr: 2.0e-4
+  predictor_lr: 2.0e-4
+  weight_decay: 0.1
+  warmup_frac: 0.03
+  min_lr_ratio: 0.1
+  save_every: 100
+  eval_every: 500
+
+# Finished pretraining runs: every config=/fallback= entry of these queue files whose
+# save_dir holds DONE *and* checkpoint_step{total_steps}.pt (written only at the end of the
+# run) becomes one task per dataset below. Runs still training are never touched. Batch
+# shape / lr come from the model size (75M..1B). Re-scanned each time a filler looks for work.
+discover:
+  queues:
+    - experiments/pretrain_1b/queue.txt
+    - experiments/pretrain_300m/queue.txt
+    - experiments/pretrain_1b/queue_gpua047.txt
+  datasets: {smol_smoltalk: 2, alpaca_dolly: 3}
+  # >= 500M params (the 1B runs): SmolTalk 1 epoch (Alpaca-Dolly stays 3), and only 4-GPU torchrun
+  # jobs claim them (scripts/slurm/submit_sft_ddp.sh), never the 1-GPU fillers.
+  large_model: {min_params: 5.0e8, min_gpus: 4, epochs: {smol_smoltalk: 1}, save_every: 500}
+  # claim order (lower first): explicit tasks default 50, discovered default 60
+  priorities:
+    - {match: "^pt_dagformer_1b-1b_.*_10b_", priority: 20}
+    - {match: "^pt_dagformer_1b-", priority: 25}
+  default_priority: 60
+  # scripts/slurm/submit_sft_ddp.sh does not submit tasks matching a key until the file exists
+  # (the 5B pair waits for the 10B dense run, so the main-result 10B tasks start first on the node)
+  ddp_hold:
+    "^pt_dagformer_1b-1b_.*_5b_": /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_10b/DONE
+    # 1B second SFT seed starts only after the 10B pair (main result) is done
+    "^pt_dagformer_1b_seed2-": /work/hdd/bfqt/xiaocong/dagformer_sft/runs/pt_dagformer_1b-1b_fourway_corrected_10b_smol_smoltalk/DONE
+  # 2026-10-02: 4-GPU SFT jobs go to gpua038 so gpua047 stays free for 1-GPU analysis jobs (scripts/slurm/submit_sft_ddp.sh)
+  ddp_nodelist: gpua038
+
+tasks:
+  # Owner request 2026-09-29: the three 300M runs of the 21B-corpus chain first (same names the discovery
+  # would give them, so they are the same run dirs), so the paper's 300M triple is instruction-tuned as
+  # soon as GPUs free up; the shared-model pairs follow.
+  - {name: pt_dagformer_300m-300m_fourway_corrected_smol_smoltalk, model_config: configs/pretrain_300m/300m_fourway_corrected_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, priority: 10}
+  - {name: pt_dagformer_300m-300m_dense_smol_smoltalk, model_config: configs/pretrain_300m/300m_dense_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, priority: 10}
+  - {name: pt_dagformer_300m-300m_fourway_modular_smol_smoltalk, model_config: configs/pretrain_300m/300m_fourway_modular_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, priority: 10}
+  - {name: pt_dagformer_300m-300m_fourway_corrected_alpaca_dolly, model_config: configs/pretrain_300m/300m_fourway_corrected_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, priority: 10}
+  - {name: pt_dagformer_300m-300m_dense_alpaca_dolly, model_config: configs/pretrain_300m/300m_dense_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, priority: 10}
+  - {name: pt_dagformer_300m-300m_fourway_modular_alpaca_dolly, model_config: configs/pretrain_300m/300m_fourway_modular_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, priority: 10}
+  # 2026-10-01 (owner: more SFT for the DAGFormer evaluation; dagformer asked for error bars): second SFT seed
+  # of the 300M triple (same recipe, seed 2 instead of 1234: different data order and init RNG).
+  - {name: pt_dagformer_300m_seed2-300m_fourway_corrected_smol_smoltalk, model_config: configs/pretrain_300m/300m_fourway_corrected_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  - {name: pt_dagformer_300m_seed2-300m_dense_smol_smoltalk, model_config: configs/pretrain_300m/300m_dense_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  - {name: pt_dagformer_300m_seed2-300m_fourway_modular_smol_smoltalk, model_config: configs/pretrain_300m/300m_fourway_modular_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  - {name: pt_dagformer_300m_seed2-300m_fourway_corrected_alpaca_dolly, model_config: configs/pretrain_300m/300m_fourway_corrected_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_corrected/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  - {name: pt_dagformer_300m_seed2-300m_dense_alpaca_dolly, model_config: configs/pretrain_300m/300m_dense_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_dense/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  - {name: pt_dagformer_300m_seed2-300m_fourway_modular_alpaca_dolly, model_config: configs/pretrain_300m/300m_fourway_modular_mb4.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_300m/300m_fourway_modular/checkpoint_step12000.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8, seed: 2, priority: 30}
+  # 2026-10-02 (owner: go if < 10 h; ~7 h on one 4-GPU node): second SFT seed of the 1B 5B pair, same recipe as the discovered tasks.
+  - {name: pt_dagformer_1b_seed2-1b_dense_5b_alpaca_dolly, model_config: configs/pretrain_1b/1b_dense_5b_mb2.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b/checkpoint_step9540.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 4, grad_accum: 16, lr: 1.0e-4, predictor_lr: 1.0e-4, save_every: 500, seed: 2, priority: 28, min_gpus: 4}
+  - {name: pt_dagformer_1b_seed2-1b_dense_5b_smol_smoltalk, model_config: configs/pretrain_1b/1b_dense_5b_mb2.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_dense_5b/checkpoint_step9540.pt, dataset: smol_smoltalk, epochs: 1, micro_batch: 4, grad_accum: 16, lr: 1.0e-4, predictor_lr: 1.0e-4, save_every: 500, seed: 2, priority: 28, min_gpus: 4}
+  - {name: pt_dagformer_1b_seed2-1b_fourway_corrected_5b_alpaca_dolly, model_config: configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/checkpoint_step9540.pt, dataset: alpaca_dolly, epochs: 3, micro_batch: 4, grad_accum: 16, lr: 1.0e-4, predictor_lr: 1.0e-4, save_every: 500, seed: 2, priority: 28, min_gpus: 4}
+  - {name: pt_dagformer_1b_seed2-1b_fourway_corrected_5b_smol_smoltalk, model_config: configs/pretrain_1b/1b_fourway_corrected_5b_mb2.yaml, checkpoint: /work/hdd/bfqt/xiaocong/dagformer_1b/1b_fourway_corrected_5b/checkpoint_step9540.pt, dataset: smol_smoltalk, epochs: 1, micro_batch: 4, grad_accum: 16, lr: 1.0e-4, predictor_lr: 1.0e-4, save_every: 500, seed: 2, priority: 28, min_gpus: 4}
+  - {name: 300m-dagformer_smoltalk, model_dir: /work/hdd/bfqt/shared/dagformer-models/300m-dagformer, dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8}
+  - {name: 300m-baseline_smoltalk,  model_dir: /work/hdd/bfqt/shared/dagformer-models/300m-baseline,  dataset: smol_smoltalk, epochs: 2, micro_batch: 8, grad_accum: 8}
+  - {name: 150m-dagformer_smoltalk, model_dir: /work/hdd/bfqt/shared/dagformer-models/150m-dagformer, dataset: smol_smoltalk, epochs: 2}
+  - {name: 150m-baseline_smoltalk,  model_dir: /work/hdd/bfqt/shared/dagformer-models/150m-baseline,  dataset: smol_smoltalk, epochs: 2}
+  - {name: 75m-dagformer_smoltalk,  model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-dagformer,  dataset: smol_smoltalk, epochs: 2}
+  - {name: 75m-baseline_smoltalk,   model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-baseline,   dataset: smol_smoltalk, epochs: 2}
+  - {name: 300m-dagformer_alpaca,   model_dir: /work/hdd/bfqt/shared/dagformer-models/300m-dagformer, dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8}
+  - {name: 300m-baseline_alpaca,    model_dir: /work/hdd/bfqt/shared/dagformer-models/300m-baseline,  dataset: alpaca_dolly, epochs: 3, micro_batch: 8, grad_accum: 8}
+  - {name: 150m-dagformer_alpaca,   model_dir: /work/hdd/bfqt/shared/dagformer-models/150m-dagformer, dataset: alpaca_dolly, epochs: 3}
+  - {name: 150m-baseline_alpaca,    model_dir: /work/hdd/bfqt/shared/dagformer-models/150m-baseline,  dataset: alpaca_dolly, epochs: 3}
+  - {name: 75m-dagformer_alpaca,    model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-dagformer,  dataset: alpaca_dolly, epochs: 3}
+  - {name: 75m-baseline_alpaca,     model_dir: /work/hdd/bfqt/shared/dagformer-models/75m-baseline,   dataset: alpaca_dolly, epochs: 3}

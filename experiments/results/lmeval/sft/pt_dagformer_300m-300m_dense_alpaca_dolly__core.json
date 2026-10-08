@@ -1,0 +1,228 @@
+{
+  "model": {
+    "name": "pt_dagformer_300m-300m_dense_alpaca_dolly",
+    "family": "300m_dense_alpaca_dolly",
+    "size": "pt_dagformer_300m",
+    "kind": "dense",
+    "path": "/srv/local/xy51/sft_eval/exports/pt_dagformer_300m-300m_dense_alpaca_dolly",
+    "checkpoint": "/srv/local/xy51/sft_eval/exports/pt_dagformer_300m-300m_dense_alpaca_dolly/checkpoint.pt",
+    "step": 516,
+    "num_parameters": 304137216,
+    "train_seq_len": 1024
+  },
+  "eval": {
+    "date": "2026-09-30T12:57:26+00:00",
+    "suite": "core",
+    "loglikelihood_tasks": [
+      "lambada_openai",
+      "hellaswag",
+      "piqa",
+      "arc_easy",
+      "winogrande",
+      "openbookqa",
+      "sciq",
+      "boolq",
+      "wikitext"
+    ],
+    "generative_tasks": [],
+    "limit": null,
+    "gen_limit": 200,
+    "batch_size": 16,
+    "gen_batch_size": 1,
+    "max_length": 1024,
+    "max_gen_toks": 256,
+    "num_fewshot": null,
+    "gen_num_fewshot": 3,
+    "fewshot_seed": 1234,
+    "softmax_dtype": "float32",
+    "kv_cache": true,
+    "tokenizer": "/srv/local/xy51/sft_eval/tokenizer",
+    "lm_eval_version": "0.4.13",
+    "prompts_left_truncated_batches": 0,
+    "generations_hitting_context_limit": 0,
+    "seconds": {
+      "loglikelihood": 184.03827667236328
+    },
+    "peak_gpu_gb": 15.89,
+    "sample_files": []
+  },
+  "results": {
+    "lambada_openai": {
+      "name": "lambada_openai",
+      "alias": "lambada_openai",
+      "sample_len": 5153,
+      "perplexity,none": 233.52908603892976,
+      "perplexity_stderr,none": 11.651903178108181,
+      "acc,none": 0.20822821657287016,
+      "acc_stderr,none": 0.005656943913472177
+    },
+    "hellaswag": {
+      "name": "hellaswag",
+      "alias": "hellaswag",
+      "sample_len": 10042,
+      "acc,none": 0.2725552678749253,
+      "acc_stderr,none": 0.0044436393941773965,
+      "acc_norm,none": 0.276638119896435,
+      "acc_norm_stderr,none": 0.00446421742069328
+    },
+    "piqa": {
+      "name": "piqa",
+      "alias": "piqa",
+      "sample_len": 1838,
+      "acc,none": 0.6115342763873776,
+      "acc_stderr,none": 0.011371877593210254,
+      "acc_norm,none": 0.6060935799782372,
+      "acc_norm_stderr,none": 0.0114001822246989
+    },
+    "arc_easy": {
+      "name": "arc_easy",
+      "alias": "arc_easy",
+      "sample_len": 2376,
+      "acc,none": 0.4036195286195286,
+      "acc_stderr,none": 0.01006736896034822,
+      "acc_norm,none": 0.3712121212121212,
+      "acc_norm_stderr,none": 0.009913599001845736
+    },
+    "winogrande": {
+      "name": "winogrande",
+      "alias": "winogrande",
+      "sample_len": 1267,
+      "acc,none": 0.5367008681925809,
+      "acc_stderr,none": 0.01401457845884326
+    },
+    "openbookqa": {
+      "name": "openbookqa",
+      "alias": "openbookqa",
+      "sample_len": 500,
+      "acc,none": 0.13,
+      "acc_stderr,none": 0.015055009352810986,
+      "acc_norm,none": 0.256,
+      "acc_norm_stderr,none": 0.019536923574747588
+    },
+    "sciq": {
+      "name": "sciq",
+      "alias": "sciq",
+      "sample_len": 1000,
+      "acc,none": 0.593,
+      "acc_stderr,none": 0.015543249100255544,
+      "acc_norm,none": 0.544,
+      "acc_norm_stderr,none": 0.01575792855397917
+    },
+    "boolq": {
+      "name": "boolq",
+      "alias": "boolq",
+      "sample_len": 3270,
+      "acc,none": 0.5908256880733945,
+      "acc_stderr,none": 0.008599563442397349
+    },
+    "wikitext": {
+      "name": "wikitext",
+      "alias": "wikitext",
+      "sample_len": 62,
+      "word_perplexity,none": 80.61970546702449,
+      "word_perplexity_stderr,none": "N/A",
+      "byte_perplexity,none": 2.2725530784818577,
+      "byte_perplexity_stderr,none": "N/A",
+      "bits_per_byte,none": 1.1843139908630698,
+      "bits_per_byte_stderr,none": "N/A"
+    }
+  },
+  "n-samples": {
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 5153
+    },
+    "hellaswag": {
+      "original": 10042,
+      "effective": 10042
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 1838
+    },
+    "arc_easy": {
+      "original": 2376,
+      "effective": 2376
+    },
+    "winogrande": {
+      "original": 1267,
+      "effective": 1267
+    },
+    "openbookqa": {
+      "original": 500,
+      "effective": 500
+    },
+    "sciq": {
+      "original": 1000,
+      "effective": 1000
+    },
+    "boolq": {
+      "original": 3270,
+      "effective": 3270
+    },
+    "wikitext": {
+      "original": 62,
+      "effective": 62
+    }
+  },
+  "versions": {
+    "arc_easy": 1.0,
+    "boolq": 2.0,
+    "hellaswag": 1.0,
+    "lambada_openai": 1.0,
+    "openbookqa": 1.0,
+    "piqa": 1.0,
+    "sciq": 1.0,
+    "wikitext": 2.0,
+    "winogrande": 1.0
+  },
+  "n-shot": {
+    "arc_easy": 0,
+    "boolq": 0,
+    "hellaswag": 0,
+    "lambada_openai": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "sciq": 0,
+    "wikitext": 0,
+    "winogrande": 0
+  },
+  "higher_is_better": {
+    "arc_easy": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "boolq": {
+      "acc": true
+    },
+    "hellaswag": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "lambada_openai": {
+      "perplexity": false,
+      "acc": true
+    },
+    "openbookqa": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "piqa": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "sciq": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "wikitext": {
+      "word_perplexity": false,
+      "byte_perplexity": false,
+      "bits_per_byte": false
+    },
+    "winogrande": {
+      "acc": true
+    }
+  },
+  "group_subtasks": {}
+}

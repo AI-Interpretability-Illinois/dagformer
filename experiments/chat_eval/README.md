@@ -86,3 +86,29 @@ Those 145 were re-judged with 2048 tokens (`--retry-errors`).
 - **The judge has a strong second-position bias:** it picks answer A in only 28-39% of verdicts.
   Judging both orders cancels it, but only 30-45 of 80 questions get the same verdict in both orders,
   hence the many ties.
+
+## Seed-2 replication (2026-10-02; 300M, second independent SFT run of both models)
+
+Judged on Delta (job 22631821: conda env `vllm`, same Qwen3-Coder-30B-A3B-Instruct in bf16, TP=2 on two
+A100s, weights at /projects/biro/xiaocong/models, 2048-token judge budget from the start; 1 of 1120 verdicts
+unparsable). Same prompts and protocol as seed 1.
+
+| SFT data | DAGFormer | dense | seed 1 win rate [95% CI] | seed 2 win rate [95% CI] |
+|---|---|---|---|---|
+| Alpaca-Dolly | 300M corrected | 300M | 0.569 [0.500, 0.637] | 0.606 [0.541, 0.672] |
+| Alpaca-Dolly | 300M modular | 300M | 0.588 [0.519, 0.656] | 0.603 [0.534, 0.672] |
+| SmolTalk | 300M corrected | 300M | 0.691 [0.631, 0.750] | 0.641 [0.569, 0.709] |
+| SmolTalk | 300M modular | 300M | 0.575 [0.509, 0.641] | 0.575 [0.503, 0.644] |
+
+Seed 2 reproduces seed 1: DAGFormer preferred in all four comparisons, all four seed-2 intervals exclude
+0.5, and the paired score differences after SmolTalk stay positive (+0.29 corrected, +0.24 modular).
+
+## 1B, 10B-token pair (2026-10-03; jobs 22638589 generation, 22638590 judge on Delta)
+
+| SFT data | DAGFormer | dense | win rate [95% CI] | W / T / L |
+|---|---|---|---|---|
+| Alpaca-Dolly | 1B corrected, 10B tok | 1B, 10B tok | 0.559 [0.484, 0.634] | 19 / 47 / 14 |
+| SmolTalk | 1B corrected, 10B tok | 1B, 10B tok | 0.644 [0.569, 0.716] | 30 / 41 / 9 |
+
+Same pattern as at 5B tokens: preferred under both recipes, significant after SmolTalk (paired score
+difference +0.40 [+0.23, +0.59]), not after Alpaca (+0.14 [-0.15, +0.41]).
